@@ -44,7 +44,7 @@ public:
 
     // TODO: Add doc.
     /**
-     * Overloads + operator to add two Point objects.
+     * Overloads + operator to return a Point result of adding two Point objects together.
      *
      * @param p .
      * @return .
