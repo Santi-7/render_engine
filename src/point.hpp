@@ -1,10 +1,16 @@
+/* ---------------------------------------------------------------------------
+ ** point.hpp
+ ** TODO: Add doc.
+ **
+ ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
+ **         Santiago Gil Begué, NIA: 683482
+ ** -------------------------------------------------------------------------*/
+
 #ifndef RAY_TRACER_POINT_H
 #define RAY_TRACER_POINT_H
 
-// TODO: Add doc.
-/**
- * .
- */
+#include "vect.hpp"
+
 class Point
 {
 
@@ -17,14 +23,14 @@ public:
      * @param x .
      * @return .
      */
-    Point(double x, double y, double z);
+    Point(float x, float y, float z);
 
     /**
      * .
      *
      * @return .
      */
-    double GetX();
+    float GetX();
 
     // TODO: Add doc.
     /**
@@ -32,7 +38,7 @@ public:
      *
      * @return .
      */
-    double GetY();
+    float GetY();
 
     // TODO: Add doc.
     /**
@@ -40,16 +46,27 @@ public:
      *
      * @return .
      */
-    double GetZ();
+    float GetZ();
 
     // TODO: Add doc.
     /**
-     * Overloads + operator to return a Point result of adding two Point objects together.
+     * Overloads + operator to return a Point result
+     * of adding two Point objects together.
      *
      * @param p .
      * @return .
      */
     Point operator+(const Point& p);
+
+    // TODO: Add doc.
+    /**
+     * Overloads - operator to return a Vect result
+     * of subtracting two Point objects together.
+     *
+     * @param p .
+     * @return .
+     */
+    Vect operator-(const Point& p);
 
 private:
 

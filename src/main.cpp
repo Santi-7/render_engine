@@ -3,7 +3,7 @@
 ** TODO: Add doc.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
-**         Santiago Gil Begue, NIA: 683482
+**         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
 #include <iostream>
@@ -13,15 +13,18 @@ using namespace std;
 
 int main()
 {
-    cout << "Hello Future Ray Tracer Developer!" << endl;
+    cout << "Hello Future Ray Tracer Developer!" << '\n';
 
     Point point1(1,2,3);
     Point point2(3,2,1);
-    Point result = point1 + point2;
-    cout << result.GetX() << "," << result.GetY() << "," << result.GetZ() << '\n';
+    Point p_result = point1 + point2;
+    cout << p_result.GetX() << "," << p_result.GetY() << "," << p_result.GetZ() << '\n';
+
+    Vect v_result1 = point1 - point2;
+    cout << v_result1.GetX() << "," << v_result1.GetY() << "," << v_result1.GetZ() << '\n';
 
     Vect vect1(1, 2, 3);
     Vect vect2(3, 2, 1);
-    Vect v_result = vect1 + vect2;
-    cout << v_result.GetX() << "," <<  v_result.GetY() << "," << v_result.GetZ() << '\n';
+    Vect v_result2 = vect1 + vect2;
+    cout << v_result2.GetX() << "," <<  v_result2.GetY() << "," << v_result2.GetZ() << '\n';
 }
