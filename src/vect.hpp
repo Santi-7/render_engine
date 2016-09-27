@@ -1,9 +1,9 @@
 /* ---------------------------------------------------------------------------
-** vect.cpp
+** vect.hpp
 ** TODO: Add doc.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
-**         Santiago Gil Begue, NIA: 683482
+**         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
 #ifndef RAY_TRACER_VECT_HPP
@@ -20,14 +20,14 @@ public:
      * @param x .
      * @return .
      */
-    Vect(double x, double y, double z);
+    Vect(float x, float y, float z);
 
     /**
      * .
      *
      * @return .
      */
-    double GetX();
+    float GetX();
 
     // TODO: Add doc.
     /**
@@ -35,7 +35,7 @@ public:
      *
      * @return .
      */
-    double GetY();
+    float GetY();
 
     // TODO: Add doc.
     /**
@@ -43,22 +43,23 @@ public:
      *
      * @return .
      */
-    double GetZ();
+    float GetZ();
 
     // TODO: Add doc.
     /**
-     * Overloads + operator to return a Vect result of adding two Vect objects together.
+     * Overloads + operator to return a Vect result
+     * of adding two Vect objects together.
      *
      * @param p .
      * @return .
      */
-    Vect operator+(const Vect &p);
+    Vect operator+(const Vect &v);
 
 private:
 
     // TODO: Add doc.
     /* */
-    double mX, mY, mZ;
+    float mX, mY, mZ;
 };
 
-#endif //RAY_TRACER_VECT_HPP
+#endif // RAY_TRACER_VECT_HPP

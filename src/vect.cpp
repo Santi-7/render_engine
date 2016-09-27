@@ -1,39 +1,39 @@
 /* ---------------------------------------------------------------------------
-** main.cpp
+** vect.cpp
 ** TODO: Add doc.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
-**         Santiago Gil Begue, NIA: 683482
+**         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
 #include "vect.hpp"
 
-Vect::Vect(double x, double y, double z)
+Vect::Vect(float x, float y, float z)
 {
     this->mX = x;
     this->mY = y;
     this->mZ = z;
 }
 
-double Vect::GetX()
+float Vect::GetX()
 {
     return this->mX;
 }
 
-double Vect::GetY()
+float Vect::GetY()
 {
     return this->mY;
 }
 
-double Vect::GetZ()
+float Vect::GetZ()
 {
     return this->mZ;
 }
 
-Vect Vect::operator+(const Vect& p)
+Vect Vect::operator+(const Vect& v)
 {
-    double x = this->mX + p.mX;
-    double y = this->mY + p.mY;
-    double z = this->mZ + p.mZ;
+    float x = this->mX + v.mX;
+    float y = this->mY + v.mY;
+    float z = this->mZ + v.mZ;
     return Vect(x, y, z);
 }

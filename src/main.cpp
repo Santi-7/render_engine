@@ -8,7 +8,6 @@
 
 #include <iostream>
 #include "point.hpp"
-#include "vect.hpp"
 using namespace std;
 
 int main()
