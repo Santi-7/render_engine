@@ -1,10 +1,10 @@
-using namespace std;
-
 #include <iostream>
-
 #include "point.cpp"
 
-int main() {
+using namespace std;
+
+int main()
+{
     cout << "Hello Future Ray Tracer Developer!" << endl;
 
     Point point1 = Point(1,2,3);
