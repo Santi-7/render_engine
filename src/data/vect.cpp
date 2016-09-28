@@ -37,46 +37,46 @@ float Vect::GetZ() const
 
 float Vect::Abs() const
 {
-    return (const float) sqrt(pow(mX, 2) + pow(mY, 2) + pow(mZ, 2));
+    return (float) sqrt(pow(mX, 2) + pow(mY, 2) + pow(mZ, 2));
 }
 
 Vect Vect::operator+(const Vect& v) const
 {
-    const float x = mX + v.mX;
-    const float y = mY + v.mY;
-    const float z = mZ + v.mZ;
+    float x = mX + v.mX;
+    float y = mY + v.mY;
+    float z = mZ + v.mZ;
     return Vect(x, y, z);
 }
 
 Vect Vect::operator-(const Vect& v) const
 {
-    const float x = mX - v.mX;
-    const float y = mY - v.mY;
-    const float z = mZ - v.mZ;
+    float x = mX - v.mX;
+    float y = mY - v.mY;
+    float z = mZ - v.mZ;
     return Vect(x, y, z);
 }
 
 Vect Vect::operator*(const float k) const
 {
-    const float x = mX * k;
-    const float y = mY * k;
-    const float z = mZ * k;
+    float x = mX * k;
+    float y = mY * k;
+    float z = mZ * k;
     return Vect(x, y, z);
 }
 
 Vect Vect::DotProduct(const Vect& v) const
 {
-    const float x = mX * v.mX;
-    const float y = mY * v.mY;
-    const float z = mZ * v.mZ;
+    float x = mX * v.mX;
+    float y = mY * v.mY;
+    float z = mZ * v.mZ;
     return Vect(x, y, z);
 }
 
 Vect Vect::CrossProduct(const Vect& v) const
 {
-    const float x = mY * v.mZ - mZ * v.mY;
-    const float y = mX * v.mZ - mZ * v.mX;
-    const float z = mX * v.mY - mY * v.mX;
+    float x = mY * v.mZ - mZ * v.mY;
+    float y = mX * v.mZ - mZ * v.mX;
+    float z = mX * v.mY - mY * v.mX;
     return Vect(x, -y, z);
 }
 

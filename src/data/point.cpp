@@ -36,25 +36,25 @@ float Point::GetZ() const
 
 Point Point::operator+(const Point& p) const
 {
-    const float x = mX + p.mX;
-    const float y = mY + p.mY;
-    const float z = mZ + p.mZ;
+    float x = mX + p.mX;
+    float y = mY + p.mY;
+    float z = mZ + p.mZ;
     return Point(x, y, z);
 }
 
 Vect Point::operator-(const Point& p) const
 {
-    const float x = mX - p.mX;
-    const float y = mY - p.mY;
-    const float z = mZ - p.mZ;
+    float x = mX - p.mX;
+    float y = mY - p.mY;
+    float z = mZ - p.mZ;
     return Vect(x, y, z);
 }
 
 Point Point::operator+(const Vect& v) const
 {
-    const float x = mX + v.GetX();
-    const float y = mY + v.GetY();
-    const float z = mZ + v.GetZ();
+    float x = mX + v.GetX();
+    float y = mY + v.GetY();
+    float z = mZ + v.GetZ();
     return Point(x, y, z);
 }
 
