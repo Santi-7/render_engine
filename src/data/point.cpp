@@ -19,22 +19,22 @@ Point::Point(const float x, const float y, const float z)
     this->mZ = z;
 }
 
-float Point::GetX()
+const float Point::GetX() const
 {
     return this->mX;
 }
 
-float Point::GetY()
+const float Point::GetY() const
 {
     return this->mY;
 }
 
-float Point::GetZ()
+const float Point::GetZ() const
 {
     return this->mZ;
 }
 
-Point Point::operator+(const Point& p)
+const Point Point::operator+(const Point& p) const
 {
     const float x = this->mX + p.mX;
     const float y = this->mY + p.mY;
@@ -42,7 +42,7 @@ Point Point::operator+(const Point& p)
     return Point(x, y, z);
 }
 
-Vect Point::operator-(const Point& p)
+const Vect Point::operator-(const Point& p) const
 {
     const float x = this->mX - p.mX;
     const float y = this->mY - p.mY;
@@ -50,10 +50,10 @@ Vect Point::operator-(const Point& p)
     return Vect(x, y, z);
 }
 
-Point Point::operator*(const float k)
+const Point Point::operator+(const Vect& v) const
 {
-    const float x = this->mX * k;
-    const float y = this->mY * k;
-    const float z = this->mZ * k;
+    const float x = this->mX + v.GetX();
+    const float y = this->mY + v.GetY();
+    const float z = this->mZ + v.GetZ();
     return Point(x, y, z);
 }

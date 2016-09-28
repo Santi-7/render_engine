@@ -27,7 +27,7 @@ public:
      *
      * @return .
      */
-    float GetX();
+    const float GetX() const;
 
     // TODO: Add doc.
     /**
@@ -35,7 +35,7 @@ public:
      *
      * @return .
      */
-    float GetY();
+    const float GetY() const;
 
     // TODO: Add doc.
     /**
@@ -43,7 +43,7 @@ public:
      *
      * @return .
      */
-    float GetZ();
+    const float GetZ() const;
 
     // TODO: Add doc.
     /**
@@ -53,7 +53,27 @@ public:
      * @param v .
      * @return .
      */
-    Vect operator+(const Vect &v);
+    const Vect operator+(const Vect &v) const;
+
+    // TODO: Add doc.
+    /**
+     * Overloads - operator to return a Vect result
+     * of subtracting two Vect objects together.
+     *
+     * @param v .
+     * @return .
+     */
+    const Vect operator-(const Vect &v) const;
+
+    // TODO: Add doc.
+    /**
+     * Overloads * operator to return a Vect result
+     * of .
+     *
+     * @param k .
+     * @return .
+     */
+    const Vect operator*(const float k) const;
 
 private:
 

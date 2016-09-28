@@ -30,7 +30,7 @@ public:
      *
      * @return .
      */
-    float GetX();
+    const float GetX() const;
 
     // TODO: Add doc.
     /**
@@ -38,7 +38,7 @@ public:
      *
      * @return .
      */
-    float GetY();
+    const float GetY() const;
 
     // TODO: Add doc.
     /**
@@ -46,7 +46,7 @@ public:
      *
      * @return .
      */
-    float GetZ();
+    const float GetZ() const;
 
     // TODO: Add doc.
     /**
@@ -56,7 +56,7 @@ public:
      * @param p .
      * @return .
      */
-    Point operator+(const Point& p);
+    const Point operator+(const Point& p) const;
 
     // TODO: Add doc.
     /**
@@ -66,17 +66,17 @@ public:
      * @param p .
      * @return .
      */
-    Vect operator-(const Point& p);
+    const Vect operator-(const Point& p) const;
 
     // TODO: Add doc.
     /**
-     * Overloads * operator to return a Point result
-     * of .
+     * Overloads + operator to return a Point result
+     * of adding .
      *
-     * @param k .
+     * @param v .
      * @return .
      */
-    Point operator*(const float k);
+    const Point operator+(const Vect& v) const;
 
 private:
 
