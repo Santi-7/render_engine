@@ -8,7 +8,11 @@
 
 #include "vect.hpp"
 
-Vect::Vect(float x, float y, float z)
+// TODO: Add doc.
+/* */
+static const float H = 0;
+
+Vect::Vect(const float x, const float y, const float z)
 {
     this->mX = x;
     this->mY = y;
@@ -32,8 +36,8 @@ float Vect::GetZ()
 
 Vect Vect::operator+(const Vect& v)
 {
-    float x = this->mX + v.mX;
-    float y = this->mY + v.mY;
-    float z = this->mZ + v.mZ;
+    const float x = this->mX + v.mX;
+    const float y = this->mY + v.mY;
+    const float z = this->mZ + v.mZ;
     return Vect(x, y, z);
 }

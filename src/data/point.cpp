@@ -8,7 +8,11 @@
 
 #include "point.hpp"
 
-Point::Point(float x, float y, float z)
+// TODO: Add doc.
+/* */
+static const float H = 1;
+
+Point::Point(const float x, const float y, const float z)
 {
     this->mX = x;
     this->mY = y;
@@ -32,16 +36,24 @@ float Point::GetZ()
 
 Point Point::operator+(const Point& p)
 {
-    float x = this->mX + p.mX;
-    float y = this->mY + p.mY;
-    float z = this->mZ + p.mZ;
+    const float x = this->mX + p.mX;
+    const float y = this->mY + p.mY;
+    const float z = this->mZ + p.mZ;
     return Point(x, y, z);
 }
 
 Vect Point::operator-(const Point& p)
 {
-    float x = this->mX - p.mX;
-    float y = this->mY - p.mY;
-    float z = this->mZ - p.mZ;
+    const float x = this->mX - p.mX;
+    const float y = this->mY - p.mY;
+    const float z = this->mZ - p.mZ;
     return Vect(x, y, z);
+}
+
+Point Point::operator*(const float k)
+{
+    const float x = this->mX * k;
+    const float y = this->mY * k;
+    const float z = this->mZ * k;
+    return Point(x, y, z);
 }

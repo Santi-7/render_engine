@@ -23,7 +23,7 @@ public:
      * @param x .
      * @return .
      */
-    Point(float x, float y, float z);
+    Point(const float x, const float y, const float z);
 
     /**
      * .
@@ -67,6 +67,16 @@ public:
      * @return .
      */
     Vect operator-(const Point& p);
+
+    // TODO: Add doc.
+    /**
+     * Overloads * operator to return a Point result
+     * of .
+     *
+     * @param k .
+     * @return .
+     */
+    Point operator*(const float k);
 
 private:
 

@@ -20,7 +20,7 @@ public:
      * @param x .
      * @return .
      */
-    Vect(float x, float y, float z);
+    Vect(const float x, const float y, const float z);
 
     /**
      * .
@@ -50,7 +50,7 @@ public:
      * Overloads + operator to return a Vect result
      * of adding two Vect objects together.
      *
-     * @param p .
+     * @param v .
      * @return .
      */
     Vect operator+(const Vect &v);
