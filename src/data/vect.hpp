@@ -27,7 +27,7 @@ public:
      *
      * @return .
      */
-    const float GetX() const;
+    float GetX() const;
 
     // TODO: Add doc.
     /**
@@ -35,7 +35,7 @@ public:
      *
      * @return .
      */
-    const float GetY() const;
+    float GetY() const;
 
     // TODO: Add doc.
     /**
@@ -43,7 +43,7 @@ public:
      *
      * @return .
      */
-    const float GetZ() const;
+    float GetZ() const;
 
     // TODO: Add doc.
     /**
@@ -51,7 +51,7 @@ public:
      *
      * @return .
      */
-    const float Abs() const;
+    float Abs() const;
 
     // TODO: Add doc.
     /**
@@ -61,7 +61,7 @@ public:
      * @param v .
      * @return .
      */
-    const Vect operator+(const Vect &v) const;
+    Vect operator+(const Vect &v) const;
 
     // TODO: Add doc.
     /**
@@ -71,7 +71,7 @@ public:
      * @param v .
      * @return .
      */
-    const Vect operator-(const Vect &v) const;
+    Vect operator-(const Vect &v) const;
 
     // TODO: Add doc.
     /**
@@ -81,7 +81,7 @@ public:
      * @param k .
      * @return .
      */
-    const Vect operator*(const float k) const;
+    Vect operator*(const float k) const;
 
     // TODO: Add doc.
     /**
@@ -91,7 +91,7 @@ public:
      * @param k .
      * @return .
      */
-    const Vect operator*(const Vect v) const;
+    Vect operator*(const Vect v) const;
 
 private:
 

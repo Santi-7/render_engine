@@ -20,27 +20,27 @@ Vect::Vect(const float x, const float y, const float z)
     this->mZ = z;
 }
 
-const float Vect::GetX() const
+float Vect::GetX() const
 {
     return this->mX;
 }
 
-const float Vect::GetY() const
+float Vect::GetY() const
 {
     return this->mY;
 }
 
-const float Vect::GetZ() const
+float Vect::GetZ() const
 {
     return this->mZ;
 }
 
-const float Vect::Abs() const
+float Vect::Abs() const
 {
     return (const float) sqrt(pow(this->mX, 2) + pow(this->mY, 2) + pow(this->mZ, 2));
 }
 
-const Vect Vect::operator+(const Vect& v) const
+Vect Vect::operator+(const Vect& v) const
 {
     const float x = this->mX + v.mX;
     const float y = this->mY + v.mY;
@@ -48,7 +48,7 @@ const Vect Vect::operator+(const Vect& v) const
     return Vect(x, y, z);
 }
 
-const Vect Vect::operator-(const Vect& v) const
+Vect Vect::operator-(const Vect& v) const
 {
     const float x = this->mX - v.mX;
     const float y = this->mY - v.mY;
@@ -56,7 +56,7 @@ const Vect Vect::operator-(const Vect& v) const
     return Vect(x, y, z);
 }
 
-const Vect Vect::operator*(const float k) const
+Vect Vect::operator*(const float k) const
 {
     const float x = this->mX * k;
     const float y = this->mY * k;
@@ -64,7 +64,7 @@ const Vect Vect::operator*(const float k) const
     return Vect(x, y, z);
 }
 
-const Vect Vect::operator*(const Vect v) const
+Vect Vect::operator*(const Vect v) const
 {
     const float x = this->mY * v.GetZ() - this->mZ * v.GetY();
     const float y = this->mX * v.GetZ() - this->mZ * v.GetX();
