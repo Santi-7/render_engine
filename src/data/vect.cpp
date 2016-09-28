@@ -6,6 +6,7 @@
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
+#include <cmath>
 #include "vect.hpp"
 
 // TODO: Add doc.
@@ -32,6 +33,11 @@ const float Vect::GetY() const
 const float Vect::GetZ() const
 {
     return this->mZ;
+}
+
+const float Vect::Abs() const
+{
+    return (const float) sqrt(pow(this->mX, 2) + pow(this->mY, 2) + pow(this->mZ, 2));
 }
 
 const Vect Vect::operator+(const Vect& v) const

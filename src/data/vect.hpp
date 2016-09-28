@@ -47,6 +47,14 @@ public:
 
     // TODO: Add doc.
     /**
+     * .
+     *
+     * @return .
+     */
+    const float Abs() const;
+
+    // TODO: Add doc.
+    /**
      * Overloads + operator to return a Vect result
      * of adding two Vect objects together.
      *
