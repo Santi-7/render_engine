@@ -9,6 +9,8 @@
 #ifndef RAY_TRACER_VECT_HPP
 #define RAY_TRACER_VECT_HPP
 
+#include <ostream>
+
 class Vect {
 
 public:
@@ -100,6 +102,16 @@ public:
      * @return .
      */
     Vect CrossProduct(const Vect& v) const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param out .
+     * @param v .
+     * @return .
+     */
+    friend std::ostream& operator<< (std::ostream &out, const Vect &v);
 
 private:
 

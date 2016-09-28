@@ -78,6 +78,16 @@ public:
      */
     Point operator+(const Vect& v) const;
 
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param out .
+     * @param p .
+     * @return .
+     */
+    friend std::ostream& operator<< (std::ostream &out, const Point &p);
+
 private:
 
     // TODO: Add doc.

@@ -7,7 +7,6 @@
 ** -------------------------------------------------------------------------*/
 
 #include <cmath>
-#include <iosfwd>
 #include "vect.hpp"
 
 // TODO: Add doc.
@@ -79,4 +78,10 @@ Vect Vect::CrossProduct(const Vect& v) const
     const float y = mX * v.mZ - mZ * v.mX;
     const float z = mX * v.mY - mY * v.mX;
     return Vect(x, -y, z);
+}
+
+std::ostream& operator<< (std::ostream &out, const Vect &v)
+{
+    out << "Vector(" << v.mX << ", " << v.mY << ", " << v.mZ << ")";
+    return out;
 }
