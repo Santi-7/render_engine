@@ -90,7 +90,7 @@ public:
      * @param v .
      * @return .
      */
-    Vect DotProduct(const Vect v) const;
+    Vect DotProduct(const Vect& v) const;
 
     // TODO: Add doc.
     /**
@@ -99,7 +99,7 @@ public:
      * @param v .
      * @return .
      */
-    Vect CrossProduct(const Vect v) const;
+    Vect CrossProduct(const Vect& v) const;
 
 private:
 

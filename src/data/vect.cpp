@@ -7,6 +7,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <cmath>
+#include <iosfwd>
 #include "vect.hpp"
 
 // TODO: Add doc.
@@ -64,18 +65,18 @@ Vect Vect::operator*(const float k) const
     return Vect(x, y, z);
 }
 
-Vect Vect::DotProduct(const Vect v) const
+Vect Vect::DotProduct(const Vect& v) const
 {
-    const float x = mX * v.GetX();
-    const float y = mY * v.GetY();
-    const float z = mZ * v.GetZ();
+    const float x = mX * v.mX;
+    const float y = mY * v.mY;
+    const float z = mZ * v.mZ;
     return Vect(x, y, z);
 }
 
-Vect Vect::CrossProduct(const Vect v) const
+Vect Vect::CrossProduct(const Vect& v) const
 {
-    const float x = mY * v.GetZ() - mZ * v.GetY();
-    const float y = mX * v.GetZ() - mZ * v.GetX();
-    const float z = mX * v.GetY() - mY * v.GetX();
+    const float x = mY * v.mZ - mZ * v.mY;
+    const float y = mX * v.mZ - mZ * v.mX;
+    const float z = mX * v.mY - mY * v.mX;
     return Vect(x, -y, z);
 }
