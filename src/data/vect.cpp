@@ -7,6 +7,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <cmath>
+#include <iosfwd>
 #include "vect.hpp"
 
 // TODO: Add doc.
