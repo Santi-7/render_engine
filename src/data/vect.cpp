@@ -64,7 +64,15 @@ Vect Vect::operator*(const float k) const
     return Vect(x, y, z);
 }
 
-Vect Vect::operator*(const Vect v) const
+Vect Vect::DotProduct(const Vect v) const
+{
+    const float x = mX * v.GetX();
+    const float y = mY * v.GetY();
+    const float z = mZ * v.GetZ();
+    return Vect(x, y, z);
+}
+
+Vect Vect::CrossProduct(const Vect v) const
 {
     const float x = mY * v.GetZ() - mZ * v.GetY();
     const float y = mX * v.GetZ() - mZ * v.GetX();

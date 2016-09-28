@@ -85,13 +85,21 @@ public:
 
     // TODO: Add doc.
     /**
-     * Overloads * operator to return a Vect result
-     * of .
+     * .
      *
-     * @param k .
+     * @param v .
      * @return .
      */
-    Vect operator*(const Vect v) const;
+    Vect DotProduct(const Vect v) const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param v .
+     * @return .
+     */
+    Vect CrossProduct(const Vect v) const;
 
 private:
 
