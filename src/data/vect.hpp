@@ -83,6 +83,16 @@ public:
      */
     const Vect operator*(const float k) const;
 
+    // TODO: Add doc.
+    /**
+     * Overloads * operator to return a Vect result
+     * of .
+     *
+     * @param k .
+     * @return .
+     */
+    const Vect operator*(const Vect v) const;
+
 private:
 
     // TODO: Add doc.

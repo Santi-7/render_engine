@@ -63,3 +63,11 @@ const Vect Vect::operator*(const float k) const
     const float z = this->mZ * k;
     return Vect(x, y, z);
 }
+
+const Vect Vect::operator*(const Vect v) const
+{
+    const float x = this->mY * v.GetZ() - this->mZ * v.GetY();
+    const float y = this->mX * v.GetZ() - this->mZ * v.GetX();
+    const float z = this->mX * v.GetY() - this->mY * v.GetX();
+    return Vect(x, -y, z);
+}

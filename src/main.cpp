@@ -12,5 +12,5 @@ using namespace std;
 
 int main()
 {
-    cout << "Hello Future Ray Tracer Developer!" << '\n';
+    cout << "Hello Future Ray Tracer Developer!\n";
 }
