@@ -9,7 +9,7 @@
 #ifndef RAY_TRACER_POINT_H
 #define RAY_TRACER_POINT_H
 
-#include "vect.hpp"
+#include <vect.hpp>
 
 class Point
 {

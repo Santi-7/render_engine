@@ -9,7 +9,7 @@
 #ifndef RAY_TRACER_MATRIX_HPP
 #define RAY_TRACER_MATRIX_HPP
 
-#include "vect.hpp"
+#include <vect.hpp>
 
 class Matrix
 {

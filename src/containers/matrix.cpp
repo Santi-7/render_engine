@@ -6,7 +6,7 @@
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
-#include "../../include/containers/matrix.hpp"
+#include <matrix.hpp>
 
 Vect Matrix::operator*(const Vect &v) const
 {

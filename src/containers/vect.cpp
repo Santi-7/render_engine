@@ -7,7 +7,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <cmath>
-#include "../../include/containers/vect.hpp"
+#include <vect.hpp>
 
 // TODO: Add doc.
 /* */
