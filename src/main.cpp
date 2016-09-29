@@ -7,6 +7,8 @@
 ** -------------------------------------------------------------------------*/
 
 #include <iostream>
+#include "../include/containers/matrix.hpp"
+
 using namespace std;
 
 int main()

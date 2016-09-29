@@ -21,10 +21,20 @@ public:
      * Overloads * operator to return a Vect result
      * of .
      *
-     * @param k .
+     * @param v .
      * @return .
      */
     Vect operator*(const Vect &v) const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param out .
+     * @param m .
+     * @return .
+     */
+    friend std::ostream& operator<< (std::ostream &out, const Matrix &m);
 
 private:
 
