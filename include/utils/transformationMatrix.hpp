@@ -1,5 +1,13 @@
-#ifndef RAY_TRACER_3DIMTRANSMATRIX_HPP
-#define RAY_TRACER_3DIMTRANSMATRIX_HPP
+/* ---------------------------------------------------------------------------
+ ** transformationMatrix.hpp
+ ** TODO: Add doc.
+ **
+ ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
+ **         Santiago Gil Begué, NIA: 683482
+ ** -------------------------------------------------------------------------*/
+
+#ifndef RAY_TRACER_TRANSFORMATION_MATRIX_HPP
+#define RAY_TRACER_TRANSFORMATION_MATRIX_HPP
 
 #include <matrix.hpp>
 
@@ -131,4 +139,4 @@ public:
     void SetZRotation(float angle);
 };
 
-#endif // RAY_TRACER_3DIMTRANSMATRIX_HPP
+#endif // RAY_TRACER_TRANSFORMATION_MATRIX_HPP
