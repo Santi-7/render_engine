@@ -1,15 +1,14 @@
 /* ---------------------------------------------------------------------------
-** main.cpp
+** matrix.cpp
 ** TODO: Add doc.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
-#include <iostream>
-using namespace std;
+#include "../../include/containers/matrix.hpp"
 
-int main()
+Vect Matrix::operator*(const Vect &v) const
 {
-    cout << "Hello Future Ray Tracer Developer!\n";
+
 }
