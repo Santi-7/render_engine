@@ -17,34 +17,34 @@ TransformationMatrix::TransformationMatrix()
     mM = 0; mN = 0; mO = 0; mP = 1;
 }
 
-void TransformationMatrix::SetXTranslation(float d)
+void TransformationMatrix::SetXTranslation(float units)
 {
-    mD = d;
+    mD = units;
 }
 
-void TransformationMatrix::SetYTranslation(float h)
+void TransformationMatrix::SetYTranslation(float units)
 {
-    mH = h;
+    mH = units;
 }
 
-void TransformationMatrix::SetZTranslation(float l)
+void TransformationMatrix::SetZTranslation(float units)
 {
-    mL = l;
+    mL = units;
 }
 
-void TransformationMatrix::SetXScale(float a)
+void TransformationMatrix::SetXScale(float factor)
 {
-    mA = a * mA;
+    mA *= factor;
 }
 
-void TransformationMatrix::SetYScale(float f)
+void TransformationMatrix::SetYScale(float factor)
 {
-    mF = f * mF;
+    mF *= factor;
 }
 
-void TransformationMatrix::SetZScale(float k)
+void TransformationMatrix::SetZScale(float factor)
 {
-    mK = k * mK;
+    mK *= factor;
 }
 
 void TransformationMatrix::SetXYPlaneSymmetry()

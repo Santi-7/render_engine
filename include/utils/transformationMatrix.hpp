@@ -28,49 +28,49 @@ public:
     /**
      * .
      *
-     * @param d .
+     * @param units .
      */
-    void SetXTranslation(float d);
+    void SetXTranslation(float units);
 
     // TODO: Add doc.
     /**
      * .
      *
-     * @param h .
+     * @param units .
      */
-    void SetYTranslation(float h);
+    void SetYTranslation(float units);
 
     // TODO: Add doc.
     /**
      * .
      *
-     * @param l .
+     * @param units .
      */
-    void SetZTranslation(float l);
+    void SetZTranslation(float units);
 
     // TODO: Add doc.
     /**
      * .
      *
-     * @param a .
+     * @param factor .
      */
-    void SetXScale(float a);
+    void SetXScale(float factor);
 
     // TODO: Add doc.
     /**
      * .
      *
-     * @param f .
+     * @param factor .
      */
-    void SetYScale(float f);
+    void SetYScale(float factor);
 
     // TODO: Add doc.
     /**
      * .
      *
-     * @param k .
+     * @param factor .
      */
-    void SetZScale(float k);
+    void SetZScale(float factor);
 
     // TODO: Add doc.
     /**
