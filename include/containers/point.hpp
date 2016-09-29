@@ -21,6 +21,8 @@ public:
      * Constructs a Point.
      *
      * @param x .
+     * @param y .
+     * @param z .
      * @return .
      */
     Point(const float x, const float y, const float z);

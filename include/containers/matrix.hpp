@@ -36,7 +36,7 @@ public:
      */
     friend std::ostream& operator<< (std::ostream &out, const Matrix &m);
 
-private:
+protected:
 
     // TODO: Add doc.
     /* */
