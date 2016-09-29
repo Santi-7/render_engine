@@ -6,7 +6,7 @@
  **         Santiago Gil Begué, NIA: 683482
  ** -------------------------------------------------------------------------*/
 
-#include "point.hpp"
+#include "../../include/containers/point.hpp"
 
 // TODO: Add doc.
 /* */

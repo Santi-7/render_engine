@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 
 set(SOURCE_FILES
         src/main.cpp
-        src/data/point.cpp src/data/point.hpp
-        src/data/vect.cpp src/data/vect.hpp)
+        src/containers/point.cpp include/containers/point.hpp
+        src/containers/vect.cpp include/containers/vect.hpp)
 
 add_executable(Ray_Tracer ${SOURCE_FILES})
