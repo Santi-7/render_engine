@@ -16,10 +16,16 @@ class Vect {
 public:
 
     // TODO: Add doc.
+    /* */
+    static const float H;
+
+    // TODO: Add doc.
     /**
      * Constructs a Vect.
      *
      * @param x .
+     * @param y .
+     * @param z .
      * @return .
      */
     Vect(const float x, const float y, const float z);

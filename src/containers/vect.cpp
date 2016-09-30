@@ -9,9 +9,7 @@
 #include <cmath>
 #include <vect.hpp>
 
-// TODO: Add doc.
-/* */
-static const float H = 0;
+const float Vect::H = 0;
 
 Vect::Vect(const float x, const float y, const float z)
 {

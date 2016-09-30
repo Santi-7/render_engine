@@ -8,9 +8,7 @@
 
 #include <point.hpp>
 
-// TODO: Add doc.
-/* */
-static const float H = 1;
+const float Point::H = 1;
 
 Point::Point(const float x, const float y, const float z)
 {
