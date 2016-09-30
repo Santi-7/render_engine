@@ -1,0 +1,3 @@
+[submodule "googletest"]
+	path = rayTracerTests/lib/googletest
+	url = https://github.com/google/googletest
