@@ -17,6 +17,10 @@ class Point
 public:
 
     // TODO: Add doc.
+    /* */
+    static const float H;
+
+    // TODO: Add doc.
     /**
      * Constructs a Point.
      *
