@@ -3,15 +3,18 @@ project(Ray_Tracer)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 
+set(SOURCE_FILES
+        main.cpp)
+
+add_executable(Ray_Tracer_run main.cpp)
+
 include_directories(
         include
-        include/containers
-        )
+        include/containers)
 
-set(SOURCE_FILES
-        src/containers/matrix.cpp include/containers/matrix.hpp
-        src/containers/point.cpp include/containers/point.hpp
-        src/containers/vect.cpp include/containers/vect.hpp
-        src/main.cpp)
+add_subdirectory(src)
+add_subdirectory(rayTracerTests)
+add_subdirectory(include)
 
-add_executable(Ray_Tracer ${SOURCE_FILES})
+target_link_libraries(Ray_Tracer_run container)
+

@@ -78,6 +78,14 @@ public:
      */
     Point operator+(const Vect& v) const;
 
+    /**
+     * Overloads == operator to return true if both points are equal.
+     *
+     * @param v .
+     * @return .
+     */
+    bool operator==(const Point& v) const;
+
     // TODO: Add doc.
     /**
      * .

@@ -58,6 +58,11 @@ Point Point::operator+(const Vect& v) const
     return Point(x, y, z);
 }
 
+bool Point::operator==(const Point& v) const
+{
+    return mX == v.GetX() & mY == v.GetY() & mZ == v.GetZ();
+}
+
 std::ostream& operator<< (std::ostream &out, const Point &p)
 {
     out << "Point(" << p.mX << ", " << p.mY << ", " << p.mZ << ")";
