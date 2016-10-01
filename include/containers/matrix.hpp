@@ -74,9 +74,9 @@ public:
      */
     Matrix operator*(const Matrix &m) const;
 
+    // TODO: Add doc.
     /**
-     * Overloads == operator returning true if both matrices are equal
-     * of .
+     * Overloads == operator returning true if both matrices are equal.
      *
      * @param m .
      * @return .

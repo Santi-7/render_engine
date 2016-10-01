@@ -6,6 +6,7 @@ include_directories(
         ../../include/utils)
 
 add_executable(RayTracerTests_run
-        containerTests.cpp utilsTests.cpp)
+        containerTests.cpp
+        utilsTests.cpp)
 
 target_link_libraries(RayTracerTests_run container utils gtest gtest_main)
