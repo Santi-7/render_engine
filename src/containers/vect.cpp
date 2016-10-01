@@ -78,6 +78,16 @@ Vect Vect::CrossProduct(const Vect& v) const
     return Vect(x, -y, z);
 }
 
+bool Vect::operator==(const Vect &v) const
+{
+    return mX == v.GetX() & mY == v.GetY() & mZ == v.GetZ();
+}
+
+bool Vect::operator!=(const Vect &v) const
+{
+    return !(*this == v);
+}
+
 std::ostream& operator<< (std::ostream &out, const Vect &v)
 {
     out << "Vector(" << v.mX << ", " << v.mY << ", " << v.mZ << ")";

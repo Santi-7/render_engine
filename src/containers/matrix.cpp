@@ -66,6 +66,11 @@ bool Matrix::operator==(const Matrix &m) const
            mM == m.mM & mN == m.mN & mO == m.mO & mP == m.mP;
 }
 
+bool Matrix::operator!=(const Matrix &m) const
+{
+    return !(*this == m);
+}
+
 std::ostream& operator<< (std::ostream &out, const Matrix &m)
 {
     out << "Matrix(" << m.mA << ", " << m.mB << ", " << m.mC << ", " << m.mD << '\n'

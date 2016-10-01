@@ -92,6 +92,14 @@ public:
      */
     bool operator==(const Point& v) const;
 
+    /**
+    * Overloads != operator to return true if the points are not equal.
+    *
+    * @param v .
+    * @return .
+    */
+    bool operator!=(const Point& v) const;
+
     // TODO: Add doc.
     /**
      * .

@@ -61,6 +61,11 @@ bool Point::operator==(const Point& v) const
     return mX == v.GetX() & mY == v.GetY() & mZ == v.GetZ();
 }
 
+bool Point::operator!=(const Point& v) const
+{
+    return !(*this == v);
+}
+
 std::ostream& operator<< (std::ostream &out, const Point &p)
 {
     out << "Point(" << p.mX << ", " << p.mY << ", " << p.mZ << ")";

@@ -109,6 +109,24 @@ public:
      */
     Vect CrossProduct(const Vect& v) const;
 
+    /**
+     * Overloads == operator returning true if both vectors are equal
+     * of .
+     *
+     * @param m .
+     * @return .
+     */
+    bool operator==(const Vect &v) const;
+
+    /**
+     * Overloads != operator returning true if the vectors are not equal
+     * of .
+     *
+     * @param m .
+     * @return .
+     */
+    bool operator!=(const Vect &v) const;
+
     // TODO: Add doc.
     /**
      * .

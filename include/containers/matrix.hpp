@@ -83,6 +83,15 @@ public:
      */
     bool operator==(const Matrix &m) const;
 
+    /**
+     * Overloads != operator returning true if the matrices are not equal
+     * of .
+     *
+     * @param m .
+     * @return .
+     */
+    bool operator!=(const Matrix &m) const;
+
     // TODO: Add doc.
     /**
      * .
