@@ -58,7 +58,7 @@ Matrix Matrix::operator*(const Matrix &mat) const
     return Matrix(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p);
 }
 
-bool operator==(const Matrix &m) const
+bool Matrix::operator==(const Matrix &m) const
 {
     return mA == m.mA & mB == m.mB & mC == m.mC & mD == m.mD &
            mE == m.mE & mF == m.mF & mG == m.mG & mH == m.mH &

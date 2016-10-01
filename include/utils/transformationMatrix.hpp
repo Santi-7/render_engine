@@ -11,7 +11,7 @@
 
 #include <matrix.hpp>
 
-class TransformationMatrix : Matrix
+class TransformationMatrix : public Matrix
 {
 
 public:
