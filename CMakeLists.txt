@@ -14,6 +14,5 @@ include_directories(
 
 add_subdirectory(src)
 add_subdirectory(rayTracerTests)
-add_subdirectory(include)
 
 target_link_libraries(Ray_Tracer_run container)
