@@ -9,7 +9,6 @@ set(SOURCE_FILES
 add_executable(Ray_Tracer_run main.cpp)
 
 include_directories(
-        include
         include/containers)
 
 add_subdirectory(src)
