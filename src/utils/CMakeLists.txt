@@ -1,5 +1,3 @@
-project(utils)
-
 set(SOURCE_FILES
         transformationMatrix.cpp)
 

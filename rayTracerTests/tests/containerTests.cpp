@@ -7,8 +7,8 @@
  ** -------------------------------------------------------------------------*/
 
 #include <gtest/gtest.h>
-#include <containers/point.hpp>
-#include <containers/matrix.hpp>
+#include <point.hpp>
+#include <matrix.hpp>
 
 
 namespace PointTests

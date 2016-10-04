@@ -7,8 +7,8 @@
  ** -------------------------------------------------------------------------*/
 
 #include <gtest/gtest.h>
-#include <containers/matrix.hpp>
-#include <utils/transformationMatrix.hpp>
+#include <matrix.hpp>
+#include <transformationMatrix.hpp>
 
 TEST(TransformationMatrix, General)
 {

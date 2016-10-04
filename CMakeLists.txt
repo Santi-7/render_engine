@@ -11,7 +11,8 @@ add_executable(Ray_Tracer_run main.cpp)
 include_directories(
         include/containers)
 
-add_subdirectory(src)
+add_subdirectory(lib)
 add_subdirectory(rayTracerTests)
+add_subdirectory(src)
 
 target_link_libraries(Ray_Tracer_run container)

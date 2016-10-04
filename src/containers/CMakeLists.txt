@@ -1,5 +1,3 @@
-project(container_lib)
-
 set(SOURCE_FILES
         matrix.cpp
         point.cpp
