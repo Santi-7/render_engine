@@ -33,8 +33,7 @@ Vect Matrix::operator*(const Vect &v) const
     float x = mA * v.GetX() + mB * v.GetY() + mC * v.GetZ() + mD * Vect::H;
     float y = mE * v.GetX() + mF * v.GetY() + mG * v.GetZ() + mH * Vect::H;
     float z = mI * v.GetX() + mJ * v.GetY() + mK * v.GetZ() + mL * Vect::H;
-    float h = mM * v.GetX() + mN * v.GetY() + mO * v.GetZ() + mP * Vect::H;
-    return Vect(x/h, y/h, z/h);
+    return Vect(x, y, z);
 }
 
 Matrix Matrix::operator*(const Matrix &mat) const
