@@ -15,12 +15,13 @@ class Color {
 
 public:
 
+    // TODO: Add doc.
     /**
-     *
-     * @param r value for red
-     * @param g value for green
-     * @param b value for blue
-     * @return
+     * .
+     * @param r value for red.
+     * @param g value for green.
+     * @param b value for blue.
+     * @return .
      */
     Color(byte r, byte g, byte b);
 

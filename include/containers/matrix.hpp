@@ -105,7 +105,7 @@ public:
 protected:
 
     // TODO: Add doc.
-    /* */
+    /* . */
     float mA, mB, mC, mD,
           mE, mF, mG, mH,
           mI, mJ, mK, mL,

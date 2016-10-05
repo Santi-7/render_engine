@@ -6,8 +6,8 @@
  **         Santiago Gil Begué, NIA: 683482
  ** -------------------------------------------------------------------------*/
 
-#include "ppmImage.hpp"
 #include <fstream>
+#include <ppmImage.hpp>
 
 template<size_t rows, size_t cols>
 void SavePPMImage(array<array<Color, cols>, rows > &renderedImage, string filename)

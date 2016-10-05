@@ -20,7 +20,7 @@ using namespace std;
      * Saves renderedImage as a ppm image file
      * @param renderedImage matrix with the rgb values of every pixel.
      * @param filename name of the saved file
-     * @return
+     * @return .
      */
     template<size_t rows, size_t cols>
     void SavePPMImage(array<array<Color, cols>, rows > &renderedImage, string filename);

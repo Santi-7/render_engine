@@ -168,7 +168,7 @@ public:
 private:
 
     // TODO: Add doc.
-    /* */
+    /* . */
     float mX, mY, mZ;
 };
 

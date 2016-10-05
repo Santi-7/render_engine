@@ -50,5 +50,3 @@ byte Color::GetB()
 {
     return mB;
 }
-
-
