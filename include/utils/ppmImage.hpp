@@ -24,7 +24,7 @@ public:
      * @param renderedImage matrix with the rgb values of every pixel.
      * @return
      */
-    PPMImage(vector<vector<Color> > renderedImage, string filename);
+    PPMImage(vector<vector<Color> > &renderedImage, string filename);
 
 };
 
