@@ -71,6 +71,26 @@ public:
 
     // TODO: Add doc.
     /**
+     * Overloads * operator to return a Vect result
+     * of .
+     *
+     * @param k .
+     * @return .
+     */
+    Vect operator*(const float k) const;
+
+    // TODO: Add doc.
+    /**
+     * Overloads / operator to return a Vect result
+     * of .
+     *
+     * @param k .
+     * @return .
+     */
+    Vect operator/(const float k) const;
+
+    // TODO: Add doc.
+    /**
      * Overloads + operator to return a Vect result
      * of adding two Vect objects together.
      *
@@ -94,26 +114,6 @@ public:
      * Overloads * operator to return a Vect result
      * of .
      *
-     * @param k .
-     * @return .
-     */
-    Vect operator*(const float k) const;
-
-    // TODO: Add doc.
-    /**
-     * Overloads / operator to return a Vect result
-     * of .
-     *
-     * @param k .
-     * @return .
-     */
-    Vect operator/(const float k) const;
-
-    // TODO: Add doc.
-    /**
-     * Overloads * operator to return a Vect result
-     * of .
-     *
      * @param v .
      * @return .
      */
@@ -126,7 +126,7 @@ public:
      * @param v .
      * @return .
      */
-    Vect DotProduct(const Vect& v) const;
+    float DotProduct(const Vect& v) const;
 
     // TODO: Add doc.
     /**

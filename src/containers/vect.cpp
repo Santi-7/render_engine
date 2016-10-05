@@ -43,22 +43,6 @@ Vect Vect::Normalise() const
     return *this / this->Abs();
 }
 
-Vect Vect::operator+(const Vect& v) const
-{
-    float x = mX + v.mX;
-    float y = mY + v.mY;
-    float z = mZ + v.mZ;
-    return Vect(x, y, z);
-}
-
-Vect Vect::operator-(const Vect& v) const
-{
-    float x = mX - v.mX;
-    float y = mY - v.mY;
-    float z = mZ - v.mZ;
-    return Vect(x, y, z);
-}
-
 Vect Vect::operator*(const float k) const
 {
     float x = mX * k;
@@ -75,6 +59,22 @@ Vect Vect::operator/(const float k) const
     return Vect(x, y, z);
 }
 
+Vect Vect::operator+(const Vect& v) const
+{
+    float x = mX + v.mX;
+    float y = mY + v.mY;
+    float z = mZ + v.mZ;
+    return Vect(x, y, z);
+}
+
+Vect Vect::operator-(const Vect& v) const
+{
+    float x = mX - v.mX;
+    float y = mY - v.mY;
+    float z = mZ - v.mZ;
+    return Vect(x, y, z);
+}
+
 Vect Vect::operator*(const Vect v) const
 {
     float x = mX * v.mX;
@@ -83,12 +83,9 @@ Vect Vect::operator*(const Vect v) const
     return Vect(x, y, z);
 }
 
-Vect Vect::DotProduct(const Vect& v) const
+float Vect::DotProduct(const Vect& v) const
 {
-    float x = mX * v.mX;
-    float y = mY * v.mY;
-    float z = mZ * v.mZ;
-    return Vect(x, y, z);
+    return mX * v.mX + mY * v.mY + mZ * v.mZ;
 }
 
 Vect Vect::CrossProduct(const Vect& v) const
