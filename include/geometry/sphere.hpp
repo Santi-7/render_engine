@@ -9,7 +9,9 @@
 #ifndef RAY_TRACER_SPHERE_HPP
 #define RAY_TRACER_SPHERE_HPP
 
-class Sphere {
+#include <shape.hpp>
+
+class Sphere : public Shape {
 
 public:
 
