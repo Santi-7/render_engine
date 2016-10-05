@@ -20,12 +20,12 @@ class PPMImage {
 public:
 
     /**
-     * This constructor saves renderedImage as a ppm image file
+     * This constructor saves renderedImage as a ppm image file.
+     *
      * @param renderedImage matrix with the rgb values of every pixel.
-     * @return
+     * @return .
      */
-    PPMImage(vector<vector<Color> > renderedImage, string filename);
-
+    PPMImage(vector<vector<Color>> renderedImage, string filename);
 };
 
-#endif //RAY_TRACER_PPMIMAGE_HPP
+#endif // RAY_TRACER_PPMIMAGE_HPP

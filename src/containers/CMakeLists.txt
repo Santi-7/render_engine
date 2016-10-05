@@ -1,13 +1,14 @@
 set(SOURCE_FILES
+        color.cpp
         matrix.cpp
         point.cpp
-        vect.cpp
-        ../../include/containers/color.hpp)
+        vect.cpp)
 
 set(HEADER_FILES
+        ../../include/containers/color.hpp
         ../../include/containers/matrix.hpp
         ../../include/containers/point.hpp
-        ../../include/containers/vect.hpp color.cpp)
+        ../../include/containers/vect.hpp)
 
 include_directories(
         ../../include/containers)
