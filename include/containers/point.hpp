@@ -76,6 +76,15 @@ public:
 
     // TODO: Add doc.
     /**
+     * Overloads * operator to return .
+     *
+     * @param p .
+     * @return .
+     */
+    float operator*(const Point& p) const;
+
+    // TODO: Add doc.
+    /**
      * Overloads + operator to return a Point result
      * of adding .
      *

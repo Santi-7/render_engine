@@ -48,6 +48,11 @@ Vect Point::operator-(const Point& p) const
     return Vect(x, y, z);
 }
 
+float Point::operator*(const Point& p) const
+{
+    return mX * p.mX + mY * p.mY + mZ * p.mZ;
+}
+
 Point Point::operator+(const Vect& v) const
 {
     float x = mX + v.GetX();

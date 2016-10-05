@@ -37,11 +37,15 @@ public:
 private:
 
     // TODO: Add doc.
-    /* */
+    /* . */
+    static const float threshold;
+
+    // TODO: Add doc.
+    /* . */
     Point mCenter;
 
     // TODO: Add doc.
-    /* */
+    /* . */
     float mRadius;
 };
 
