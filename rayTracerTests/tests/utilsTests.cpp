@@ -10,7 +10,7 @@
 #include <matrix.hpp>
 #include <color.hpp>
 #include <transformationMatrix.hpp>
-#include <ppmImage.hpp>
+#include <image.hpp>
 
 using namespace std;
 
@@ -33,20 +33,50 @@ TEST(TransformationMatrix, General)
 ///////////////////////////////////
 ///////PPM Image saving Tests//////
 ///////////////////////////////////
-TEST(ImageSaveTest, WhiteImage)
+TEST(CreateMultiColorImage, image)
 {
     const unsigned int SIZE = 600;
-    array<array <Color, SIZE>, SIZE > testImage;
+    Image white(SIZE, SIZE);
 
-    for(unsigned int i = 0; i < SIZE; ++i)
+    vector<vector<Color> > drawing
     {
-        for(unsigned int j = 0; j < SIZE; ++j)
+            {Color(255, 255, 255), Color(255, 0, 0)},
+            {Color(0, 255, 0), Color(0, 0, 255)}
+    };
+
+    int x = 0;
+    int y = 0;
+
+    for(unsigned long i = 0; i < SIZE/2; ++i)
+    {
+        for(unsigned long j = 0; j < SIZE/2; ++j)
         {
-            testImage.at(i).at(j).SetR(255);
-            testImage.at(i).at(j).SetG(255);
-            testImage.at(i).at(j).SetB(255);
+            white[i][j] = drawing[0][0];
+        }
+    }
+
+    for(unsigned long i = 0; i < SIZE/2; ++i)
+    {
+        for(unsigned long j = SIZE/2; j < SIZE; ++j)
+        {
+            white[i][j] = drawing[0][1];
+        }
+    }
+
+    for(unsigned long i = SIZE/2; i < SIZE; ++i)
+    {
+        for(unsigned long j = 0; j < SIZE/2; ++j)
+        {
+            white[i][j] = drawing[1][0];
+        }
+    }
+    for(unsigned long i = SIZE/2; i < SIZE; ++i)
+    {
+        for(unsigned long j = SIZE/2; j < SIZE; ++j)
+        {
+            white[i][j] = drawing[1][1];
         }
     }
     // Linking issues with the function SavePPMImage
-    //SavePPMImage(testImage, "test.ppm");
+    white.Save("multicolor.ppm");
 }
