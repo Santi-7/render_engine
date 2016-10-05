@@ -1,3 +1,3 @@
 add_subdirectory(containers)
-add_subdirectory(figures)
+add_subdirectory(geometry)
 add_subdirectory(utils)
