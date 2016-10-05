@@ -1,8 +1,10 @@
 set(SOURCE_FILES
-        transformationMatrix.cpp)
+        transformationMatrix.cpp
+        ppmImage.cpp)
 
 set(HEADER_FILES
-        ../../include/utils/transformationMatrix.hpp)
+        ../../include/utils/transformationMatrix.hpp
+        ../../include/utils/ppmImage.hpp)
 
 include_directories(
         ../../include/containers
