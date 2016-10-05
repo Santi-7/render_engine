@@ -24,9 +24,18 @@ public:
      */
     Color(byte r, byte g, byte b);
 
+    /**
+     * Constructor with no color (black)
+     */
+    Color();
+
     byte GetR();
     byte GetG();
     byte GetB();
+
+    void SetR(byte red);
+    void SetG(byte green);
+    void SetB(byte blue);
 
 private:
 

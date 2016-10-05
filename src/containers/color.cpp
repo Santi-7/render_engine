@@ -15,6 +15,27 @@ Color::Color(byte r, byte g, byte b)
     mB = b;
 }
 
+Color::Color()
+{
+    mR = 0;
+    mG = 0;
+    mB = 0;
+}
+
+void Color::SetR(byte red)
+{
+    mR = red;
+}
+
+void Color::SetG(byte green)
+{
+    mG = green;
+}
+void Color::SetB(byte blue)
+{
+    mB = blue;
+}
+
 byte Color::GetR()
 {
     return mR;
