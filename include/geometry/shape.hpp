@@ -9,6 +9,8 @@
 #ifndef RAY_TRACER_SHAPE_HPP
 #define RAY_TRACER_SHAPE_HPP
 
+#include <point.hpp>
+
 class Shape {
 
 public:
@@ -20,7 +22,7 @@ public:
      * @param v .
      * @return .
      */
-    Point intersect(const Point p, const Vector v);
+    Point intersect(const Point &p, const Vect &v);
 };
 
 #endif // RAY_TRACER_SHAPE_HPP
