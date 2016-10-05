@@ -9,10 +9,12 @@
 #include <cmath>
 #include <transformationMatrix.hpp>
 
-TransformationMatrix::TransformationMatrix() : Matrix(1, 0, 0, 0,
-                                                      0, 1, 0, 0,
-                                                      0, 0, 1, 0,
-                                                      0, 0, 0, 1){}
+TransformationMatrix::TransformationMatrix()
+: Matrix(1, 0, 0, 0,
+         0, 1, 0, 0,
+         0, 0, 1, 0,
+         0, 0, 0, 1)
+{}
 
 void TransformationMatrix::SetXTranslation(float units)
 {

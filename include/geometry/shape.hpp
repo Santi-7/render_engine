@@ -22,7 +22,7 @@ public:
      * @param v .
      * @return .
      */
-    Point intersect(const Point &p, const Vect &v);
+    virtual Point intersect(const Point &p, const Vect &v) const = 0;
 };
 
 #endif // RAY_TRACER_SHAPE_HPP

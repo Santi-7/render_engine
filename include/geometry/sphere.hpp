@@ -25,6 +25,15 @@ public:
      */
     Sphere(const Point &center, const float radius);
 
+    /**
+     * .
+     *
+     * @param p .
+     * @param v .
+     * @return .
+     */
+    Point intersect(const Point &p, const Vect &v) const;
+
 private:
 
     // TODO: Add doc.

@@ -8,13 +8,11 @@
 
 #include <sphere.hpp>
 
-Sphere::Sphere(const Point &center, const float radius) : Shape()
-{
-    mCenter = center;
-    mRadius = radius;
-}
+Sphere::Sphere(const Point &center, const float radius)
+: Shape(), mCenter(center), mRadius(radius)
+{}
 
-Point Shape::intersect(const Point &p, const Vect &v)
+Point Sphere::intersect(const Point &p, const Vect &v) const
 {
 
 }
