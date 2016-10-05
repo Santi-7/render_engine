@@ -9,36 +9,38 @@
 #ifndef RAY_TRACER_IMAGE_HPP
 #define RAY_TRACER_IMAGE_HPP
 
-#include <vector>
-#include <string>
 #include <color.hpp>
+#include <string>
+#include <vector>
 
 using namespace std;
 
 class Image {
 
 public:
-    Image(unsigned int width, unsigned int height);
 
-    /**
-     * Saves the image as a ppm file with the given filename
-     * @param filename
-     */
-    void Save(string filename);
+    Image(const unsigned int width, const unsigned int height);
 
+    // TODO: Add doc.
     /**
-     * Overloads the subscript operator to read and write colors easily
+     * Saves the image as a ppm file with the given filename.
      *
-     * @param indexes tuple with the x, y coordinates of the pixel which color will be read/written
-     * @return
+     * @param filename .
      */
-    vector<Color>& operator[](const unsigned int i);
+    void Save(const string filename) const;
 
+    // TODO: Add doc. Change indexes mea
+    /**
+     * Overloads the subscript operator to read and write colors easily.
+     *
+     * @param i .
+     * @return .
+     */
+    vector<Color> operator[](const unsigned int i) const;
 
 private:
-    vector<vector<Color> > mImage;
 
+    vector<vector<Color>> mImage;
 };
-
 
 #endif //RAY_TRACER_IMAGE_HPP

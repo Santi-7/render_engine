@@ -8,13 +8,6 @@
 
 #include "color.hpp"
 
-Color::Color(byte r, byte g, byte b)
-{
-    mR = r;
-    mG = g;
-    mB = b;
-}
-
 Color::Color()
 {
     mR = 0;
@@ -22,31 +15,39 @@ Color::Color()
     mB = 0;
 }
 
-void Color::SetR(byte red)
+Color::Color(const byte r, const byte g, const byte b)
 {
-    mR = red;
+    mR = r;
+    mG = g;
+    mB = b;
 }
 
-void Color::SetG(byte green)
-{
-    mG = green;
-}
-void Color::SetB(byte blue)
-{
-    mB = blue;
-}
-
-byte Color::GetR()
+byte Color::GetR() const
 {
     return mR;
 }
 
-byte Color::GetG()
+byte Color::GetG() const
 {
     return mG;
 }
 
-byte Color::GetB()
+byte Color::GetB() const
 {
     return mB;
+}
+
+void Color::SetR(const byte red)
+{
+    mR = red;
+}
+
+void Color::SetG(const byte green)
+{
+    mG = green;
+}
+
+void Color::SetB(const byte blue)
+{
+    mB = blue;
 }

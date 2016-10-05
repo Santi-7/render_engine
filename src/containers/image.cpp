@@ -10,40 +10,40 @@
 #include <fstream>
 #include "image.hpp"
 
-Image::Image(unsigned int width, unsigned int height)
+Image::Image(const unsigned int width, const unsigned int height)
 {
-    // Resize the vector's height
+    // Resize the vector's height.
     mImage.resize(height);
-
+    // Resize all rows to the desired width.
     for(unsigned int i = 0; i < height; ++i)
-    { // Resize all rows to the desired width
+    {
         mImage.at(i).resize(width);
     }
 }
 
-void Image::Save(string filename)
+void Image::Save(const string filename) const
 {
     ofstream outputFile(filename);
 
-    outputFile << "P3" << '\n' << // Write the header of the ppm file
-               "# " << filename << '\n' << // Write the name of the file as a comment
-               mImage.at(0).size() << ' ' << mImage.size() << '\n' <<
+    outputFile << "P3" << '\n' <<           // Write the header of the ppm file.
+               "# " << filename << '\n' <<  // Write the name of the file as a comment.
+               mImage[0].size() << ' ' << mImage.size() << '\n' <<
                255 << '\n';
 
-    // Write the image's 2-dimensional array
+    // Write the image's 2-dimensional array.
     for(unsigned int i = 0; i < mImage.size(); ++i)
     {
-        for(unsigned int j = 0; j < mImage.at(0).size(); ++j)
+        for(unsigned int j = 0; j < mImage[0].size(); ++j)
         {
-            outputFile << static_cast<int>(mImage.at(i).at(j).GetR()) << ' ' <<
-                          static_cast<int>(mImage.at(i).at(j).GetG()) << ' ' <<
-                          static_cast<int>(mImage.at(i).at(j).GetB()) << '\t';
+            outputFile << static_cast<int>(mImage[i][j].GetR()) << ' ' <<
+                          static_cast<int>(mImage[i][j].GetG()) << ' ' <<
+                          static_cast<int>(mImage[i][j].GetB()) << '\t';
         }
         outputFile << '\n';
     }
 }
 
-vector<Color>& Image::operator[](const unsigned int i)
+vector<Color> Image::operator[](const unsigned int i) const
 {
-    return mImage.at(i);
+    return mImage[i];
 }

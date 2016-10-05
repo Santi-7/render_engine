@@ -15,35 +15,80 @@ class Color {
 
 public:
 
+    /**
+     * Constructor with no color (black).
+     *
+     * @return a black Color.
+     */
+    Color();
+
     // TODO: Add doc.
     /**
      * .
+     *
      * @param r value for red.
      * @param g value for green.
      * @param b value for blue.
      * @return .
      */
-    Color(byte r, byte g, byte b);
+    Color(const byte r, const byte g, const byte b);
 
+    // TODO: Add doc.
     /**
-     * Constructor with no color (black)
+     * .
+     *
+     * @return .
      */
-    Color();
+    byte GetR() const;
 
-    byte GetR();
-    byte GetG();
-    byte GetB();
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    byte GetG() const;
 
-    void SetR(byte red);
-    void SetG(byte green);
-    void SetB(byte blue);
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    byte GetB() const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    void SetR(const byte red);
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    void SetG(const byte green);
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    void SetB(const byte blue);
 
 private:
 
+    // TODO: Add doc.
+    /* . */
     byte mR;
     byte mG;
     byte mB;
 };
 
 
-#endif //RAY_TRACER_COLOR_HPP
+#endif // RAY_TRACER_COLOR_HPP
