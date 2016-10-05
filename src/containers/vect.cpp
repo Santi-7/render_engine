@@ -38,6 +38,11 @@ float Vect::Abs() const
     return (float) sqrt(pow(mX, 2) + pow(mY, 2) + pow(mZ, 2));
 }
 
+Vect Vect::Normalise() const
+{
+    return *this / this->Abs();
+}
+
 Vect Vect::operator+(const Vect& v) const
 {
     float x = mX + v.mX;
@@ -59,6 +64,22 @@ Vect Vect::operator*(const float k) const
     float x = mX * k;
     float y = mY * k;
     float z = mZ * k;
+    return Vect(x, y, z);
+}
+
+Vect Vect::operator/(const float k) const
+{
+    float x = mX / k;
+    float y = mY / k;
+    float z = mZ / k;
+    return Vect(x, y, z);
+}
+
+Vect Vect::operator*(const Vect v) const
+{
+    float x = mX * v.mX;
+    float y = mY * v.mY;
+    float z = mZ * v.mZ;
     return Vect(x, y, z);
 }
 

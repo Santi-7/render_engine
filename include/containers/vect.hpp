@@ -63,6 +63,14 @@ public:
 
     // TODO: Add doc.
     /**
+     * .
+     *
+     * @return .
+     */
+    Vect Normalise() const;
+
+    // TODO: Add doc.
+    /**
      * Overloads + operator to return a Vect result
      * of adding two Vect objects together.
      *
@@ -90,6 +98,26 @@ public:
      * @return .
      */
     Vect operator*(const float k) const;
+
+    // TODO: Add doc.
+    /**
+     * Overloads / operator to return a Vect result
+     * of .
+     *
+     * @param k .
+     * @return .
+     */
+    Vect operator/(const float k) const;
+
+    // TODO: Add doc.
+    /**
+     * Overloads * operator to return a Vect result
+     * of .
+     *
+     * @param v .
+     * @return .
+     */
+    Vect operator*(const Vect v) const;
 
     // TODO: Add doc.
     /**
