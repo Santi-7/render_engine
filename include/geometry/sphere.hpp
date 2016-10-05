@@ -23,7 +23,7 @@ public:
      * @param radius .
      * @return .
      */
-    Sphere(const Point center, const float radius);
+    Sphere(const Point &center, const float radius);
 
 private:
 
