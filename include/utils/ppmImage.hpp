@@ -9,23 +9,22 @@
 #ifndef RAY_TRACER_PPMIMAGE_HPP
 #define RAY_TRACER_PPMIMAGE_HPP
 
-#include <vector>
+#include <array>
 #include <color.hpp>
 #include <string>
 
 using namespace std;
 
-class PPMImage {
-
-public:
 
     /**
-     * This constructor saves renderedImage as a ppm image file
+     * Saves renderedImage as a ppm image file
      * @param renderedImage matrix with the rgb values of every pixel.
+     * @param filename name of the saved file
      * @return
      */
-    PPMImage(vector<vector<Color> > &renderedImage, string filename);
+    template<size_t rows, size_t cols>
+    void SavePPMImage(array<array<Color, cols>, rows > &renderedImage, string filename);
 
-};
+
 
 #endif //RAY_TRACER_PPMIMAGE_HPP
