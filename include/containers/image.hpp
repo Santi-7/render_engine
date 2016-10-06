@@ -37,6 +37,10 @@ public:
      */
     void Save(const string filename) const;
 
+    unsigned int GetWidth();
+
+    unsigned int GetHeight();
+
     // TODO: Add doc.
     /**
      * Overloads the subscript operator to read and write colors easily.

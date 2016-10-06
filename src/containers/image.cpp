@@ -43,6 +43,16 @@ void Image::Save(const string filename) const
     }
 }
 
+unsigned int Image::GetWidth()
+{
+    return static_cast<int>(mImage.at(0).size());
+}
+
+unsigned int Image::GetHeight()
+{
+    return static_cast<int>(mImage.size());
+}
+
 vector<Color> Image::operator[](const unsigned int i) const
 {
     return mImage[i];
