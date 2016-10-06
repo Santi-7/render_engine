@@ -1,7 +1,9 @@
 set(SOURCE_FILES
+        intersections.cpp
         transformationMatrix.cpp)
 
 set(HEADER_FILES
+        ${PROJECT_SOURCE_DIR}/include/utils/intersections.hpp
         ${PROJECT_SOURCE_DIR}/include/utils/transformationMatrix.hpp)
 
 include_directories(

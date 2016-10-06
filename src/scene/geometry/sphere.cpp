@@ -7,6 +7,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <cmath>
+#include <intersections.hpp>
 #include <sphere.hpp>
 
 Sphere::Sphere(const Point &center, const float radius)
@@ -34,38 +35,12 @@ Point Sphere::intersect(const LightRay &lightRay) const
     {
         float t_1 = (float) (-b - sqrt(bb_4ac)) / (2 * a);
         float t_2 = (float) (-b + sqrt(bb_4ac)) / (2 * a);
-        /*
-         * Intersection Point 1 is in front of the camera and
-         * (before Point 2 or it is the only in front of the camera).
-         */
-        if ((t_1 < t_2 | t_2 <= threshold) & (t_1 > threshold))
-        {
-            return lightRay.GetPoint(t_1);
-        }
-        /*
-         * Intersection Point 2 is in front of the camera and
-         * (before Point 1 or it is the only in front of the camera).
-         */
-        else if ((t_2 < t_1 | t_1 <= threshold) & (t_2 > threshold))
-        {
-            return lightRay.GetPoint(t_2);
-        }
-        // Both intersection points are behind the camera.
-        else // t_1 <= threshold & t_2 <= threshold.
-        {
-            return NULL;
-        }
+        return GetIntersection(lightRay, t_1, t_2);
     }
     /* The ray of light is a tangent line of the sphere. */
     else // (b*b - 4*a*c = 0)
     {
         float t = -b / (2 * a);
-        /*
-         * Return the point where the ray of light intersects
-         * with the sphere if it is in front of the camera.
-         */
-        return t > threshold ? lightRay.GetPoint(t) : NULL;
+        return GetIntersection(lightRay, t);
     }
 }
-
-const float Sphere::threshold = 0.001;

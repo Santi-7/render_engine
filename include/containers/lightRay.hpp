@@ -61,5 +61,4 @@ private:
     Vect mDirection;
 };
 
-
 #endif // RAY_TRACER_LIGHT_RAY_HPP

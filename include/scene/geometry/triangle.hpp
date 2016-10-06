@@ -1,29 +1,30 @@
 /* ---------------------------------------------------------------------------
-** sphere.hpp
+** triangle.hpp
 ** TODO: Add doc.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
-#ifndef RAY_TRACER_SPHERE_HPP
-#define RAY_TRACER_SPHERE_HPP
+#ifndef RAY_TRACER_TRIANGLE_HPP
+#define RAY_TRACER_TRIANGLE_HPP
 
 #include <shape.hpp>
 
-class Sphere : public Shape {
+class Triangle : public Shape {
 
 public:
 
     // TODO: Add doc.
     /**
-     * Constructs a Sphere.
+     * Constructs a Triangle.
      *
-     * @param center .
-     * @param radius .
+     * @param a .
+     * @param b .
+     * @param c .
      * @return .
      */
-    Sphere(const Point &center, const float radius);
+    Triangle(const Point &a, const Point &b, const Point &c);
 
     // TODO: Add doc.
     /**
@@ -38,11 +39,7 @@ private:
 
     // TODO: Add doc.
     /* . */
-    Point mCenter;
-
-    // TODO: Add doc.
-    /* . */
-    float mRadius;
+    Point mA, mB, mC;
 };
 
-#endif // RAY_TRACER_SPHERE_HPP
+#endif // RAY_TRACER_TRIANGLE_HPP

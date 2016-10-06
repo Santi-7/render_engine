@@ -24,7 +24,7 @@ public:
     /**
      * .
      *
-     * @param c .
+     * @param camera .
      */
     void SetCamera(const Camera &camera);
 
@@ -32,7 +32,7 @@ public:
     /**
      * .
      *
-     * @param s .
+     * @param lightSource .
      */
     void AddLightSource(const LightSource &lightSource);
 
@@ -40,7 +40,7 @@ public:
     /**
      * .
      *
-     * @param s .
+     * @param shape .
      */
     void AddShape(const Shape &shape);
 
