@@ -32,25 +32,9 @@ public:
     /**
      * .
      *
-     * @param number .
-     */
-    void SetNumberOfLightSources(const unsigned int number);
-
-    // TODO: Add doc.
-    /**
-     * .
-     *
      * @param s .
      */
     void AddLightSource(const LightSource &lightSource);
-
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @param number .
-     */
-    void SetNumberOfShapes(const unsigned int number);
 
     // TODO: Add doc.
     /**

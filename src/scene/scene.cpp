@@ -13,22 +13,12 @@ void Scene::SetCamera(const Camera &camera)
     mCamera = camera;
 }
 
-void Scene::SetNumberOfLightSources(const unsigned int number)
-{
-    mLightSources.resize(number);
-}
-
 void Scene::AddLightSource(const LightSource &lightSource)
 {
-    // TODO: Add LightSource lightSource.
-}
-
-void Scene::SetNumberOfShapes(const unsigned int number)
-{
-    mShapes.resize(number);
+    mLightSources.push_back(lightSource);
 }
 
 void Scene::AddShape(const Shape &shape)
 {
-    // TODO: Add Shape shape.
+    mShapes.push_back(shape);
 }
