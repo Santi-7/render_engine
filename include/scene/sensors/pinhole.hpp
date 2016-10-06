@@ -10,9 +10,15 @@
 #define RAY_TRACER_PINHOLE_HPP
 
 #include <camera.hpp>
+#include <image.hpp>
 
 class Pinhole : public Camera {
 
+public:
+    Pinhole(Point focalPoint, Image viewPlane);
+
+private:
+    Image mImage;
 };
 
 #endif // RAY_TRACER_PINHOLE_HPP

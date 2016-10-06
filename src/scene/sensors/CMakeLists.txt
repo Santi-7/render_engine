@@ -1,5 +1,6 @@
 set(SOURCE_FILES
-        pinhole.cpp)
+        pinhole.cpp
+        camera.cpp)
 
 set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/sensors/camera.hpp
