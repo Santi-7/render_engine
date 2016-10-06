@@ -44,9 +44,6 @@ TEST(CreateMultiColorImage, image)
             {Color(0, 255, 0), Color(0, 0, 255)}
     };
 
-    int x = 0;
-    int y = 0;
-
     for(unsigned long i = 0; i < SIZE/2; ++i)
     {
         for(unsigned long j = 0; j < SIZE/2; ++j)
