@@ -32,7 +32,7 @@ public:
      * @param lightRay .
      * @return .
      */
-    Point intersect(const LightRay &lightRay) const;
+    Point Intersect(const LightRay &lightRay) const;
 
 private:
 

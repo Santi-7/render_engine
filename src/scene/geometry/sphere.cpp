@@ -14,7 +14,7 @@ Sphere::Sphere(const Point &center, const float radius)
 : Shape(), mCenter(center), mRadius(radius)
 {}
 
-Point Sphere::intersect(const LightRay &lightRay) const
+Point Sphere::Intersect(const LightRay &lightRay) const
 {
     float a = lightRay.GetDirection().DotProduct(lightRay.GetDirection());
     // Shorted to gain efficiency.

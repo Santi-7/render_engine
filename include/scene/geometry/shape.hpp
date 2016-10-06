@@ -22,7 +22,7 @@ public:
      * @param lightRay .
      * @return .
      */
-    virtual Point intersect(const LightRay &lightRay) const = 0;
+    virtual Point Intersect(const LightRay &lightRay) const = 0;
 };
 
 #endif // RAY_TRACER_SHAPE_HPP
