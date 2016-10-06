@@ -11,12 +11,13 @@
 
 #include <camera.hpp>
 #include <image.hpp>
+#include <lightRay.hpp>
 
 class Pinhole : public Camera {
 
 public:
     Pinhole(Point focalPoint, Image viewPlane);
-
+    LightRay PrimaryRay(int x, int y) const;
 private:
     Image mImage;
 };
