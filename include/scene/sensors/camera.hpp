@@ -16,21 +16,70 @@ class Camera {
 
 public:
 
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
     Camera();
-    Camera(Vect up, Vect right, Vect towards, Point focalPoint, float fieldOfVision, float ViewPlaneDistance);
 
-    Vect GetUp();
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param up .
+     * @param right .
+     * @param towards .
+     * @param focalPoint .
+     * @param fieldOfVision .
+     * @param viewPlaneDistance .
+     * @return .
+     */
+    Camera(const Vect &up, const Vect &right,
+           const Vect &towards, const Point &focalPoint,
+           const float fieldOfVision, const float viewPlaneDistance);
 
-    Vect GetRight();
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    Vect GetUp() const;
 
-    Vect GetTowards();
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    Vect GetRight() const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    Vect GetTowards() const;
 
 protected:
 
+    // TODO: Add doc.
+    /* . */
     Point mFocalPoint;
+
+    // TODO: Add doc.
+    /* . */
     Vect mUp, mRight, mTowards;
 
+    // TODO: Add doc.
+    /* . */
     float mFOV;
+
+    // TODO: Add doc.
+    /* . */
     float mViewPlaneDistance;
 };
 

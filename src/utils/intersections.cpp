@@ -8,7 +8,6 @@
 
 #include <intersections.hpp>
 
-
 unique_ptr<Point> GetIntersection(const LightRay &lightRay, const float t)
 {
     // Return the intersection point if it is in front of the camera.

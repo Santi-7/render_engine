@@ -16,9 +16,31 @@
 class Pinhole : public Camera {
 
 public:
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param focalPoint .
+     * @param viewPlane .
+     * @return .
+     */
     Pinhole(Point focalPoint, Image viewPlane);
-    LightRay PrimaryRay(int x, int y) const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param x .
+     * @param y .
+     * @return .
+     */
+    LightRay PrimaryRay(const int x, const int y) const;
+
 private:
+
+    // TODO: Add doc.
+    /* . */
     Image mImage;
 };
 

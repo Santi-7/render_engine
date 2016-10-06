@@ -43,12 +43,12 @@ void Image::Save(const string filename) const
     }
 }
 
-unsigned int Image::GetWidth()
+unsigned int Image::GetWidth() const
 {
-    return static_cast<int>(mImage.at(0).size());
+    return static_cast<int>(mImage[0].size());
 }
 
-unsigned int Image::GetHeight()
+unsigned int Image::GetHeight() const
 {
     return static_cast<int>(mImage.size());
 }

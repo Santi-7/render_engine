@@ -37,9 +37,21 @@ public:
      */
     void Save(const string filename) const;
 
-    unsigned int GetWidth();
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    unsigned int GetWidth() const;
 
-    unsigned int GetHeight();
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    unsigned int GetHeight() const;
 
     // TODO: Add doc.
     /**
@@ -52,6 +64,8 @@ public:
 
 private:
 
+    // TODO: Add doc.
+    /* . */
     vector<vector<Color>> mImage;
 };
 

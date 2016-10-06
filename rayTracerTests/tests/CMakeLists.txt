@@ -1,13 +1,18 @@
 include_directories(
-        ${gtest_SOURCE_DIR}/include
-        ${gtest_SOURCE_DIR}
         ${PROJECT_SOURCE_DIR}/include/containers
-        ${PROJECT_SOURCE_DIR}/include/utils
-        ${PROJECT_SOURCE_DIR}/include/scene/sensors)
+        ${PROJECT_SOURCE_DIR}/include/scene/sensors
+        ${PROJECT_SOURCE_DIR}/include/utils)
 
 add_executable(Ray_Tracer_Tests_run
         containerTests.cpp
-        utilsTests.cpp
-        sceneTests.cpp)
+        sceneTests.cpp
+        utilsTests.cpp)
 
-target_link_libraries(Ray_Tracer_Tests_run container sensors lighting geometry utils gtest gtest_main)
+target_link_libraries(Ray_Tracer_Tests_run
+        container
+        geometry
+        gtest
+        gtest_main
+        utils
+        lighting
+        sensors)
