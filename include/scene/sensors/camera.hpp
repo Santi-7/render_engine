@@ -15,21 +15,23 @@
 class Camera {
 
 public:
-    Camera(Vect x, Vect y, Vect z, Point focalPoint, float fieldOfVision, float imagePlaneDistance);
 
-    Vect GetX();
+    Camera();
+    Camera(Vect up, Vect right, Vect towards, Point focalPoint, float fieldOfVision, float ViewPlaneDistance);
 
-    Vect GetY();
+    Vect GetUp();
 
-    Vect GetZ();
+    Vect GetRight();
 
-private:
+    Vect GetTowards();
+
+protected:
 
     Point mFocalPoint;
-    Vect mX, mY, mZ;
+    Vect mUp, mRight, mTowards;
 
     float mFOV;
-    float mImagePlaneDistance;
+    float mViewPlaneDistance;
 };
 
 #endif // RAY_TRACER_CAMERA_HPP
