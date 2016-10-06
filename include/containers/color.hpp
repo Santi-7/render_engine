@@ -61,7 +61,7 @@ public:
     /**
      * .
      *
-     * @return .
+     * @param red .
      */
     void SetR(const byte red);
 
@@ -69,15 +69,14 @@ public:
     /**
      * .
      *
-     * @return .
+     * @param green .
      */
     void SetG(const byte green);
 
     // TODO: Add doc.
     /**
      * .
-     *
-     * @return .
+     * @param blue .
      */
     void SetB(const byte blue);
 

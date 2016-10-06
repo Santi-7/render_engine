@@ -2,10 +2,10 @@ set(SOURCE_FILES
         transformationMatrix.cpp)
 
 set(HEADER_FILES
-        ../../include/utils/transformationMatrix.hpp)
+        ${PROJECT_SOURCE_DIR}/include/utils/transformationMatrix.hpp)
 
 include_directories(
-        ../../include/containers
-        ../../include/utils)
+        ${PROJECT_SOURCE_DIR}/include/containers
+        ${PROJECT_SOURCE_DIR}/include/utils)
 
 add_library(utils STATIC ${SOURCE_FILES} ${HEADER_FILES})

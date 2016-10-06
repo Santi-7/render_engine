@@ -10,6 +10,7 @@
 #define RAY_TRACER_SCENE_HPP
 
 #include <camera.hpp>
+#include <lightSource.hpp>
 #include <shape.hpp>
 #include <vector>
 
@@ -25,7 +26,23 @@ public:
      *
      * @param c .
      */
-    void SetCamera(const Camera &c);
+    void SetCamera(const Camera &camera);
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param number .
+     */
+    void SetNumberOfLightSources(const unsigned int number);
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param s .
+     */
+    void AddLightSource(const LightSource &lightSource);
 
     // TODO: Add doc.
     /**
@@ -41,11 +58,17 @@ public:
      *
      * @param s .
      */
-    void AddShape(const Shape &s);
+    void AddShape(const Shape &shape);
 
 private:
 
+    // TODO: Add doc.
+    /* . */
     Camera mCamera;
+
+    // TODO: Add doc.
+    /* . */
+    vector<LightSource> mLightSources;
 
     // TODO: Add doc.
     /* . */

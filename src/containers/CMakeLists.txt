@@ -6,13 +6,13 @@ set(SOURCE_FILES
         vect.cpp)
 
 set(HEADER_FILES
-        ../../include/containers/color.hpp
-        ../../include/containers/image.hpp
-        ../../include/containers/matrix.hpp
-        ../../include/containers/point.hpp
-        ../../include/containers/vect.hpp)
+        ${PROJECT_SOURCE_DIR}/include/containers/color.hpp
+        ${PROJECT_SOURCE_DIR}/include/containers/image.hpp
+        ${PROJECT_SOURCE_DIR}/include/containers/matrix.hpp
+        ${PROJECT_SOURCE_DIR}/include/containers/point.hpp
+        ${PROJECT_SOURCE_DIR}/include/containers/vect.hpp)
 
 include_directories(
-        ../../include/containers)
+        ${PROJECT_SOURCE_DIR}/include/containers)
 
 add_library(container STATIC ${SOURCE_FILES} ${HEADER_FILES})

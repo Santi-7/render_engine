@@ -1,8 +1,8 @@
 include_directories(
         ${gtest_SOURCE_DIR}/include
         ${gtest_SOURCE_DIR}
-        ../../include/containers
-        ../../include/utils)
+        ${PROJECT_SOURCE_DIR}/include/containers
+        ${PROJECT_SOURCE_DIR}/include/utils)
 
 add_executable(Ray_Tracer_Tests_run
         containerTests.cpp

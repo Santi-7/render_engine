@@ -8,9 +8,19 @@
 
 #include <scene.hpp>
 
-void Scene::SetCamera(const Camera &c)
+void Scene::SetCamera(const Camera &camera)
 {
-    mCamera = c;
+    mCamera = camera;
+}
+
+void Scene::SetNumberOfLightSources(const unsigned int number)
+{
+    mLightSources.resize(number);
+}
+
+void Scene::AddLightSource(const LightSource &lightSource)
+{
+    // TODO: Add LightSource lightSource.
 }
 
 void Scene::SetNumberOfShapes(const unsigned int number)
@@ -18,7 +28,7 @@ void Scene::SetNumberOfShapes(const unsigned int number)
     mShapes.resize(number);
 }
 
-void Scene::AddShape(const Shape &s)
+void Scene::AddShape(const Shape &shape)
 {
-    // TODO: Add Shape s.
+    // TODO: Add Shape shape.
 }

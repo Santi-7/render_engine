@@ -2,10 +2,10 @@ set(SOURCE_FILES
         pinhole.cpp)
 
 set(HEADER_FILES
-        ../../../include/scene/sensors/camera.hpp
-        ../../../include/scene/sensors/pinhole.hpp)
+        ${PROJECT_SOURCE_DIR}/include/scene/sensors/camera.hpp
+        ${PROJECT_SOURCE_DIR}/include/scene/sensors/pinhole.hpp)
 
 include_directories(
-        ../../../include/scene/sensors)
+        ${PROJECT_SOURCE_DIR}/include/scene/sensors)
 
 add_library(sensors STATIC ${SOURCE_FILES} ${HEADER_FILES})
