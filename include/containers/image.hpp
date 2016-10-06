@@ -19,6 +19,14 @@ class Image {
 
 public:
 
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param width .
+     * @param height .
+     * @return .
+     */
     Image(const unsigned int width, const unsigned int height);
 
     // TODO: Add doc.
@@ -29,7 +37,7 @@ public:
      */
     void Save(const string filename) const;
 
-    // TODO: Add doc. Change indexes mea
+    // TODO: Add doc.
     /**
      * Overloads the subscript operator to read and write colors easily.
      *
@@ -43,4 +51,4 @@ private:
     vector<vector<Color>> mImage;
 };
 
-#endif //RAY_TRACER_IMAGE_HPP
+#endif // RAY_TRACER_IMAGE_HPP
