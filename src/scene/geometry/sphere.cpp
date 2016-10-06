@@ -14,7 +14,7 @@ Sphere::Sphere(const Point &center, const float radius)
 : Shape(), mCenter(center), mRadius(radius)
 {}
 
-Point Sphere::Intersect(const LightRay &lightRay) const
+unique_ptr<Point> Sphere::Intersect(const LightRay &lightRay) const
 {
     float a = lightRay.GetDirection().DotProduct(lightRay.GetDirection());
     // Shorted to gain efficiency.
@@ -28,7 +28,7 @@ Point Sphere::Intersect(const LightRay &lightRay) const
     /* The ray of light doesn't intersect with the sphere. */
     if (bb_4ac < 0)
     {
-        return NULL;
+        return nullptr;
     }
     /* The ray of light intersects with the sphere. */
     else if (bb_4ac > 0)

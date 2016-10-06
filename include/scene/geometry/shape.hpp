@@ -9,7 +9,10 @@
 #ifndef RAY_TRACER_SHAPE_HPP
 #define RAY_TRACER_SHAPE_HPP
 
+#include <memory>
 #include <lightRay.hpp>
+
+using namespace std;
 
 class Shape {
 
@@ -22,7 +25,7 @@ public:
      * @param lightRay .
      * @return .
      */
-    virtual Point Intersect(const LightRay &lightRay) const = 0;
+    virtual unique_ptr<Point> Intersect(const LightRay &lightRay) const = 0;
 };
 
 #endif // RAY_TRACER_SHAPE_HPP
