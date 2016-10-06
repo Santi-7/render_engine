@@ -1,3 +1,3 @@
 add_subdirectory(containers)
-add_subdirectory(geometry)
+add_subdirectory(scene)
 add_subdirectory(utils)

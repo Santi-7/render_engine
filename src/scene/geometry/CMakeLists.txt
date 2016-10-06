@@ -2,11 +2,11 @@ set(SOURCE_FILES
         sphere.cpp)
 
 set(HEADER_FILES
-        ../../include/geometry/shape.hpp
-        ../../include/geometry/sphere.hpp)
+        ../../include/scene/geometry/shape.hpp
+        ../../include/scene/geometry/sphere.hpp)
 
 include_directories(
         ../../include/containers
-        ../../include/geometry)
+        ../../include/scene/geometry)
 
 add_library(geometry STATIC ${SOURCE_FILES} ${HEADER_FILES})
