@@ -29,11 +29,10 @@ public:
     /**
      * .
      *
-     * @param p .
-     * @param v .
+     * @param lightRay .
      * @return .
      */
-    Point intersect(const Point &p, const Vect &v) const;
+    Point intersect(const LightRay &lightRay) const;
 
 private:
 

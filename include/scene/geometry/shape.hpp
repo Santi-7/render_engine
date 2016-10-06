@@ -9,20 +9,20 @@
 #ifndef RAY_TRACER_SHAPE_HPP
 #define RAY_TRACER_SHAPE_HPP
 
-#include <point.hpp>
+#include <lightRay.hpp>
 
 class Shape {
 
 public:
 
+    // TODO: Add doc.
     /**
      * .
      *
-     * @param p .
-     * @param v .
+     * @param lightRay .
      * @return .
      */
-    virtual Point intersect(const Point &p, const Vect &v) const = 0;
+    virtual Point intersect(const LightRay &lightRay) const = 0;
 };
 
 #endif // RAY_TRACER_SHAPE_HPP
