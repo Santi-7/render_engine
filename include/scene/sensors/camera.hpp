@@ -17,7 +17,32 @@ class Camera {
 
 public:
 
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
     Camera();
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param up .
+     * @param right .
+     * @param towards .
+     * @param focalPoint .
+     * @param fieldOfVision .
+     * @param viewPlaneDistance .
+     * @param width .
+     * @param height .
+     * @return .
+     */
+    Camera(const Vect &up, const Vect &right,
+           const Vect &towards, const Point &focalPoint,
+           const float fieldOfVision, const float viewPlaneDistance,
+           const unsigned int width, const unsigned int height);
 
     // TODO: Add doc.
     /**
@@ -27,7 +52,8 @@ public:
      * @param y .
      * @return .
      */
-    virtual LightRay PrimaryRay(Point &origin, const int x, const int y) const = 0;
+    virtual LightRay PrimaryRay(const Point &origin,
+                                const int x, const int y) const = 0;
 
     // TODO: Add doc.
     /**
@@ -61,11 +87,11 @@ protected:
 
     // TODO: Add doc.
     /* . */
-    Point mFocalPoint;
+    Vect mUp, mRight, mTowards;
 
     // TODO: Add doc.
     /* . */
-    Vect mUp, mRight, mTowards;
+    Point mFocalPoint;
 
     // TODO: Add doc.
     /* . */
@@ -78,6 +104,10 @@ protected:
     // TODO: Add doc.
     /* . */
     unsigned int mWidth, mHeight;
+
+    // TODO: Add doc.
+    /* . */
+    float pixelSize;
 };
 
 #endif // RAY_TRACER_CAMERA_HPP

@@ -8,7 +8,32 @@
 
 #include <camera.hpp>
 
-Camera::Camera() : mUp(0,0,0), mRight(1,0,0), mTowards(0,0,1), mFocalPoint(0,0,0) {}
+Camera::Camera()
+: mUp(0,0,0),
+  mRight(1,0,0),
+  mTowards(0,0,1),
+  mFocalPoint(0,0,0),
+  mFoV(PI / 2),
+  mViewPlaneDistance(1.0),
+  mWidth(256),
+  mHeight(256),
+  pixelSize(static_cast<float> ((2.0 * tan(mFoV / 2.0)) / mHeight))
+{}
+
+Camera::Camera(const Vect &up, const Vect &right,
+               const Vect &towards, const Point &focalPoint,
+               const float fieldOfVision, const float viewPlaneDistance,
+               const unsigned int width, const unsigned int height)
+: mUp(up),
+  mRight(right),
+  mTowards(towards),
+  mFocalPoint(focalPoint),
+  mFoV(fieldOfVision),
+  mViewPlaneDistance(viewPlaneDistance),
+  mWidth(width),
+  mHeight(height),
+  pixelSize(static_cast<float> ((2.0 * tan(mFoV / 2.0)) / mHeight))
+{}
 
 Vect Camera::GetUp() const
 {

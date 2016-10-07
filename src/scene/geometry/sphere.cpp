@@ -12,7 +12,9 @@
 #include <sphere.hpp>
 
 Sphere::Sphere(const Point &center, const float radius)
-: Shape(), mCenter(center), mRadius(radius)
+: Shape(),
+  mCenter(center),
+  mRadius(radius)
 {}
 
 float Sphere::Intersect(const LightRay &lightRay) const

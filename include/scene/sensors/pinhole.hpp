@@ -52,7 +52,7 @@ public:
      * @param y .
      * @return .
      */
-    LightRay PrimaryRay(Point &origin, const int x, const int y) const;
+    LightRay PrimaryRay(const Point &origin, const int x, const int y) const;
 };
 
 #endif // RAY_TRACER_PINHOLE_HPP
