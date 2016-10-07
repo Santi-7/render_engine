@@ -9,8 +9,8 @@
 #ifndef RAY_TRACER_CAMERA_HPP
 #define RAY_TRACER_CAMERA_HPP
 
+#include <lightRay.hpp>
 #include <vect.hpp>
-#include <point.hpp>
 
 class Camera {
 
@@ -20,25 +20,11 @@ public:
     /**
      * .
      *
+     * @param x .
+     * @param y .
      * @return .
      */
-    Camera();
-
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @param up .
-     * @param right .
-     * @param towards .
-     * @param focalPoint .
-     * @param fieldOfVision .
-     * @param viewPlaneDistance .
-     * @return .
-     */
-    Camera(const Vect &up, const Vect &right,
-           const Vect &towards, const Point &focalPoint,
-           const float fieldOfVision, const float viewPlaneDistance);
+    virtual LightRay PrimaryRay(const int x, const int y) const = 0;
 
     // TODO: Add doc.
     /**
@@ -68,6 +54,10 @@ protected:
 
     // TODO: Add doc.
     /* . */
+    const float PI = static_cast<float>(3.141592653589793238463);
+
+    // TODO: Add doc.
+    /* . */
     Point mFocalPoint;
 
     // TODO: Add doc.
@@ -81,6 +71,10 @@ protected:
     // TODO: Add doc.
     /* . */
     float mViewPlaneDistance;
+
+    // TODO: Add doc.
+    /* . */
+    unsigned int mWidth, mHeight;
 };
 
 #endif // RAY_TRACER_CAMERA_HPP

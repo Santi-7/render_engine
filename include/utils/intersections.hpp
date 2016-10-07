@@ -9,8 +9,8 @@
 #ifndef RAY_TRACER_INTERSECTIONS_HPP
 #define RAY_TRACER_INTERSECTIONS_HPP
 
-#include <memory>
 #include <lightRay.hpp>
+#include <memory>
 
 using namespace std;
 
@@ -37,6 +37,7 @@ unique_ptr<Point> GetIntersection(const LightRay &lightRay, const float t);
  * @param t_2 .
  * @return .
  */
-unique_ptr<Point> GetIntersection(const LightRay &lightRay, const float t_1, const float t_2);
+unique_ptr<Point> GetIntersection(const LightRay &lightRay,
+                                  const float t_1, const float t_2);
 
 #endif // RAY_TRACER_INTERSECTIONS_HPP

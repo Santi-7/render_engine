@@ -21,11 +21,28 @@ public:
     /**
      * .
      *
-     * @param focalPoint .
-     * @param viewPlane .
      * @return .
      */
-    Pinhole(Point focalPoint, Image viewPlane);
+    Pinhole();
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param up .
+     * @param right .
+     * @param towards .
+     * @param focalPoint .
+     * @param fieldOfVision .
+     * @param viewPlaneDistance .
+     * @param width .
+     * @param height .
+     * @return .
+     */
+    Pinhole(const Vect &up, const Vect &right,
+            const Vect &towards, const Point &focalPoint,
+            const float fieldOfVision, const float viewPlaneDistance,
+            const unsigned int width, const unsigned int height);
 
     // TODO: Add doc.
     /**
@@ -36,12 +53,6 @@ public:
      * @return .
      */
     LightRay PrimaryRay(const int x, const int y) const;
-
-private:
-
-    // TODO: Add doc.
-    /* . */
-    Image mImage;
 };
 
 #endif // RAY_TRACER_PINHOLE_HPP
