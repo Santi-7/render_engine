@@ -9,7 +9,7 @@
 #include <camera.hpp>
 
 Camera::Camera(const Vect &up, const Vect &right,
-               const Vect &towards,const Point &focalPoint,
+               const Vect &towards, const Point &focalPoint,
                const float fieldOfVision, const float imagePlaneDistance)
 :  mUp(up), mRight(right), mTowards(towards), mFocalPoint(focalPoint),
    mFOV(fieldOfVision), mViewPlaneDistance(imagePlaneDistance)
