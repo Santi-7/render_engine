@@ -15,7 +15,7 @@ Pinhole::Pinhole()
 {}
 
 Pinhole::Pinhole(const Vect &up, const Vect &right,
-                 const Vect &towards,const Point &focalPoint,
+                 const Vect &towards, const Point &focalPoint,
                  const float fieldOfVision, const float imagePlaneDistance,
                  const unsigned int width, const unsigned int height)
 : mUp(up), mRight(right), mTowards(towards), mFocalPoint(focalPoint),
