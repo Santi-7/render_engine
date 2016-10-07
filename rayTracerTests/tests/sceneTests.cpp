@@ -12,5 +12,5 @@
 TEST(PinholeTest, Basic)
 {
     Pinhole phc();
-
+    Pinhole c();
 }

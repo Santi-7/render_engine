@@ -37,5 +37,5 @@ Pinhole::Pinhole(const Vect &up, const Vect &right,
 
 LightRay Pinhole::PrimaryRay(const int x, const int y) const
 {
-    // TODO: Get the point for the given pixel
+
 }

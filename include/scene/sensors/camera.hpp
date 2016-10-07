@@ -17,6 +17,8 @@ class Camera {
 
 public:
 
+    Camera();
+
     // TODO: Add doc.
     /**
      * .
@@ -55,11 +57,7 @@ protected:
 
     // TODO: Add doc.
     /* . */
-    const float PI = static_cast<float>(3.141592653589793238463);
-
-    // TODO: Add doc.
-    /* . */
-    const float PIXEL_DIMENSION = 2 * tan(mFoV / 2) / mHeight;
+    static constexpr float PI = 3.1415926535897932f;
 
     // TODO: Add doc.
     /* . */

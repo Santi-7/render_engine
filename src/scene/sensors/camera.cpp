@@ -8,6 +8,8 @@
 
 #include <camera.hpp>
 
+Camera::Camera() : mUp(0,0,0), mRight(1,0,0), mTowards(0,0,1), mFocalPoint(0,0,0) {}
+
 Vect Camera::GetUp() const
 {
     return mUp;
@@ -22,3 +24,4 @@ Vect Camera::GetTowards() const
 {
     return mTowards;
 }
+
