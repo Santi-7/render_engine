@@ -12,6 +12,6 @@
 
 TEST(PinholeTest, Basic)
 {
-    Pinhole phc(Point(0,0,0), Image(400, 400));
+    Pinhole phc();
 
 }

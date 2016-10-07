@@ -10,6 +10,7 @@
 #define RAY_TRACER_CAMERA_HPP
 
 #include <lightRay.hpp>
+#include <math.h>
 #include <vect.hpp>
 
 class Camera {
@@ -58,6 +59,10 @@ protected:
 
     // TODO: Add doc.
     /* . */
+    const float PIXEL_DIMENSION = 2 * tan(mFoV / 2) / mHeight;
+
+    // TODO: Add doc.
+    /* . */
     Point mFocalPoint;
 
     // TODO: Add doc.
@@ -66,7 +71,7 @@ protected:
 
     // TODO: Add doc.
     /* . */
-    float mFOV;
+    float mFoV;
 
     // TODO: Add doc.
     /* . */
