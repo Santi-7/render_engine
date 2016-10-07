@@ -12,7 +12,7 @@ Triangle::Triangle(const Point &a, const Point &b, const Point &c)
 : Shape(), mA(a), mB(b), mC(c)
 {}
 
-Point Triangle::intersect(const LightRay &lightRay) const
+float Triangle::intersect(const LightRay &lightRay) const
 {
 
 }

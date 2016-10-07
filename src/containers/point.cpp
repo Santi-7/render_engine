@@ -8,8 +8,6 @@
 
 #include <point.hpp>
 
-const float Point::H = 1;
-
 Point::Point(const float x, const float y, const float z)
 {
     mX = x;

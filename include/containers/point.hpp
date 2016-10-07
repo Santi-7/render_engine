@@ -18,7 +18,7 @@ public:
 
     // TODO: Add doc.
     /* */
-    static const float H;
+    static constexpr float H = 1;
 
     // TODO: Add doc.
     /**
