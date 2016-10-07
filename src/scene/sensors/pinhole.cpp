@@ -6,22 +6,22 @@
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
-#include <math.h>
 #include <pinhole.hpp>
 
-// May not be used
-float verticalFOV;
-float pixelVerticalAngle;
-float pixelHorizontalAngle;
+Pinhole::Pinhole()
+: mUp(Vect(0,1,0)), mRight(Vect(1,0,0)), mTowards(Vect(0,0,1)),
+  mFocalPoint(Point(0,0,0)), mFOV(PI / 2), mViewPlaneDistance(1.0),
+  mWidth(256), mHeight(256)
+{}
 
-Pinhole::Pinhole(Point focalPoint, Image viewPlane)
-: Camera(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), focalPoint,
-  (float) (M_1_PI / 2), 1.0f), mImage(viewPlane)
-{
-    pixelVerticalAngle = mFOV / mImage.GetHeight();
-    pixelHorizontalAngle = mFOV / mImage.GetWidth();
-    verticalFOV = pixelVerticalAngle * mImage.GetHeight();
-}
+Pinhole::Pinhole(const Vect &up, const Vect &right,
+                 const Vect &towards,const Point &focalPoint,
+                 const float fieldOfVision, const float imagePlaneDistance,
+                 const unsigned int width, const unsigned int height)
+: mUp(up), mRight(right), mTowards(towards), mFocalPoint(focalPoint),
+  mFOV(fieldOfVision), mViewPlaneDistance(imagePlaneDistance),
+  mWidth(width), mHeight(height)
+{}
 
 LightRay Pinhole::PrimaryRay(const int x, const int y) const
 {
