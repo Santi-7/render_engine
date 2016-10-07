@@ -11,6 +11,8 @@
 
 TEST(PinholeTest, Basic)
 {
-    Pinhole phc();
-    Pinhole c();
+    Pinhole phc;
+    Point center(0,0,0);
+    LightRay lr(phc.PrimaryRay(center, 50, 50));
+    Point p = lr.GetPoint(2.0f);
 }

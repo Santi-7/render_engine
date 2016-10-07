@@ -27,7 +27,7 @@ public:
      * @param y .
      * @return .
      */
-    virtual LightRay PrimaryRay(const int x, const int y) const = 0;
+    virtual LightRay PrimaryRay(Point &origin, const int x, const int y) const = 0;
 
     // TODO: Add doc.
     /**

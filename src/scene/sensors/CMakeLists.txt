@@ -9,4 +9,6 @@ set(HEADER_FILES
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/scene/sensors)
 
+link_libraries(container)
+
 add_library(sensors STATIC ${SOURCE_FILES} ${HEADER_FILES})

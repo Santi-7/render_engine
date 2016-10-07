@@ -8,7 +8,9 @@
 
 #include <pinhole.hpp>
 
-Pinhole::Pinhole()
+float pixelSize;
+
+Pinhole::Pinhole() : Camera()
 {
     mUp = Vect(0,1,0);
     mRight = Vect(1,0,0);
@@ -18,6 +20,7 @@ Pinhole::Pinhole()
     mViewPlaneDistance = 1.0;
     mWidth = 256;
     mHeight = 256;
+    pixelSize = static_cast<float> ((2.0 * tan(mFoV/2.0))/mHeight);
 }
 
 Pinhole::Pinhole(const Vect &up, const Vect &right,
@@ -35,7 +38,11 @@ Pinhole::Pinhole(const Vect &up, const Vect &right,
     mHeight = height;
 }
 
-LightRay Pinhole::PrimaryRay(const int x, const int y) const
+LightRay Pinhole::PrimaryRay(Point &origin, const int x, const int y) const
 {
+    Point pixelCenter ((x / mWidth) * mViewPlaneDistance * pixelSize * mWidth,
+                      -(y / mHeight) * mViewPlaneDistance * pixelSize,
+                      mViewPlaneDistance);
 
+    return LightRay(origin, origin - pixelCenter);
 }
