@@ -13,6 +13,6 @@ target_link_libraries(Ray_Tracer_Tests_run
         geometry
         gtest
         gtest_main
-        utils
         lighting
-        sensors)
+        sensors
+        utils)
