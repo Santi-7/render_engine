@@ -7,7 +7,6 @@
 ** -------------------------------------------------------------------------*/
 
 #include <gtest/gtest.h>
-#include <point.hpp>
 #include <pinhole.hpp>
 
 TEST(PinholeTest, Basic)
