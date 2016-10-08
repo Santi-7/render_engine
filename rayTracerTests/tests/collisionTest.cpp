@@ -11,7 +11,7 @@
 
 TEST(RayCollideSphere, Basic)
 {
-    LightRay lightRay(Point(0,0,0), Vect(0,0,1));
+    LightRay lightRay(Point(0,0,0), Point(0,0,1));
 
     // The lightray fully intersects the sphere
     Sphere sphere1(Point(0,0,3), 1.0);
