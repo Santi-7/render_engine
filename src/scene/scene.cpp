@@ -9,7 +9,6 @@
 #include <cfloat>
 #include <image.hpp>
 #include <scene.hpp>
-#include <iostream>
 
 void Scene::Render() const
 {

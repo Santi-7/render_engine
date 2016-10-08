@@ -11,9 +11,9 @@
 
 #include <camera.hpp>
 #include <lightSource.hpp>
+#include <memory>
 #include <shape.hpp>
 #include <vector>
-#include <memory>
 
 using namespace std;
 

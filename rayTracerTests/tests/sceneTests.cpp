@@ -8,8 +8,8 @@
 
 #include <gtest/gtest.h>
 #include <pinhole.hpp>
-#include <sphere.hpp>
 #include <scene.hpp>
+#include <sphere.hpp>
 
 /**
  * Test first pixel value is correct
