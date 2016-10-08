@@ -8,8 +8,8 @@
 
 #include <lightRay.hpp>
 
-LightRay::LightRay(const Point &source, const Vect &direction)
-: mSource(source), mDirection(direction)
+LightRay::LightRay(const Point &source, const Point &destination)
+: mSource(source), mDirection((destination - source).Normalise())
 {}
 
 Point LightRay::GetPoint(const float t) const

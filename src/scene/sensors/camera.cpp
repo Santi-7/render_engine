@@ -50,6 +50,11 @@ Vect Camera::GetTowards() const
     return mTowards;
 }
 
+Point Camera::GetFocalPoint() const
+{
+    return mFocalPoint;
+}
+
 unsigned int Camera::GetWidth() const
 {
     return mWidth;

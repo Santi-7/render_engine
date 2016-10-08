@@ -6,6 +6,8 @@
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
+#include <cfloat>
+#include <image.hpp>
 #include <scene.hpp>
 
 void Scene::SetCamera(const Camera &camera)
@@ -25,6 +27,8 @@ void Scene::AddShape(const Shape &shape)
 
 void Scene::Render() const
 {
+    // The rendered image.
+    Image rendered(mCamera.GetWidth(), mCamera.GetHeight());
     // The current pixel. We begin with the first one (0,0).
     Point currentPixel = mCamera.GetFirstPixel();
     // The first pixel of the current row.
@@ -36,7 +40,21 @@ void Scene::Render() const
         {
             // Next pixel.
             currentPixel = currentPixel + mCamera.GetRight() * mCamera.GetPixelSize();
-            // TODO: Trace the ray of light.
+            // Lightray from the focal point of the camera to the current pixel.
+            LightRay lightRay(mCamera.GetFocalPoint(), currentPixel);
+            // Get the color for the current pixel.
+            // TODO: This is temporal.
+            float tMin = FLT_MAX;
+            //Shape shapeNearest;
+            for (unsigned int i = 0; i < mShapes.size(); i++) {
+                float t = mShapes[i].Intersect(lightRay);
+                if (t < tMin)
+                {
+                    tMin = t;
+                    //shapeNearest = mShapes[i];
+                }
+            }
+            rendered[i][j] = tMin == FLT_MAX ? Color(0,0,0) : Color(255,255,255);
         }
         // Next row.
         currentRow = currentRow - mCamera.GetUp() * mCamera.GetPixelSize();

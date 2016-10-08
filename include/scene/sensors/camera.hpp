@@ -82,6 +82,14 @@ public:
      *
      * @return .
      */
+    Point GetFocalPoint() const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
     unsigned int GetWidth() const;
 
     // TODO: Add doc.
