@@ -16,9 +16,10 @@ Camera::Camera()
   mFoV(PI / 2),
   mViewPlaneDistance(1.0),
   mWidth(256),
-  mHeight(256),
-  mPixelSize(static_cast<float> ((2.0 * tan(mFoV / 2.0)) / mHeight))
-{}
+  mHeight(256)
+{
+    CalculatePixelSize();
+}
 
 Camera::Camera(const Vect &up, const Vect &right,
                const Vect &towards, const Point &focalPoint,
@@ -31,9 +32,15 @@ Camera::Camera(const Vect &up, const Vect &right,
   mFoV(fieldOfVision),
   mViewPlaneDistance(viewPlaneDistance),
   mWidth(width),
-  mHeight(height),
-  mPixelSize(static_cast<float> ((2.0 * tan(mFoV / 2.0)) / mHeight))
-{}
+  mHeight(height)
+{
+    CalculatePixelSize();
+}
+
+void Camera::CalculatePixelSize()
+{
+    mPixelSize = static_cast<float> ((2.0 * tan(mFoV / 2.0)) / mHeight);
+}
 
 Vect Camera::GetUp() const
 {

@@ -137,6 +137,14 @@ protected:
     // TODO: Add doc.
     /* . */
     float mPixelSize;
+
+private:
+
+    // TODO: Add doc.
+    /**
+     * .
+     */
+    void CalculatePixelSize();
 };
 
 #endif // RAY_TRACER_CAMERA_HPP
