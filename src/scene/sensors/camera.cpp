@@ -9,7 +9,7 @@
 #include <camera.hpp>
 
 Camera::Camera()
-: mUp(0,0,0),
+: mUp(0,1,0),
   mRight(1,0,0),
   mTowards(0,0,1),
   mFocalPoint(0,0,0),
