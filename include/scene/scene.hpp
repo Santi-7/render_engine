@@ -13,6 +13,7 @@
 #include <lightSource.hpp>
 #include <shape.hpp>
 #include <vector>
+#include <memory>
 
 using namespace std;
 
@@ -20,29 +21,23 @@ class Scene {
 
 public:
 
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @param camera .
-     */
-    void SetCamera(const Camera &camera);
+    template <class C>
+    void SetCamera(const C &camera)
+    {
+        mCamera = make_unique<C>(camera);
+    }
 
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @param lightSource .
-     */
-    void AddLightSource(const LightSource &lightSource);
+    template <class LS>
+    void AddLightSource(const LS &lightSource)
+    {
+        mLightSources.push_back(make_unique<LS>(lightSource));
+    }
 
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @param shape .
-     */
-    void AddShape(const Shape &shape);
+    template <class S>
+    void AddShape(const S &shape)
+    {
+        mShapes.push_back(make_unique<S>(shape));
+    }
 
     // TODO: Add doc.
     /**
@@ -54,15 +49,15 @@ private:
 
     // TODO: Add doc.
     /* . */
-    Camera mCamera;
+    unique_ptr<Camera> mCamera;
 
     // TODO: Add doc.
     /* . */
-    vector<LightSource> mLightSources;
+    vector<unique_ptr<LightSource> > mLightSources;
 
     // TODO: Add doc.
     /* . */
-    vector<Shape> mShapes;
+    vector<unique_ptr<Shape> > mShapes;
 };
 
 #endif // RAY_TRACER_SCENE_HPP
