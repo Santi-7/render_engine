@@ -53,7 +53,7 @@ unsigned int Image::GetHeight() const
     return static_cast<int>(mImage.size());
 }
 
-vector<Color> Image::operator[](const unsigned int i) const
+vector<Color>& Image::operator[](const unsigned int i)
 {
     return mImage[i];
 }
