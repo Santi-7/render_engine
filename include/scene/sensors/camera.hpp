@@ -48,12 +48,9 @@ public:
     /**
      * .
      *
-     * @param x .
-     * @param y .
      * @return .
      */
-    virtual LightRay PrimaryRay(const Point &origin,
-                                const int x, const int y) const = 0;
+    virtual Point GetFirstPixel() const = 0;
 
     // TODO: Add doc.
     /**

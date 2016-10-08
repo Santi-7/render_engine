@@ -20,11 +20,10 @@ Pinhole::Pinhole(const Vect &up, const Vect &right,
          viewPlaneDistance, width, height)
 {}
 
-LightRay Pinhole::PrimaryRay(const Point &origin, const int x, const int y) const
+Point Pinhole::GetFirstPixel() const
 {
-    Point pixelCenter ((x / mWidth) * mViewPlaneDistance * pixelSize * mWidth,
-                      -(y / mHeight) * mViewPlaneDistance * pixelSize,
-                      mViewPlaneDistance);
-
-    return LightRay(origin, origin - pixelCenter);
+    Point middle = mFocalPoint + mTowards * mViewPlaneDistance;
+    Point first = middle - mRight * ((mWidth - 1 ) / 2.0)
+                         + mUp * ((mHeight - 1 ) / 2.0);
+    return first;
 }

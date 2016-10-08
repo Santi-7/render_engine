@@ -93,6 +93,16 @@ public:
      */
     Point operator+(const Vect& v) const;
 
+    // TODO: Add doc.
+    /**
+     * Overloads - operator to return a Point result
+     * of .
+     *
+     * @param v .
+     * @return .
+     */
+    Point operator-(const Vect& v) const;
+
     /**
      * Overloads == operator to return true if both points are equal.
      *

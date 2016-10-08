@@ -59,6 +59,14 @@ Point Point::operator+(const Vect& v) const
     return Point(x, y, z);
 }
 
+Point Point::operator-(const Vect& v) const
+{
+    float x = mX - v.GetX();
+    float y = mY - v.GetY();
+    float z = mZ - v.GetZ();
+    return Point(x, y, z);
+}
+
 bool Point::operator==(const Point& v) const
 {
     return mX == v.GetX() & mY == v.GetY() & mZ == v.GetZ();
