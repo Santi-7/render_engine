@@ -6,9 +6,8 @@
  **         Santiago Gil Begué, NIA: 683482
  ** -------------------------------------------------------------------------*/
 
-#include <tuple>
 #include <fstream>
-#include "image.hpp"
+#include <image.hpp>
 
 Image::Image(const unsigned int width, const unsigned int height)
 {
