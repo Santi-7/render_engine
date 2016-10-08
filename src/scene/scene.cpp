@@ -28,18 +28,7 @@ void Scene::Render() const
             // Lightray from the focal point of the camera to the current pixel.
             LightRay lightRay(mCamera->GetFocalPoint(), currentPixel);
             // Get the color for the current pixel.
-            // TODO: This is temporal.
-            float tMin = FLT_MAX;
-            //Shape shapeNearest;
-            for (unsigned int k = 0; k < mShapes.size(); k++) {
-                float t = mShapes[k]->Intersect(lightRay);
-                if (t < tMin)
-                {
-                    tMin = t;
-                    //shapeNearest = mShapes[k];
-                }
-            }
-            rendered[i][j] = tMin == FLT_MAX ? Color::BLACK: Color::WHITE;
+            rendered[i][j] = GetPixelColor(lightRay);
         }
         // Next row.
         currentRow = currentRow - mCamera->GetUp() * mCamera->GetPixelSize();
@@ -47,4 +36,20 @@ void Scene::Render() const
     }
 
     rendered.Save("uglyDot.ppm");
+}
+
+// TODO: Temporal implementation.
+Color Scene::GetPixelColor(const LightRay &lightRay) const
+{
+    float tMin = FLT_MAX;
+    //Shape nearestShape;
+    for (unsigned int i = 0; i < mShapes.size(); i++) {
+        float t = mShapes[i]->Intersect(lightRay);
+        if (t < tMin)
+        {
+            tMin = t;
+            //nearestShape = mShapes[i];
+        }
+    }
+    return tMin == FLT_MAX ? Color::BLACK: Color::WHITE;
 }

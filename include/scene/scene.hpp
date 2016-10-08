@@ -58,6 +58,15 @@ private:
     // TODO: Add doc.
     /* . */
     vector<unique_ptr<Shape> > mShapes;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param lightRay .
+     * @return .
+     */
+    Color GetPixelColor(const LightRay &lightRay) const;
 };
 
 #endif // RAY_TRACER_SCENE_HPP
