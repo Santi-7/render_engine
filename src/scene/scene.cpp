@@ -46,12 +46,12 @@ void Scene::Render() const
             // TODO: This is temporal.
             float tMin = FLT_MAX;
             //Shape shapeNearest;
-            for (unsigned int i = 0; i < mShapes.size(); i++) {
-                float t = mShapes[i].Intersect(lightRay);
+            for (unsigned int k = 0; k < mShapes.size(); k++) {
+                float t = mShapes[k].Intersect(lightRay);
                 if (t < tMin)
                 {
                     tMin = t;
-                    //shapeNearest = mShapes[i];
+                    //shapeNearest = mShapes[k];
                 }
             }
             rendered[i][j] = tMin == FLT_MAX ? Color(0,0,0) : Color(255,255,255);
