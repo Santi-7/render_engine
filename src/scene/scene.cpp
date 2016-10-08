@@ -34,7 +34,6 @@ void Scene::Render() const
         currentRow = currentRow - mCamera->GetUp() * mCamera->GetPixelSize();
         currentPixel = currentRow;
     }
-
     rendered.Save("uglyDot.ppm");
 }
 
@@ -51,5 +50,5 @@ Color Scene::GetPixelColor(const LightRay &lightRay) const
             //nearestShape = mShapes[i];
         }
     }
-    return tMin == FLT_MAX ? Color::BLACK: Color::WHITE;
+    return tMin == FLT_MAX ? Color::BLACK : Color::WHITE;
 }
