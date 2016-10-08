@@ -9,10 +9,15 @@
 #include <gtest/gtest.h>
 #include <pinhole.hpp>
 
+
+/**
+ * Test first pixel value is correct
+ */
 TEST(PinholeTest, Basic)
 {
-    Pinhole phc;
-    Point center(0,0,0);
-    LightRay lr(phc.PrimaryRay(center, 50, 50));
-    Point p = lr.GetPoint(2.0f);
+    Pinhole phc(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point(0,0,0), (float)3.141592/2, 1.0, 2, 2);
+    Point lr(phc.GetFirstPixel());
+    EXPECT_LT(lr.GetX() - (-0.5), 0.0001);
+    EXPECT_LT(lr.GetY() - (0.5), 0.0001);
+    EXPECT_LT(lr.GetZ() - (1), 0.0001);
 }
