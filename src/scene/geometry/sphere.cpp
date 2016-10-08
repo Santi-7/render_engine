@@ -19,13 +19,11 @@ Sphere::Sphere(const Point &center, const float radius)
 
 float Sphere::Intersect(const LightRay &lightRay) const
 {
+    Vect v = lightRay.GetSource() - mCenter;
     float a = lightRay.GetDirection().DotProduct(lightRay.GetDirection());
     // Shorted to gain efficiency.
-    float b = 2 * lightRay.GetDirection().DotProduct(lightRay.GetSource() - mCenter);
-    float c = lightRay.GetSource() * lightRay.GetSource() +
-              mCenter * mCenter -
-              2 * (lightRay.GetSource() * mCenter) -
-              mRadius * mRadius;
+    float b = 2 * lightRay.GetDirection().DotProduct(v);
+    float c = v.DotProduct(v) - mRadius * mRadius;
     float bb_4ac = b*b - 4*a*c;
     // Ordered by probability of occurrence.
     /* The ray of light doesn't intersect with the sphere. */
@@ -36,8 +34,8 @@ float Sphere::Intersect(const LightRay &lightRay) const
     /* The ray of light intersects with the sphere. */
     else if (bb_4ac > 0)
     {
-        float t_1 = -b - sqrt(bb_4ac) / (2 * a);
-        float t_2 = -b + sqrt(bb_4ac) / (2 * a);
+        float t_1 = (-b - sqrt(bb_4ac)) / (2 * a);
+        float t_2 = (-b + sqrt(bb_4ac)) / (2 * a);
         return GetNearestInFront(t_1, t_2);
     }
     /* The ray of light is a tangent line of the sphere. */
