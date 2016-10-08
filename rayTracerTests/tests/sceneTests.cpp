@@ -8,7 +8,8 @@
 
 #include <gtest/gtest.h>
 #include <pinhole.hpp>
-
+#include <sphere.hpp>
+#include <scene.hpp>
 
 /**
  * Test first pixel value is correct
@@ -20,4 +21,13 @@ TEST(PinholeTest, Basic)
     EXPECT_LT(lr.GetX() - (-0.5), 0.0001);
     EXPECT_LT(lr.GetY() - (0.5), 0.0001);
     EXPECT_LT(lr.GetZ() - (1), 0.0001);
+}
+
+
+TEST(SimpleRender, Sphere)
+{
+    Scene scene;
+    scene.AddShape(Sphere(Point(0,0,3), 1.0));
+    scene.SetCamera(Pinhole());
+    scene.Render();
 }

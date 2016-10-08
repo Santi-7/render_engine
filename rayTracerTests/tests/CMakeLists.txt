@@ -1,7 +1,9 @@
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/containers
+        ${PROJECT_SOURCE_DIR}/include/scene
         ${PROJECT_SOURCE_DIR}/include/scene/sensors
         ${PROJECT_SOURCE_DIR}/include/scene/geometry
+        ${PROJECT_SOURCE_DIR}/include/scene/lighting
         ${PROJECT_SOURCE_DIR}/include/utils)
 
 add_executable(Ray_Tracer_Tests_run
@@ -16,4 +18,5 @@ target_link_libraries(Ray_Tracer_Tests_run
         gtest_main
         lighting
         sensors
-        utils)
+        utils
+        scene)
