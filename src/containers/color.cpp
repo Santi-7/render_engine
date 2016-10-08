@@ -6,7 +6,7 @@
  **         Santiago Gil Begué, NIA: 683482
  ** -------------------------------------------------------------------------*/
 
-#include "color.hpp"
+#include <color.hpp>
 
 Color::Color()
 {
