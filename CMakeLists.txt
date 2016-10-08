@@ -6,7 +6,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(SOURCE_FILES
         main.cpp)
 
-add_executable(Ray_Tracer_run main.cpp)
+add_executable(Ray_Tracer_run
+        main.cpp)
 
 include_directories(
         include/containers)

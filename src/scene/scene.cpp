@@ -22,3 +22,20 @@ void Scene::AddShape(const Shape &shape)
 {
     mShapes.push_back(shape);
 }
+
+void Scene::Render() const
+{
+    Point currentPixel = mCamera.GetFirstPixel();
+    Point currentRow = currentPixel;
+    // For all the pixels, trace a ray of light.
+    for (unsigned int i = 0; i < mCamera.GetWidth(); ++i)
+    {
+        for (unsigned int j = 0; j < mCamera.GetHeight(); ++j)
+        {
+            currentPixel = currentPixel + mCamera.GetRight() * mCamera.GetPixelSize();
+            // TODO: Trace the ray of light.
+        }
+        currentRow = currentRow - mCamera.GetUp() * mCamera.GetPixelSize();
+        currentPixel = currentRow;
+    }
+}

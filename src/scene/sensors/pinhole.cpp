@@ -23,7 +23,8 @@ Pinhole::Pinhole(const Vect &up, const Vect &right,
 Point Pinhole::GetFirstPixel() const
 {
     Point middle = mFocalPoint + mTowards * mViewPlaneDistance;
-    Point first = middle - mRight * ((mWidth - 1 ) / 2.0)
-                         + mUp * ((mHeight - 1 ) / 2.0);
+    // From middle go left and then up to get the frist pixel.
+    Point first = middle - mRight * (((mWidth - 1 ) / 2.0) * mPixelSize)
+                         + mUp * (((mHeight - 1 ) / 2.0) * mPixelSize);
     return first;
 }

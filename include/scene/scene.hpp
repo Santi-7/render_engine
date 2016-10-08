@@ -44,6 +44,12 @@ public:
      */
     void AddShape(const Shape &shape);
 
+    // TODO: Add doc.
+    /**
+     *
+     */
+    void Render() const;
+
 private:
 
     // TODO: Add doc.

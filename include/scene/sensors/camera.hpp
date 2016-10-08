@@ -76,6 +76,30 @@ public:
      */
     Vect GetTowards() const;
 
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    unsigned int GetWidth() const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    unsigned int GetHeight() const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    float GetPixelSize() const;
+
 protected:
 
     // TODO: Add doc.
@@ -104,7 +128,7 @@ protected:
 
     // TODO: Add doc.
     /* . */
-    float pixelSize;
+    float mPixelSize;
 };
 
 #endif // RAY_TRACER_CAMERA_HPP
