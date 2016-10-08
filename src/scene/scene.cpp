@@ -14,8 +14,6 @@ void Scene::Render() const
 {
     // The rendered image.
     Image rendered(mCamera->GetWidth(), mCamera->GetHeight());
-    Color white(255, 255, 255);
-    Color black(0,0,0);
     // The current pixel. We begin with the first one (0,0).
     Point currentPixel = mCamera->GetFirstPixel();
     // The first pixel of the current row.
@@ -41,7 +39,7 @@ void Scene::Render() const
                     //shapeNearest = mShapes[k];
                 }
             }
-            rendered[i][j] = tMin == FLT_MAX ? black: white;
+            rendered[i][j] = tMin == FLT_MAX ? Color::BLACK: Color::WHITE;
         }
         // Next row.
         currentRow = currentRow - mCamera->GetUp() * mCamera->GetPixelSize();

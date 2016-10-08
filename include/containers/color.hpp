@@ -15,6 +15,11 @@ class Color {
 
 public:
 
+    // TODO: Add doc.
+    /* . */
+    static constexpr Color WHITE = Color(255, 255, 255);
+    static constexpr Color BLACK = Color(0, 0, 0);
+
     /**
      * Constructor with no color (black).
      *
