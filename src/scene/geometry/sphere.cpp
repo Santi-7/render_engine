@@ -19,9 +19,9 @@ Sphere::Sphere(const Point &center, const float radius)
 
 float Sphere::Intersect(const LightRay &lightRay) const
 {
+    // Shortened to gain efficiency.
     Vect v = lightRay.GetSource() - mCenter;
     float a = lightRay.GetDirection().DotProduct(lightRay.GetDirection());
-    // Shorted to gain efficiency.
     float b = 2 * lightRay.GetDirection().DotProduct(v);
     float c = v.DotProduct(v) - mRadius * mRadius;
     float bb_4ac = b*b - 4*a*c;
