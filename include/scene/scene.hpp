@@ -63,10 +63,10 @@ private:
     /**
      * .
      *
-     * @param lightRay .
+     * @param pixel .
      * @return .
      */
-    Color GetPixelColor(const LightRay &lightRay) const;
+    Color GetPixelColor(const Point &pixel) const;
 };
 
 #endif // RAY_TRACER_SCENE_HPP

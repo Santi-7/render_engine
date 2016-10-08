@@ -25,10 +25,8 @@ void Scene::Render() const
         {
             // Next pixel.
             currentPixel = currentPixel + mCamera->GetRight() * mCamera->GetPixelSize();
-            // Lightray from the focal point of the camera to the current pixel.
-            LightRay lightRay(mCamera->GetFocalPoint(), currentPixel);
             // Get the color for the current pixel.
-            rendered[i][j] = GetPixelColor(lightRay);
+            rendered[i][j] = GetPixelColor(currentPixel);
         }
         // Next row.
         currentRow = currentRow - mCamera->GetUp() * mCamera->GetPixelSize();
@@ -38,8 +36,11 @@ void Scene::Render() const
 }
 
 // TODO: Temporal implementation.
-Color Scene::GetPixelColor(const LightRay &lightRay) const
+Color Scene::GetPixelColor(const Point &pixel) const
 {
+    // Lightray from the focal point of the camera to the pixel.
+    LightRay lightRay(mCamera->GetFocalPoint(), pixel);
+    // Distance to the nearest shape.
     float tMin = FLT_MAX;
     //Shape nearestShape;
     for (unsigned int i = 0; i < mShapes.size(); i++) {
