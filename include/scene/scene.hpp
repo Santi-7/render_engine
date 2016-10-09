@@ -43,7 +43,7 @@ public:
     /**
      *
      */
-    void Render() const;
+    unique_ptr<Image> Render() const;
 
 private:
 

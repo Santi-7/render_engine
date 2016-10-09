@@ -10,10 +10,10 @@
 #include <image.hpp>
 #include <scene.hpp>
 
-void Scene::Render() const
+unique_ptr<Image> Scene::Render() const
 {
     // The rendered image.
-    Image rendered(mCamera->GetWidth(), mCamera->GetHeight());
+    unique_ptr<Image> rendered = make_unique<Image>(mCamera->GetWidth(), mCamera->GetHeight());
     // The current pixel. We begin with the first one (0,0).
     Point currentPixel = mCamera->GetFirstPixel();
     // The first pixel of the current row.
@@ -26,13 +26,13 @@ void Scene::Render() const
             // Next pixel.
             currentPixel = currentPixel + mCamera->GetRight() * mCamera->GetPixelSize();
             // Get the color for the current pixel.
-            rendered[i][j] = GetPixelColor(currentPixel);
+            (*rendered)[i][j] = GetPixelColor(currentPixel);
         }
         // Next row.
         currentRow = currentRow - mCamera->GetUp() * mCamera->GetPixelSize();
         currentPixel = currentRow;
     }
-    rendered.Save("uglyDot.ppm");
+    return rendered;
 }
 
 // TODO: Temporal implementation.
