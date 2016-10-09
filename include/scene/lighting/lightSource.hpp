@@ -14,11 +14,36 @@
 class LightSource {
 
 protected:
-    LightSource() : mRadiance(1.0), mBaseColor(WHITE) {}
-    LightSource(float radiance, Color& baseColor) : mRadiance(radiance), mBaseColor(baseColor) {}
 
+    // TODO: Add doc.
+    /* . */
     float mRadiance;
+
+    // TODO: Add doc.
+    /* . */
     Color mBaseColor;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    LightSource() :
+    mRadiance(1.0), mBaseColor(WHITE)
+    {}
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param radiance .
+     * @param baseColor .
+     * @return
+     */
+    LightSource(const float radiance, const Color &baseColor)
+    : mRadiance(radiance), mBaseColor(baseColor)
+    {}
 };
 
 #endif // RAY_TRACER_LIGHT_SOURCE_HPP

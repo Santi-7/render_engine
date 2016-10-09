@@ -15,10 +15,40 @@
 class PointLight : public LightSource {
 
 public:
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
     PointLight();
-    PointLight(Point position);
-    PointLight(Point position, float radiance, Color& baseColor);
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param position .
+     * @return .
+     */
+    PointLight(const Point &position);
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param position .
+     * @param radiance .
+     * @param baseColor .
+     * @return .
+     */
+    PointLight(const Point &position, const float radiance,
+               const Color &baseColor);
+
 private:
+
+    // TODO: Add doc.
+    /* . */
     Point mPosition;
 };
 
