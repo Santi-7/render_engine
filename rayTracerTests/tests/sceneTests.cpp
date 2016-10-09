@@ -12,6 +12,7 @@
 #include <sphere.hpp>
 #include <pointLight.hpp>
 #include <plane.hpp>
+#include <triangle.hpp>
 
 /**
  * Test first pixel value is correct
@@ -44,6 +45,16 @@ TEST(SimpleRender, InvisiblePlane)
     unique_ptr<Image> renderedImage = scene.Render();
     renderedImage->Save("linePlane.ppm");
 }
+
+TEST(SimpleRender, SimpleTriangle)
+{
+    Scene scene;
+    scene.AddShape(Triangle(Point(0,1,3), Point(-1,-1,3), Point(1,-1,3)));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/2, 1.0, 255, 255));
+    unique_ptr<Image> renderedImage = scene.Render();
+    renderedImage->Save("triangle.ppm");
+}
+
 /////////////////////////////////////////////////////////////
 
 TEST(SimpleLight, Sphere)
