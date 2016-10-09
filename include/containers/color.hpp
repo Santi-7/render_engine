@@ -20,7 +20,7 @@ public:
      *
      * @return a black Color.
      */
-    Color();
+    constexpr Color() : mR(0), mG(0), mB(0){}
 
     // TODO: Add doc.
     /**
@@ -31,7 +31,7 @@ public:
      * @param b value for blue.
      * @return .
      */
-    Color(const byte r, const byte g, const byte b);
+    constexpr Color(const byte r, const byte g, const byte b) : mR(r), mG(g), mB(b){}
 
     // TODO: Add doc.
     /**
@@ -39,7 +39,10 @@ public:
      *
      * @return .
      */
-    byte GetR() const;
+    constexpr byte GetR() const
+    {
+        return mR;
+    }
 
     // TODO: Add doc.
     /**
@@ -47,7 +50,10 @@ public:
      *
      * @return .
      */
-    byte GetG() const;
+    constexpr byte GetG() const
+    {
+        return mG;
+    }
 
     // TODO: Add doc.
     /**
@@ -55,30 +61,10 @@ public:
      *
      * @return .
      */
-    byte GetB() const;
-
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @param red .
-     */
-    void SetR(const byte red);
-
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @param green .
-     */
-    void SetG(const byte green);
-
-    // TODO: Add doc.
-    /**
-     * .
-     * @param blue .
-     */
-    void SetB(const byte blue);
+    constexpr byte GetB() const
+    {
+        return mB;
+    }
 
 private:
 
@@ -89,10 +75,10 @@ private:
     byte mB;
 };
 
-static const Color WHITE    (255, 255, 255);
-static const Color BLACK    (0, 0, 0);
-static const Color RED      (255, 0, 255);
-static const Color GREEN    (0, 255, 0);
-static const Color BLUE     (0, 0, 255);
+static constexpr Color WHITE    (255, 255, 255);
+static constexpr Color BLACK    (0, 0, 0);
+static constexpr Color RED      (255, 0, 255);
+static constexpr Color GREEN    (0, 255, 0);
+static constexpr Color BLUE     (0, 0, 255);
 
 #endif // RAY_TRACER_COLOR_HPP

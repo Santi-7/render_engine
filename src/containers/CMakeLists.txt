@@ -1,5 +1,4 @@
 set(SOURCE_FILES
-        color.cpp
         image.cpp
         lightRay.cpp
         matrix.cpp
