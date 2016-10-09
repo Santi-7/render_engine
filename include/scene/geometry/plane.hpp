@@ -6,8 +6,8 @@
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
-#ifndef RAY_TRACER_SPHERE_HPP
-#define RAY_TRACER_SPHERE_HPP
+#ifndef RAY_TRACER_PLANE_HPP
+#define RAY_TRACER_PLANE_HPP
 
 #include <shape.hpp>
 
@@ -45,4 +45,4 @@ private:
     Vect mNormal;
 };
 
-#endif // RAY_TRACER_SPHERE_HPP
+#endif // RAY_TRACER_PLANE_HPP
