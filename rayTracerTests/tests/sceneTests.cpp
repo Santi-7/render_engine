@@ -10,6 +10,7 @@
 #include <pinhole.hpp>
 #include <scene.hpp>
 #include <sphere.hpp>
+#include <lighting/pointLight.hpp>
 
 /**
  * Test first pixel value is correct
@@ -29,5 +30,16 @@ TEST(SimpleRender, Sphere)
     Scene scene;
     scene.AddShape(Sphere(Point(0,0,3), 1.0));
     scene.SetCamera(Pinhole());
-    scene.Render();
+    unique_ptr<Image> renderedImage = scene.Render();
+    renderedImage->Save("dot.ppm");
+}
+
+TEST(SimpleLight, Sphere)
+{
+    Scene scene;
+    scene.AddShape(Sphere(Point(0,0,3), 1.0));
+    scene.SetCamera(Pinhole());
+    scene.AddLightSource(PointLight(Point(1,2,3)));
+    auto renderedImage = scene.Render();
+    renderedImage->Save("sphere.ppm");
 }
