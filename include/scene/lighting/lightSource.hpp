@@ -10,8 +10,22 @@
 #define RAY_TRACER_LIGHT_SOURCE_HPP
 
 #include <color.hpp>
+#include <point.hpp>
+#include <memory>
+#include <vector>
+#include <lightRay.hpp>
+
+using namespace std;
 
 class LightSource {
+
+public:
+    /**
+        *
+        * @param origin Point from which light rays coming towards this lightsource origin.
+        * @return
+        */
+    virtual unique_ptr<vector<LightRay>> GetRays(Point &origin) const = 0;
 
 protected:
 
@@ -44,6 +58,7 @@ protected:
     LightSource(const float radiance, const Color &baseColor)
     : mRadiance(radiance), mBaseColor(baseColor)
     {}
+
 };
 
 #endif // RAY_TRACER_LIGHT_SOURCE_HPP

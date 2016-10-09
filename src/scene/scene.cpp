@@ -45,14 +45,26 @@ Color Scene::GetPixelColor(const Point &pixel) const
     LightRay lightRay(mCamera->GetFocalPoint(), pixel);
     // Distance to the nearest shape.
     float tMin = FLT_MAX;
+    shared_ptr<Shape> nearestShape;
     //Shape nearestShape;
     for (unsigned int i = 0; i < mShapes.size(); i++) {
         float t = mShapes[i]->Intersect(lightRay);
         if (t < tMin)
         {
             tMin = t;
-            //nearestShape = mShapes[i];
+            nearestShape = mShapes[i];
         }
     }
+    Point intersection(lightRay.GetPoint(tMin));
+    for(unsigned int i = 0; i < mLightSources.size(); ++i)
+    {
+        auto rays = *(mLightSources[i]->GetRays(intersection));
+        for(int j = 0; j < rays.size(); ++j)
+        {
+            // TODO: Check no objects obstruct the path of the ray and add up radiance and/or color
+        }
+
+    }
+
     return tMin == FLT_MAX ? BLACK : WHITE;
 }
