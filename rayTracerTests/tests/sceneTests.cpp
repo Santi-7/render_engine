@@ -10,7 +10,8 @@
 #include <pinhole.hpp>
 #include <scene.hpp>
 #include <sphere.hpp>
-#include <lighting/pointLight.hpp>
+#include <pointLight.hpp>
+#include <plane.hpp>
 
 /**
  * Test first pixel value is correct
@@ -23,8 +24,9 @@ TEST(PinholeTest, Basic)
     EXPECT_LT(lr.GetY() - (0.5), 0.0001);
     EXPECT_LT(lr.GetZ() - (1), 0.0001);
 }
-
-
+/////////////////////////////////////////////////////////////
+// These tests will not work when proper lighting is added //
+/////////////////////////////////////////////////////////////
 TEST(SimpleRender, Sphere)
 {
     Scene scene;
@@ -33,6 +35,16 @@ TEST(SimpleRender, Sphere)
     unique_ptr<Image> renderedImage = scene.Render();
     renderedImage->Save("dot.ppm");
 }
+
+TEST(SimpleRender, InvisiblePlane)
+{
+    Scene scene;
+    scene.AddShape(Plane(Point(0,0,0), Vect(-1,0,1)));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/2, 1.0, 255, 255));
+    unique_ptr<Image> renderedImage = scene.Render();
+    renderedImage->Save("linePlane.ppm");
+}
+/////////////////////////////////////////////////////////////
 
 TEST(SimpleLight, Sphere)
 {
