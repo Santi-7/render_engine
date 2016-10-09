@@ -31,12 +31,12 @@ float Plane::Intersect(const LightRay &lightRay) const
     }
     /* The ray of light is parallel to the plane
      * and does not intersect in a finite time. */
-    else if (numerator != 0 & numerator == 0)
+    else if (numerator != 0 & denominator == 0)
     {
         return FLT_MAX;
     }
     /* The ray lies entirely in the plane. */
-    else // numerator == 0 & numerator == 0.
+    else // numerator == 0 & denominator == 0.
     {
         // TODO: Ask Adolfo.
         return threshold;
