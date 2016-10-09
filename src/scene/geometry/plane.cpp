@@ -7,7 +7,6 @@
 ** -------------------------------------------------------------------------*/
 
 #include <cfloat>
-#include <cmath>
 #include <intersections.hpp>
 #include <plane.hpp>
 
