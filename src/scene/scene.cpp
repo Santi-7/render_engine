@@ -51,5 +51,5 @@ Color Scene::GetPixelColor(const Point &pixel) const
             //nearestShape = mShapes[i];
         }
     }
-    return tMin == FLT_MAX ? Color::BLACK : Color::WHITE;
+    return tMin == FLT_MAX ? BLACK : WHITE;
 }
