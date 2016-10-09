@@ -18,7 +18,7 @@ Plane::Plane(const Point &point, const Vect &normal)
 
 float Plane::Intersect(const LightRay &lightRay) const
 {
-    float numerator = (lightRay.GetSource() - mPoint).DotProduct(mNormal);
+    float numerator = (mPoint - lightRay.GetSource()).DotProduct(mNormal);
     float denominator = lightRay.GetDirection().DotProduct(mNormal);
     // Ordered by probability of occurrence.
     /* The ray of light intersects with the plane. */
