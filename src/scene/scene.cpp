@@ -19,17 +19,19 @@ unique_ptr<Image> Scene::Render() const
     // The first pixel of the current row.
     Point currentRow = currentPixel;
     // For all the pixels, trace a ray of light.
+    Vect advanceX(mCamera->GetRight() * mCamera->GetPixelSize());
+    Vect advanceY(mCamera->GetUp() * mCamera->GetPixelSize());
     for (unsigned int i = 0; i < mCamera->GetHeight(); ++i)
     {
         for (unsigned int j = 0; j < mCamera->GetWidth(); ++j)
         {
             // Next pixel.
-            currentPixel = currentPixel + mCamera->GetRight() * mCamera->GetPixelSize();
+            currentPixel += advanceX;
             // Get the color for the current pixel.
             (*rendered)[i][j] = GetPixelColor(currentPixel);
         }
         // Next row.
-        currentRow = currentRow - mCamera->GetUp() * mCamera->GetPixelSize();
+        currentRow -= advanceY;
         currentPixel = currentRow;
     }
     return rendered;
