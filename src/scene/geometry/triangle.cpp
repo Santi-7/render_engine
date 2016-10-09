@@ -22,10 +22,10 @@ float Triangle::Intersect(const LightRay &lightRay) const
     // Construct the plane where the triangle lies.
     Vect normal = (mB - mA).CrossProduct(mC - mA).Normalise();
     Plane plane(mA, normal);
-    // Intersection of the light of ray with the plane.
+    // Intersection of the ray of light with the plane.
     float t = plane.Intersect(lightRay);
     Point intersection = lightRay.GetSource() + lightRay.GetDirection() * t;
-    // TODO: Check if t = threshold, this is lightray lies inside the plane.
+    // TODO: Check if t = threshold, this is, the lightray lies inside the plane.
     // Check if the intersection point is inside the triangle bounds.
 
 }
