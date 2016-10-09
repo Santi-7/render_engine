@@ -95,6 +95,26 @@ public:
 
     // TODO: Add doc.
     /**
+     * Overloads += operator to move this point in the direction of vector
+     * of .
+     *
+     * @param v .
+     * @return .
+     */
+    void operator+=(const Vect& v);
+
+    // TODO: Add doc.
+    /**
+     * Overloads -= operator to move this point in the direction opposite to vector
+     * of adding .
+     *
+     * @param v .
+     * @return .
+     */
+    void operator-=(const Vect& v);
+
+    // TODO: Add doc.
+    /**
      * Overloads - operator to return a Point result
      * of .
      *
