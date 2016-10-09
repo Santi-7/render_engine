@@ -22,7 +22,7 @@ float Plane::Intersect(const LightRay &lightRay) const
     float denominator = lightRay.GetDirection().DotProduct(mNormal);
     // Ordered by probability of occurrence.
     /* The ray of light intersects with the plane. */
-    if (numerator != 0 & denominator != 0)
+    if (denominator != 0)
     {
         float t = numerator / denominator;
         /* Return the t distance if the intersection
