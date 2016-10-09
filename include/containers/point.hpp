@@ -105,16 +105,6 @@ public:
 
     // TODO: Add doc.
     /**
-     * Overloads -= operator to move this point in the direction opposite to vector
-     * of adding .
-     *
-     * @param v .
-     * @return .
-     */
-    void operator-=(const Vect& v);
-
-    // TODO: Add doc.
-    /**
      * Overloads - operator to return a Point result
      * of .
      *
@@ -122,6 +112,16 @@ public:
      * @return .
      */
     Point operator-(const Vect& v) const;
+
+    // TODO: Add doc.
+    /**
+     * Overloads -= operator to move this point in the direction opposite to vector
+     * of adding .
+     *
+     * @param v .
+     * @return .
+     */
+    void operator-=(const Vect& v);
 
     /**
      * Overloads == operator to return true if both points are equal.

@@ -18,9 +18,10 @@ unique_ptr<Image> Scene::Render() const
     Point currentPixel = mCamera->GetFirstPixel();
     // The first pixel of the current row.
     Point currentRow = currentPixel;
-    // For all the pixels, trace a ray of light.
+    // Pixels' distance in the camera intrinsics right and up.
     Vect advanceX(mCamera->GetRight() * mCamera->GetPixelSize());
     Vect advanceY(mCamera->GetUp() * mCamera->GetPixelSize());
+    // For all the pixels, trace a ray of light.
     for (unsigned int i = 0; i < mCamera->GetHeight(); ++i)
     {
         for (unsigned int j = 0; j < mCamera->GetWidth(); ++j)
