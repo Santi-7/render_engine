@@ -10,7 +10,7 @@
 #include <lightRay.hpp>
 
 PointLight::PointLight()
-: LightSource(), mPosition(Point(0,0,0))
+: mPosition(Point(0,0,0))
 {}
 
 PointLight::PointLight(const Point &position)
@@ -22,7 +22,7 @@ PointLight::PointLight(const Point &position, const float radiance,
 : LightSource(radiance, baseColor), mPosition(position)
 {}
 
-unique_ptr<vector<LightRay>> PointLight::GetRays(const Point &origin) const
+unique_ptr<vector<LightRay>> PointLight::GetRays(Point &origin) const
 {
     return make_unique<vector<LightRay>>
             (vector<LightRay>{LightRay(origin, mPosition)});
