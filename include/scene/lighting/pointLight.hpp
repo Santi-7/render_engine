@@ -45,6 +45,13 @@ public:
     PointLight(const Point &position, const float radiance,
                const Color &baseColor);
 
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param origin .
+     * @return .
+     */
     unique_ptr<vector<LightRay>> GetRays(const Point &origin) const;
 
 private:
