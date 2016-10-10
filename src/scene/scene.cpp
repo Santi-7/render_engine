@@ -41,13 +41,15 @@ unique_ptr<Image> Scene::Render() const
 // TODO: Temporal implementation.
 Color Scene::GetPixelColor(const Point &pixel) const
 {
-    // Lightray from the focal point of the camera to the pixel.
+    // Ray of light from the focal point of the camera to the pixel.
     LightRay lightRay(mCamera->GetFocalPoint(), pixel);
     // Distance to the nearest shape.
     float tMin = FLT_MAX;
+    // Nearest shape intersected with the ray of light.
     shared_ptr<Shape> nearestShape;
-    //Shape nearestShape;
-    for (unsigned int i = 0; i < mShapes.size(); i++) {
+    /* Intersect with all the shapes in the
+     * scene to know which one is the nearest. */
+    for (unsigned int i = 0; i < mShapes.size(); ++i) {
         float t = mShapes[i]->Intersect(lightRay);
         if (t < tMin)
         {
@@ -55,16 +57,30 @@ Color Scene::GetPixelColor(const Point &pixel) const
             nearestShape = mShapes[i];
         }
     }
+    // Intersection point with the nearest shape found.
     Point intersection(lightRay.GetPoint(tMin));
-    for(unsigned int i = 0; i < mLightSources.size(); ++i)
+    // Direct light to all the light sources.
+    for (unsigned int i = 0; i < mLightSources.size(); ++i)
     {
-        auto rays = *(mLightSources[i]->GetRays(intersection));
-        for(int j = 0; j < rays.size(); ++j)
+        /* Rays of light from the intersection point to all the point
+         * lights of the current light source. This is done because
+         * because the light source may not only be a point light. */
+        vector<LightRay> rays = *(mLightSources[i]->GetRays(intersection));
+        // Direct light to all the point light of the current light source.
+        for (int j = 0; j < rays.size(); ++j)
         {
-            // TODO: Check no objects obstruct the path of the ray and add up radiance and/or color
+            // Check if the current point light is hidden,
+            for (unsigned k = 0; k < mShapes.size(); ++k)
+            {
+                /* The point light is not hidden, because there
+                 * is no shape that intersects the ray of light. */
+                if (mShapes[k]->Intersect(rays[j]) == FLT_MAX)
+                {
+                    return WHITE;
+                }
+            }
         }
-
     }
-
-    return tMin == FLT_MAX ? BLACK : WHITE;
+    // All the light sources are hidden from the intersection point.
+    return BLACK;
 }
