@@ -28,7 +28,7 @@ public:
      *               towards this lightsource origin.
      * @return .
      */
-    virtual unique_ptr<vector<LightRay>> GetRays(Point &origin) const = 0;
+    virtual unique_ptr<vector<LightRay>> GetRays(const Point &origin) const = 0;
 
 protected:
 

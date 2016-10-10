@@ -52,7 +52,7 @@ public:
      * @param origin .
      * @return .
      */
-    unique_ptr<vector<LightRay>> GetRays(Point &origin) const;
+    unique_ptr<vector<LightRay>> GetRays(const Point &origin) const;
 
 private:
 
