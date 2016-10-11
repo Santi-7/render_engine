@@ -53,11 +53,11 @@ private:
 
     // TODO: Add doc.
     /* . */
-    vector<shared_ptr<LightSource> > mLightSources;
+    vector<shared_ptr<LightSource>> mLightSources;
 
     // TODO: Add doc.
     /* . */
-    vector<shared_ptr<Shape> > mShapes;
+    vector<shared_ptr<Shape>> mShapes;
 
     // TODO: Add doc.
     /**

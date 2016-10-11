@@ -68,8 +68,9 @@ Color Scene::GetPixelColor(const Point &pixel) const
     Color retVal = WHITE;
     // Intersection point with the nearest shape found.
     Point intersection(lightRay.GetPoint(tMin));
+    // Normal to the shape in the intersection point.
+    Vect normal = nearestShape->GetNormal(intersection);
     // Direct light to all the light sources.
-
     for (unsigned int i = 0; i < mLightSources.size(); ++i)
     {
         /* All the point lights of the current light source. This is done
@@ -78,13 +79,13 @@ Color Scene::GetPixelColor(const Point &pixel) const
         // Direct light to all the point lights of the current light source.
         for (unsigned int j = 0; j < lights.size(); ++j)
         {
+            // Ray of light from the intersection point to the current light.
+            LightRay intersectionRay = LightRay(intersection, lights[j]);
             // The current point light is not hidden.
-            if (!IsShaded(LightRay(intersection, lights[j]), lights[j]))
+            if (!IsShaded(intersectionRay, lights[j]))
             {
-
-                float multiplier = lightRay.GetDirection().DotProduct(nearestShape->GetNormal(intersection));
-                if (multiplier < 0 ) multiplier = -multiplier;
-                retVal *= multiplier;
+                float multiplier = intersectionRay.GetDirection().DotProduct(normal);
+                retVal *= multiplier > 0 ? multiplier : -multiplier;
             }
             // The point light is hidden.
             else
@@ -100,16 +101,14 @@ bool Scene::IsShaded(const LightRay &lightRay, const Point &light) const
 {
     // Distance from the intersection point to the point light.
     float tLight = lightRay.GetSource().Distance(light);
-    LightRay ray = LightRay(lightRay.GetSource(), light);
     // Check if the point light is hidden,
     for (unsigned int i = 0; i < mShapes.size(); ++i)
     {
         /* The point light is hidden, because there is
          * a shape that intersects the ray of light. */
-        float tShape = mShapes[i]->Intersect(ray);
+        float tShape = mShapes[i]->Intersect(lightRay);
         if (tShape >= 0 & tShape < tLight)
         {
-            //cout << tShape << " " << tLight << "\n";
             return true;
         }
     }

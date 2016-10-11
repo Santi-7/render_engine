@@ -38,7 +38,7 @@ public:
      * @param to .
      * @return .
      */
-    float Distance(const Point &to);
+    float Distance(const Point &to) const;
 
     /**
      * .
