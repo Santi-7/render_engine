@@ -16,7 +16,7 @@ Sphere::Sphere(const Point &center, const float radius)
   mCenter(center),
   mRadius(radius),
   // Cached values.
-  mRadius2(mRadius * mRadius2)
+  mRadius2(mRadius * mRadius)
 {}
 
 float Sphere::Intersect(const LightRay &lightRay) const
