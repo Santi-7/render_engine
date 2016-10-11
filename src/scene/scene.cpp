@@ -98,11 +98,11 @@ bool Scene::IsShaded(const LightRay &lightRay, const Point &light) const
     // Distance from the intersection point to the point light.
     float tLight = lightRay.GetSource().Distance(light);
     // Check if the point light is hidden,
-    for (unsigned int k = 0; k < mShapes.size(); ++k)
+    for (unsigned int i = 0; i < mShapes.size(); ++i)
     {
         /* The point light is hidden, because there is
          * a shape that intersects the ray of light. */
-        float tShape = mShapes[k]->
+        float tShape = mShapes[i]->
                 Intersect(LightRay(lightRay.GetSource(), light));
         if (tShape >= 0 & tShape < tLight)
         {
