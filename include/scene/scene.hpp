@@ -67,6 +67,16 @@ private:
      * @return .
      */
     Color GetPixelColor(const Point &pixel) const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param lightRay .
+     * @param light .
+     * @return .
+     */
+    bool IsShaded(const LightRay &lightRay, const Point &light) const;
 };
 
 #endif // RAY_TRACER_SCENE_HPP

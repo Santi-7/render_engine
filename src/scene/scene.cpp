@@ -72,31 +72,18 @@ Color Scene::GetPixelColor(const Point &pixel) const
         /* All the point lights of the current light source. This is done
          * because the light source may not only be one point light. */
         vector<Point> lights = *(mLightSources[i]->GetLights());
-        // Direct light to all the point light of the current light source.
+        // Direct light to all the point lights of the current light source.
         for (unsigned int j = 0; j < lights.size(); ++j)
         {
-            // Distance from the intersection to the point light.
-            float tLight = intersection.Distance(lights[j]);
-            // Check if the current point light is hidden,
-            bool shadow = false;
-            for (unsigned int k = 0; k < mShapes.size(); ++k)
+            // The current point light is not hidden.
+            if (!IsShaded(LightRay(intersection, lights[j]), lights[j]))
             {
-                /* The point light is hidden, because there is
-                 * a shape that intersects the ray of light. */
-                float tShape = mShapes[k]->
-                        Intersect(LightRay(intersection, lights[j]));
-                if (tShape >= 0 & tShape < tLight)
-                {
-                    shadow = true;
-                }
-                // The point is not hidden.
-            }
-            if(!shadow) {
                 float multiplier = lightRay.GetDirection().DotProduct
                         (nearestShape->GetNormal(intersection));
-                if(multiplier < 0 ) multiplier = -multiplier;
+                if (multiplier < 0 ) multiplier = -multiplier;
                 retVal *= multiplier;
             }
+            // The point light is hidden.
             else
             {
                 retVal = BLACK;
@@ -104,4 +91,24 @@ Color Scene::GetPixelColor(const Point &pixel) const
         }
     }
     return retVal;
+}
+
+bool Scene::IsShaded(const LightRay &lightRay, const Point &light) const
+{
+    // Distance from the intersection point to the point light.
+    float tLight = lightRay.GetSource().Distance(light);
+    // Check if the point light is hidden,
+    for (unsigned int k = 0; k < mShapes.size(); ++k)
+    {
+        /* The point light is hidden, because there is
+         * a shape that intersects the ray of light. */
+        float tShape = mShapes[k]->
+                Intersect(LightRay(lightRay.GetSource(), light));
+        if (tShape >= 0 & tShape < tLight)
+        {
+            return true;
+        }
+    }
+    // No shape has intersected the ray of light.
+    return false;
 }
