@@ -104,8 +104,8 @@ public:
 
     // TODO: Add doc.
     /**
-     * Overloads += operator to move this point in the direction of vector
-     * of .
+     * Overloads += operator to move this point in
+     * the direction of vector v.
      *
      * @param v .
      * @return .
@@ -124,8 +124,8 @@ public:
 
     // TODO: Add doc.
     /**
-     * Overloads -= operator to move this point in the direction opposite to vector
-     * of adding .
+     * Overloads -= operator to move this point in
+     * the direction opposite to vector v.
      *
      * @param v .
      * @return .

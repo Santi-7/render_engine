@@ -66,6 +66,21 @@ public:
         return mB;
     }
 
+    // TODO: Add doc.
+    /**
+     * Overloads *= operator to return a Color result
+     * of .
+     *
+     * @param k .
+     * @return .
+     */
+    Color operator*=(const float k)
+    {
+        mR *= k;
+        mG *= k;
+        mB *= k;
+    }
+
 private:
 
     // TODO: Add doc.

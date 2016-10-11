@@ -73,14 +73,6 @@ Vect Vect::operator-(const Vect& v) const
     return Vect(x, y, z);
 }
 
-Vect Vect::operator*(const Vect v) const
-{
-    float x = mX * v.mX;
-    float y = mY * v.mY;
-    float z = mZ * v.mZ;
-    return Vect(x, y, z);
-}
-
 float Vect::DotProduct(const Vect& v) const
 {
     return mX * v.mX + mY * v.mY + mZ * v.mZ;

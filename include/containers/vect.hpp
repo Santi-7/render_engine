@@ -111,16 +111,6 @@ public:
 
     // TODO: Add doc.
     /**
-     * Overloads * operator to return a Vect result
-     * of .
-     *
-     * @param v .
-     * @return .
-     */
-    Vect operator*(const Vect v) const;
-
-    // TODO: Add doc.
-    /**
      * .
      *
      * @param v .

@@ -87,6 +87,12 @@ Color Scene::GetPixelColor(const Point &pixel) const
                 {
                     retVal = BLACK;
                 }
+                // The point is not hidden.
+                else
+                {
+                    retVal *= lightRay.GetDirection().DotProduct
+                            (mShapes[k]->GetNormal(intersection));
+                }
             }
         }
     }
