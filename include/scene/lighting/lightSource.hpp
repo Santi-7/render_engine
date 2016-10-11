@@ -26,7 +26,7 @@ public:
      *
      * @return .
      */
-    virtual unique_ptr<vector<Point>> GetLights() const = 0;
+    virtual vector<Point> GetLights() const = 0;
 
 protected:
 

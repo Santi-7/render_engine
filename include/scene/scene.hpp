@@ -30,13 +30,13 @@ public:
     template <class LS>
     void AddLightSource(const LS &lightSource)
     {
-        mLightSources.push_back(make_unique<LS>(lightSource));
+        mLightSources.push_back(make_shared<LS>(lightSource));
     }
 
     template <class S>
     void AddShape(const S &shape)
     {
-        mShapes.push_back(make_unique<S>(shape));
+        mShapes.push_back(make_shared<S>(shape));
     }
 
     // TODO: Add doc.
@@ -53,7 +53,7 @@ private:
 
     // TODO: Add doc.
     /* . */
-    vector<unique_ptr<LightSource> > mLightSources;
+    vector<shared_ptr<LightSource> > mLightSources;
 
     // TODO: Add doc.
     /* . */

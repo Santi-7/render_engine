@@ -21,7 +21,7 @@ PointLight::PointLight(const Point &position, const float radiance,
 : LightSource(radiance, baseColor), mPosition(position)
 {}
 
-unique_ptr<vector<Point>> PointLight::GetLights() const
+vector<Point> PointLight::GetLights() const
 {
-    return make_unique<vector<Point>> (vector<Point>{mPosition});
+    return vector<Point>{mPosition};
 }

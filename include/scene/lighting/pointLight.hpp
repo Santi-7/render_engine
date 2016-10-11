@@ -51,7 +51,7 @@ public:
      *
      * @return .
      */
-    unique_ptr<vector<Point>> GetLights() const;
+    vector<Point> GetLights() const;
 
 private:
 

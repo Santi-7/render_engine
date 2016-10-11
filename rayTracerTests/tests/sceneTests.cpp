@@ -70,11 +70,11 @@ TEST(SimpleLight, Sphere)
 TEST(SimpleLight, SphereOnAPlane)
 {
     Scene scene;
-    scene.AddShape(Sphere(Point(0,0,3), 1.0));
+    scene.AddShape(Sphere(Point(0,0,10), 1.0));
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
 
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/2, 1.0, 255, 255));
-    scene.AddLightSource(PointLight(Point(0,1.5,3)));
+    scene.AddLightSource(PointLight(Point(0,1.5,10)));
     auto renderedImage = scene.Render();
     renderedImage->Save("soap.ppm");
 }
@@ -86,11 +86,13 @@ TEST(CornellBox, BigSpheres)
     renderedImage->Save("cornell.ppm");
 }
 
-TEST(Algo, ogsd)
+TEST(SimpleLight, PlaneTop)
 {
-    float multi = -0.75f;
-    float multInv = multi > 0 ? multi: -multi;
-    Color w = WHITE;
-    w *= multInv;
-    cerr << (int)w.GetR() << '\n';
+    Scene scene;
+    scene.AddShape(Plane(Point(0,-1000,0), Vect(0,1,0)));
+
+    scene.SetCamera(Pinhole(Vect(1,0,0), Vect(0,0,1), Vect(0,-1,0), Point (0,0,0), (float)3.14159/2, 1.0, 255, 255));
+    scene.AddLightSource(PointLight(Point(0,1.5,3)));
+    auto renderedImage = scene.Render();
+    renderedImage->Save("planeTop.ppm");
 }
