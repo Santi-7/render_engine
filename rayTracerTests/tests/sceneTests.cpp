@@ -13,7 +13,7 @@
 #include <pointLight.hpp>
 #include <plane.hpp>
 #include <triangle.hpp>
-
+#include <sceneSamples.hpp>
 /**
  * Test first pixel value is correct
  */
@@ -73,8 +73,15 @@ TEST(SimpleLight, SphereOnAPlane)
     scene.AddShape(Sphere(Point(0,0,3), 1.0));
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
 
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/2, 1.0, 1920, 1080));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/2, 1.0, 255, 255));
     scene.AddLightSource(PointLight(Point(0,1.5,3)));
     auto renderedImage = scene.Render();
     renderedImage->Save("soap.ppm");
+}
+
+TEST(CornellBox, BigSpheres)
+{
+    Scene scene = CornellBox();
+    auto renderedImage = scene.Render();
+    renderedImage->Save("cornell.ppm");
 }

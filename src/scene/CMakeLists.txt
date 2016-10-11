@@ -1,6 +1,6 @@
 set(SOURCE_FILES
         scene.cpp
-        sceneSamples.cpp)
+        )
 
 set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/scene.hpp
