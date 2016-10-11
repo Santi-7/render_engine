@@ -49,6 +49,14 @@ private:
     // TODO: Add doc.
     /* . */
     Point mA, mB, mC;
+
+    /* Cached values. */
+
+    // TODO: Add doc.
+    /* . */
+    Vect v0, v1;
+    float d00, d01, d11, denominator;
+    Plane plane;
 };
 
 #endif // RAY_TRACER_TRIANGLE_HPP

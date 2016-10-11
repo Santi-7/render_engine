@@ -52,6 +52,12 @@ private:
     // TODO: Add doc.
     /* . */
     float mRadius;
+
+    /* Cached values. */
+
+    // TODO: Add doc.
+    /* . */
+    float mRadius2;
 };
 
 #endif // RAY_TRACER_SPHERE_HPP

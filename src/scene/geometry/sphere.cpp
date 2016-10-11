@@ -14,7 +14,9 @@
 Sphere::Sphere(const Point &center, const float radius)
 : Shape(),
   mCenter(center),
-  mRadius(radius)
+  mRadius(radius),
+  // Cached values.
+  mRadius2(mRadius * mRadius2)
 {}
 
 float Sphere::Intersect(const LightRay &lightRay) const
@@ -23,7 +25,7 @@ float Sphere::Intersect(const LightRay &lightRay) const
     Vect v = lightRay.GetSource() - mCenter;
     float a = lightRay.GetDirection().DotProduct(lightRay.GetDirection());
     float b = 2 * lightRay.GetDirection().DotProduct(v);
-    float c = v.DotProduct(v) - mRadius * mRadius;
+    float c = v.DotProduct(v) - mRadius2;
     float bb_4ac = b*b - 4*a*c;
     // Ordered by probability of occurrence.
     /* The ray of light doesn't intersect with the sphere. */

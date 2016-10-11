@@ -14,28 +14,29 @@ Triangle::Triangle(const Point &a, const Point &b, const Point &c)
 : Shape(),
   mA(a),
   mB(b),
-  mC(c)
+  mC(c),
+  // Cached values.
+  v0(b - a),
+  v1(c - a),
+  d00(v0.DotProduct(v0)),
+  d01(v0.DotProduct(v1)),
+  d11(v1.DotProduct(v1)),
+  denominator(d00 * d11 - d01 * d01),
+  plane(mA, v0.CrossProduct(v1).Normalise())
 {}
 
 // TODO: Check if t = threshold, this is, the lightray lies inside the plane.
 float Triangle::Intersect(const LightRay &lightRay) const
 {
-    // Construct the plane where the triangle lies.
-    Vect normal = (mB - mA).CrossProduct(mC - mA).Normalise();
-    Plane plane(mA, normal);
     // Intersection of the ray of light with the plane.
     float t = plane.Intersect(lightRay);
     Point intersection = lightRay.GetPoint(t);
     // Based in Christer Ericson's Real-Time Collision Detection.
     /* Get the barycentric coordinates for the intersection
      * point with respect to the triangle. */
-    Vect v0 = mB - mA, v1 = mC - mA, v2 = intersection - mA;
-    float d00 = v0.DotProduct(v0);
-    float d01 = v0.DotProduct(v1);
-    float d11 = v1.DotProduct(v1);
+    Vect v2 = intersection - mA;
     float d20 = v2.DotProduct(v0);
     float d21 = v2.DotProduct(v1);
-    float denominator = d00 * d11 - d01 * d01;
     // Barycentric coordinates.
     float alpha = (d11 * d20 - d01 * d21) / denominator;
     float beta = (d00 * d21 - d01 * d20) / denominator;
