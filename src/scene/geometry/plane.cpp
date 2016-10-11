@@ -42,3 +42,8 @@ float Plane::Intersect(const LightRay &lightRay) const
         return threshold;
     }
 }
+
+Vect Plane::GetNormal(const Point &point) const
+{
+    return mNormal;
+}

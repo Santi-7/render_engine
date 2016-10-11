@@ -44,3 +44,8 @@ float Triangle::Intersect(const LightRay &lightRay) const
     // Check if the intersection point is inside the triangle bounds.
     return alpha >= 0 & beta >= 0 & alpha + beta < 1 ? t : FLT_MAX;
 }
+
+Vect Triangle::GetNormal(const Point &point) const
+{
+    return plane.GetNormal(point);
+}

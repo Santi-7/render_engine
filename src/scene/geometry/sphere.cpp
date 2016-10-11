@@ -47,3 +47,8 @@ float Sphere::Intersect(const LightRay &lightRay) const
         return GetNearestInFront(t);
     }
 }
+
+Vect Sphere::GetNormal(const Point &point) const
+{
+    return (point - mCenter).Normalise();
+}
