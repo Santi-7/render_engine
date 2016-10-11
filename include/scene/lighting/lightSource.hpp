@@ -24,11 +24,9 @@ public:
     /**
      * .
      *
-     * @param origin Point from which rays of light coming
-     *               towards this lightsource origin.
      * @return .
      */
-    virtual unique_ptr<vector<LightRay>> GetRays(const Point &origin) const = 0;
+    virtual unique_ptr<vector<Point>> GetLights() const = 0;
 
 protected:
 

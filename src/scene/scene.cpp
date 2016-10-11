@@ -68,21 +68,21 @@ Color Scene::GetPixelColor(const Point &pixel) const
     // Direct light to all the light sources.
     for (unsigned int i = 0; i < mLightSources.size(); ++i)
     {
-        /* Rays of light from the intersection point to all the point
-         * lights of the current light source. This is done because
-         * because the light source may not only be a point light. */
-        vector<LightRay> rays = *(mLightSources[i]->GetRays(intersection));
+        /* All the point lights of the current light source. This is done
+         * because the light source may not only be one point light. */
+        vector<Point> lights = *(mLightSources[i]->GetLights());
         // Direct light to all the point light of the current light source.
-        for (unsigned int j = 0; j < rays.size(); ++j)
+        for (unsigned int j = 0; j < lights.size(); ++j)
         {
             // Distance from the intersection to the point light.
-            float tLight = intersection.Distance(rays[j].GetSource());
+            float tLight = intersection.Distance(lights[j]);
             // Check if the current point light is hidden,
             for (unsigned int k = 0; k < mShapes.size(); ++k)
             {
                 /* The point light is hidden, because there is
                  * a shape that intersects the ray of light. */
-                float tShape = mShapes[k]->Intersect(rays[j]);
+                float tShape = mShapes[k]->
+                        Intersect(LightRay(intersection, lights[j]));
                 if (tShape >= 0 & tShape < tLight)
                 {
                     retVal = BLACK;
