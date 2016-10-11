@@ -25,6 +25,15 @@ public:
      * @return .
      */
     virtual float Intersect(const LightRay &lightRay) const = 0;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param point .
+     * @return .
+     */
+    virtual Vect GetNormal(const Point &point) const = 0;
 };
 
 #endif // RAY_TRACER_SHAPE_HPP

@@ -35,6 +35,15 @@ public:
      */
     float Intersect(const LightRay &lightRay) const;
 
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param point .
+     * @return .
+     */
+    Vect GetNormal(const Point &point) const;
+
 private:
 
     // TODO: Add doc.
