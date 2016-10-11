@@ -24,5 +24,5 @@ PointLight::PointLight(const Point &position, const float radiance,
 unique_ptr<vector<LightRay>> PointLight::GetRays(const Point &origin) const
 {
     return make_unique<vector<LightRay>>
-            (vector<LightRay>{LightRay(mPosition, origin)});
+            (vector<LightRay>{LightRay(origin, mPosition)});
 }
