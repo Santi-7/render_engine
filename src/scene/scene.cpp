@@ -9,6 +9,7 @@
 #include <cfloat>
 #include <image.hpp>
 #include <scene.hpp>
+#include <intersections.hpp>
 
 unique_ptr<Image> Scene::Render() const
 {
@@ -80,15 +81,15 @@ Color Scene::GetPixelColor(const Point &pixel) const
             // Check if the current point light is hidden,
             for (unsigned int k = 0; k < mShapes.size(); ++k)
             {
-                /* The point light is not hidden, because there
-                 * is no shape that intersects the ray of light. */
-                if (mShapes[k]->Intersect(rays[j]) < tLight)
+                /* The point light is hidden, because there is
+                 * a shape that intersects the ray of light. */
+                float tShape = mShapes[k]->Intersect(rays[j]);
+                if (tShape > threshold & tShape < tLight)
                 {
                     retVal = BLACK;
                 }
             }
         }
     }
-    // All the light sources are hidden from the intersection point.
     return retVal;
 }
