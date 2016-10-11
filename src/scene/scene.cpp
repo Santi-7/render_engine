@@ -58,10 +58,11 @@ Color Scene::GetPixelColor(const Point &pixel) const
             nearestShape = mShapes[i];
         }
     }
-    Color retVal = WHITE;
-    // A shape has been found.
+    // No shape has been found.
     if (tMin == FLT_MAX) return BLACK;
 
+    // Assume the path to a light is clear
+    Color retVal = WHITE;
     // Intersection point with the nearest shape found.
     Point intersection(lightRay.GetPoint(tMin));
     // Direct light to all the light sources.
