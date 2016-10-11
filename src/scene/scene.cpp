@@ -9,6 +9,7 @@
 #include <cfloat>
 #include <image.hpp>
 #include <scene.hpp>
+#include <iostream>
 
 unique_ptr<Image> Scene::Render() const
 {
@@ -77,6 +78,7 @@ Color Scene::GetPixelColor(const Point &pixel) const
             // Distance from the intersection to the point light.
             float tLight = intersection.Distance(lights[j]);
             // Check if the current point light is hidden,
+            bool shadow = false;
             for (unsigned int k = 0; k < mShapes.size(); ++k)
             {
                 /* The point light is hidden, because there is
@@ -85,14 +87,19 @@ Color Scene::GetPixelColor(const Point &pixel) const
                         Intersect(LightRay(intersection, lights[j]));
                 if (tShape >= 0 & tShape < tLight)
                 {
-                    retVal = BLACK;
+                    shadow = true;
                 }
                 // The point is not hidden.
-                else
-                {
-                    retVal *= lightRay.GetDirection().DotProduct
-                            (mShapes[k]->GetNormal(intersection));
-                }
+            }
+            if(!shadow) {
+                float multiplier = lightRay.GetDirection().DotProduct
+                        (nearestShape->GetNormal(intersection));
+                if(multiplier < 0 ) multiplier = -multiplier;
+                retVal *= multiplier;
+            }
+            else
+            {
+                retVal = BLACK;
             }
         }
     }

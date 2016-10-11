@@ -85,3 +85,12 @@ TEST(CornellBox, BigSpheres)
     auto renderedImage = scene.Render();
     renderedImage->Save("cornell.ppm");
 }
+
+TEST(Algo, ogsd)
+{
+    float multi = -0.75f;
+    float multInv = multi > 0 ? multi: -multi;
+    Color w = WHITE;
+    w *= multInv;
+    cerr << (int)w.GetR() << '\n';
+}
