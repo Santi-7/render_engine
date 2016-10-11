@@ -15,6 +15,11 @@ Point::Point(const float x, const float y, const float z)
     mZ = z;
 }
 
+float Point::Distance(const Point &to)
+{
+    return (*this - to).Abs();
+}
+
 float Point::GetX() const
 {
     return mX;

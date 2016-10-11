@@ -31,6 +31,15 @@ public:
      */
     Point(const float x, const float y, const float z);
 
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param to .
+     * @return .
+     */
+    float Distance(const Point &to);
+
     /**
      * .
      *

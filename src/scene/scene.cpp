@@ -76,7 +76,7 @@ Color Scene::GetPixelColor(const Point &pixel) const
         for (unsigned int j = 0; j < rays.size(); ++j)
         {
             // Distance from the intersection to the point light.
-            float tLight = (intersection - rays[j].GetSource()).Abs();
+            float tLight = intersection.Distance(rays[j].GetSource());
             // Check if the current point light is hidden,
             for (unsigned int k = 0; k < mShapes.size(); ++k)
             {
