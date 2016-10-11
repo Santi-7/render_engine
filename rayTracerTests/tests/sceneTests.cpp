@@ -66,3 +66,15 @@ TEST(SimpleLight, Sphere)
     auto renderedImage = scene.Render();
     renderedImage->Save("sphere.ppm");
 }
+
+TEST(SimpleLight, SphereOnAPlane)
+{
+    Scene scene;
+    scene.AddShape(Sphere(Point(0,0,3), 1.0));
+    scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
+
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/2, 1.0, 1920, 1080));
+    scene.AddLightSource(PointLight(Point(0,1.5,3)));
+    auto renderedImage = scene.Render();
+    renderedImage->Save("soap.ppm");
+}
