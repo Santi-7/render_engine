@@ -61,7 +61,7 @@ Color Scene::GetPixelColor(const Point &pixel) const
     // No shape has been found.
     if (tMin == FLT_MAX) return BLACK;
 
-    // Assume the path to a light is clear
+    // Assume the path to a light is clear.
     Color retVal = WHITE;
     // Intersection point with the nearest shape found.
     Point intersection(lightRay.GetPoint(tMin));
@@ -75,12 +75,14 @@ Color Scene::GetPixelColor(const Point &pixel) const
         // Direct light to all the point light of the current light source.
         for (unsigned int j = 0; j < rays.size(); ++j)
         {
+            // Distance from the intersection to the point light.
+            float tLight = (intersection - rays[j].GetSource()).Abs();
             // Check if the current point light is hidden,
             for (unsigned int k = 0; k < mShapes.size(); ++k)
             {
                 /* The point light is not hidden, because there
                  * is no shape that intersects the ray of light. */
-                if (mShapes[k]->Intersect(rays[j]) != FLT_MAX)
+                if (mShapes[k]->Intersect(rays[j]) < tLight)
                 {
                     retVal = BLACK;
                 }
