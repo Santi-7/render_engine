@@ -66,19 +66,42 @@ public:
         return mB;
     }
 
-    // TODO: Add doc.
     /**
-     * Overloads *= operator to return a Color result
-     * of .
+     * Overloads += operator to add the RGB values of the new color to
+     * this one's.
      *
      * @param k .
-     * @return .
      */
-    Color operator*=(const float k)
+    void operator+=(const Color color)
+    {
+        mR += color.mR;
+        mG += color.mG;
+        mB += color.mB;
+    }
+
+    /**
+     * Overloads *= operator to multiply all values of this color by k
+     *
+     * @param k .
+     */
+    void operator*=(const float k)
     {
         mR *= k;
         mG *= k;
         mB *= k;
+    }
+
+    /**
+     * Overloads * operator to return a Color result of multiplying
+     * all values in this Color by k
+     *
+     * @param k .
+     * @return New color result of multiplying the RGB values in this
+     * color by k
+     */
+    Color operator*(const float k)
+    {
+        return Color(static_cast<byte>(mR*k), static_cast<byte>(mG*k), static_cast<byte>(mB*k));
     }
 
 private:
