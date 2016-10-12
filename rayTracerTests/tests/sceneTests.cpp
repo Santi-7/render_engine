@@ -96,6 +96,14 @@ TEST(CornellBox, Planes)
     renderedImage->Save("cornellP.ppm");
 }
 
+TEST(CornellBox, Colors)
+{ // Cornell's box. Lights of colors distinct of white.
+    Scene scene = CornellBox(false);
+    scene.AddLightSource(PointLight(Point(0, 0, -5), 1.0, BLUE));
+    auto renderedImage = scene.Render();
+    renderedImage->Save("cornellColors.ppm");
+}
+
 TEST(SimpleLight, PlaneTop)
 { // A plane as seen from the top
     Scene scene;

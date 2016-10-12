@@ -21,12 +21,24 @@ class LightSource {
 
 public:
 
+    // TODO: Add doc.
     /**
      * .
      *
      * @return .
      */
     virtual vector<Point> GetLights() const = 0;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    Color GetBaseColor() const
+    {
+        return mBaseColor;
+    }
 
 protected:
 

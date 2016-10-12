@@ -83,7 +83,8 @@ Color Scene::GetPixelColor(const Point &pixel) const
             if (!InShadow(intersectionRay, lights[j]))
             {
                 float multiplier = intersectionRay.GetDirection().DotProduct(normal);
-                retVal += WHITE * (multiplier > 0 ? multiplier : -multiplier);
+                retVal += mLightSources[i]->GetBaseColor() *
+                          (multiplier > 0 ? multiplier : -multiplier);
             }
         }
     }
