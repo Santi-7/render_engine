@@ -9,6 +9,7 @@
 #include <cfloat>
 #include <plane.hpp>
 #include <triangle.hpp>
+#include <cmath>
 
 Triangle::Triangle(const Vertex &a, const Vertex &b, const Vertex &c)
 : Shape(),
@@ -47,5 +48,36 @@ float Triangle::Intersect(const LightRay &lightRay) const
 
 Vect Triangle::GetNormal(const Point &point) const
 {
-    return plane.GetNormal(point);
+
+    Vect u = mA - mB;
+
+    Vect v = mC - mB;
+
+    Vect n = point - mB;
+
+    double dU = u.Abs();
+    double dV = v.Abs();
+    double dN = n.Abs();
+
+    u = u.Normalise();
+    n = n.Normalise();
+
+    double cost = n.DotProduct(u);
+
+    if (cost < 0) cost = 0;
+    if (cost > 1) cost = 1;
+
+    double t = cos(cost);
+
+    double distY = 0, distX = 0;
+    distX = dN * cos(t);
+    distY = dN * sin(t);
+
+    double uDist = distX/ dU;
+    double vDist = distY/ dV;
+
+
+    return Vect((float)-((1.0 - (uDist + vDist)) * mA.GetNormal().GetX() + mA.GetNormal().GetY() * uDist + mA.GetNormal().GetZ() * vDist),
+                (float)-((1.0 - (uDist + vDist)) * mB.GetNormal().GetX() + mB.GetNormal().GetY() * uDist + mB.GetNormal().GetZ() * vDist),
+                (float)-((1.0 - (uDist + vDist)) * mC.GetNormal().GetX() + mC.GetNormal().GetY() * uDist + mC.GetNormal().GetZ() * vDist));
 }
