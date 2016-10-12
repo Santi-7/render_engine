@@ -81,9 +81,16 @@ TEST(SimpleLight, SphereOnAPlane)
 
 TEST(CornellBox, BigSpheres)
 {
-    Scene scene = CornellBox();
+    Scene scene = CornellBox(true);
     auto renderedImage = scene.Render();
-    renderedImage->Save("cornell.ppm");
+    renderedImage->Save("cornellS.ppm");
+}
+
+TEST(CornellBox, Planes)
+{
+    Scene scene = CornellBox(false);
+    auto renderedImage = scene.Render();
+    renderedImage->Save("cornellP.ppm");
 }
 
 TEST(SimpleLight, PlaneTop)
