@@ -76,7 +76,7 @@ private:
      * @param light .
      * @return .
      */
-    bool IsShaded(const LightRay &lightRay, const Point &light) const;
+    bool Interrupted(const LightRay &lightRay, const Point &light) const;
 };
 
 #endif // RAY_TRACER_SCENE_HPP

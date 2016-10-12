@@ -65,7 +65,8 @@ Color Scene::GetPixelColor(const Point &pixel) const
     if (tMin == FLT_MAX) return BLACK;
 
     // Assume the path to a light is clear.
-    Color retVal = WHITE;
+    Color retVal = BLACK;
+    Color whiteCopy = WHITE; // Copy of WHITE (since WHITE is const in can't be used in the product)
     // Intersection point with the nearest shape found.
     Point intersection(lightRay.GetPoint(tMin));
     // Normal to the shape in the intersection point.
@@ -82,22 +83,18 @@ Color Scene::GetPixelColor(const Point &pixel) const
             // Ray of light from the intersection point to the current light.
             LightRay intersectionRay = LightRay(intersection, lights[j]);
             // The current point light is not hidden.
-            if (!IsShaded(intersectionRay, lights[j]))
+            if (!Interrupted(intersectionRay, lights[j]))
             {
                 float multiplier = intersectionRay.GetDirection().DotProduct(normal);
-                retVal *= multiplier > 0 ? multiplier : -multiplier;
+                retVal += whiteCopy * (multiplier > 0 ? multiplier : -multiplier);
             }
             // The point light is hidden.
-            else
-            {
-                retVal = BLACK;
-            }
         }
     }
     return retVal;
 }
 
-bool Scene::IsShaded(const LightRay &lightRay, const Point &light) const
+bool Scene::Interrupted(const LightRay &lightRay, const Point &light) const
 {
     // Distance from the intersection point to the point light.
     float tLight = lightRay.GetSource().Distance(light);
