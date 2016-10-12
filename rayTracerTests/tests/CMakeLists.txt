@@ -9,7 +9,7 @@ include_directories(
 add_executable(Ray_Tracer_Tests_run
         containerTests.cpp
         sceneTests.cpp
-        utilsTests.cpp collisionTest.cpp)
+        utilsTests.cpp collisionTest.cpp meshTests.cpp)
 
 target_link_libraries(Ray_Tracer_Tests_run
         container
