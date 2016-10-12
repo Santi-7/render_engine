@@ -115,7 +115,7 @@ private:
 
 static constexpr Color WHITE    (255, 255, 255);
 static constexpr Color BLACK    (0, 0, 0);
-static constexpr Color RED      (255, 0, 255);
+static constexpr Color RED      (255, 0, 0);
 static constexpr Color GREEN    (0, 255, 0);
 static constexpr Color BLUE     (0, 0, 255);
 
