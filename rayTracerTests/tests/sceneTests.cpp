@@ -115,3 +115,16 @@ TEST(SimpleLight, PlaneTop)
     auto renderedImage = scene.Render();
     renderedImage->Save("planeTop.ppm");
 }
+
+TEST(Reflection, PlaneSphere)
+{ // A sphere over a plane.
+    Scene scene;
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/2, 1.0, 1024, 1024));
+
+    scene.AddLightSource(PointLight(Point(0, 0.5, 4)));
+    scene.AddShape(Sphere(Point(0, 2, 4), 1));
+    scene.AddShape(Plane(Point(0, -1, 0), Vect(0, 1, 0)));
+
+    auto renderedImage = scene.Render();
+    renderedImage->Save("reflection.ppm");
+}

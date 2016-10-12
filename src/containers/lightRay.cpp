@@ -12,6 +12,10 @@ LightRay::LightRay(const Point &source, const Point &destination)
 : mSource(source), mDirection((destination - source).Normalise())
 {}
 
+LightRay::LightRay(const Point &source, const Vect &direction)
+: mSource(source), mDirection(direction.Normalise())
+{}
+
 Point LightRay::GetPoint(const float t) const
 {
     return mSource + mDirection * t;
