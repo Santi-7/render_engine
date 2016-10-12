@@ -20,7 +20,9 @@ public:
      *
      * @return a black Color.
      */
-    constexpr Color() : mR(0), mG(0), mB(0){}
+    constexpr Color()
+    : mR(0), mG(0), mB(0)
+    {}
 
     // TODO: Add doc.
     /**
@@ -31,7 +33,9 @@ public:
      * @param b value for blue.
      * @return .
      */
-    constexpr Color(const byte r, const byte g, const byte b) : mR(r), mG(g), mB(b){}
+    constexpr Color(const byte r, const byte g, const byte b)
+    : mR(r), mG(g), mB(b)
+    {}
 
     // TODO: Add doc.
     /**
@@ -67,12 +71,12 @@ public:
     }
 
     /**
-     * Overloads += operator to add the RGB values of the new color to
-     * this one's.
+     * Overloads += operator to add the RGB values
+     * of the new color to this one's.
      *
      * @param k .
      */
-    void operator+=(const Color color)
+    void operator+=(const Color &color)
     {
         mR += color.mR;
         mG += color.mG;
@@ -80,7 +84,7 @@ public:
     }
 
     /**
-     * Overloads *= operator to multiply all values of this color by k
+     * Overloads *= operator to multiply all values of this color by k.
      *
      * @param k .
      */
@@ -92,16 +96,18 @@ public:
     }
 
     /**
-     * Overloads * operator to return a Color result of multiplying
-     * all values in this Color by k
+     * Overloads * operator to return a Color result
+     * of multiplying all values in this Color by k.
      *
      * @param k .
-     * @return New color result of multiplying the RGB values in this
-     * color by k
+     * @return New color result of multiplying the
+     *         RGB values in this color by k.
      */
-    Color operator*(const float k)
+    Color operator*(const float k) const
     {
-        return Color(static_cast<byte>(mR*k), static_cast<byte>(mG*k), static_cast<byte>(mB*k));
+        return Color(static_cast<byte>(mR*k),
+                     static_cast<byte>(mG*k),
+                     static_cast<byte>(mB*k));
     }
 
 private:

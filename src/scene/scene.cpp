@@ -9,8 +9,6 @@
 #include <cfloat>
 #include <image.hpp>
 #include <scene.hpp>
-#include <iostream>
-
 
 unique_ptr<Image> Scene::Render() const
 {
@@ -64,9 +62,8 @@ Color Scene::GetPixelColor(const Point &pixel) const
     // No shape has been found.
     if (tMin == FLT_MAX) return BLACK;
 
-    // Assume the path to a light is clear.
+    // Assume the path to a light is blocked.
     Color retVal = BLACK;
-    Color whiteCopy = WHITE; // Copy of WHITE (since WHITE is const in can't be used in the product)
     // Intersection point with the nearest shape found.
     Point intersection(lightRay.GetPoint(tMin));
     // Normal to the shape in the intersection point.
@@ -86,9 +83,8 @@ Color Scene::GetPixelColor(const Point &pixel) const
             if (!InShadow(intersectionRay, lights[j]))
             {
                 float multiplier = intersectionRay.GetDirection().DotProduct(normal);
-                retVal += whiteCopy * (multiplier > 0 ? multiplier : -multiplier);
+                retVal += WHITE * (multiplier > 0 ? multiplier : -multiplier);
             }
-            // The point light is hidden.
         }
     }
     return retVal;
@@ -105,7 +101,7 @@ bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
          * a shape that intersects the ray of light. */
         float tShape = mShapes[i]->Intersect(lightRay);
         // TODO: 0.015 is different from threshold since the error can get to be this big?
-        if (tShape >= 0 & tShape > 0.015 & tShape < tLight)
+        if (tShape > 0.015 & tShape < tLight)
         {
             return true;
         }
