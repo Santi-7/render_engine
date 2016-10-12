@@ -14,6 +14,8 @@
 #include <plane.hpp>
 #include <triangle.hpp>
 #include <sceneSamples.hpp>
+#include <geometry/mesh.hpp>
+#include <transformationMatrix.hpp>
 /**
  * Test first pixel value is correct
  */
@@ -106,4 +108,47 @@ TEST(SimpleLight, PlaneTop)
 
     auto renderedImage = scene.Render();
     renderedImage->Save("planeTop.ppm");
+}
+
+/////////////////////////////////////////////////////////////
+
+TEST(Mesh, Tetrahedron)
+{
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation((float)3.141592/4);
+    tm.SetYRotation((float)3.141592/4.5f);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (-1.6f,2.5,1), (float)3.14159/2, 1.0, 255, 255));
+    vector<Triangle> tetrahedron = ParseObjFile("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/tetrahedron.obj");
+    for(unsigned int i = 0; i < tetrahedron.size(); ++i)
+    {
+        scene.AddShape(tetrahedron.at(i));
+    }
+    scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
+    scene.AddLightSource(PointLight(Point(-1,5,0)));
+    auto renderedImage = scene.Render();
+    renderedImage->Save("tetrahedron.ppm");
+}
+
+
+TEST(Mesh, Teapot)
+{
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetYRotation((float)3.141592/2);
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,10,-250), (float)3.14159/2, 1.0, 500, 500));
+    vector<Triangle> teapot = ParseObjFile("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/utah_teapot.obj");
+    for(unsigned int i = 0; i < teapot.size(); ++i)
+    {
+        scene.AddShape(teapot.at(i));
+    }
+
+    scene.AddShape(Plane(Point(-400, 0, 0), Vect(1,0,0))); // Left wall.
+    scene.AddShape(Plane(Point(400, 0, 0), Vect(-1,0,0))); // Right wall.
+    scene.AddShape(Plane(Point(0, 0, 400), Vect(0,0,-1))); // Back wall
+
+    scene.AddLightSource(PointLight(Point(0,20,-100)));
+    scene.AddShape(Plane(Point(0,-50, 0), Vect(0,1,0)));
+    auto renderedImage = scene.Render();
+    renderedImage->Save("teapot.ppm");
 }
