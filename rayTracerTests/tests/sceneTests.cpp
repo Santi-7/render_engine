@@ -52,7 +52,7 @@ TEST(SimpleRender, SimpleTriangle)
 { // A triangle illuminated on its front
     Scene scene;
     scene.AddLightSource(PointLight());
-    scene.AddShape(Triangle(Point(0,1,3), Point(-1,-1,3), Point(1,-1,3)));
+    scene.AddShape(Triangle(Vertex(0,1,3, Vect(0,1,0)), Vertex(-1,-1,3, Vect(1,0,0)), Vertex(1,-1,3, Vect(-0.6f,0,0.2f))));
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/2, 1.0, 255, 255));
     unique_ptr<Image> renderedImage = scene.Render();
     renderedImage->Save("triangle.ppm");

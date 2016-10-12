@@ -10,7 +10,7 @@
 #include <plane.hpp>
 #include <triangle.hpp>
 
-Triangle::Triangle(const Point &a, const Point &b, const Point &c)
+Triangle::Triangle(const Vertex &a, const Vertex &b, const Vertex &c)
 : Shape(),
   mA(a),
   mB(b),

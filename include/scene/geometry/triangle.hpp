@@ -10,6 +10,7 @@
 #define RAY_TRACER_TRIANGLE_HPP
 
 #include <shape.hpp>
+#include <vertex.hpp>
 
 class Triangle : public Shape {
 
@@ -24,7 +25,7 @@ public:
      * @param c .
      * @return .
      */
-    Triangle(const Point &a, const Point &b, const Point &c);
+    Triangle(const Vertex &a, const Vertex &b, const Vertex &c);
 
     // TODO: Add doc.
     /**
@@ -48,7 +49,7 @@ private:
 
     // TODO: Add doc.
     /* . */
-    Point mA, mB, mC;
+    Vertex mA, mB, mC;
 
     /* Cached values. */
 
