@@ -104,7 +104,8 @@ bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
         /* The point light is hidden, because there is
          * a shape that intersects the ray of light. */
         float tShape = mShapes[i]->Intersect(lightRay);
-        if (tShape >= 0 & tShape < tLight)
+        // TODO: 0.015 is different from threshold since the error can get to be this big?
+        if (tShape >= 0 & tShape > 0.015 & tShape < tLight)
         {
             return true;
         }
