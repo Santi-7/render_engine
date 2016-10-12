@@ -83,7 +83,7 @@ Color Scene::GetPixelColor(const Point &pixel) const
             // Ray of light from the intersection point to the current light.
             LightRay intersectionRay = LightRay(intersection, lights[j]);
             // The current point light is not hidden.
-            if (!Interrupted(intersectionRay, lights[j]))
+            if (!InShadow(intersectionRay, lights[j]))
             {
                 float multiplier = intersectionRay.GetDirection().DotProduct(normal);
                 retVal += whiteCopy * (multiplier > 0 ? multiplier : -multiplier);
@@ -94,7 +94,7 @@ Color Scene::GetPixelColor(const Point &pixel) const
     return retVal;
 }
 
-bool Scene::Interrupted(const LightRay &lightRay, const Point &light) const
+bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
 {
     // Distance from the intersection point to the point light.
     float tLight = lightRay.GetSource().Distance(light);
