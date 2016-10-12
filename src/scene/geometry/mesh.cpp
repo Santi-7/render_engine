@@ -10,16 +10,22 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <cfloat>
 
-Mesh::Mesh(const string filename) : Shape(), mVertices(vector<Vertex>()), mFaces(vector<Face>())
+using namespace std;
+
+typedef tuple<unsigned int, unsigned int, unsigned int> Face;
+
+vector<Triangle> ParseObjFile(const string filename)
 {
+    vector<Triangle> triangles = vector<Triangle>();
+    vector<Point> positions;
+    vector<Vect> normals;
+    vector<Face> faces;
     ifstream objFile(filename);
     string lineBuf;
     string lineType;
     istringstream lineStream;
-
-    vector<Point> positions;
-    vector<Vect> normals;
 
     float x, y, z;
     unsigned int a, b, c;
@@ -43,7 +49,7 @@ Mesh::Mesh(const string filename) : Shape(), mVertices(vector<Vertex>()), mFaces
         else if(lineType == "f")
         {   // New face
             lineStream >> a >> b >> c;
-            mFaces.push_back(Face(a, b, c));
+            faces.push_back(Face(a-1, b-1, c-1));
         }
         else continue;
     }
@@ -54,16 +60,12 @@ Mesh::Mesh(const string filename) : Shape(), mVertices(vector<Vertex>()), mFaces
         throw 1;
     }
 
-    for(unsigned int i = 0; i < positions.size(); ++i)
+    for(unsigned int i = 0; i < faces.size(); ++i)
     {
-        mVertices.push_back(Vertex(positions.at(i), normals.at(i)));
+        triangles.push_back(Triangle(Vertex(positions.at(get<0>(faces.at(i))), normals.at(get<0>(faces.at(i)))),
+                                     Vertex(positions.at(get<1>(faces.at(i))), normals.at(get<1>(faces.at(i)))),
+                                     Vertex(positions.at(get<2>(faces.at(i))), normals.at(get<2>(faces.at(i))))));
     }
+
+    return triangles;
 }
-
-Mesh::Mesh(vector<Vertex> vertices, vector<Face> faces) : Shape(), mVertices(vertices), mFaces(faces){}
-
-// Placehorder
-float Mesh::Intersect(const LightRay &lightRay) const {return 0.0f;}
-
-// Placehorder
-Vect Mesh::GetNormal(const Point &point) const {return Vect(0,0,0);}
