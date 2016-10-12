@@ -11,6 +11,7 @@
 
 #include <shape.hpp>
 #include <vertex.hpp>
+#include <plane.hpp>
 
 class Triangle : public Shape {
 

@@ -14,6 +14,7 @@
 #include <memory>
 #include <shape.hpp>
 #include <vector>
+#include <image.hpp>
 
 using namespace std;
 
