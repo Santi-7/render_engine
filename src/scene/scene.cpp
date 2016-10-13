@@ -77,10 +77,12 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     LightRay reflectedRay = LightRay(intersection, reflectedDir);
     // The reflected light comes with an angle.
     float multiplier = reflectedRay.GetDirection().DotProduct(normal);
+    multiplier = multiplier > 0 ? multiplier : -multiplier;
 
-    return DirectLight(intersection, normal) +
-           GetLightRayColor(reflectedRay, --reflectedSteps) *
-                (multiplier > 0 ? multiplier : -multiplier);
+    Color rayColor = DirectLight(intersection, normal);
+    if (nearestShape->GetMaterial().IsReflective())
+        rayColor += GetLightRayColor(reflectedRay, --reflectedSteps) * multiplier;
+    return rayColor;
 }
 
 Color Scene::DirectLight(const Point &point, const Vect &normal) const

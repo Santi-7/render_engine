@@ -12,6 +12,7 @@ set(HEADER_FILES
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/containers
         ${PROJECT_SOURCE_DIR}/include/scene/geometry
+        ${PROJECT_SOURCE_DIR}/include/scene/materials
         ${PROJECT_SOURCE_DIR}/include/utils)
 
 add_library(geometry STATIC ${SOURCE_FILES} ${HEADER_FILES})

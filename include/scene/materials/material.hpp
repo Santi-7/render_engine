@@ -9,13 +9,14 @@
 #ifndef RAY_TRACER_MATERIAL_HPP
 #define RAY_TRACER_MATERIAL_HPP
 
-class Material{
+class Material {
 
 public:
 
     // TODO: Add doc.
     /**
      * Creates a Lambertian material.
+     *
      * @return Lambertian material.
      */
     Material();
@@ -23,6 +24,7 @@ public:
     // TODO: Add doc.
     /**
      * Creates a material with the given reflectance.
+     *
      * @param reflectance for this material.
      * @return New material with the given reflectance.
      */
@@ -31,6 +33,7 @@ public:
     // TODO: Add doc.
     /**
      * Returns this material's reflectance.
+     *
      * @return Reflectance of this material
      */
     float GetReflectance();
@@ -38,11 +41,13 @@ public:
     // TODO: Add doc.
     /**
      * True if this material's reflectance is not zero.
-     * @return True if this material's reflectance is not zero, false otherwise.
+     *
+     * @return True if this material's reflectance
+     *         is not zero, false otherwise.
      */
     bool IsReflective();
 
-protected:
+private:
 
     float mReflectance;
 };
