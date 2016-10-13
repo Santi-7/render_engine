@@ -49,7 +49,7 @@ private:
 
     // TODO: Add doc.
     /* */
-    static constexpr unsigned int REFLECT_STEPS = 1;
+    static constexpr unsigned int REFLECT_STEPS = 2;
 
     // TODO: Add doc.
     /* . */

@@ -9,6 +9,11 @@
 #ifndef RAY_TRACER_COLOR_HPP
 #define RAY_TRACER_COLOR_HPP
 
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
 typedef unsigned char byte;
 
 class Color {
@@ -79,9 +84,9 @@ public:
      */
     Color operator+(const Color &color) const
     {
-        return Color(mR + color.mR,
-                     mG + color.mG,
-                     mB + color.mB);
+        return Color(min(static_cast<byte>(mR + color.mR), static_cast<byte>(UCHAR_MAX)),
+                     min(static_cast<byte>(mG + color.mG), static_cast<byte>(UCHAR_MAX)),
+                     min(static_cast<byte>(mB + color.mB), static_cast<byte>(UCHAR_MAX)));
     }
 
     // TODO: Add doc.
@@ -93,9 +98,9 @@ public:
      */
     void operator+=(const Color &color)
     {
-        mR += color.mR;
-        mG += color.mG;
-        mB += color.mB;
+        mR = min(static_cast<byte>(mR + color.mR), static_cast<byte>(UCHAR_MAX));
+        mG = min(static_cast<byte>(mG + color.mG), static_cast<byte>(UCHAR_MAX));
+        mB = min(static_cast<byte>(mB + color.mB), static_cast<byte>(UCHAR_MAX));
     }
 
     // TODO: Add doc.
@@ -109,9 +114,9 @@ public:
      */
     Color operator*(const float k) const
     {
-        return Color(static_cast<byte>(mR*k),
-                     static_cast<byte>(mG*k),
-                     static_cast<byte>(mB*k));
+        return Color(min(static_cast<byte>(mR*k), static_cast<byte>(UCHAR_MAX)),
+                     min(static_cast<byte>(mG*k), static_cast<byte>(UCHAR_MAX)),
+                     min(static_cast<byte>(mB*k), static_cast<byte>(UCHAR_MAX)));
     }
 
     // TODO: Add doc.
@@ -123,9 +128,9 @@ public:
      */
     void operator*=(const float k)
     {
-        mR *= k;
-        mG *= k;
-        mB *= k;
+        mR = min(static_cast<byte>(mR*k), static_cast<byte>(UCHAR_MAX));
+        mG = min(static_cast<byte>(mG*k), static_cast<byte>(UCHAR_MAX));
+        mB = min(static_cast<byte>(mB*k), static_cast<byte>(UCHAR_MAX));
     }
 
 private:
