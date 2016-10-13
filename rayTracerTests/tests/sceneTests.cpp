@@ -14,6 +14,7 @@
 #include <plane.hpp>
 #include <triangle.hpp>
 #include <sceneSamples.hpp>
+#include <transformationMatrix.hpp>
 /**
  * Test first pixel value is correct
  */
@@ -119,18 +120,26 @@ TEST(SimpleLight, PlaneTop)
 TEST(Reflection, PlaneSphere)
 { // A sphere over a plane.
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/2, 1.0, 1024, 1024));
+    TransformationMatrix tm;
+    tm.SetXRotation((float)3.141592/10);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-4), (float)3.14159/2, 1.0, 1920, 1080));
 
-    scene.AddLightSource(PointLight(Point(0, 0.5, 4)));
+    scene.AddLightSource(PointLight(Point(3, 1.5, 4)));
 
-    Sphere sphere(Point(0, 2, 4), 1);
+    Sphere sphere(Point(0, 0.5, 4), 1);
     sphere.SetMaterial(Material(0));
     scene.AddShape(sphere);
 
-    Plane plane(Point(0, -1, 0), Vect(0, 1, 0));
-    plane.SetMaterial(Material(1));
-    scene.AddShape(plane);
+    Plane plane1(Point(0, -0.5f, 0), Vect(0, 1, 0));
+    plane1.SetMaterial(Material(1));
+    scene.AddShape(plane1);
 
+    Plane plane2(Point(0, 0, 60), Vect(0, 0, 1));
+    scene.AddShape(plane2);
+    Plane plane3(Point(-20, 0, 0), Vect(1, 0, 0));
+    Plane plane4(Point(20, 0, 60), Vect(-1, 0,0));
+    scene.AddShape(plane3);
+    scene.AddShape(plane4);
     auto renderedImage = scene.Render();
     renderedImage->Save("reflection.ppm");
 }
