@@ -16,3 +16,5 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/include/utils)
 
 add_library(geometry STATIC ${SOURCE_FILES} ${HEADER_FILES})
+
+target_link_libraries(geometry materials)

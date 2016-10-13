@@ -10,7 +10,6 @@
 #define RAY_TRACER_SHAPE_HPP
 
 #include <lightRay.hpp>
-//#include <material.hpp> TODO: Fix this.
 #include <materials/material.hpp>
 
 using namespace std;
