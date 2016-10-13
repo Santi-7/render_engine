@@ -84,9 +84,9 @@ public:
      */
     Color operator+(const Color &color) const
     {
-        return Color(min(static_cast<byte>(mR + color.mR), static_cast<byte>(UCHAR_MAX)),
-                     min(static_cast<byte>(mG + color.mG), static_cast<byte>(UCHAR_MAX)),
-                     min(static_cast<byte>(mB + color.mB), static_cast<byte>(UCHAR_MAX)));
+        return Color(static_cast<byte>(min(mR + color.mR, UCHAR_MAX)),
+                     static_cast<byte>(min(mG + color.mG, UCHAR_MAX)),
+                     static_cast<byte>(min(mB + color.mB, UCHAR_MAX)));
     }
 
     // TODO: Add doc.
@@ -98,9 +98,9 @@ public:
      */
     void operator+=(const Color &color)
     {
-        mR = min(static_cast<byte>(mR + color.mR), static_cast<byte>(UCHAR_MAX));
-        mG = min(static_cast<byte>(mG + color.mG), static_cast<byte>(UCHAR_MAX));
-        mB = min(static_cast<byte>(mB + color.mB), static_cast<byte>(UCHAR_MAX));
+        mR = static_cast<byte>(min(mR + color.mR, UCHAR_MAX));
+        mG = static_cast<byte>(min(mG + color.mG, UCHAR_MAX));
+        mB = static_cast<byte>(min(mB + color.mB, UCHAR_MAX));
     }
 
     // TODO: Add doc.
@@ -114,9 +114,9 @@ public:
      */
     Color operator*(const float k) const
     {
-        return Color(min(static_cast<byte>(mR*k), static_cast<byte>(UCHAR_MAX)),
-                     min(static_cast<byte>(mG*k), static_cast<byte>(UCHAR_MAX)),
-                     min(static_cast<byte>(mB*k), static_cast<byte>(UCHAR_MAX)));
+        return Color(static_cast<byte>(min(mR*k, static_cast<float>(UCHAR_MAX))),
+                     static_cast<byte>(min(mG*k, static_cast<float>(UCHAR_MAX))),
+                     static_cast<byte>(min(mB*k, static_cast<float>(UCHAR_MAX))));
     }
 
     // TODO: Add doc.
@@ -128,9 +128,9 @@ public:
      */
     void operator*=(const float k)
     {
-        mR = min(static_cast<byte>(mR*k), static_cast<byte>(UCHAR_MAX));
-        mG = min(static_cast<byte>(mG*k), static_cast<byte>(UCHAR_MAX));
-        mB = min(static_cast<byte>(mB*k), static_cast<byte>(UCHAR_MAX));
+        mR = static_cast<byte>(min(mR*k, static_cast<float>(UCHAR_MAX)));
+        mG = static_cast<byte>(min(mG*k, static_cast<float>(UCHAR_MAX)));
+        mB = static_cast<byte>(min(mB*k, static_cast<float>(UCHAR_MAX)));
     }
 
 private:
