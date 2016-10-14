@@ -9,6 +9,11 @@
 #ifndef RAY_TRACER_COLOR_HPP
 #define RAY_TRACER_COLOR_HPP
 
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
 typedef unsigned char byte;
 
 class Color {
@@ -20,7 +25,9 @@ public:
      *
      * @return a black Color.
      */
-    Color();
+    constexpr Color()
+    : mR(0), mG(0), mB(0)
+    {}
 
     // TODO: Add doc.
     /**
@@ -31,7 +38,9 @@ public:
      * @param b value for blue.
      * @return .
      */
-    Color(const byte r, const byte g, const byte b);
+    constexpr Color(const byte r, const byte g, const byte b)
+    : mR(r), mG(g), mB(b)
+    {}
 
     // TODO: Add doc.
     /**
@@ -39,7 +48,10 @@ public:
      *
      * @return .
      */
-    byte GetR() const;
+    constexpr byte GetR() const
+    {
+        return mR;
+    }
 
     // TODO: Add doc.
     /**
@@ -47,7 +59,10 @@ public:
      *
      * @return .
      */
-    byte GetG() const;
+    constexpr byte GetG() const
+    {
+        return mG;
+    }
 
     // TODO: Add doc.
     /**
@@ -55,30 +70,68 @@ public:
      *
      * @return .
      */
-    byte GetB() const;
+    constexpr byte GetB() const
+    {
+        return mB;
+    }
 
     // TODO: Add doc.
     /**
-     * .
+     * Overloads + operator to .
      *
-     * @param red .
+     * @param color .
+     * @return .
      */
-    void SetR(const byte red);
+    Color operator+(const Color &color) const
+    {
+        return Color(static_cast<byte>(min(mR + color.mR, UCHAR_MAX)),
+                     static_cast<byte>(min(mG + color.mG, UCHAR_MAX)),
+                     static_cast<byte>(min(mB + color.mB, UCHAR_MAX)));
+    }
 
     // TODO: Add doc.
     /**
-     * .
+     * Overloads += operator to add the RGB values
+     * of the new color to this one's.
      *
-     * @param green .
+     * @param color .
      */
-    void SetG(const byte green);
+    void operator+=(const Color &color)
+    {
+        mR = static_cast<byte>(min(mR + color.mR, UCHAR_MAX));
+        mG = static_cast<byte>(min(mG + color.mG, UCHAR_MAX));
+        mB = static_cast<byte>(min(mB + color.mB, UCHAR_MAX));
+    }
 
     // TODO: Add doc.
     /**
-     * .
-     * @param blue .
+     * Overloads * operator to return a Color result
+     * of multiplying all values in this Color by k.
+     *
+     * @param k .
+     * @return New color result of multiplying the
+     *         RGB values in this color by k.
      */
-    void SetB(const byte blue);
+    Color operator*(const float k) const
+    {
+        return Color(static_cast<byte>(min(mR*k, static_cast<float>(UCHAR_MAX))),
+                     static_cast<byte>(min(mG*k, static_cast<float>(UCHAR_MAX))),
+                     static_cast<byte>(min(mB*k, static_cast<float>(UCHAR_MAX))));
+    }
+
+    // TODO: Add doc.
+    /**
+     * Overloads *= operator to multiply all
+     * values of this color by k.
+     *
+     * @param k .
+     */
+    void operator*=(const float k)
+    {
+        mR = static_cast<byte>(min(mR*k, static_cast<float>(UCHAR_MAX)));
+        mG = static_cast<byte>(min(mG*k, static_cast<float>(UCHAR_MAX)));
+        mB = static_cast<byte>(min(mB*k, static_cast<float>(UCHAR_MAX)));
+    }
 
 private:
 
@@ -89,5 +142,10 @@ private:
     byte mB;
 };
 
+static constexpr Color WHITE    (255, 255, 255);
+static constexpr Color BLACK    (0, 0, 0);
+static constexpr Color RED      (255, 0, 0);
+static constexpr Color GREEN    (0, 255, 0);
+static constexpr Color BLUE     (0, 0, 255);
 
 #endif // RAY_TRACER_COLOR_HPP

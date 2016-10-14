@@ -60,7 +60,8 @@ public:
      * @param i .
      * @return .
      */
-    vector<Color> operator[](const unsigned int i) const;
+    vector<Color>& operator[](const unsigned int i);
+
 
 private:
 

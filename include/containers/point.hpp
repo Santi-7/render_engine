@@ -18,7 +18,7 @@ public:
 
     // TODO: Add doc.
     /* */
-    static const float H;
+    static constexpr float H = 1;
 
     // TODO: Add doc.
     /**
@@ -30,6 +30,15 @@ public:
      * @return .
      */
     Point(const float x, const float y, const float z);
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param to .
+     * @return .
+     */
+    float Distance(const Point &to) const;
 
     /**
      * .
@@ -92,6 +101,36 @@ public:
      * @return .
      */
     Point operator+(const Vect& v) const;
+
+    // TODO: Add doc.
+    /**
+     * Overloads += operator to move this point in
+     * the direction of vector v.
+     *
+     * @param v .
+     * @return .
+     */
+    void operator+=(const Vect& v);
+
+    // TODO: Add doc.
+    /**
+     * Overloads - operator to return a Point result
+     * of .
+     *
+     * @param v .
+     * @return .
+     */
+    Point operator-(const Vect& v) const;
+
+    // TODO: Add doc.
+    /**
+     * Overloads -= operator to move this point in
+     * the direction opposite to vector v.
+     *
+     * @param v .
+     * @return .
+     */
+    void operator-=(const Vect& v);
 
     /**
      * Overloads == operator to return true if both points are equal.

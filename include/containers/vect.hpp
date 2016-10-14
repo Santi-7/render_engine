@@ -17,7 +17,7 @@ public:
 
     // TODO: Add doc.
     /* */
-    static const float H;
+    static constexpr float H = 0;
 
     // TODO: Add doc.
     /**
@@ -108,16 +108,6 @@ public:
      * @return .
      */
     Vect operator-(const Vect &v) const;
-
-    // TODO: Add doc.
-    /**
-     * Overloads * operator to return a Vect result
-     * of .
-     *
-     * @param v .
-     * @return .
-     */
-    Vect operator*(const Vect v) const;
 
     // TODO: Add doc.
     /**

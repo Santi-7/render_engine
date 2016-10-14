@@ -10,7 +10,6 @@
 #define RAY_TRACER_MATRIX_HPP
 
 #include <point.hpp>
-#include <vect.hpp>
 
 class Matrix
 {

@@ -1,30 +1,29 @@
 /* ---------------------------------------------------------------------------
-** triangle.hpp
+** plane.hpp
 ** TODO: Add doc.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
-#ifndef RAY_TRACER_TRIANGLE_HPP
-#define RAY_TRACER_TRIANGLE_HPP
+#ifndef RAY_TRACER_PLANE_HPP
+#define RAY_TRACER_PLANE_HPP
 
 #include <shape.hpp>
 
-class Triangle : public Shape {
+class Plane : public Shape {
 
 public:
 
     // TODO: Add doc.
     /**
-     * Constructs a Triangle.
+     * Constructs a Plane.
      *
-     * @param a .
-     * @param b .
-     * @param c .
+     * @param point .
+     * @param normal .
      * @return .
      */
-    Triangle(const Point &a, const Point &b, const Point &c);
+    Plane(const Point &point, const Vect &normal);
 
     // TODO: Add doc.
     /**
@@ -48,15 +47,11 @@ private:
 
     // TODO: Add doc.
     /* . */
-    Point mA, mB, mC;
-
-    /* Cached values. */
+    Point mPoint;
 
     // TODO: Add doc.
     /* . */
-    Vect v0, v1;
-    float d00, d01, d11, denominator;
-    Plane plane;
+    Vect mNormal;
 };
 
-#endif // RAY_TRACER_TRIANGLE_HPP
+#endif // RAY_TRACER_PLANE_HPP

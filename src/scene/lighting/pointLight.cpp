@@ -7,3 +7,21 @@
 ** -------------------------------------------------------------------------*/
 
 #include <pointLight.hpp>
+
+PointLight::PointLight()
+: LightSource(), mPosition(Point(0,0,0))
+{}
+
+PointLight::PointLight(const Point &position)
+: LightSource(), mPosition(position)
+{}
+
+PointLight::PointLight(const Point &position, const float radiance,
+                       const Color &baseColor)
+: LightSource(radiance, baseColor), mPosition(position)
+{}
+
+vector<Point> PointLight::GetLights() const
+{
+    return vector<Point>{mPosition};
+}

@@ -29,6 +29,16 @@ TEST(PointAddition, General)
     EXPECT_FALSE(a == b);
 }
 
+TEST(PointMovement, InPlace)
+{
+    Point a(0,0,0);
+    Vect up(0,1,0);
+    a += up;
+    EXPECT_EQ(a, Point(0,1,0));
+    a -= up;
+    EXPECT_EQ(a, Point(0,0,0));
+}
+
 //////////////////
 /// Matrix Tests//
 //////////////////

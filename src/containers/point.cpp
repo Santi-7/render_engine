@@ -8,13 +8,16 @@
 
 #include <point.hpp>
 
-const float Point::H = 1;
-
 Point::Point(const float x, const float y, const float z)
 {
     mX = x;
     mY = y;
     mZ = z;
+}
+
+float Point::Distance(const Point &to) const
+{
+    return (*this - to).Abs();
 }
 
 float Point::GetX() const
@@ -59,6 +62,28 @@ Point Point::operator+(const Vect& v) const
     float y = mY + v.GetY();
     float z = mZ + v.GetZ();
     return Point(x, y, z);
+}
+
+void Point::operator+=(const Vect& v)
+{
+    mX += v.GetX();
+    mY += v.GetY();
+    mZ += v.GetZ();
+}
+
+Point Point::operator-(const Vect& v) const
+{
+    float x = mX - v.GetX();
+    float y = mY - v.GetY();
+    float z = mZ - v.GetZ();
+    return Point(x, y, z);
+}
+
+void Point::operator-=(const Vect& v)
+{
+    mX -= v.GetX();
+    mY -= v.GetY();
+    mZ -= v.GetZ();
 }
 
 bool Point::operator==(const Point& v) const

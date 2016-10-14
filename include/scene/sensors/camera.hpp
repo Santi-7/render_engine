@@ -21,11 +21,36 @@ public:
     /**
      * .
      *
-     * @param x .
-     * @param y .
      * @return .
      */
-    virtual LightRay PrimaryRay(const int x, const int y) const = 0;
+    Camera();
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param up .
+     * @param right .
+     * @param towards .
+     * @param focalPoint .
+     * @param fieldOfVision .
+     * @param viewPlaneDistance .
+     * @param width .
+     * @param height .
+     * @return .
+     */
+    Camera(const Vect &up, const Vect &right,
+           const Vect &towards, const Point &focalPoint,
+           const float fieldOfVision, const float viewPlaneDistance,
+           const unsigned int width, const unsigned int height);
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    virtual Point GetFirstPixel() const = 0;
 
     // TODO: Add doc.
     /**
@@ -51,23 +76,51 @@ public:
      */
     Vect GetTowards() const;
 
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    Point GetFocalPoint() const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    unsigned int GetWidth() const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    unsigned int GetHeight() const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @return .
+     */
+    float GetPixelSize() const;
+
 protected:
 
     // TODO: Add doc.
     /* . */
-    const float PI = static_cast<float>(3.141592653589793238463);
-
-    // TODO: Add doc.
-    /* . */
-    const float PIXEL_DIMENSION = 2 * tan(mFoV / 2) / mHeight;
-
-    // TODO: Add doc.
-    /* . */
-    Point mFocalPoint;
+    static constexpr float PI = 3.1415926535897932f;
 
     // TODO: Add doc.
     /* . */
     Vect mUp, mRight, mTowards;
+
+    // TODO: Add doc.
+    /* . */
+    Point mFocalPoint;
 
     // TODO: Add doc.
     /* . */
@@ -80,6 +133,18 @@ protected:
     // TODO: Add doc.
     /* . */
     unsigned int mWidth, mHeight;
+
+    // TODO: Add doc.
+    /* . */
+    float mPixelSize;
+
+private:
+
+    // TODO: Add doc.
+    /**
+     * .
+     */
+    void CalculatePixelSize();
 };
 
 #endif // RAY_TRACER_CAMERA_HPP

@@ -6,10 +6,8 @@
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
-#include <cmath>
+#include <math.h>
 #include <vect.hpp>
-
-const float Vect::H = 0;
 
 Vect::Vect(const float x, const float y, const float z)
 {
@@ -35,7 +33,7 @@ float Vect::GetZ() const
 
 float Vect::Abs() const
 {
-    return (float) sqrt(pow(mX, 2) + pow(mY, 2) + pow(mZ, 2));
+    return sqrt(pow(mX, 2) + pow(mY, 2) + pow(mZ, 2));
 }
 
 Vect Vect::Normalise() const
@@ -72,14 +70,6 @@ Vect Vect::operator-(const Vect& v) const
     float x = mX - v.mX;
     float y = mY - v.mY;
     float z = mZ - v.mZ;
-    return Vect(x, y, z);
-}
-
-Vect Vect::operator*(const Vect v) const
-{
-    float x = mX * v.mX;
-    float y = mY * v.mY;
-    float z = mZ * v.mZ;
     return Vect(x, y, z);
 }
 

@@ -36,7 +36,7 @@ TEST(TransformationMatrix, General)
 TEST(CreateMultiColorImage, image)
 {
     const unsigned int SIZE = 600;
-    Image white(SIZE, SIZE);
+    Image multi(SIZE, SIZE);
 
     vector<vector<Color> > drawing
     {
@@ -48,7 +48,7 @@ TEST(CreateMultiColorImage, image)
     {
         for(unsigned long j = 0; j < SIZE/2; ++j)
         {
-            white[i][j] = drawing[0][0];
+            multi[i][j] = drawing[0][0];
         }
     }
 
@@ -56,7 +56,7 @@ TEST(CreateMultiColorImage, image)
     {
         for(unsigned long j = SIZE/2; j < SIZE; ++j)
         {
-            white[i][j] = drawing[0][1];
+            multi[i][j] = drawing[0][1];
         }
     }
 
@@ -64,16 +64,15 @@ TEST(CreateMultiColorImage, image)
     {
         for(unsigned long j = 0; j < SIZE/2; ++j)
         {
-            white[i][j] = drawing[1][0];
+            multi[i][j] = drawing[1][0];
         }
     }
     for(unsigned long i = SIZE/2; i < SIZE; ++i)
     {
         for(unsigned long j = SIZE/2; j < SIZE; ++j)
         {
-            white[i][j] = drawing[1][1];
+            multi[i][j] = drawing[1][1];
         }
     }
-    // Linking issues with the function SavePPMImage
-    white.Save("multicolor.ppm");
+    multi.Save("multicolor.ppm");
 }

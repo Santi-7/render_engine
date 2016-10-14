@@ -32,7 +32,16 @@ public:
      * @param lightRay .
      * @return .
      */
-    unique_ptr<Point> Intersect(const LightRay &lightRay) const;
+    float Intersect(const LightRay &lightRay) const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param point .
+     * @return .
+     */
+    Vect GetNormal(const Point &point) const;
 
 private:
 
@@ -43,6 +52,12 @@ private:
     // TODO: Add doc.
     /* . */
     float mRadius;
+
+    /* Cached values. */
+
+    // TODO: Add doc.
+    /* . */
+    float mRadius2;
 };
 
 #endif // RAY_TRACER_SPHERE_HPP

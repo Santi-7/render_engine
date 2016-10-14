@@ -9,21 +9,22 @@
 #include <pinhole.hpp>
 
 Pinhole::Pinhole()
-: Camera(), mUp(Vect(0,1,0)), mRight(Vect(1,0,0)), mTowards(Vect(0,0,1)),
-  mFocalPoint(Point(0,0,0)), mFoV(PI / 2), mViewPlaneDistance(1.0),
-  mWidth(256), mHeight(256)
+: Camera()
 {}
 
 Pinhole::Pinhole(const Vect &up, const Vect &right,
                  const Vect &towards, const Point &focalPoint,
-                 const float fieldOfVision, const float imagePlaneDistance,
+                 const float fieldOfVision, const float viewPlaneDistance,
                  const unsigned int width, const unsigned int height)
-: Camera(), mUp(up), mRight(right), mTowards(towards), mFocalPoint(focalPoint),
-  mFoV(fieldOfVision), mViewPlaneDistance(imagePlaneDistance),
-  mWidth(width), mHeight(height)
+: Camera(up, right, towards, focalPoint, fieldOfVision,
+         viewPlaneDistance, width, height)
 {}
 
-LightRay Pinhole::PrimaryRay(const int x, const int y) const
+Point Pinhole::GetFirstPixel() const
 {
-    // TODO: Get the point for the given pixel
+    Point middle = mFocalPoint + mTowards * mViewPlaneDistance;
+    // From middle go left and then up to get the frist pixel.
+    Point first = middle - mRight * (((mWidth - 1 ) / 2.0) * mPixelSize)
+                         + mUp * (((mHeight - 1 ) / 2.0) * mPixelSize);
+    return first;
 }

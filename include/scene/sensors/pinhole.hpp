@@ -48,11 +48,9 @@ public:
     /**
      * .
      *
-     * @param x .
-     * @param y .
      * @return .
      */
-    LightRay PrimaryRay(const int x, const int y) const;
+    Point GetFirstPixel() const;
 };
 
 #endif // RAY_TRACER_PINHOLE_HPP

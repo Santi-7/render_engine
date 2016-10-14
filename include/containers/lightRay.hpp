@@ -20,6 +20,16 @@ public:
      * .
      *
      * @param source .
+     * @param destination .
+     * @return .
+     */
+    LightRay(const Point &source, const Point &destination);
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param source .
      * @param direction .
      * @return .
      */
