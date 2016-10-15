@@ -22,22 +22,16 @@ unique_ptr<Image> Scene::Render() const
     // Pixels' distance in the camera intrinsics right and up.
     Vect advanceX(mCamera->GetRight() * mCamera->GetPixelSize());
     Vect advanceY(mCamera->GetUp() * mCamera->GetPixelSize());
-    // For all the pixels, trace a ray of light.
-    for (unsigned int i = 0; i < mCamera->GetHeight(); ++i)
-    {
-        for (unsigned int j = 0; j < mCamera->GetWidth(); ++j)
-        {
+    shared_ptr<PixelGetter> pixelGetter( new PixelGetter(mCamera->GetFirstPixel(), advanceX, advanceY, mCamera->GetWidth(), mCamera->GetHeight()));
 
-            // Next pixel.
-            currentPixel += advanceX;
-            // Get the color for the current pixel.
-            (*rendered)[i][j] = GetLightRayColor(
-                    LightRay(mCamera->GetFocalPoint(), currentPixel), REFLECT_STEPS);
-        }
-        // Next row.
-        currentRow -= advanceY;
-        currentPixel = currentRow;
+    auto pixelTarget = pixelGetter->GetNextPixel();
+    while(pixelTarget != nullptr)
+    {
+        (*rendered)[get<2>(*pixelTarget)][get<1>(*pixelTarget)] = GetLightRayColor(
+                LightRay(mCamera->GetFocalPoint(), get<0>(*pixelTarget)), REFLECT_STEPS);
+        pixelTarget = pixelGetter->GetNextPixel();
     }
+
     return rendered;
 }
 
