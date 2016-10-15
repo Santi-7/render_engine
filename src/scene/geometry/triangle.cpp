@@ -9,21 +9,20 @@
 #include <cfloat>
 #include <plane.hpp>
 #include <triangle.hpp>
-#include <cmath>
 
-Triangle::Triangle(const Vertex &a, const Vertex &b, const Vertex &c)
-: Shape(),
-  mA(a),
-  mB(b),
-  mC(c),
-  // Cached values.
-  v0(b - a),
-  v1(c - a),
-  d00(v0.DotProduct(v0)),
-  d01(v0.DotProduct(v1)),
-  d11(v1.DotProduct(v1)),
-  denominator(d00 * d11 - d01 * d01),
-  plane(mA, v0.CrossProduct(v1).Normalise())
+Triangle::Triangle(const Point &a, const Point &b, const Point &c)
+        : Shape(),
+          mA(a),
+          mB(b),
+          mC(c),
+          // Cached values.
+          v0(b - a),
+          v1(c - a),
+          d00(v0.DotProduct(v0)),
+          d01(v0.DotProduct(v1)),
+          d11(v1.DotProduct(v1)),
+          denominator(d00 * d11 - d01 * d01),
+          plane(mA, v0.CrossProduct(v1).Normalise())
 {}
 
 // TODO: Check if t = threshold, this is, the lightray lies inside the plane.
@@ -48,36 +47,5 @@ float Triangle::Intersect(const LightRay &lightRay) const
 
 Vect Triangle::GetNormal(const Point &point) const
 {
-
-    Vect u = mA - mB;
-
-    Vect v = mC - mB;
-
-    Vect n = point - mB;
-
-    double dU = u.Abs();
-    double dV = v.Abs();
-    double dN = n.Abs();
-
-    u = u.Normalise();
-    n = n.Normalise();
-
-    double cost = n.DotProduct(u);
-
-    if (cost < 0) cost = 0;
-    if (cost > 1) cost = 1;
-
-    double t = cos(cost);
-
-    double distY = 0, distX = 0;
-    distX = dN * cos(t);
-    distY = dN * sin(t);
-
-    double uDist = distX/ dU;
-    double vDist = distY/ dV;
-
-
-    return Vect((float)-((1.0 - (uDist + vDist)) * mA.GetNormal().GetX() + mA.GetNormal().GetY() * uDist + mA.GetNormal().GetZ() * vDist),
-                (float)-((1.0 - (uDist + vDist)) * mB.GetNormal().GetX() + mB.GetNormal().GetY() * uDist + mB.GetNormal().GetZ() * vDist),
-                (float)-((1.0 - (uDist + vDist)) * mC.GetNormal().GetX() + mC.GetNormal().GetY() * uDist + mC.GetNormal().GetZ() * vDist));
+    return plane.GetNormal(point);
 }

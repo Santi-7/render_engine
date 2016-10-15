@@ -11,14 +11,15 @@
 #include <iostream>
 #include <sstream>
 #include <cfloat>
+#include <geometry/triangle.hpp>
 
 using namespace std;
 
 typedef tuple<unsigned int, unsigned int, unsigned int> Face;
 
-vector<Triangle> ParseObjFile(const string filename)
+vector<shared_ptr<Triangle>> ParseObjFile(const string filename)
 {
-    vector<Triangle> triangles = vector<Triangle>();
+    vector<shared_ptr<Triangle>> triangles;
     vector<Point> positions;
     vector<Vect> normals;
     vector<Face> faces;
@@ -54,17 +55,32 @@ vector<Triangle> ParseObjFile(const string filename)
         else continue;
     }
 
-    if(positions.size() != normals.size())
+    if(normals.size() == 0)
     {
-        cerr << "Error: the obj file doesn't define the same amount of vertices and normals\n";
-        throw 1;
-    }
+        for (unsigned int i = 0; i < faces.size(); ++i) {
+            Triangle tmp(positions.at(get<0>(faces.at(i))),
+                        positions.at(get<1>(faces.at(i))),
+                        positions.at(get<2>(faces.at(i))));
 
-    for(unsigned int i = 0; i < faces.size(); ++i)
-    {
-        triangles.push_back(Triangle(Vertex(positions.at(get<0>(faces.at(i))), normals.at(get<0>(faces.at(i)))),
-                                     Vertex(positions.at(get<1>(faces.at(i))), normals.at(get<1>(faces.at(i)))),
-                                     Vertex(positions.at(get<2>(faces.at(i))), normals.at(get<2>(faces.at(i))))));
+            triangles.push_back(make_shared<Triangle>(tmp));
+        }
+    }
+    else {
+
+        if (positions.size() != normals.size()) {
+            cerr << "Error: the obj file doesn't define the same amount of vertices and normals\n";
+            throw 1;
+        }
+
+        for (unsigned int i = 0; i < faces.size(); ++i) {
+            triangles.push_back(
+                    make_shared<MeshTriangle>(MeshTriangle(positions.at(get<0>(faces.at(i))),
+                                                           positions.at(get<1>(faces.at(i))),
+                                                           positions.at(get<2>(faces.at(i))),
+                                                           normals.at(get<0>(faces.at(i))),
+                                                           normals.at(get<1>(faces.at(i))),
+                                                           normals.at(get<2>(faces.at(i))))));
+        }
     }
 
     return triangles;
