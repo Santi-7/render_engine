@@ -7,8 +7,8 @@
 ** -------------------------------------------------------------------------*/
 
 #include <cfloat>
-#include <cmath>
 #include <intersections.hpp>
+#include <math.h>
 #include <sphere.hpp>
 
 Sphere::Sphere(const Point &center, const float radius)

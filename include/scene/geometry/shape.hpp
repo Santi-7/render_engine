@@ -12,8 +12,6 @@
 #include <lightRay.hpp>
 #include <materials/material.hpp>
 
-using namespace std;
-
 class Shape {
 
 public:
@@ -36,16 +34,18 @@ public:
      */
     virtual Vect GetNormal(const Point &point) const = 0;
 
+    // TODO: Add doc.
     /**
      * .
      *
      * @return .
      */
-    Material GetMaterial()
+    Material GetMaterial() const
     {
         return mMaterial;
     }
 
+    // TODO: Add doc.
     /**
      * .
      *

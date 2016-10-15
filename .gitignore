@@ -30,3 +30,6 @@
 
 # JetBrain IDE
 .idea/
+
+# CMake build
+build/
