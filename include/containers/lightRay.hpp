@@ -29,6 +29,16 @@ public:
     /**
      * .
      *
+     * @param source .
+     * @param direction .
+     * @return .
+     */
+    LightRay(const Point &source, const Vect &direction);
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
      * @param t .
      * @return .
      */

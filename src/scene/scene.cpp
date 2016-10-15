@@ -9,8 +9,6 @@
 #include <cfloat>
 #include <image.hpp>
 #include <scene.hpp>
-#include <iostream>
-
 
 unique_ptr<Image> Scene::Render() const
 {
@@ -33,7 +31,8 @@ unique_ptr<Image> Scene::Render() const
             // Next pixel.
             currentPixel += advanceX;
             // Get the color for the current pixel.
-            (*rendered)[i][j] = GetPixelColor(currentPixel);
+            (*rendered)[i][j] = GetLightRayColor(
+                    LightRay(mCamera->GetFocalPoint(), currentPixel), REFLECT_STEPS);
         }
         // Next row.
         currentRow -= advanceY;
@@ -43,10 +42,14 @@ unique_ptr<Image> Scene::Render() const
 }
 
 // TODO: Temporal implementation.
-Color Scene::GetPixelColor(const Point &pixel) const
+Color Scene::GetLightRayColor(const LightRay &lightRay,
+                              unsigned int reflectedSteps) const
 {
-    // Ray of light from the focal point of the camera to the pixel.
-    LightRay lightRay(mCamera->GetFocalPoint(), pixel);
+    /* The number of reflection steps has been reached. Following with
+     * the reflection will get more accurate rendered images, but
+     * with much more computing cost. */
+    if (reflectedSteps == 0) return BLACK;
+
     // Distance to the nearest shape.
     float tMin = FLT_MAX;
     // Nearest shape intersected with the ray of light.
@@ -64,13 +67,28 @@ Color Scene::GetPixelColor(const Point &pixel) const
     // No shape has been found.
     if (tMin == FLT_MAX) return BLACK;
 
-    // Assume the path to a light is clear.
-    Color retVal = BLACK;
-    Color whiteCopy = WHITE; // Copy of WHITE (since WHITE is const in can't be used in the product)
     // Intersection point with the nearest shape found.
     Point intersection(lightRay.GetPoint(tMin));
     // Normal to the shape in the intersection point.
     Vect normal = nearestShape->GetNormal(intersection);
+    // Ray of light reflected in the intersection point.
+    Vect reflectedDir = lightRay.GetDirection() -
+            normal * lightRay.GetDirection().DotProduct(normal) * 2;
+    LightRay reflectedRay = LightRay(intersection, reflectedDir);
+    // The reflected light comes with an angle.
+    float multiplier = reflectedRay.GetDirection().DotProduct(normal);
+    multiplier = multiplier > 0 ? multiplier : -multiplier;
+
+    Color rayColor = DirectLight(intersection, normal);
+    if (nearestShape->GetMaterial().IsReflective())
+        rayColor += GetLightRayColor(reflectedRay, --reflectedSteps) * multiplier;
+    return rayColor;
+}
+
+Color Scene::DirectLight(const Point &point, const Vect &normal) const
+{
+    // Assume the path to light is blocked.
+    Color retVal = BLACK;
     // Direct light to all the light sources.
     for (unsigned int i = 0; i < mLightSources.size(); ++i)
     {
@@ -80,15 +98,15 @@ Color Scene::GetPixelColor(const Point &pixel) const
         // Direct light to all the point lights of the current light source.
         for (unsigned int j = 0; j < lights.size(); ++j)
         {
-            // Ray of light from the intersection point to the current light.
-            LightRay intersectionRay = LightRay(intersection, lights[j]);
+            // Ray of light from the point to the current light.
+            LightRay lightRay = LightRay(point, lights[j]);
             // The current point light is not hidden.
-            if (!InShadow(intersectionRay, lights[j]))
+            if (!InShadow(lightRay, lights[j]))
             {
-                float multiplier = intersectionRay.GetDirection().DotProduct(normal);
-                retVal += whiteCopy * (multiplier > 0 ? multiplier : -multiplier);
+                float multiplier = lightRay.GetDirection().DotProduct(normal);
+                retVal += mLightSources[i]->GetBaseColor() *
+                          (multiplier > 0 ? multiplier : -multiplier);
             }
-            // The point light is hidden.
         }
     }
     return retVal;
@@ -105,7 +123,7 @@ bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
          * a shape that intersects the ray of light. */
         float tShape = mShapes[i]->Intersect(lightRay);
         // TODO: 0.015 is different from threshold since the error can get to be this big?
-        if (tShape >= 0 & tShape > 0.015 & tShape < tLight)
+        if (tShape > 0.015 & tShape < tLight)
         {
             return true;
         }

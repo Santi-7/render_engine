@@ -49,6 +49,10 @@ public:
 private:
 
     // TODO: Add doc.
+    /* */
+    static constexpr unsigned int REFLECT_STEPS = 2;
+
+    // TODO: Add doc.
     /* . */
     unique_ptr<Camera> mCamera;
 
@@ -64,10 +68,22 @@ private:
     /**
      * .
      *
-     * @param pixel .
+     * @param lightRay .
+     * @param reflectedSteps .
      * @return .
      */
-    Color GetPixelColor(const Point &pixel) const;
+    Color GetLightRayColor(const LightRay &lightRay,
+                           unsigned int reflectedSteps) const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param point .
+     * @param normal .
+     * @return .
+     */
+    Color DirectLight(const Point &point, const Vect &normal) const;
 
     // TODO: Add doc.
     /**

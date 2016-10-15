@@ -10,6 +10,7 @@
 #define RAY_TRACER_SHAPE_HPP
 
 #include <lightRay.hpp>
+#include <materials/material.hpp>
 
 using namespace std;
 
@@ -34,6 +35,30 @@ public:
      * @return .
      */
     virtual Vect GetNormal(const Point &point) const = 0;
+
+    /**
+     * .
+     *
+     * @return .
+     */
+    Material GetMaterial()
+    {
+        return mMaterial;
+    }
+
+    /**
+     * .
+     *
+     * @param material .
+     */
+    void SetMaterial(const Material &material)
+    {
+        mMaterial = material;
+    }
+
+private:
+
+    Material mMaterial;
 };
 
 #endif // RAY_TRACER_SHAPE_HPP

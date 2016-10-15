@@ -12,7 +12,7 @@
 #include <sphere.hpp>
 #include <pointLight.hpp>
 #include <plane.hpp>
-#include <meshTriangle.hpp>
+#include <triangle.hpp>
 #include <sceneSamples.hpp>
 #include <geometry/mesh.hpp>
 #include <transformationMatrix.hpp>
@@ -98,6 +98,14 @@ TEST(CornellBox, Planes)
     renderedImage->Save("cornellP.ppm");
 }
 
+TEST(CornellBox, Colors)
+{ // Cornell's box. Lights of colors distinct of white.
+    Scene scene = CornellBox(false);
+    scene.AddLightSource(PointLight(Point(0, 0, -5), 1.0, BLUE));
+    auto renderedImage = scene.Render();
+    renderedImage->Save("cornellColors.ppm");
+}
+
 TEST(SimpleLight, PlaneTop)
 { // A plane as seen from the top
     Scene scene;
@@ -108,6 +116,33 @@ TEST(SimpleLight, PlaneTop)
 
     auto renderedImage = scene.Render();
     renderedImage->Save("planeTop.ppm");
+}
+
+TEST(Reflection, PlaneSphere)
+{ // A sphere over a plane.
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation((float)3.141592/10);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-4), (float)3.14159/2, 1.0, 1920, 1080));
+
+    scene.AddLightSource(PointLight(Point(3, 1.5, 4)));
+
+    Sphere sphere(Point(0, 0.5, 4), 1);
+    sphere.SetMaterial(Material(0));
+    scene.AddShape(sphere);
+
+    Plane plane1(Point(0, -0.5f, 0), Vect(0, 1, 0));
+    plane1.SetMaterial(Material(1));
+    scene.AddShape(plane1);
+
+    Plane plane2(Point(0, 0, 60), Vect(0, 0, 1));
+    scene.AddShape(plane2);
+    Plane plane3(Point(-20, 0, 0), Vect(1, 0, 0));
+    Plane plane4(Point(20, 0, 60), Vect(-1, 0,0));
+    scene.AddShape(plane3);
+    scene.AddShape(plane4);
+    auto renderedImage = scene.Render();
+    renderedImage->Save("reflection.ppm");
 }
 
 /////////////////////////////////////////////////////////////
