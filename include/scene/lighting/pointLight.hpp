@@ -12,7 +12,8 @@
 #include <lightSource.hpp>
 #include <point.hpp>
 
-class PointLight : public LightSource {
+class PointLight : public LightSource
+{
 
 public:
 

@@ -96,7 +96,7 @@ bool Point::operator!=(const Point& v) const
     return !(*this == v);
 }
 
-std::ostream& operator<< (std::ostream &out, const Point &p)
+std::ostream& operator<<(std::ostream &out, const Point &p)
 {
     out << "Point(" << p.mX << ", " << p.mY << ", " << p.mZ << ")";
     return out;

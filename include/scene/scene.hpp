@@ -17,7 +17,8 @@
 
 using namespace std;
 
-class Scene {
+class Scene
+{
 
 public:
 

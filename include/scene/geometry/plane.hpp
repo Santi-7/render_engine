@@ -11,7 +11,8 @@
 
 #include <shape.hpp>
 
-class Plane : public Shape {
+class Plane : public Shape
+{
 
 public:
 

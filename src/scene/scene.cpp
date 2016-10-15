@@ -27,7 +27,6 @@ unique_ptr<Image> Scene::Render() const
     {
         for (unsigned int j = 0; j < mCamera->GetWidth(); ++j)
         {
-
             // Next pixel.
             currentPixel += advanceX;
             // Get the color for the current pixel.

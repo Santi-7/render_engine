@@ -16,7 +16,8 @@ using namespace std;
 
 typedef unsigned char byte;
 
-class Color {
+class Color
+{
 
 public:
 

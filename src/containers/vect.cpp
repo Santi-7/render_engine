@@ -96,7 +96,7 @@ bool Vect::operator!=(const Vect &v) const
     return !(*this == v);
 }
 
-std::ostream& operator<< (std::ostream &out, const Vect &v)
+std::ostream& operator<<(std::ostream &out, const Vect &v)
 {
     out << "Vector(" << v.mX << ", " << v.mY << ", " << v.mZ << ")";
     return out;

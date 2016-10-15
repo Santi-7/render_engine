@@ -15,7 +15,8 @@
 
 using namespace std;
 
-class Image {
+class Image
+{
 
 public:
 
@@ -61,7 +62,6 @@ public:
      * @return .
      */
     vector<Color>& operator[](const unsigned int i);
-
 
 private:
 

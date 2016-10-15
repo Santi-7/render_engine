@@ -9,7 +9,8 @@
 #ifndef RAY_TRACER_MATERIAL_HPP
 #define RAY_TRACER_MATERIAL_HPP
 
-class Material {
+class Material
+{
 
 public:
 

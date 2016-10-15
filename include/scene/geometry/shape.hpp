@@ -12,7 +12,8 @@
 #include <lightRay.hpp>
 #include <materials/material.hpp>
 
-class Shape {
+class Shape
+{
 
 public:
 

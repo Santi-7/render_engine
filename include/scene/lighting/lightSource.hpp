@@ -15,9 +15,8 @@
 #include <point.hpp>
 #include <vector>
 
-using namespace std;
-
-class LightSource {
+class LightSource
+{
 
 public:
 
@@ -71,7 +70,6 @@ protected:
     LightSource(const float radiance, const Color &baseColor)
     : mRadiance(radiance), mBaseColor(baseColor)
     {}
-
 };
 
 #endif // RAY_TRACER_LIGHT_SOURCE_HPP

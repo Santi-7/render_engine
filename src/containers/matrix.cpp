@@ -70,7 +70,7 @@ bool Matrix::operator!=(const Matrix &m) const
     return !(*this == m);
 }
 
-std::ostream& operator<< (std::ostream &out, const Matrix &m)
+std::ostream& operator<<(std::ostream &out, const Matrix &m)
 {
     out << "Matrix(" << m.mA << ", " << m.mB << ", " << m.mC << ", " << m.mD << '\n'
         << "       " << m.mE << ", " << m.mF << ", " << m.mG << ", " << m.mH << '\n'

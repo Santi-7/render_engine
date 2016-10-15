@@ -11,7 +11,8 @@
 
 #include <shape.hpp>
 
-class Triangle : public Shape {
+class Triangle : public Shape
+{
 
 public:
 

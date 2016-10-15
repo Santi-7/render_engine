@@ -11,7 +11,8 @@
 
 #include <shape.hpp>
 
-class Sphere : public Shape {
+class Sphere : public Shape
+{
 
 public:
 
