@@ -19,6 +19,22 @@ Matrix::Matrix(const float a, const float b, const float c, const float d,
     mM = m; mN = n; mO = o; mP = p;
 }
 
+float Matrix::Det() const
+{
+    return mD * mG * mJ * mM - mC * mH * mJ * mM -
+           mD * mF * mK * mM + mB * mH * mK * mM +
+           mC * mF * mL * mM - mB * mG * mL * mM -
+           mD * mG * mI * mN + mC * mH * mI * mN +
+           mD * mE * mK * mN - mA * mH * mK * mN -
+           mC * mE * mL * mN + mA * mG * mL * mN +
+           mD * mF * mI * mO - mB * mH * mI * mO -
+           mD * mE * mJ * mO + mA * mH * mJ * mO +
+           mB * mE * mL * mO - mA * mF * mL * mO -
+           mC * mF * mI * mP + mB * mG * mI * mP +
+           mC * mE * mJ * mP - mA * mG * mJ * mP -
+           mB * mE * mK * mP + mA * mF * mK * mP;
+}
+
 Point Matrix::operator*(const Point &p) const
 {
     float x = mA * p.GetX() + mB * p.GetY() + mC * p.GetZ() + mD * Point::H;
