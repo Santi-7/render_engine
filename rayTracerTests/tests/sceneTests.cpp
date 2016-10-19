@@ -8,13 +8,13 @@
 
 #include <gtest/gtest.h>
 #include <pinhole.hpp>
-#include <scene.hpp>
-#include <sphere.hpp>
-#include <pointLight.hpp>
 #include <plane.hpp>
-#include <triangle.hpp>
+#include <pointLight.hpp>
+#include <scene.hpp>
 #include <sceneSamples.hpp>
 #include <transformationMatrix.hpp>
+#include <triangle.hpp>
+
 /**
  * Test first pixel value is correct
  */

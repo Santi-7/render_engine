@@ -88,6 +88,15 @@ Color Scene::DirectLight(const Point &point, Vect &normal, const Vect &seenFrom)
 {
     // Assume the path to light is blocked.
     Color retVal = BLACK;
+    // Take the normal which looks at the visible semi-sphere.
+    float cosine = normal.DotProduct(seenFrom);
+    if ((cosine > 0) | (cosine == 0 &
+                        signbit(normal.GetX()) == signbit(seenFrom.GetX()) &
+                        signbit(normal.GetY()) == signbit(seenFrom.GetY()) &
+                        signbit(normal.GetZ()) == signbit(seenFrom.GetZ())))
+    {
+        normal *= -1;
+    }
     // Direct light to all the light sources.
     for (unsigned int i = 0; i < mLightSources.size(); ++i)
     {
@@ -102,15 +111,6 @@ Color Scene::DirectLight(const Point &point, Vect &normal, const Vect &seenFrom)
             // The current point light is not hidden.
             if (!InShadow(lightRay, lights[j]))
             {
-                // Take the normal which looks at the point from it is being seen.
-                float cosine = normal.DotProduct(seenFrom);
-                if ((cosine > 0) | (cosine == 0 &
-                                    signbit(normal.GetX()) == signbit(seenFrom.GetX()) &
-                                    signbit(normal.GetY()) == signbit(seenFrom.GetY()) &
-                                    signbit(normal.GetZ()) == signbit(seenFrom.GetZ())))
-                {
-                    normal *= -1;
-                }
                 // Cosine of the ray of light with the correct normal.
                 float multiplier = lightRay.GetDirection().DotProduct(normal);
                 /* Add the radiance from the current light if it
