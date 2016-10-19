@@ -81,6 +81,15 @@ public:
 
     // TODO: Add doc.
     /**
+     * Overloads *= operator to .
+     *
+     * @param k .
+     * @return .
+     */
+    Vect operator*=(const float k);
+
+    // TODO: Add doc.
+    /**
      * Overloads / operator to return a Vect result
      * of .
      *

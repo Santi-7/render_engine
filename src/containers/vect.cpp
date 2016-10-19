@@ -49,6 +49,13 @@ Vect Vect::operator*(const float k) const
     return Vect(x, y, z);
 }
 
+Vect Vect::operator*=(const float k)
+{
+    mX *= k;
+    mY *= k;
+    mZ *= k;
+}
+
 Vect Vect::operator/(const float k) const
 {
     float x = mX / k;

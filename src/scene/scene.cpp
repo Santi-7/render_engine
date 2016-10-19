@@ -78,13 +78,13 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     float multiplier = reflectedRay.GetDirection().DotProduct(normal);
     multiplier = multiplier > 0 ? multiplier : -multiplier;
 
-    Color rayColor = DirectLight(intersection, normal);
+    Color rayColor = DirectLight(intersection, normal, lightRay.GetDirection());
     if (nearestShape->GetMaterial().IsReflective())
         rayColor += GetLightRayColor(reflectedRay, --reflectedSteps) * multiplier;
     return rayColor;
 }
 
-Color Scene::DirectLight(const Point &point, const Vect &normal) const
+Color Scene::DirectLight(const Point &point, Vect &normal, const Vect &seenFrom) const
 {
     // Assume the path to light is blocked.
     Color retVal = BLACK;
@@ -102,9 +102,20 @@ Color Scene::DirectLight(const Point &point, const Vect &normal) const
             // The current point light is not hidden.
             if (!InShadow(lightRay, lights[j]))
             {
+                // Take the normal which looks at the point from it is being seen.
+                float cosine = normal.DotProduct(seenFrom);
+                if ((cosine > 0) | (cosine == 0 &
+                                    signbit(normal.GetX()) == signbit(seenFrom.GetX()) &
+                                    signbit(normal.GetY()) == signbit(seenFrom.GetY()) &
+                                    signbit(normal.GetZ()) == signbit(seenFrom.GetZ())))
+                {
+                    normal *= -1;
+                }
+                // Cosine of the ray of light with the correct normal.
                 float multiplier = lightRay.GetDirection().DotProduct(normal);
-                retVal += mLightSources[i]->GetColor(point) *
-                          (multiplier > 0 ? multiplier : -multiplier);
+                /* Add the radiance from the current light if it
+                   illuminates the [point] from the visible semi-sphere. */
+                retVal += mLightSources[i]->GetColor(point) * max(multiplier, 0.0f);
             }
         }
     }

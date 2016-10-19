@@ -153,7 +153,17 @@ TEST(HiddenLight, AfterPlane)
     scene.AddShape(Plane(Point(0,0,3), Vect(0,0,1)));
     // And then a light, that should be hidden by the plane.
     scene.AddLightSource(PointLight(Point(0,0,6)));
-
     auto renderedImage = scene.Render();
     renderedImage->Save("hiddenLight.ppm");
+
+    // Same scene but with normal of the plane declared in the other direction.
+    Scene scene2;
+    // The camera is in first place.
+    scene2.SetCamera(Pinhole());
+    // Then the plane.
+    scene2.AddShape(Plane(Point(0,0,3), Vect(0,0,-1)));
+    // And then a light, that should be hidden by the plane.
+    scene2.AddLightSource(PointLight(Point(0,0,6)));
+    auto renderedImage2 = scene2.Render();
+    renderedImage2->Save("hiddenLight2.ppm");
 }
