@@ -43,10 +43,6 @@ protected:
 
     // TODO: Add doc.
     /* . */
-    float mRadiance;
-
-    // TODO: Add doc.
-    /* . */
     Color mBaseColor;
 
     // TODO: Add doc.
@@ -55,20 +51,19 @@ protected:
      *
      * @return .
      */
-    LightSource() :
-    mRadiance(1.0), mBaseColor(WHITE)
+    LightSource()
+    : mBaseColor(WHITE)
     {}
 
     // TODO: Add doc.
     /**
      * .
      *
-     * @param radiance .
      * @param baseColor .
      * @return
      */
-    LightSource(const float radiance, const Color &baseColor)
-    : mRadiance(radiance), mBaseColor(baseColor)
+    LightSource(const Color &baseColor)
+    : mBaseColor(baseColor)
     {}
 };
 

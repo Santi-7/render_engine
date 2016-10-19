@@ -16,10 +16,17 @@ PointLight::PointLight(const Point &position)
 : LightSource(), mPosition(position)
 {}
 
-PointLight::PointLight(const Point &position, const float radiance,
-                       const Color &baseColor)
-: LightSource(radiance, baseColor), mPosition(position)
+PointLight::PointLight(const Point &position, const Color &baseColor)
+: LightSource(baseColor), mPosition(position)
 {}
+
+Color PointLight::GetColor(const Point &point)
+{
+    // Distance from the given point to the source light.
+    float distance = (point - mPosition).Abs();
+    // Radiance decreases proportionally with the square of the distance.
+    return mBaseColor / (distance * distance);
+}
 
 vector<Point> PointLight::GetLights() const
 {

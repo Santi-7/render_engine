@@ -39,12 +39,18 @@ public:
      * .
      *
      * @param position .
-     * @param radiance .
      * @param baseColor .
      * @return .
      */
-    PointLight(const Point &position, const float radiance,
-               const Color &baseColor);
+    PointLight(const Point &position, const Color &baseColor);
+
+    /**
+     * .
+     *
+     * @param point .
+     * @return .
+     */
+    Color GetColor(const Point &point);
 
     // TODO: Add doc.
     /**
