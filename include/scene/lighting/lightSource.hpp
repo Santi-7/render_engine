@@ -41,6 +41,10 @@ protected:
 
     // TODO: Add doc.
     /* . */
+    float mPower;
+
+    // TODO: Add doc.
+    /* . */
     Color mBaseColor;
 
     // TODO: Add doc.
@@ -50,18 +54,19 @@ protected:
      * @return .
      */
     LightSource()
-    : mBaseColor(WHITE)
+    : mPower(500.0), mBaseColor(WHITE)
     {}
 
     // TODO: Add doc.
     /**
      * .
      *
+     * @param power .
      * @param baseColor .
      * @return
      */
-    LightSource(const Color &baseColor)
-    : mBaseColor(baseColor)
+    LightSource(const float power, const Color &baseColor)
+    : mPower(power), mBaseColor(baseColor)
     {}
 };
 

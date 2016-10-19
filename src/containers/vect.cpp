@@ -33,7 +33,7 @@ float Vect::GetZ() const
 
 float Vect::Abs() const
 {
-    return sqrt(pow(mX, 2) + pow(mY, 2) + pow(mZ, 2));
+    return sqrt(mX*mX + mY*mY + mZ*mZ);
 }
 
 Vect Vect::Normalise() const

@@ -38,7 +38,6 @@ float Plane::Intersect(const LightRay &lightRay) const
     /* The ray lies entirely in the plane. */
     else // numerator == 0 & denominator == 0.
     {
-        // TODO: Ask Adolfo.
         return threshold;
     }
 }

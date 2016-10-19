@@ -39,12 +39,13 @@ public:
      * .
      *
      * @param position .
+     * @param power .
      * @param baseColor .
      * @return .
      */
-    PointLight(const Point &position, const Color &baseColor);
+    PointLight(const Point &position, const float power, const Color &baseColor);
 
-    // TODO: Add doc.
+    // TODO: Add doc. Restriction: the point light must not be in a point of a shape.
     /**
      * .
      *

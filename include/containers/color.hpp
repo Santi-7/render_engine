@@ -137,20 +137,6 @@ public:
         mB = min(mB*k, COLOR_MAX);
     }
 
-    // TODO: Add doc. k must be > 0
-    /**
-     * .
-     *
-     * @param k .
-     * @return .
-     */
-    Color operator/(const float k) const
-    {
-        return Color(mR / k,
-                     mG / k,
-                     mB / k);
-    }
-
 private:
 
     // TODO: Add doc.

@@ -100,7 +100,7 @@ TEST(CornellBox, Planes)
 TEST(CornellBox, Colors)
 { // Cornell's box. Lights of colors distinct of white.
     Scene scene = CornellBox(false);
-    scene.AddLightSource(PointLight(Point(0, 0, -5), BLUE));
+    scene.AddLightSource(PointLight(Point(0, 0, -5), 500.0, BLUE));
     auto renderedImage = scene.Render();
     renderedImage->Save("cornellColors.ppm");
 }
@@ -122,7 +122,7 @@ TEST(Reflection, PlaneSphere)
     Scene scene;
     TransformationMatrix tm;
     tm.SetXRotation((float)3.141592/10);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-4), (float)3.14159/3, 1.0, 1920, 1080));
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-20), (float)3.14159/3, 1.0, 1920, 1080));
 
     scene.AddLightSource(PointLight(Point(3, 1.5, 4)));
 
