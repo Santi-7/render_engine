@@ -45,22 +45,6 @@ public:
 
     // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
-     */
-    float Det() const;
-
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @return .
-     */
-    Matrix Inverse() const;
-
-    // TODO: Add doc.
-    /**
      * Overloads * operator to return a Point result
      * of .
      *
