@@ -83,9 +83,9 @@ public:
      */
     Color operator+(const Color &color) const
     {
-        return Color(min(mR + color.mR, UCHAR_MAX),
-                     min(mG + color.mG, UCHAR_MAX),
-                     min(mB + color.mB, UCHAR_MAX))
+        return Color(min(mR + color.mR, COLOR_MAX),
+                     min(mG + color.mG, COLOR_MAX),
+                     min(mB + color.mB, COLOR_MAX))
         ;
     }
 
@@ -98,9 +98,9 @@ public:
      */
     void operator+=(const Color &color)
     {
-        mR = min(mR + color.mR, UCHAR_MAX);
-        mG = min(mG + color.mG, UCHAR_MAX);
-        mB = min(mB + color.mB, UCHAR_MAX);
+        mR = min(mR + color.mR, COLOR_MAX);
+        mG = min(mG + color.mG, COLOR_MAX);
+        mB = min(mB + color.mB, COLOR_MAX);
     }
 
     // TODO: Add doc. k must be >= 0
@@ -114,9 +114,9 @@ public:
      */
     Color operator*(const float k) const
     {
-        return Color(min(mR*k, UCHAR_MAX),
-                     min(mG*k, UCHAR_MAX),
-                     min(mB*k, UCHAR_MAX));
+        return Color(min(mR*k, COLOR_MAX),
+                     min(mG*k, COLOR_MAX),
+                     min(mB*k, COLOR_MAX));
     }
 
     // TODO: Add doc. k must be >= 0
@@ -128,9 +128,9 @@ public:
      */
     void operator*=(const float k)
     {
-        mR = min(mR*k, UCHAR_MAX);
-        mG = min(mG*k, UCHAR_MAX);
-        mB = min(mB*k, UCHAR_MAX);
+        mR = min(mR*k, COLOR_MAX);
+        mG = min(mG*k, COLOR_MAX);
+        mB = min(mB*k, COLOR_MAX);
     }
 
     // TODO: Add doc. k must be > 0
@@ -154,6 +154,10 @@ private:
     float mR;
     float mG;
     float mB;
+
+    // TODO: Add doc.
+    /* . */
+    static constexpr float COLOR_MAX = UCHAR_MAX;
 };
 
 static constexpr Color WHITE    (255, 255, 255);
