@@ -14,6 +14,10 @@
 
 using namespace std;
 
+// TODO: Add doc.
+/* . */
+static constexpr float COLOR_MAX = UCHAR_MAX;
+
 class Color
 {
 
@@ -154,12 +158,10 @@ private:
     float mR;
     float mG;
     float mB;
-
-    // TODO: Add doc.
-    /* . */
-    static constexpr float COLOR_MAX = UCHAR_MAX;
 };
 
+// TODO: Add doc.
+/* . */
 static constexpr Color WHITE    (255, 255, 255);
 static constexpr Color BLACK    (0, 0, 0);
 static constexpr Color RED      (255, 0, 0);
