@@ -24,9 +24,10 @@ public:
     /**
      * .
      *
+     * @param point .
      * @return .
      */
-    virtual vector<Point> GetLights() const = 0;
+    virtual Color GetColor(const Point &point) const = 0;
 
     // TODO: Add doc.
     /**
@@ -34,10 +35,7 @@ public:
      *
      * @return .
      */
-    Color GetBaseColor() const
-    {
-        return mBaseColor;
-    }
+    virtual vector<Point> GetLights() const = 0;
 
 protected:
 

@@ -20,7 +20,7 @@ PointLight::PointLight(const Point &position, const Color &baseColor)
 : LightSource(baseColor), mPosition(position)
 {}
 
-Color PointLight::GetColor(const Point &point)
+Color PointLight::GetColor(const Point &point) const
 {
     // Distance from the given point to the source light.
     float distance = (point - mPosition).Abs();

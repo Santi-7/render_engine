@@ -103,7 +103,7 @@ Color Scene::DirectLight(const Point &point, const Vect &normal) const
             if (!InShadow(lightRay, lights[j]))
             {
                 float multiplier = lightRay.GetDirection().DotProduct(normal);
-                retVal += mLightSources[i]->GetBaseColor() *
+                retVal += mLightSources[i]->GetColor(point) *
                           (multiplier > 0 ? multiplier : -multiplier);
             }
         }

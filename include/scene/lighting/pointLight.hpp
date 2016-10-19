@@ -44,13 +44,14 @@ public:
      */
     PointLight(const Point &position, const Color &baseColor);
 
+    // TODO: Add doc.
     /**
      * .
      *
      * @param point .
      * @return .
      */
-    Color GetColor(const Point &point);
+    Color GetColor(const Point &point) const;
 
     // TODO: Add doc.
     /**
