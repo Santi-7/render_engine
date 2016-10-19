@@ -143,3 +143,17 @@ TEST(Reflection, PlaneSphere)
     auto renderedImage = scene.Render();
     renderedImage->Save("reflection.ppm");
 }
+
+TEST(HiddenLight, AfterPlane)
+{ // A camera, a plane, and a light.
+    Scene scene;
+    // The camera is in first place.
+    scene.SetCamera(Pinhole());
+    // Then the plane.
+    scene.AddShape(Plane(Point(0,0,3), Vect(0,0,1)));
+    // And then a light, that should be hidden by the plane.
+    scene.AddLightSource(PointLight(Point(0,0,6)));
+
+    auto renderedImage = scene.Render();
+    renderedImage->Save("hiddenLight.ppm");
+}
