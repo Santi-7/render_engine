@@ -13,7 +13,7 @@ Camera::Camera()
   mRight(1,0,0),
   mTowards(0,0,1),
   mFocalPoint(0,0,0),
-  mFoV(PI / 2),
+  mFoV(PI / 3),
   mViewPlaneDistance(1.0),
   mWidth(256),
   mHeight(256)
