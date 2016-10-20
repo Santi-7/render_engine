@@ -15,6 +15,8 @@
 #include <triangle.hpp>
 #include <sceneSamples.hpp>
 #include <transformationMatrix.hpp>
+#include <mesh.hpp>
+
 /**
  * Test first pixel value is correct
  */

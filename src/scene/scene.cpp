@@ -15,20 +15,18 @@ unique_ptr<Image> Scene::Render() const
     // The rendered image.
     unique_ptr<Image> rendered = make_unique<Image>
             (mCamera->GetWidth(), mCamera->GetHeight());
-    // The current pixel. We begin with the first one (0,0).
-    Point currentPixel = mCamera->GetFirstPixel();
-    // The first pixel of the current row.
-    Point currentRow = currentPixel;
     // Pixels' distance in the camera intrinsics right and up.
     Vect advanceX(mCamera->GetRight() * mCamera->GetPixelSize());
     Vect advanceY(mCamera->GetUp() * mCamera->GetPixelSize());
-    shared_ptr<PixelGetter> pixelGetter( new PixelGetter(mCamera->GetFirstPixel(), advanceX, advanceY, mCamera->GetWidth(), mCamera->GetHeight()));
+    shared_ptr<PixelGetter> pixelGetter(
+            new PixelGetter(mCamera->GetFirstPixel(), advanceX, advanceY, mCamera->GetWidth(), mCamera->GetHeight()));
 
     auto pixelTarget = pixelGetter->GetNextPixel();
     while(pixelTarget != nullptr)
     {
         (*rendered)[get<2>(*pixelTarget)][get<1>(*pixelTarget)] = GetLightRayColor(
-                LightRay(mCamera->GetFocalPoint(), get<0>(*pixelTarget)), REFLECT_STEPS);
+                LightRay(mCamera->GetFocalPoint(), get<0>(*pixelTarget)),
+                SPECULAR_STEPS, INDIRECT_STEPS);
         pixelTarget = pixelGetter->GetNextPixel();
     }
 
@@ -91,9 +89,11 @@ Color Scene::DirectLight(const Point &point, Vect &normal) const
             // The current point light is not hidden.
             if (!InShadow(lightRay, lights[j]))
             {
+                // Cosine of the ray of light with the visible normal.
                 float multiplier = lightRay.GetDirection().DotProduct(normal);
-                retVal += mLightSources[i]->GetBaseColor() *
-                          (multiplier > 0 ? multiplier : -multiplier);
+                /* Add the radiance from the current light if it
+                   illuminates the [point] from the visible semi-sphere. */
+                retVal += mLightSources[i]->GetColor(point) * max(multiplier, 0.0f);
             }
         }
     }

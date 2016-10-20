@@ -13,6 +13,8 @@
 #include <memory>
 #include <meshTriangle.hpp>
 
+using namespace std;
+
 /**
  * Create a new Mesh from an obj (a simple one that defines vertices, vertex normals and faces)
  * @param filename must be a valid obj file path
