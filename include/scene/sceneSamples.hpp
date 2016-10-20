@@ -8,6 +8,7 @@
 
 #include <scene.hpp>
 #include <sphere.hpp>
+#include <mathConstants.hpp>
 
 // TODO: Add doc.
 /**
@@ -20,7 +21,7 @@ Scene CornellBox(bool useSpheresAsWalls)
     Scene cornellBox;
     // A pinhole camera with default configuration.
     cornellBox.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1),
-                                 Point (0,0,-5), (float) 3.14159/3, 1.0, 256, 256));
+                                 Point (0,0,-5), PI/3, 1.0, 256, 256));
     // Five big spheres pretend the box.
     if (useSpheresAsWalls)
     {
