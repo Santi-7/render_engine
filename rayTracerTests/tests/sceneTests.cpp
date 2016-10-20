@@ -174,12 +174,12 @@ TEST(Materials, FacingMirrors)
     Scene scene;
     TransformationMatrix tm;
     tm.SetXRotation(PI/10);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-5), PI/3, 1.0, 600, 600));
-    scene.AddLightSource(PointLight(Point(0,5,6), 2220, WHITE));
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-5), PI/3, 1.0, 50, 50));
+    scene.AddLightSource(PointLight(Point(0,5,6), 150, WHITE));
 
-    Plane visibleMirror(Point(0,0,7), Vect(-0.4, 0, 1));
+    Plane visibleMirror(Point(0,0,7), Vect(-0.4f, 0, 1));
     visibleMirror.SetMaterial(MIRROR);
-    Plane hiddenMirror(Point(0,0,-7), Vect(-0.4,0,1));
+    Plane hiddenMirror(Point(0,0,-7), Vect(-0.4f,0,1));
     hiddenMirror.SetMaterial(MIRROR);
     Plane floor(Point(0,-5,0), Vect(0,1,0));
     Sphere floatingSphere(Point(0,0,3), 1);
@@ -191,7 +191,28 @@ TEST(Materials, FacingMirrors)
     image->Save("facingMirrors.ppm");
 }
 
-TEST(Materials, 1000Balls)
+TEST(Materials, XSpheres)
 {
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation(PI/4);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,10,-12), PI/3, 1.0, 50, 50));
+    scene.AddLightSource(PointLight(Point(0,12,0), 520, WHITE));
+
+    scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
+
+    const int SIZE = 20;
+
+    for(int i = -SIZE/2; i < SIZE/2; ++i)
+    {
+        for(int j = -SIZE/2; j < SIZE/2; ++j)
+        {
+            Sphere tmp = Sphere(Point(i*2.5f,0,j*2.5f), 1);
+            if(j % 2 == 0 ^ i %2 != 0) tmp.SetMaterial(MIRROR);
+            scene.AddShape(tmp);
+        }
+    }
+    auto image = scene.Render();
+    image->Save("spheres.ppm");
 
 }
