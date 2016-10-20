@@ -50,7 +50,11 @@ private:
 
     // TODO: Add doc.
     /* */
-    static constexpr unsigned int REFLECT_STEPS = 2;
+    static constexpr unsigned int SPECULAR_STEPS = 4;
+
+    // TODO: Add doc.
+    /* */
+    static constexpr unsigned int INDIRECT_STEPS = 1;
 
     // TODO: Add doc.
     /* . */
@@ -69,11 +73,13 @@ private:
      * .
      *
      * @param lightRay .
-     * @param reflectedSteps .
+     * @param specularSteps .
+     * @param indirectSteps .
      * @return .
      */
     Color GetLightRayColor(const LightRay &lightRay,
-                           unsigned int reflectedSteps) const;
+                           unsigned int specularSteps,
+                           unsigned int indirectSteps) const;
 
     // TODO: Add doc.
     /**
@@ -95,6 +101,18 @@ private:
      * @return .
      */
     bool InShadow(const LightRay &lightRay, const Point &light) const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param point .
+     * @param normal .
+     * @param indirectSteps .
+     * @return .
+     */
+    Color IndirectLight(const Point &point, Vect &normal,
+                        const unsigned int indirectSteps) const;
 };
 
 #endif // RAY_TRACER_SCENE_HPP

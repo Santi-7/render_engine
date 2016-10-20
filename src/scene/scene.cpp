@@ -31,7 +31,8 @@ unique_ptr<Image> Scene::Render() const
             currentPixel += advanceX;
             // Get the color for the current pixel.
             (*rendered)[i][j] = GetLightRayColor(
-                    LightRay(mCamera->GetFocalPoint(), currentPixel), REFLECT_STEPS);
+                    LightRay(mCamera->GetFocalPoint(), currentPixel),
+                    SPECULAR_STEPS, INDIRECT_STEPS);
         }
         // Next row.
         currentRow -= advanceY;
@@ -42,12 +43,13 @@ unique_ptr<Image> Scene::Render() const
 
 // TODO: Temporal implementation.
 Color Scene::GetLightRayColor(const LightRay &lightRay,
-                              unsigned int reflectedSteps) const
+                              unsigned int specularSteps,
+                              unsigned int indirectSteps) const
 {
-    /* The number of reflection steps has been reached. Following with
-     * the reflection will get more accurate rendered images, but
-     * with much more computing cost. */
-    if (reflectedSteps == 0) return BLACK;
+    /* The number of reflection and indirect steps has been reached.
+     * Following with the reflection will get more accurate rendered
+     * images, but with much more computing cost. */
+    if (specularSteps == 0 & indirectSteps == 0) return BLACK;
 
     // Distance to the nearest shape.
     float tMin = FLT_MAX;
@@ -78,9 +80,10 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     float multiplier = reflectedRay.GetDirection().DotProduct(normal);
     multiplier = multiplier > 0 ? multiplier : -multiplier;
 
-    Color rayColor = DirectLight(intersection, normal, lightRay.GetDirection());
-    if (nearestShape->GetMaterial().IsReflective())
-        rayColor += GetLightRayColor(reflectedRay, --reflectedSteps) * multiplier;
+    Color rayColor = DirectLight(intersection, normal, lightRay.GetDirection()) +
+                     IndirectLight(intersection, normal, --indirectSteps);
+    if (nearestShape->GetMaterial().IsReflective() & specularSteps != 0)
+        rayColor += GetLightRayColor(reflectedRay, --specularSteps, indirectSteps) * multiplier;
     return rayColor;
 }
 
@@ -140,4 +143,10 @@ bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
     }
     // No shape has intersected the ray of light.
     return false;
+}
+
+Color Scene::IndirectLight(const Point &point, Vect &normal,
+                           const unsigned int indirectSteps) const
+{
+    return BLACK;
 }
