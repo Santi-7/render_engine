@@ -21,6 +21,14 @@ public:
 
     // TODO: Add doc.
     /**
+     * .
+     *
+     * @return .
+     */
+    Vect();
+
+    // TODO: Add doc.
+    /**
      * Constructs a Vect.
      *
      * @param x .

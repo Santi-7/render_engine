@@ -9,6 +9,9 @@
 #include <math.h>
 #include <vect.hpp>
 
+Vect::Vect()
+{}
+
 Vect::Vect(const float x, const float y, const float z)
 {
     mX = x;

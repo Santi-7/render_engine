@@ -20,14 +20,12 @@ public:
     /**
      * .
      *
-     * @param x .
-     * @param y .
-     * @param z .
-     * @param c .
-     * @return .
+     * @param origin .
+     * @param zAxis .
+     * @return
      */
-    PoseTransformationMatrix(const Vect &x, const Vect &y,
-                             const Vect &z, const Point &c);
+    static PoseTransformationMatrix GetPoseTransformation(const Point &origin,
+                                                          const Vect &zAxis);
 
     // TODO: Add doc.
     /**
@@ -36,6 +34,21 @@ public:
      * @return .
      */
     PoseTransformationMatrix Inverse() const;
+
+private:
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param origin .
+     * @param xAsis .
+     * @param yAsis .
+     * @param zAsis .
+     * @return .
+     */
+    PoseTransformationMatrix(const Point &origin, const Vect &xAsis,
+                             const Vect &yAsis, const Vect &zAsis);
 };
 
 #endif // RAY_TRACER_POSE_TRANSFORMATION_MATRIX_HPP
