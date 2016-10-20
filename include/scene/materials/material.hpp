@@ -9,6 +9,8 @@
 #ifndef RAY_TRACER_MATERIAL_HPP
 #define RAY_TRACER_MATERIAL_HPP
 
+#include <vect.hpp>
+
 class Material
 {
 
@@ -33,24 +35,27 @@ public:
 
     // TODO: Add doc.
     /**
+     * .
+     *
+     * @param in .
+     * @param out .
+     * @return .
+     */
+    float PhongBRDF(const Vect &in, const Vect &out) const;
+
+    // TODO: Add doc.
+    /**
      * Returns this material's reflectance.
      *
      * @return Reflectance of this material
      */
     float GetReflectance() const;
 
-    // TODO: Add doc.
-    /**
-     * True if this material's reflectance is not zero.
-     *
-     * @return True if this material's reflectance
-     *         is not zero, false otherwise.
-     */
-    bool IsReflective() const;
-
 private:
 
-    float mReflectance;
+    // TODO: Add doc.
+    /* . */
+    float mKd, mKs, mAlfa, mKr, mKt;
 };
 
 #endif //RAY_TRACER_MATERIAL_HPP

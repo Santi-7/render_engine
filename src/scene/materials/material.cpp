@@ -7,21 +7,26 @@
 ** -------------------------------------------------------------------------*/
 
 #include <material.hpp>
+#include <math.h>
+#include <mathConstants.hpp>
 
 Material::Material()
-: mReflectance(0.0f)
+: mKr(0.0f)
 {}
 
 Material::Material(const float reflectance)
-: mReflectance(reflectance)
+: mKr(reflectance)
 {}
+
+float Material::PhongBRDF(const Vect &in, const Vect &out) const
+{
+    // Using local coordinates.
+    Vect reflected = Vect(-out.GetX(), -out.GetY(), out.GetZ());
+    float cosine = in.DotProduct(reflected);
+    return (mKd / PI) + mKs * (mAlfa + 2) / (2 * PI) * pow(cosine, mAlfa);
+}
 
 float Material::GetReflectance() const
 {
-    return mReflectance;
-}
-
-bool Material::IsReflective() const
-{
-    return mReflectance != 0.0;
+    return mKr;
 }

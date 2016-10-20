@@ -123,11 +123,9 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
     // The reflected light comes with an angle.
     float multiplier = out.GetDirection().DotProduct(normal);
     multiplier = multiplier > 0 ? multiplier : -multiplier;
-    // TODO: reflectance will be changed to a float.
-    if (shape.GetMaterial().IsReflective())
-        return GetLightRayColor(out, specularSteps-1, diffuseSteps-1) * multiplier;
-    else
-        return BLACK;
+    // TODO: Check if we have to multiply this angle.
+    return GetLightRayColor(out, specularSteps-1, diffuseSteps-1) * multiplier *
+           shape.GetMaterial().GetReflectance();
 }
 
 Color Scene::IndirectLight(const Point &point, const Vect &normal,
