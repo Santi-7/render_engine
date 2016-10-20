@@ -31,9 +31,11 @@ public:
      * .
      *
      * @param point .
+     * @param seenFrom .
      * @return .
      */
-    virtual Vect GetNormal(const Point &point) const = 0;
+    virtual Vect GetVisibleNormal(const Point &point,
+                                  const LightRay &seenFrom) const = 0;
 
     // TODO: Add doc.
     /**

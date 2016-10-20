@@ -40,9 +40,11 @@ public:
      * .
      *
      * @param point .
+     * @param seenFrom .
      * @return .
      */
-    Vect GetNormal(const Point &point) const;
+    Vect GetVisibleNormal(const Point &point,
+                          const LightRay &seenFrom) const;
 
 private:
 

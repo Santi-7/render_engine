@@ -78,8 +78,8 @@ private:
      * @return .
      */
     Color GetLightRayColor(const LightRay &lightRay,
-                           unsigned int specularSteps,
-                           unsigned int indirectSteps) const;
+                           const unsigned int specularSteps,
+                           const unsigned int indirectSteps) const;
 
     // TODO: Add doc.
     /**
@@ -90,7 +90,38 @@ private:
      * @param seenFrom .
      * @return .
      */
-    Color DirectLight(const Point &point, Vect &normal, const Vect &seenFrom) const;
+    Color DirectLight(const Point &point, Vect &normal) const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param point .
+     * @param normal .
+     * @param in .
+     * @param shape .
+     * @param specularSteps .
+     * @param indirectSteps .
+     * @return .
+     */
+    Color SpecularLight(const Point &point, const Vect &normal,
+                        const LightRay &in, const Shape &shape,
+                        const unsigned int specularSteps,
+                        const unsigned int indirectSteps) const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param point .
+     * @param normal .
+     * @param specularSteps .
+     * @param indirectSteps .
+     * @return .
+     */
+    Color IndirectLight(const Point &point, const Vect &normal,
+                        const unsigned int specularSteps,
+                        const unsigned int indirectSteps) const;
 
     // TODO: Add doc.
     /**
@@ -101,18 +132,6 @@ private:
      * @return .
      */
     bool InShadow(const LightRay &lightRay, const Point &light) const;
-
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @param point .
-     * @param normal .
-     * @param indirectSteps .
-     * @return .
-     */
-    Color IndirectLight(const Point &point, Vect &normal,
-                        const unsigned int indirectSteps) const;
 };
 
 #endif // RAY_TRACER_SCENE_HPP
