@@ -37,12 +37,13 @@ unique_ptr<Image> Scene::Render() const
 
 // TODO: Temporal implementation.
 Color Scene::GetLightRayColor(const LightRay &lightRay,
-                              unsigned int reflectedSteps) const
+                              const unsigned int specularSteps,
+                              const unsigned int indirectSteps) const
 {
-    /* The number of reflection steps has been reached. Following with
-     * the reflection will get more accurate rendered images, but
-     * with much more computing cost. */
-    if (reflectedSteps == 0) return BLACK;
+    /* The number of specular and indirect steps has been reached.
+     * Following the light will get more accurate rendered
+     * images, but with much more computing cost. */
+    if (specularSteps == 0 & indirectSteps == 0) return BLACK;
 
     // Distance to the nearest shape.
     float tMin = FLT_MAX;
@@ -64,22 +65,15 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     // Intersection point with the nearest shape found.
     Point intersection(lightRay.GetPoint(tMin));
     // Normal to the shape in the intersection point.
-    Vect normal = nearestShape->GetNormal(intersection);
-    // Ray of light reflected in the intersection point.
-    Vect reflectedDir = lightRay.GetDirection() -
-            normal * lightRay.GetDirection().DotProduct(normal) * 2;
-    LightRay reflectedRay = LightRay(intersection, reflectedDir);
-    // The reflected light comes with an angle.
-    float multiplier = reflectedRay.GetDirection().DotProduct(normal);
-    multiplier = multiplier > 0 ? multiplier : -multiplier;
+    Vect normal = nearestShape->GetVisibleNormal(intersection, lightRay);
 
-    Color rayColor = DirectLight(intersection, normal);
-    if (nearestShape->GetMaterial().IsReflective())
-        rayColor += GetLightRayColor(reflectedRay, --reflectedSteps) * multiplier;
-    return rayColor;
+    return DirectLight(intersection, normal) +
+           SpecularLight(intersection, normal, lightRay,
+                         *nearestShape, specularSteps, indirectSteps) +
+           IndirectLight(intersection, normal, specularSteps, indirectSteps);
 }
 
-Color Scene::DirectLight(const Point &point, const Vect &normal) const
+Color Scene::DirectLight(const Point &point, Vect &normal) const
 {
     // Assume the path to light is blocked.
     Color retVal = BLACK;
@@ -104,6 +98,38 @@ Color Scene::DirectLight(const Point &point, const Vect &normal) const
         }
     }
     return retVal;
+}
+
+// TODO: Add reflexion.
+Color Scene::SpecularLight(const Point &point, const Vect &normal,
+                           const LightRay &in, const Shape &shape,
+                           const unsigned int specularSteps,
+                           const unsigned int indirectSteps) const
+{
+    if (specularSteps <= 0) return BLACK;
+
+    // Ray of light reflected in the intersection point.
+    // TODO: If we change to local reference, reflection will much easier to calculate.
+    Vect reflectedDir = in.GetDirection() - normal * in.GetDirection().DotProduct(normal) * 2;
+    LightRay out = LightRay(point, reflectedDir);
+    // The reflected light comes with an angle.
+    float multiplier = out.GetDirection().DotProduct(normal);
+    multiplier = multiplier > 0 ? multiplier : -multiplier;
+    // TODO: reflectance will be changed to a float.
+    if (shape.GetMaterial().IsReflective())
+        return GetLightRayColor(out, specularSteps-1, indirectSteps-1) * multiplier;
+    else
+        return BLACK;
+}
+
+Color Scene::IndirectLight(const Point &point, const Vect &normal,
+                           const unsigned int specularSteps,
+                           const unsigned int indirectSteps) const
+{
+    if (indirectSteps <= 0) return BLACK;
+
+    // TODO: Add implementation using Monte Carlo.
+    return BLACK;
 }
 
 bool Scene::InShadow(const LightRay &lightRay, const Point &light) const

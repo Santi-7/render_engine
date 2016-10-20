@@ -1,10 +1,14 @@
 set(SOURCE_FILES
         intersections.cpp
-        transformationMatrix.cpp)
+        poseTransformationMatrix.cpp
+        transformationMatrix.cpp
+        visibleNormal.cpp)
 
 set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/utils/intersections.hpp
-        ${PROJECT_SOURCE_DIR}/include/utils/transformationMatrix.hpp)
+        ${PROJECT_SOURCE_DIR}/include/utils/poseTransformationMatrix.hpp
+        ${PROJECT_SOURCE_DIR}/include/utils/transformationMatrix.hpp
+        ${PROJECT_SOURCE_DIR}/include/utils/visibleNormal.hpp)
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/containers

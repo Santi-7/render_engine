@@ -9,6 +9,7 @@
 #include <cfloat>
 #include <intersections.hpp>
 #include <plane.hpp>
+#include <visibleNormal.hpp>
 
 Plane::Plane(const Point &point, const Vect &normal)
 : Shape(),
@@ -38,12 +39,11 @@ float Plane::Intersect(const LightRay &lightRay) const
     /* The ray lies entirely in the plane. */
     else // numerator == 0 & denominator == 0.
     {
-        // TODO: Ask Adolfo.
         return threshold;
     }
 }
 
-Vect Plane::GetNormal(const Point &point) const
+Vect Plane::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
 {
-    return mNormal;
+    return VisibleNormal(mNormal, seenFrom.GetDirection());
 }

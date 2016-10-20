@@ -153,7 +153,7 @@ public:
      * @param v .
      * @return .
      */
-    friend std::ostream& operator<< (std::ostream &out, const Vect &v);
+    friend std::ostream& operator<<(std::ostream &out, const Vect &v);
 
 private:
 

@@ -6,7 +6,7 @@
  **         Santiago Gil Begué, NIA: 683482
  ** -------------------------------------------------------------------------*/
 
-#include <cmath>
+#include <math.h>
 #include <transformationMatrix.hpp>
 
 TransformationMatrix::TransformationMatrix()

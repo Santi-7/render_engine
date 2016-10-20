@@ -2,6 +2,7 @@
 *.slo
 *.lo
 *.o
+*.obj
 
 # Precompiled Headers
 *.gch
@@ -29,3 +30,6 @@
 
 # JetBrain IDE
 .idea/
+
+# CMake build
+build/
