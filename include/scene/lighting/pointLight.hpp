@@ -12,7 +12,8 @@
 #include <lightSource.hpp>
 #include <point.hpp>
 
-class PointLight : public LightSource {
+class PointLight : public LightSource
+{
 
 public:
 
@@ -38,12 +39,20 @@ public:
      * .
      *
      * @param position .
-     * @param radiance .
+     * @param power .
      * @param baseColor .
      * @return .
      */
-    PointLight(const Point &position, const float radiance,
-               const Color &baseColor);
+    PointLight(const Point &position, const float power, const Color &baseColor);
+
+    // TODO: Add doc. Restriction: the point light must not be in a point of a shape.
+    /**
+     * .
+     *
+     * @param point .
+     * @return .
+     */
+    Color GetColor(const Point &point) const;
 
     // TODO: Add doc.
     /**

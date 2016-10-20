@@ -134,6 +134,8 @@ protected:
     /* . */
     unsigned int mWidth, mHeight;
 
+    /* Cached values. */
+
     // TODO: Add doc.
     /* . */
     float mPixelSize;

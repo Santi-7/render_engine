@@ -156,7 +156,7 @@ public:
      * @param p .
      * @return .
      */
-    friend std::ostream& operator<< (std::ostream &out, const Point &p);
+    friend std::ostream& operator<<(std::ostream &out, const Point &p);
 
 private:
 

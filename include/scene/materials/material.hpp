@@ -9,7 +9,8 @@
 #ifndef RAY_TRACER_MATERIAL_HPP
 #define RAY_TRACER_MATERIAL_HPP
 
-class Material {
+class Material
+{
 
 public:
 
@@ -28,7 +29,7 @@ public:
      * @param reflectance for this material.
      * @return New material with the given reflectance.
      */
-    Material(float reflectance);
+    Material(const float reflectance);
 
     // TODO: Add doc.
     /**
@@ -36,7 +37,7 @@ public:
      *
      * @return Reflectance of this material
      */
-    float GetReflectance();
+    float GetReflectance() const;
 
     // TODO: Add doc.
     /**
@@ -45,7 +46,7 @@ public:
      * @return True if this material's reflectance
      *         is not zero, false otherwise.
      */
-    bool IsReflective();
+    bool IsReflective() const;
 
 private:
 

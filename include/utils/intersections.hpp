@@ -11,8 +11,6 @@
 
 #include <lightRay.hpp>
 
-using namespace std;
-
 // TODO: Add doc.
 /* . */
 static constexpr float threshold = 0.001;

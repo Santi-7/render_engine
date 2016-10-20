@@ -8,16 +8,20 @@
 
 #include <material.hpp>
 
-Material::Material() : Material(0.0f) {}
+Material::Material()
+: mReflectance(0.0f)
+{}
 
-Material::Material(float reflectance) : mReflectance(reflectance) {}
+Material::Material(const float reflectance)
+: mReflectance(reflectance)
+{}
 
-float Material::GetReflectance()
+float Material::GetReflectance() const
 {
     return mReflectance;
 }
 
-bool Material::IsReflective()
+bool Material::IsReflective() const
 {
     return mReflectance != 0.0;
 }

@@ -15,11 +15,19 @@
 #include <point.hpp>
 #include <vector>
 
-using namespace std;
-
-class LightSource {
+class LightSource
+{
 
 public:
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param point .
+     * @return .
+     */
+    virtual Color GetColor(const Point &point) const = 0;
 
     // TODO: Add doc.
     /**
@@ -29,22 +37,11 @@ public:
      */
     virtual vector<Point> GetLights() const = 0;
 
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @return .
-     */
-    Color GetBaseColor() const
-    {
-        return mBaseColor;
-    }
-
 protected:
 
     // TODO: Add doc.
     /* . */
-    float mRadiance;
+    float mPower;
 
     // TODO: Add doc.
     /* . */
@@ -56,22 +53,21 @@ protected:
      *
      * @return .
      */
-    LightSource() :
-    mRadiance(1.0), mBaseColor(WHITE)
+    LightSource()
+    : mPower(500.0), mBaseColor(WHITE)
     {}
 
     // TODO: Add doc.
     /**
      * .
      *
-     * @param radiance .
+     * @param power .
      * @param baseColor .
      * @return
      */
-    LightSource(const float radiance, const Color &baseColor)
-    : mRadiance(radiance), mBaseColor(baseColor)
+    LightSource(const float power, const Color &baseColor)
+    : mPower(power), mBaseColor(baseColor)
     {}
-
 };
 
 #endif // RAY_TRACER_LIGHT_SOURCE_HPP

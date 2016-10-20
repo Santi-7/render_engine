@@ -8,13 +8,13 @@
 
 #include <gtest/gtest.h>
 #include <pinhole.hpp>
-#include <scene.hpp>
-#include <sphere.hpp>
-#include <pointLight.hpp>
 #include <plane.hpp>
-#include <triangle.hpp>
+#include <pointLight.hpp>
+#include <scene.hpp>
 #include <sceneSamples.hpp>
 #include <transformationMatrix.hpp>
+#include <triangle.hpp>
+
 /**
  * Test first pixel value is correct
  */
@@ -44,7 +44,7 @@ TEST(SimpleRender, InvisiblePlane)
     Scene scene;
     scene.AddLightSource(PointLight());
     scene.AddShape(Plane(Point(0,0,0), Vect(-1,0,1)));
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/2, 1.0, 255, 255));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/3, 1.0, 255, 255));
     unique_ptr<Image> renderedImage = scene.Render();
     renderedImage->Save("linePlane.ppm");
 }
@@ -54,7 +54,7 @@ TEST(SimpleRender, SimpleTriangle)
     Scene scene;
     scene.AddLightSource(PointLight());
     scene.AddShape(Triangle(Point(0,1,3), Point(-1,-1,3), Point(1,-1,3)));
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/2, 1.0, 255, 255));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/3, 1.0, 255, 255));
     unique_ptr<Image> renderedImage = scene.Render();
     renderedImage->Save("triangle.ppm");
 }
@@ -65,7 +65,7 @@ TEST(SimpleLight, Sphere)
 { // A sphere with a light over it and slightly off to the right
     Scene scene;
     scene.AddShape(Sphere(Point(0,0,3), 1.0));
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/2, 1.0, 255, 255));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/3, 1.0, 255, 255));
     scene.AddLightSource(PointLight(Point(1,2,3)));
     auto renderedImage = scene.Render();
     renderedImage->Save("sphere.ppm");
@@ -77,7 +77,7 @@ TEST(SimpleLight, SphereOnAPlane)
     scene.AddShape(Sphere(Point(0,0,10), 1.0));
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
 
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/2, 1.0, 255, 255));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/3, 1.0, 255, 255));
     scene.AddLightSource(PointLight(Point(0,1.5,10)));
     auto renderedImage = scene.Render();
     renderedImage->Save("soap.ppm");
@@ -100,7 +100,7 @@ TEST(CornellBox, Planes)
 TEST(CornellBox, Colors)
 { // Cornell's box. Lights of colors distinct of white.
     Scene scene = CornellBox(false);
-    scene.AddLightSource(PointLight(Point(0, 0, -5), 1.0, BLUE));
+    scene.AddLightSource(PointLight(Point(0, 0, -5), 500.0, BLUE));
     auto renderedImage = scene.Render();
     renderedImage->Save("cornellColors.ppm");
 }
@@ -108,7 +108,7 @@ TEST(CornellBox, Colors)
 TEST(SimpleLight, PlaneTop)
 { // A plane as seen from the top
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(1,0,0), Vect(0,0,1), Vect(0,-1,0), Point (0,10,0), (float)3.14159/2, 1.0, 255, 255));
+    scene.SetCamera(Pinhole(Vect(1,0,0), Vect(0,0,1), Vect(0,-1,0), Point (0,10,0), (float)3.14159/3, 1.0, 255, 255));
 
     scene.AddLightSource(PointLight(Point(0,1.5,0)));
     scene.AddShape(Plane(Point(0,0,0), Vect(0,1,0)));
@@ -122,7 +122,7 @@ TEST(Reflection, PlaneSphere)
     Scene scene;
     TransformationMatrix tm;
     tm.SetXRotation((float)3.141592/10);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-4), (float)3.14159/2, 1.0, 1920, 1080));
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-20), (float)3.14159/3, 1.0, 1920, 1080));
 
     scene.AddLightSource(PointLight(Point(3, 1.5, 4)));
 
@@ -142,4 +142,28 @@ TEST(Reflection, PlaneSphere)
     scene.AddShape(plane4);
     auto renderedImage = scene.Render();
     renderedImage->Save("reflection.ppm");
+}
+
+TEST(HiddenLight, AfterPlane)
+{ // A camera, a plane, and a light.
+    Scene scene;
+    // The camera is in first place.
+    scene.SetCamera(Pinhole());
+    // Then the plane.
+    scene.AddShape(Plane(Point(0,0,3), Vect(0,0,1)));
+    // And then a light, that should be hidden by the plane.
+    scene.AddLightSource(PointLight(Point(0,0,6)));
+    auto renderedImage = scene.Render();
+    renderedImage->Save("hiddenLight.ppm");
+
+    // Same scene but with normal of the plane declared in the other direction.
+    Scene scene2;
+    // The camera is in first place.
+    scene2.SetCamera(Pinhole());
+    // Then the plane.
+    scene2.AddShape(Plane(Point(0,0,3), Vect(0,0,-1)));
+    // And then a light, that should be hidden by the plane.
+    scene2.AddLightSource(PointLight(Point(0,0,6)));
+    auto renderedImage2 = scene2.Render();
+    renderedImage2->Save("hiddenLight2.ppm");
 }

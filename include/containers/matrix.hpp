@@ -99,7 +99,7 @@ public:
      * @param mat .
      * @return .
      */
-    friend std::ostream& operator<< (std::ostream &out, const Matrix &mat);
+    friend std::ostream& operator<<(std::ostream &out, const Matrix &mat);
 
 protected:
 

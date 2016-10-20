@@ -11,7 +11,8 @@
 
 #include <point.hpp>
 
-class LightRay {
+class LightRay
+{
 
 public:
 

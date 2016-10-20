@@ -14,9 +14,12 @@
 
 using namespace std;
 
-typedef unsigned char byte;
+// TODO: Add doc.
+/* . */
+static constexpr float COLOR_MAX = UCHAR_MAX;
 
-class Color {
+class Color
+{
 
 public:
 
@@ -38,7 +41,7 @@ public:
      * @param b value for blue.
      * @return .
      */
-    constexpr Color(const byte r, const byte g, const byte b)
+    constexpr Color(const float r, const float g, const float b)
     : mR(r), mG(g), mB(b)
     {}
 
@@ -48,7 +51,7 @@ public:
      *
      * @return .
      */
-    constexpr byte GetR() const
+    constexpr float GetR() const
     {
         return mR;
     }
@@ -59,7 +62,7 @@ public:
      *
      * @return .
      */
-    constexpr byte GetG() const
+    constexpr float GetG() const
     {
         return mG;
     }
@@ -70,12 +73,12 @@ public:
      *
      * @return .
      */
-    constexpr byte GetB() const
+    constexpr float GetB() const
     {
         return mB;
     }
 
-    // TODO: Add doc.
+    // TODO: Add doc. k must be >= 0
     /**
      * Overloads + operator to .
      *
@@ -84,12 +87,13 @@ public:
      */
     Color operator+(const Color &color) const
     {
-        return Color(static_cast<byte>(min(mR + color.mR, UCHAR_MAX)),
-                     static_cast<byte>(min(mG + color.mG, UCHAR_MAX)),
-                     static_cast<byte>(min(mB + color.mB, UCHAR_MAX)));
+        return Color(min(mR + color.mR, COLOR_MAX),
+                     min(mG + color.mG, COLOR_MAX),
+                     min(mB + color.mB, COLOR_MAX))
+        ;
     }
 
-    // TODO: Add doc.
+    // TODO: Add doc. k must be >= 0
     /**
      * Overloads += operator to add the RGB values
      * of the new color to this one's.
@@ -98,12 +102,12 @@ public:
      */
     void operator+=(const Color &color)
     {
-        mR = static_cast<byte>(min(mR + color.mR, UCHAR_MAX));
-        mG = static_cast<byte>(min(mG + color.mG, UCHAR_MAX));
-        mB = static_cast<byte>(min(mB + color.mB, UCHAR_MAX));
+        mR = min(mR + color.mR, COLOR_MAX);
+        mG = min(mG + color.mG, COLOR_MAX);
+        mB = min(mB + color.mB, COLOR_MAX);
     }
 
-    // TODO: Add doc.
+    // TODO: Add doc. k must be >= 0
     /**
      * Overloads * operator to return a Color result
      * of multiplying all values in this Color by k.
@@ -114,12 +118,12 @@ public:
      */
     Color operator*(const float k) const
     {
-        return Color(static_cast<byte>(min(mR*k, static_cast<float>(UCHAR_MAX))),
-                     static_cast<byte>(min(mG*k, static_cast<float>(UCHAR_MAX))),
-                     static_cast<byte>(min(mB*k, static_cast<float>(UCHAR_MAX))));
+        return Color(min(mR*k, COLOR_MAX),
+                     min(mG*k, COLOR_MAX),
+                     min(mB*k, COLOR_MAX));
     }
 
-    // TODO: Add doc.
+    // TODO: Add doc. k must be >= 0
     /**
      * Overloads *= operator to multiply all
      * values of this color by k.
@@ -128,20 +132,22 @@ public:
      */
     void operator*=(const float k)
     {
-        mR = static_cast<byte>(min(mR*k, static_cast<float>(UCHAR_MAX)));
-        mG = static_cast<byte>(min(mG*k, static_cast<float>(UCHAR_MAX)));
-        mB = static_cast<byte>(min(mB*k, static_cast<float>(UCHAR_MAX)));
+        mR = min(mR*k, COLOR_MAX);
+        mG = min(mG*k, COLOR_MAX);
+        mB = min(mB*k, COLOR_MAX);
     }
 
 private:
 
     // TODO: Add doc.
     /* . */
-    byte mR;
-    byte mG;
-    byte mB;
+    float mR;
+    float mG;
+    float mB;
 };
 
+// TODO: Add doc.
+/* . */
 static constexpr Color WHITE    (255, 255, 255);
 static constexpr Color BLACK    (0, 0, 0);
 static constexpr Color RED      (255, 0, 0);

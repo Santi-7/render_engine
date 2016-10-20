@@ -7,9 +7,10 @@
 ** -------------------------------------------------------------------------*/
 
 #include <cfloat>
-#include <cmath>
 #include <intersections.hpp>
+#include <math.h>
 #include <sphere.hpp>
+#include <visibleNormal.hpp>
 
 Sphere::Sphere(const Point &center, const float radius)
 : Shape(),
@@ -48,7 +49,7 @@ float Sphere::Intersect(const LightRay &lightRay) const
     }
 }
 
-Vect Sphere::GetNormal(const Point &point) const
+Vect Sphere::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
 {
-    return (point - mCenter) / mRadius;
+    return VisibleNormal((point - mCenter) / mRadius, seenFrom.GetDirection());
 }
