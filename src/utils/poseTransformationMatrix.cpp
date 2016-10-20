@@ -17,8 +17,8 @@ PoseTransformationMatrix::PoseTransformationMatrix(const Point &origin, const Ve
               Vect::H,      Vect::H,      Vect::H,     Point::H)
 {}
 
-static PoseTransformationMatrix
-PoseTransformationMatrix::GetPoseTransformation(const Point &origin, const Vect &zAxis)
+PoseTransformationMatrix PoseTransformationMatrix::GetPoseTransformation
+        (const Point &origin, const Vect &zAxis)
 {
     Vect xAxis;
     // [zAxis] is not parallel to (0,0,1).
@@ -49,5 +49,5 @@ PoseTransformationMatrix PoseTransformationMatrix::Inverse() const
     float cZ = mC * mD + mG * mH + mK * mL;
     Point c(-cX, -cY, -cZ);
     // Inverse pose matrix.
-    return PoseTransformationMatrix(x, y, z, c);
+    return PoseTransformationMatrix(c, x, y, z);
 }
