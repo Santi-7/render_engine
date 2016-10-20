@@ -123,16 +123,16 @@ TEST(Reflection, PlaneSphere)
     Scene scene;
     TransformationMatrix tm;
     tm.SetXRotation(PI/10);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-20), PI/3, 1.0, 1920, 1080));
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-20), PI/3, 1.0, 200, 200));
 
     scene.AddLightSource(PointLight(Point(3, 1.5, 4)));
 
     Sphere sphere(Point(0, 0.5, 4), 1);
-    sphere.SetMaterial(Material(1.0f, 0.0f, 20.0f, 0.0f));
+    sphere.SetMaterial(make_shared<Material>(Material(1.0f, 0.0f, 20.0f, 0.0f, 0.0f)));
     scene.AddShape(sphere);
 
     Plane plane1(Point(0, -0.5f, 0), Vect(0, 1, 0));
-    plane1.SetMaterial(Material(0.0f, 0.0f, 20.0f, 1.0f));
+    plane1.SetMaterial(make_shared<Material>(Material(0.0f, 0.0f, 20.0f, 1.0f, 0.0f)));
     scene.AddShape(plane1);
 
     Plane plane2(Point(0, 0, 60), Vect(0, 0, 1));
@@ -167,4 +167,31 @@ TEST(HiddenLight, AfterPlane)
     scene2.AddLightSource(PointLight(Point(0,0,6)));
     auto renderedImage2 = scene2.Render();
     renderedImage2->Save("hiddenLight2.ppm");
+}
+
+TEST(Materials, FacingMirrors)
+{
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation(PI/10);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-5), PI/3, 1.0, 600, 600));
+    scene.AddLightSource(PointLight(Point(0,5,6), 2220, WHITE));
+
+    Plane visibleMirror(Point(0,0,7), Vect(-0.4, 0, 1));
+    visibleMirror.SetMaterial(MIRROR);
+    Plane hiddenMirror(Point(0,0,-7), Vect(-0.4,0,1));
+    hiddenMirror.SetMaterial(MIRROR);
+    Plane floor(Point(0,-5,0), Vect(0,1,0));
+    Sphere floatingSphere(Point(0,0,3), 1);
+    scene.AddShape(visibleMirror);
+    scene.AddShape(hiddenMirror);
+    scene.AddShape(floatingSphere);
+    scene.AddShape(floor);
+    auto image = scene.Render();
+    image->Save("facingMirrors.ppm");
+}
+
+TEST(Materials, 1000Balls)
+{
+
 }

@@ -11,12 +11,12 @@
 #include <mathConstants.hpp>
 
 Material::Material()
-: mKd(1.0f), mKs(0.0f), mAlpha(20.0f), mKr(0.0f)
+: mKd(1.0f), mKs(0.0f), mAlpha(20.0f), mKr(0.0f), mKt(0.0f)
 {}
 
 Material::Material(const float diffuse, const float specular,
-                   const float alpha, const float reflectance)
-: mKd(diffuse), mKs(specular), mAlpha(alpha), mKr(reflectance)
+                   const float alpha, const float reflectance, const float trans)
+: mKd(diffuse), mKs(specular), mAlpha(alpha), mKr(reflectance), mKt(trans)
 {}
 
 float Material::PhongBRDF(const Vect &in, const Vect &out) const

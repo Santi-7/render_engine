@@ -11,6 +11,9 @@
 
 #include <lightRay.hpp>
 #include <materials/material.hpp>
+#include <memory>
+
+using namespace std;
 
 class Shape
 {
@@ -43,7 +46,7 @@ public:
      *
      * @return .
      */
-    Material GetMaterial() const
+    shared_ptr<Material> GetMaterial() const
     {
         return mMaterial;
     }
@@ -54,14 +57,14 @@ public:
      *
      * @param material .
      */
-    void SetMaterial(const Material &material)
+    void SetMaterial(shared_ptr<Material> material)
     {
         mMaterial = material;
     }
 
 private:
 
-    Material mMaterial;
+    shared_ptr<Material> mMaterial = DEFAULT_MATERIAL;
 };
 
 #endif // RAY_TRACER_SHAPE_HPP

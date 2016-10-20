@@ -105,7 +105,7 @@ Color Scene::DirectLight(const Point &point, Vect &normal,
                 retVal += // Li.
                           mLightSources[i]->GetColor(point) *
                           // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
-                          shape.GetMaterial().PhongBRDF(seenFrom.GetDirection() * -1,
+                          shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
                                                         lightRay.GetDirection()) *
                           // Cosine.
                           max(multiplier, 0.0f);
@@ -129,7 +129,7 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
     LightRay out = LightRay(point, reflectedDir);
 
     return GetLightRayColor(out, specularSteps-1, diffuseSteps-1) *
-           shape.GetMaterial().GetReflectance();
+           shape.GetMaterial()->GetReflectance();
 }
 
 Color Scene::IndirectLight(const Point &point, const Vect &normal,
