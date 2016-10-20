@@ -36,7 +36,7 @@ PoseTransformationMatrix PoseTransformationMatrix::GetPoseTransformation
 }
 
 /* Based on the doctoral thesis Local Accuracy and Global
-   Consistency for Efficient Visual SLAM [Hauke Strasdat, 2012]. */
+ * Consistency for Efficient Visual SLAM [Hauke Strasdat, 2012]. */
 PoseTransformationMatrix PoseTransformationMatrix::Inverse() const
 {
     // Transposed of the rotation matrix R, cause it's orthonormal.
