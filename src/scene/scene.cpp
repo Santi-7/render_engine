@@ -32,7 +32,7 @@ unique_ptr<Image> Scene::Render() const
             // Get the color for the current pixel.
             (*rendered)[i][j] = GetLightRayColor(
                     LightRay(mCamera->GetFocalPoint(), currentPixel),
-                    SPECULAR_STEPS, INDIRECT_STEPS);
+                    SPECULAR_STEPS, DIFFUSE_STEPS);
         }
         // Next row.
         currentRow -= advanceY;
@@ -44,12 +44,12 @@ unique_ptr<Image> Scene::Render() const
 // TODO: Temporal implementation.
 Color Scene::GetLightRayColor(const LightRay &lightRay,
                               const unsigned int specularSteps,
-                              const unsigned int indirectSteps) const
+                              const unsigned int diffuseSteps) const
 {
     /* The number of specular and indirect steps has been reached.
      * Following the light will get more accurate rendered
      * images, but with much more computing cost. */
-    if (specularSteps == 0 & indirectSteps == 0) return BLACK;
+    if (specularSteps == 0 & diffuseSteps == 0) return BLACK;
 
     // Distance to the nearest shape.
     float tMin = FLT_MAX;
@@ -75,8 +75,8 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
 
     return DirectLight(intersection, normal) +
            SpecularLight(intersection, normal, lightRay,
-                         *nearestShape, specularSteps, indirectSteps) +
-           IndirectLight(intersection, normal, specularSteps, indirectSteps);
+                         *nearestShape, specularSteps, diffuseSteps) +
+           IndirectLight(intersection, normal, specularSteps, diffuseSteps);
 }
 
 Color Scene::DirectLight(const Point &point, Vect &normal) const
@@ -112,7 +112,7 @@ Color Scene::DirectLight(const Point &point, Vect &normal) const
 Color Scene::SpecularLight(const Point &point, const Vect &normal,
                            const LightRay &in, const Shape &shape,
                            const unsigned int specularSteps,
-                           const unsigned int indirectSteps) const
+                           const unsigned int diffuseSteps) const
 {
     if (specularSteps <= 0) return BLACK;
 
@@ -125,16 +125,16 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
     multiplier = multiplier > 0 ? multiplier : -multiplier;
     // TODO: reflectance will be changed to a float.
     if (shape.GetMaterial().IsReflective())
-        return GetLightRayColor(out, specularSteps-1, indirectSteps-1) * multiplier;
+        return GetLightRayColor(out, specularSteps-1, diffuseSteps-1) * multiplier;
     else
         return BLACK;
 }
 
 Color Scene::IndirectLight(const Point &point, const Vect &normal,
                            const unsigned int specularSteps,
-                           const unsigned int indirectSteps) const
+                           const unsigned int diffuseSteps) const
 {
-    if (indirectSteps <= 0) return BLACK;
+    if (diffuseSteps <= 0) return BLACK;
 
     // TODO: Add implementation using Monte Carlo.
     return BLACK;
