@@ -132,7 +132,7 @@ TEST(Reflection, PlaneSphere)
     scene.AddShape(sphere);
 
     Plane plane1(Point(0, -0.5f, 0), Vect(0, 1, 0));
-    plane1.SetMaterial(Material(1.0f, 0.0f, 20.0f, 1.0f));
+    plane1.SetMaterial(Material(0.0f, 0.0f, 20.0f, 1.0f));
     scene.AddShape(plane1);
 
     Plane plane2(Point(0, 0, 60), Vect(0, 0, 1));

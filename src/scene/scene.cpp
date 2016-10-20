@@ -115,7 +115,7 @@ Color Scene::DirectLight(const Point &point, Vect &normal,
     return retVal;
 }
 
-// TODO: Add reflexion.
+// TODO: Add refraction.
 Color Scene::SpecularLight(const Point &point, const Vect &normal,
                            const LightRay &in, const Shape &shape,
                            const unsigned int specularSteps,
@@ -124,14 +124,11 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
     if (specularSteps <= 0) return BLACK;
 
     // Ray of light reflected in the intersection point.
-    // TODO: If we change to local reference, reflection will much easier to calculate.
+    // TODO: If we change to local reference, reflection will be much easier to calculate.
     Vect reflectedDir = in.GetDirection() - normal * in.GetDirection().DotProduct(normal) * 2;
     LightRay out = LightRay(point, reflectedDir);
-    // The reflected light comes with an angle.
-    float multiplier = out.GetDirection().DotProduct(normal);
-    multiplier = multiplier > 0 ? multiplier : -multiplier;
-    // TODO: Check if we have to multiply this angle.
-    return GetLightRayColor(out, specularSteps-1, diffuseSteps-1) * multiplier *
+
+    return GetLightRayColor(out, specularSteps-1, diffuseSteps-1) *
            shape.GetMaterial().GetReflectance();
 }
 
