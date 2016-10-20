@@ -9,8 +9,8 @@
 #ifndef RAY_TRACER_MATERIAL_HPP
 #define RAY_TRACER_MATERIAL_HPP
 
-#include <vect.hpp>
 #include <memory>
+#include <vect.hpp>
 
 using namespace std;
 
@@ -30,11 +30,16 @@ public:
     /**
      * Creates a material with the given reflectance.
      *
+     * @param diffuse .
+     * @param specular .
+     * @param alpha .
      * @param reflectance for this material.
-     * @return New material with the given reflectance.
+     * @param transparent .
+     * @return New material with the given .
      */
     Material(const float diffuse, const float specular,
-             const float alpha, const float reflectance, const float trans);
+             const float alpha, const float reflectance,
+             const float transparent);
 
     // TODO: Add doc.
     /**
@@ -62,10 +67,9 @@ private:
 };
 
 static const shared_ptr<Material> DEFAULT_MATERIAL = make_shared<Material>(Material());
-
 static const shared_ptr<Material> MIRROR = make_shared<Material>(Material(0, 0, 0, 1, 0));
 static const shared_ptr<Material> LAMBERTIAN = make_shared<Material>(Material(1, 0, 0, 0, 0));
 static const shared_ptr<Material> SPECKLED_LAMBERTIAN = make_shared<Material>(Material(1, 1, 0, 0, 0));
 //static const shared_ptr<Material> GLASS = make_shared<Material>(Material(0,0,0,0,1));
 
-#endif //RAY_TRACER_MATERIAL_HPP
+#endif // RAY_TRACER_MATERIAL_HPP

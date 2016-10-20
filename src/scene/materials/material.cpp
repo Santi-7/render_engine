@@ -15,8 +15,9 @@ Material::Material()
 {}
 
 Material::Material(const float diffuse, const float specular,
-                   const float alpha, const float reflectance, const float trans)
-: mKd(diffuse), mKs(specular), mAlpha(alpha), mKr(reflectance), mKt(trans)
+                   const float alpha, const float reflectance,
+                   const float transparent)
+: mKd(diffuse), mKs(specular), mAlpha(alpha), mKr(reflectance), mKt(transparent)
 {}
 
 float Material::PhongBRDF(const Vect &in, const Vect &out) const

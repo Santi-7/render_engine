@@ -117,9 +117,7 @@ public:
      */
     Color operator*(const float k) const
     {
-        return Color(mR*k,
-                     mG*k,
-                     mB*k);
+        return Color(mR*k, mG*k, mB*k);
     }
 
     // TODO: Add doc. k must be >= 0
@@ -131,9 +129,9 @@ public:
      */
     void operator*=(const float k)
     {
-        mR = mR*k;
-        mG = mG*k;
-        mB = mB*k;
+        mR *= k;
+        mG *= k;
+        mB *= k;
     }
 
 private:
