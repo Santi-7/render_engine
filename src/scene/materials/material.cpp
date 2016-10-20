@@ -11,11 +11,12 @@
 #include <mathConstants.hpp>
 
 Material::Material()
-: mKr(0.0f)
+: mKd(1.0f), mKs(0.0f), mAlpha(20.0f), mKr(0.0f)
 {}
 
-Material::Material(const float reflectance)
-: mKr(reflectance)
+Material::Material(const float diffuse, const float specular,
+                   const float alpha, const float reflectance)
+: mKd(diffuse), mKs(specular), mAlpha(alpha), mKr(reflectance)
 {}
 
 float Material::PhongBRDF(const Vect &in, const Vect &out) const
@@ -23,7 +24,7 @@ float Material::PhongBRDF(const Vect &in, const Vect &out) const
     // Using local coordinates.
     Vect reflected = Vect(-out.GetX(), -out.GetY(), out.GetZ());
     float cosine = in.DotProduct(reflected);
-    return (mKd / PI) + mKs * (mAlfa + 2) / (2 * PI) * pow(cosine, mAlfa);
+    return (mKd / PI) + mKs * (mAlpha + 2) / (2 * PI) * pow(cosine, mAlpha);
 }
 
 float Material::GetReflectance() const

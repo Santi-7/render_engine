@@ -73,13 +73,14 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     // Normal to the shape in the intersection point.
     Vect normal = nearestShape->GetVisibleNormal(intersection, lightRay);
 
-    return DirectLight(intersection, normal) +
+    return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay,
                          *nearestShape, specularSteps, diffuseSteps) +
            IndirectLight(intersection, normal, specularSteps, diffuseSteps);
 }
 
-Color Scene::DirectLight(const Point &point, Vect &normal) const
+Color Scene::DirectLight(const Point &point, Vect &normal,
+                         const LightRay &seenFrom, const Shape &shape) const
 {
     // Assume the path to light is blocked.
     Color retVal = BLACK;
@@ -101,7 +102,13 @@ Color Scene::DirectLight(const Point &point, Vect &normal) const
                 float multiplier = lightRay.GetDirection().DotProduct(normal);
                 /* Add the radiance from the current light if it
                    illuminates the [point] from the visible semi-sphere. */
-                retVal += mLightSources[i]->GetColor(point) * max(multiplier, 0.0f);
+                retVal += // Li.
+                          mLightSources[i]->GetColor(point) *
+                          // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
+                          shape.GetMaterial().PhongBRDF(seenFrom.GetDirection() * -1,
+                                                        lightRay.GetDirection()) *
+                          // Cosine.
+                          max(multiplier, 0.0f);
             }
         }
     }

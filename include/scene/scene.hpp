@@ -88,9 +88,11 @@ private:
      * @param point .
      * @param normal .
      * @param seenFrom .
+     * @param shape .
      * @return .
      */
-    Color DirectLight(const Point &point, Vect &normal) const;
+    Color DirectLight(const Point &point, Vect &normal,
+                      const LightRay &seenFrom, const Shape &shape) const;
 
     // TODO: Add doc.
     /**

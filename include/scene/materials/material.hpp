@@ -31,7 +31,8 @@ public:
      * @param reflectance for this material.
      * @return New material with the given reflectance.
      */
-    Material(const float reflectance);
+    Material(const float diffuse, const float specular,
+             const float alpha, const float reflectance);
 
     // TODO: Add doc.
     /**
@@ -55,7 +56,7 @@ private:
 
     // TODO: Add doc.
     /* . */
-    float mKd, mKs, mAlfa, mKr, mKt;
+    float mKd, mKs, mAlpha, mKr, mKt;
 };
 
 #endif //RAY_TRACER_MATERIAL_HPP
