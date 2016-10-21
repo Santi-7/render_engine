@@ -79,11 +79,10 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     // TODO: FIX FIX FIX THIS.
     /*PoseTransformationMatrix fromLocalToGlobal =
             PoseTransformationMatrix::GetPoseTransformation(intersection, normal).Inverse();
-    cout << normal << " " << fromLocalToGlobal * Vect(0,0,1) << endl;*/
+    cout << normal << " " << fromLocalToGlobal * Vect(0,0,1) << endl;
     PoseTransformationMatrix fromGlobalToLocal =
-            PoseTransformationMatrix::GetPoseTransformation(intersection, normal);
-    cout << fromGlobalToLocal * normal << " " << endl;
-    //if (normal.Abs() != 1) cout << normal.Abs() << endl;
+            PoseTransformationMatrix::GetPoseTransformation(intersection, normal.Normalise());
+    cout << fromGlobalToLocal * normal.Normalise() << " " << endl;*/
 
     return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay,
@@ -118,7 +117,7 @@ Color Scene::DirectLight(const Point &point, Vect &normal,
                           mLightSources[i]->GetColor(point) *
                           // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
                           shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
-                                                         lightRay.GetDirection()) *
+                                                         lightRay.GetDirection(), normal) *
                           // Cosine.
                           max(multiplier, 0.0f);
             }
@@ -136,12 +135,17 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
     if (specularSteps <= 0) return BLACK;
 
     // Ray of light reflected in the intersection point.
+    // TODO: Change to global method.
     Vect reflectedDir = in.GetDirection() - normal * in.GetDirection().DotProduct(normal) * 2;
-    LightRay out = LightRay(point, reflectedDir);
+    LightRay reflectedRay = LightRay(point, reflectedDir);
     // Ray of light refracted in the intersection point.
+    // TODO: Check this. No refracted deviation is taken.
+    LightRay refractedRay = LightRay(point, in.GetDirection());
 
-    return GetLightRayColor(out, specularSteps-1, diffuseSteps-1) *
-           shape.GetMaterial()->GetReflectance();
+    return GetLightRayColor(reflectedRay, specularSteps-1, diffuseSteps-1) *
+                shape.GetMaterial()->GetReflectance() +
+           GetLightRayColor(refractedRay, specularSteps-1, diffuseSteps-1) *
+                shape.GetMaterial()->GetTransmittance();
 }
 
 Color Scene::IndirectLight(const Point &point, const Vect &normal,

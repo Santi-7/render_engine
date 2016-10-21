@@ -32,14 +32,14 @@ public:
      *
      * @param diffuse .
      * @param specular .
-     * @param alpha .
+     * @param shininess .
      * @param reflectance for this material.
-     * @param transparent .
+     * @param transmittance .
      * @return New material with the given .
      */
     Material(const float diffuse, const float specular,
-             const float alpha, const float reflectance,
-             const float transparent);
+             const float shininess, const float reflectance,
+             const float transmittance);
 
     // TODO: Add doc.
     /**
@@ -47,29 +47,39 @@ public:
      *
      * @param seenFrom .
      * @param light .
+     * @param normal .
      * @return .
      */
-    float PhongBRDF(const Vect &seenFrom, const Vect &light) const;
+    float PhongBRDF(const Vect &seenFrom, const Vect &light,
+                    const Vect &normal) const;
 
     // TODO: Add doc.
     /**
      * Returns this material's reflectance.
      *
-     * @return Reflectance of this material
+     * @return Reflectance of this material.
      */
     float GetReflectance() const;
+
+    // TODO: Add doc.
+    /**
+     * Returns this material's transmittance.
+     *
+     * @return Transmittance of this material.
+     */
+    float GetTransmittance() const;
 
 private:
 
     // TODO: Add doc.
     /* . */
-    float mKd, mKs, mAlpha, mKr, mKt;
+    float mKd, mKs, mShininess, mKr, mKt;
 };
 
 static const shared_ptr<Material> DEFAULT_MATERIAL = make_shared<Material>(Material());
 static const shared_ptr<Material> MIRROR = make_shared<Material>(Material(0, 0, 0, 1, 0));
 static const shared_ptr<Material> LAMBERTIAN = make_shared<Material>(Material(1, 0, 0, 0, 0));
 static const shared_ptr<Material> SPECKLED_LAMBERTIAN = make_shared<Material>(Material(1, 1, 0, 0, 0));
-//static const shared_ptr<Material> GLASS = make_shared<Material>(Material(0,0,0,0,1));
+static const shared_ptr<Material> GLASS = make_shared<Material>(Material(0,0,0,0,1));
 
 #endif // RAY_TRACER_MATERIAL_HPP

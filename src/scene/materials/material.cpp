@@ -11,24 +11,31 @@
 #include <mathConstants.hpp>
 
 Material::Material()
-: mKd(1.0f), mKs(0.0f), mAlpha(20.0f), mKr(0.0f), mKt(0.0f)
+: mKd(1.0f), mKs(0.0f), mShininess(20.0f), mKr(0.0f), mKt(0.0f)
 {}
 
 Material::Material(const float diffuse, const float specular,
-                   const float alpha, const float reflectance,
-                   const float transparent)
-: mKd(diffuse), mKs(specular), mAlpha(alpha), mKr(reflectance), mKt(transparent)
+                   const float shininess, const float reflectance,
+                   const float transmittance)
+: mKd(diffuse), mKs(specular), mShininess(shininess),
+  mKr(reflectance), mKt(transmittance)
 {}
 
-float Material::PhongBRDF(const Vect &seenFrom, const Vect &light) const
+float Material::PhongBRDF(const Vect &seenFrom, const Vect &light,
+                          const Vect &normal) const
 {
-    // Using local coordinates.
-    Vect reflected = Vect(-light.GetX(), -light.GetY(), light.GetZ());
+    // TODO: Change to global method.
+    Vect reflected = light- normal * light.DotProduct(normal) * 2;
     float cosine = seenFrom.DotProduct(reflected);
-    return (mKd / PI) + mKs * (mAlpha + 2) / (2 * PI) * pow(cosine, mAlpha);
+    return (mKd / PI) + mKs * (mShininess + 2) / (2 * PI) * pow(cosine, mShininess);
 }
 
 float Material::GetReflectance() const
 {
     return mKr;
+}
+
+float Material::GetTransmittance() const
+{
+    return mKt;
 }
