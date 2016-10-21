@@ -24,13 +24,15 @@ PoseTransformationMatrix PoseTransformationMatrix::GetPoseTransformation
     // [zAxis] is not parallel to (0,0,1).
     if (zAxis.GetX() != 0)
     {
-        xAxis = zAxis.CrossProduct(Vect(0, 0, 1));
+        xAxis = zAxis.CrossProduct(Vect(0, 0, 1)).Normalise();
     }
     // [zAxis] is not parallel to (1,0,0).
     else
     {
-        xAxis = zAxis.CrossProduct(Vect(1, 0, 0));
+        xAxis = zAxis.CrossProduct(Vect(1, 0, 0)).Normalise();
     }
+    /* No need to normalise [yAxis] because xAxis.Abs = 1
+     * and zAxis.Abs = 1 and sin(xAxis, zAxis) = 1. */
     Vect yAxis = xAxis.CrossProduct(zAxis);
     return PoseTransformationMatrix(origin, xAxis, yAxis, zAxis);
 }

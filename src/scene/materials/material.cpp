@@ -20,11 +20,11 @@ Material::Material(const float diffuse, const float specular,
 : mKd(diffuse), mKs(specular), mAlpha(alpha), mKr(reflectance), mKt(transparent)
 {}
 
-float Material::PhongBRDF(const Vect &in, const Vect &out) const
+float Material::PhongBRDF(const Vect &seenFrom, const Vect &light) const
 {
     // Using local coordinates.
-    Vect reflected = Vect(-out.GetX(), -out.GetY(), out.GetZ());
-    float cosine = in.DotProduct(reflected);
+    Vect reflected = Vect(-light.GetX(), -light.GetY(), light.GetZ());
+    float cosine = seenFrom.DotProduct(reflected);
     return (mKd / PI) + mKs * (mAlpha + 2) / (2 * PI) * pow(cosine, mAlpha);
 }
 

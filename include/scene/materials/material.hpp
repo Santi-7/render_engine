@@ -45,11 +45,11 @@ public:
     /**
      * .
      *
-     * @param in .
-     * @param out .
+     * @param seenFrom .
+     * @param light .
      * @return .
      */
-    float PhongBRDF(const Vect &in, const Vect &out) const;
+    float PhongBRDF(const Vect &seenFrom, const Vect &light) const;
 
     // TODO: Add doc.
     /**

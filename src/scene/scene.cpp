@@ -8,7 +8,9 @@
 
 #include <cfloat>
 #include <image.hpp>
+#include <poseTransformationMatrix.hpp>
 #include <scene.hpp>
+#include <iostream>
 
 unique_ptr<Image> Scene::Render() const
 {
@@ -72,6 +74,16 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     Point intersection(lightRay.GetPoint(tMin));
     // Normal to the shape in the intersection point.
     Vect normal = nearestShape->GetVisibleNormal(intersection, lightRay);
+    /* Transformation matrix from the local coordinates with [intersection] as the
+     * reference point, and [normal] as the z axis, to global coordinates. */
+    // TODO: FIX FIX FIX THIS.
+    /*PoseTransformationMatrix fromLocalToGlobal =
+            PoseTransformationMatrix::GetPoseTransformation(intersection, normal).Inverse();
+    cout << normal << " " << fromLocalToGlobal * Vect(0,0,1) << endl;*/
+    PoseTransformationMatrix fromGlobalToLocal =
+            PoseTransformationMatrix::GetPoseTransformation(intersection, normal);
+    cout << fromGlobalToLocal * normal << " " << endl;
+    //if (normal.Abs() != 1) cout << normal.Abs() << endl;
 
     return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay,
@@ -106,7 +118,7 @@ Color Scene::DirectLight(const Point &point, Vect &normal,
                           mLightSources[i]->GetColor(point) *
                           // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
                           shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
-                                                        lightRay.GetDirection()) *
+                                                         lightRay.GetDirection()) *
                           // Cosine.
                           max(multiplier, 0.0f);
             }
@@ -124,9 +136,9 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
     if (specularSteps <= 0) return BLACK;
 
     // Ray of light reflected in the intersection point.
-    // TODO: If we change to local reference, reflection will be much easier to calculate.
     Vect reflectedDir = in.GetDirection() - normal * in.GetDirection().DotProduct(normal) * 2;
     LightRay out = LightRay(point, reflectedDir);
+    // Ray of light refracted in the intersection point.
 
     return GetLightRayColor(out, specularSteps-1, diffuseSteps-1) *
            shape.GetMaterial()->GetReflectance();

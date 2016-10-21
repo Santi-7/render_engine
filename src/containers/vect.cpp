@@ -60,7 +60,7 @@ Vect Vect::operator/(const float k) const
     return Vect(x, y, z);
 }
 
-Vect Vect::operator+(const Vect& v) const
+Vect Vect::operator+(const Vect &v) const
 {
     float x = mX + v.mX;
     float y = mY + v.mY;
@@ -68,7 +68,7 @@ Vect Vect::operator+(const Vect& v) const
     return Vect(x, y, z);
 }
 
-Vect Vect::operator-(const Vect& v) const
+Vect Vect::operator-(const Vect &v) const
 {
     float x = mX - v.mX;
     float y = mY - v.mY;
@@ -76,17 +76,17 @@ Vect Vect::operator-(const Vect& v) const
     return Vect(x, y, z);
 }
 
-float Vect::DotProduct(const Vect& v) const
+float Vect::DotProduct(const Vect &v) const
 {
     return mX * v.mX + mY * v.mY + mZ * v.mZ;
 }
 
-Vect Vect::CrossProduct(const Vect& v) const
+Vect Vect::CrossProduct(const Vect &v) const
 {
     float x = mY * v.mZ - mZ * v.mY;
-    float y = mX * v.mZ - mZ * v.mX;
+    float y = mZ * v.mX - mX * v.mZ;
     float z = mX * v.mY - mY * v.mX;
-    return Vect(x, -y, z);
+    return Vect(x, y, z);
 }
 
 bool Vect::operator==(const Vect &v) const
