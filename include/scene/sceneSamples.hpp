@@ -44,7 +44,7 @@ Scene CornellBox(bool useSpheresAsWalls)
     cornellBox.AddShape(Sphere(Point(-2, -1, 1), 1.5));
     cornellBox.AddShape(Sphere(Point(2, -1, 1), 1.5));
     // A point light illuminates the scene.
-    cornellBox.AddLightSource(PointLight(Point(0, 1, 1)));
+    cornellBox.AddLightSource(PointLight(Point(0, 1, 1), 5, WHITE));
 
     return cornellBox;
 }
