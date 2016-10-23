@@ -57,6 +57,10 @@ private:
     static constexpr unsigned int DIFFUSE_STEPS = 1;
 
     // TODO: Add doc.
+    /* */
+    static constexpr unsigned int DIFFUSE_RAYS = 64;
+
+    // TODO: Add doc.
     /* . */
     unique_ptr<Camera> mCamera;
 

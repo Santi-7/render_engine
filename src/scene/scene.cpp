@@ -43,7 +43,6 @@ unique_ptr<Image> Scene::Render() const
     return rendered;
 }
 
-// TODO: Temporal implementation.
 Color Scene::GetLightRayColor(const LightRay &lightRay,
                               const unsigned int specularSteps,
                               const unsigned int diffuseSteps) const
@@ -57,6 +56,7 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     float tMin = FLT_MAX;
     // Nearest shape intersected with the ray of light.
     shared_ptr<Shape> nearestShape;
+
     /* Intersect with all the shapes in the
      * scene to know which one is the nearest. */
     for (unsigned int i = 0; i < mShapes.size(); ++i) {
@@ -67,6 +67,7 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
             nearestShape = mShapes[i];
         }
     }
+
     // No shape has been found.
     if (tMin == FLT_MAX) return BLACK;
 
@@ -74,15 +75,6 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     Point intersection(lightRay.GetPoint(tMin));
     // Normal to the shape in the intersection point.
     Vect normal = nearestShape->GetVisibleNormal(intersection, lightRay);
-    /* Transformation matrix from the local coordinates with [intersection] as the
-     * reference point, and [normal] as the z axis, to global coordinates. */
-    // TODO: FIX FIX FIX THIS.
-    /*PoseTransformationMatrix fromLocalToGlobal =
-            PoseTransformationMatrix::GetPoseTransformation(intersection, normal).Inverse();
-    cout << normal << " " << fromLocalToGlobal * Vect(0,0,1) << endl;
-    PoseTransformationMatrix fromGlobalToLocal =
-            PoseTransformationMatrix::GetPoseTransformation(intersection, normal.Normalise());
-    cout << fromGlobalToLocal * normal.Normalise() << " " << endl;*/
 
     return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay,
@@ -126,7 +118,6 @@ Color Scene::DirectLight(const Point &point, Vect &normal,
     return retVal;
 }
 
-// TODO: Add refraction.
 Color Scene::SpecularLight(const Point &point, const Vect &normal,
                            const LightRay &in, const Shape &shape,
                            const unsigned int specularSteps,
@@ -153,6 +144,21 @@ Color Scene::IndirectLight(const Point &point, const Vect &normal,
                            const unsigned int diffuseSteps) const
 {
     if (diffuseSteps <= 0) return BLACK;
+
+    /* Transformation matrix from the local coordinates with [point] as the
+     * reference point, and [normal] as the z axis, to global coordinates. */
+    // TODO: FIX FIX FIX THIS.
+    /*PoseTransformationMatrix fromLocalToGlobal =
+            PoseTransformationMatrix::GetPoseTransformation(point, normal).Inverse();
+    cout << normal << " " << fromLocalToGlobal * Vect(0,0,1) << endl;
+    PoseTransformationMatrix fromGlobalToLocal =
+            PoseTransformationMatrix::GetPoseTransformation(point, normal.Normalise());
+    cout << fromGlobalToLocal * normal.Normalise() << " " << endl;*/
+
+    for (unsigned int i = 0; i < DIFFUSE_RAYS; i++)
+    {
+        // TODO: Generate random angles and trace the ray.
+    }
 
     // TODO: Add implementation using Monte Carlo.
     return BLACK;
