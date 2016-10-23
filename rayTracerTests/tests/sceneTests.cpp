@@ -14,7 +14,6 @@
 #include <sceneSamples.hpp>
 #include <transformationMatrix.hpp>
 #include <triangle.hpp>
-#include <mathConstants.hpp>
 
 /**
  * Test first pixel value is correct
@@ -240,5 +239,4 @@ TEST(Materials, GlassSpheres)
     }
     auto image = scene.Render();
     image->Save("glassSpheres.ppm");
-
 }
