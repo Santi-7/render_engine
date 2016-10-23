@@ -10,6 +10,7 @@
 #include <image.hpp>
 #include <poseTransformationMatrix.hpp>
 #include <scene.hpp>
+#include <mathConstants.hpp>
 
 unique_ptr<Image> Scene::Render() const
 {
@@ -139,6 +140,16 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
                 shape.GetMaterial()->GetTransmittance();
 }
 
+static float GetRandomAngle(bool getQuarterOfAnAngle)
+{
+    static random_device randDev;
+    static mt19937 mt(randDev());
+    static uniform_real_distribution<float> fullDistribution(0, 2 * PI);
+    static uniform_real_distribution<float> quarterDistribution(0, PI/2);
+    if(getQuarterOfAnAngle) return quarterDistribution(mt);
+    else return fullDistribution(mt);
+}
+
 Color Scene::IndirectLight(const Point &point, const Vect &normal,
                            const Shape &shape, const unsigned int specularSteps,
                            const unsigned int diffuseSteps) const
@@ -157,6 +168,8 @@ Color Scene::IndirectLight(const Point &point, const Vect &normal,
         // TODO: Generate random angles.
         float inclination; // From 0 to PI / 2.
         float azimuth; // From 0 to 2 PI.
+        inclination = GetRandomAngle(true);
+        azimuth = GetRandomAngle(false);
         // Direction of the ray of light expressed in local coordinates.
         Vect localRay(sin(inclination) * cos(azimuth),
                       sin(inclination) * sin(azimuth),
