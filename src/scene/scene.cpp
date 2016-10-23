@@ -177,7 +177,7 @@ Color Scene::IndirectLight(const Point &point, const Vect &normal,
         LightRay lightRay(point, fromLocalToGlobal * localRay);
         retVal += GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1);
     }
-    return retVal * shape.GetMaterial()->GetDiffuse();
+    return retVal / DIFFUSE_RAYS * shape.GetMaterial()->GetDiffuse();
 }
 
 bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
