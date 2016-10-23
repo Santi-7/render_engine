@@ -55,6 +55,14 @@ public:
 
     // TODO: Add doc.
     /**
+     * Returns this material's .
+     *
+     * @return  of this material.
+     */
+    float GetDiffuse() const;
+
+    // TODO: Add doc.
+    /**
      * Returns this material's reflectance.
      *
      * @return Reflectance of this material.

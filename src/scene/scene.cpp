@@ -10,7 +10,6 @@
 #include <image.hpp>
 #include <poseTransformationMatrix.hpp>
 #include <scene.hpp>
-#include <iostream>
 
 unique_ptr<Image> Scene::Render() const
 {
@@ -79,7 +78,8 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay,
                          *nearestShape, specularSteps, diffuseSteps) +
-           IndirectLight(intersection, normal, specularSteps, diffuseSteps);
+           IndirectLight(intersection, normal, *nearestShape,
+                         specularSteps, diffuseSteps);
 }
 
 Color Scene::DirectLight(const Point &point, Vect &normal,
@@ -140,28 +140,32 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
 }
 
 Color Scene::IndirectLight(const Point &point, const Vect &normal,
-                           const unsigned int specularSteps,
+                           const Shape &shape, const unsigned int specularSteps,
                            const unsigned int diffuseSteps) const
 {
     if (diffuseSteps <= 0) return BLACK;
 
     /* Transformation matrix from the local coordinates with [point] as the
      * reference point, and [normal] as the z axis, to global coordinates. */
-    // TODO: FIX FIX FIX THIS.
-    /*PoseTransformationMatrix fromLocalToGlobal =
-            PoseTransformationMatrix::GetPoseTransformation(point, normal).Inverse();
-    cout << normal << " " << fromLocalToGlobal * Vect(0,0,1) << endl;
-    PoseTransformationMatrix fromGlobalToLocal =
-            PoseTransformationMatrix::GetPoseTransformation(point, normal.Normalise());
-    cout << fromGlobalToLocal * normal.Normalise() << " " << endl;*/
-
+    PoseTransformationMatrix fromLocalToGlobal =
+            PoseTransformationMatrix::GetPoseTransformation(point, normal);
+    // [DIFFUSE_RAYS] indirect rays of light using Monte Carlo sampling.
+    Color retVal = BLACK;
     for (unsigned int i = 0; i < DIFFUSE_RAYS; i++)
     {
-        // TODO: Generate random angles and trace the ray.
+        // Generate random angles.
+        // TODO: Generate random angles.
+        float inclination; // From 0 to PI / 2.
+        float azimuth; // From 0 to 2 PI.
+        // Direction of the ray of light expressed in local coordinates.
+        Vect localRay(sin(inclination) * cos(azimuth),
+                      sin(inclination) * sin(azimuth),
+                      cos(inclination));
+        // Transform the ray of light to global coordinates.
+        LightRay lightRay(point, fromLocalToGlobal * localRay);
+        retVal += GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1);
     }
-
-    // TODO: Add implementation using Monte Carlo.
-    return BLACK;
+    return retVal * shape.GetMaterial()->GetDiffuse();
 }
 
 bool Scene::InShadow(const LightRay &lightRay, const Point &light) const

@@ -6,11 +6,12 @@
  **         Santiago Gil Begué, NIA: 683482
  ** -------------------------------------------------------------------------*/
 
-#include <gtest/gtest.h>
-#include <matrix.hpp>
 #include <color.hpp>
-#include <transformationMatrix.hpp>
+#include <gtest/gtest.h>
 #include <image.hpp>
+#include <matrix.hpp>
+#include <poseTransformationMatrix.hpp>
+#include <transformationMatrix.hpp>
 
 using namespace std;
 
@@ -28,6 +29,24 @@ TEST(TransformationMatrix, General)
 
     // This doesn't work
     EXPECT_TRUE(tMatrix == nMatrix);
+}
+
+////////////////////////////////////////
+/// Pose Transformation Matrix Tests////
+////////////////////////////////////////
+TEST(PoseTransformationMatrix, General)
+{
+    Point newOrigin(5,1,4);
+    Vect newNormal(-2,2,5);
+    newNormal = newNormal.Normalise();
+    PoseTransformationMatrix localToGlobal =
+            PoseTransformationMatrix::GetPoseTransformation(newOrigin, newNormal);
+    EXPECT_EQ(localToGlobal * Point(0, 0, 0), newOrigin);
+    EXPECT_EQ(localToGlobal * Vect(0, 0, 1), newNormal);
+
+    PoseTransformationMatrix globalToLocal = localToGlobal.Inverse();
+    EXPECT_EQ(globalToLocal * newOrigin, Point(0, 0, 0));
+    EXPECT_EQ(globalToLocal * newNormal, Vect(0, 0, 1));
 }
 
 ///////////////////////////////////
