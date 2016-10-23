@@ -216,3 +216,29 @@ TEST(Materials, XSpheres)
     image->Save("spheres.ppm");
 
 }
+
+TEST(Materials, GlassSpheres)
+{
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation(PI/4);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,10,-12), PI/3, 1.0, 50, 50));
+    scene.AddLightSource(PointLight(Point(0,12,0), 520, WHITE));
+
+    scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
+
+    const int SIZE = 20;
+
+    for(int i = -SIZE/2; i < SIZE/2; ++i)
+    {
+        for(int j = -SIZE/2; j < SIZE/2; ++j)
+        {
+            Sphere tmp = Sphere(Point(i*2.5f,0,j*2.5f), 1);
+            if(j % 2 == 0 ^ i %2 != 0) tmp.SetMaterial(GLASS);
+            scene.AddShape(tmp);
+        }
+    }
+    auto image = scene.Render();
+    image->Save("glassSpheres.ppm");
+
+}
