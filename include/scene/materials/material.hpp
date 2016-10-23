@@ -88,6 +88,6 @@ static const shared_ptr<Material> DEFAULT_MATERIAL = make_shared<Material>(Mater
 static const shared_ptr<Material> MIRROR = make_shared<Material>(Material(0, 0, 0, 1, 0));
 static const shared_ptr<Material> LAMBERTIAN = make_shared<Material>(Material(1, 0, 0, 0, 0));
 static const shared_ptr<Material> SPECKLED_LAMBERTIAN = make_shared<Material>(Material(1, 1, 0, 0, 0));
-static const shared_ptr<Material> GLASS = make_shared<Material>(Material(0,0,0,0,1));
+static const shared_ptr<Material> GLASS = make_shared<Material>(Material(0.05,0,0,0.6,0.8));
 
 #endif // RAY_TRACER_MATERIAL_HPP
