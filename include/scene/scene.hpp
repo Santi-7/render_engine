@@ -82,8 +82,8 @@ private:
      * @return .
      */
     Color GetLightRayColor(const LightRay &lightRay,
-                           const unsigned int specularSteps,
-                           const unsigned int diffuseSteps) const;
+                           const int specularSteps,
+                           const int diffuseSteps) const;
 
     // TODO: Add doc.
     /**
@@ -112,8 +112,7 @@ private:
      */
     Color SpecularLight(const Point &point, const Vect &normal,
                         const LightRay &in, const Shape &shape,
-                        const unsigned int specularSteps,
-                        const unsigned int diffuseSteps) const;
+                        const int specularSteps, const int diffuseSteps) const;
 
     // TODO: Add doc.
     /**
@@ -127,8 +126,8 @@ private:
      * @return .
      */
     Color IndirectLight(const Point &point, const Vect &normal,
-                        const Shape &shape,  const unsigned int specularSteps,
-                        const unsigned int diffuseSteps) const;
+                        const Shape &shape,  const int specularSteps,
+                        const int diffuseSteps) const;
 
     // TODO: Add doc.
     /**

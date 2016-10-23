@@ -44,8 +44,8 @@ unique_ptr<Image> Scene::Render() const
 }
 
 Color Scene::GetLightRayColor(const LightRay &lightRay,
-                              const unsigned int specularSteps,
-                              const unsigned int diffuseSteps) const
+                              const int specularSteps,
+                              const int diffuseSteps) const
 {
     /* The number of specular and indirect steps has been reached.
      * Following the light will get more accurate rendered
@@ -121,8 +121,7 @@ Color Scene::DirectLight(const Point &point, Vect &normal,
 
 Color Scene::SpecularLight(const Point &point, const Vect &normal,
                            const LightRay &in, const Shape &shape,
-                           const unsigned int specularSteps,
-                           const unsigned int diffuseSteps) const
+                           const int specularSteps, const int diffuseSteps) const
 {
     if (specularSteps <= 0) return BLACK;
 
@@ -151,8 +150,8 @@ static float GetRandomAngle(bool getQuarterOfAnAngle)
 }
 
 Color Scene::IndirectLight(const Point &point, const Vect &normal,
-                           const Shape &shape, const unsigned int specularSteps,
-                           const unsigned int diffuseSteps) const
+                           const Shape &shape, const int specularSteps,
+                           const int diffuseSteps) const
 {
     if (diffuseSteps <= 0) return BLACK;
 
