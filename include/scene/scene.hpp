@@ -58,7 +58,7 @@ private:
 
     // TODO: Add doc.
     /* */
-    static constexpr unsigned int DIFFUSE_RAYS = 64;
+    static constexpr unsigned int DIFFUSE_RAYS = 8;
 
     // TODO: Add doc.
     /* . */
