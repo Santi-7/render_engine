@@ -9,6 +9,7 @@
 #include <cfloat>
 #include <image.hpp>
 #include <poseTransformationMatrix.hpp>
+#include <random>
 #include <scene.hpp>
 #include <mathConstants.hpp>
 
@@ -177,7 +178,7 @@ Color Scene::IndirectLight(const Point &point, const Vect &normal,
         LightRay lightRay(point, fromLocalToGlobal * localRay);
         retVal += GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1);
     }
-    return retVal / DIFFUSE_RAYS * shape.GetMaterial()->GetDiffuse();
+    return retVal * (shape.GetMaterial()->GetDiffuse() / DIFFUSE_RAYS);
 }
 
 bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
