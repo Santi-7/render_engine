@@ -140,14 +140,16 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
                 shape.GetMaterial()->GetTransmittance();
 }
 
-static float GetRandomAngle(bool getQuarterOfAnAngle)
+static tuple<float, float> UniformCosineSampling()
 {
+    // Random generator.
     static random_device randDev;
     static mt19937 mt(randDev());
-    static uniform_real_distribution<float> fullDistribution(0, 2 * PI);
-    static uniform_real_distribution<float> quarterDistribution(0, PI/2);
-    if(getQuarterOfAnAngle) return quarterDistribution(mt);
-    else return fullDistribution(mt);
+    static uniform_real_distribution<float> distribution(0, 1);
+    // Inclination and azimuth angles.
+    float inclination = acos(sqrt(1 - distribution(mt)));
+    float azimuth = 2 * PI * distribution(mt);
+    return make_tuple(inclination, azimuth);
 }
 
 Color Scene::IndirectLight(const Point &point, const Vect &normal,
@@ -165,18 +167,16 @@ Color Scene::IndirectLight(const Point &point, const Vect &normal,
     for (unsigned int i = 0; i < DIFFUSE_RAYS; i++)
     {
         // Generate random angles.
-        // TODO: Generate random angles.
-        float inclination; // From 0 to PI / 2.
-        float azimuth; // From 0 to 2 PI.
-        inclination = GetRandomAngle(true);
-        azimuth = GetRandomAngle(false);
+        float inclination, azimuth;
+        std::tie(inclination, azimuth) = UniformCosineSampling();
         // Direction of the ray of light expressed in local coordinates.
         Vect localRay(sin(inclination) * cos(azimuth),
                       sin(inclination) * sin(azimuth),
                       cos(inclination));
         // Transform the ray of light to global coordinates.
         LightRay lightRay(point, fromLocalToGlobal * localRay);
-        retVal += GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1);
+        retVal += GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1) *
+                (PI / (sin(inclination) * cos(inclination))); // 1 / PDF.
     }
     return retVal * (shape.GetMaterial()->GetDiffuse() / DIFFUSE_RAYS);
 }

@@ -195,7 +195,7 @@ TEST(Materials, XSpheres)
     Scene scene;
     TransformationMatrix tm;
     tm.SetXRotation(PI/4);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,10,-12), PI/3, 1.0, 50, 50));
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,10,-12), PI/3, 1.0, 500, 500));
     scene.AddLightSource(PointLight(Point(0,12,0), 520, WHITE));
 
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
