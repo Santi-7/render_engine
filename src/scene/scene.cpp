@@ -140,7 +140,7 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
                 shape.GetMaterial()->GetTransmittance();
 }
 
-static tuple<float, float> UniformCosineSampling()
+inline static tuple<float, float> UniformCosineSampling()
 {
     // Random generator.
     static random_device randDev;
