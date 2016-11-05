@@ -101,9 +101,9 @@ public:
      */
     void operator+=(const Color &color)
     {
-        mR = mR + color.mR;
-        mG = mG + color.mG;
-        mB = mB + color.mB;
+        mR += color.mR;
+        mG += color.mG;
+        mB += color.mB;
     }
 
     // TODO: Add doc. k must be >= 0
