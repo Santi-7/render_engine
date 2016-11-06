@@ -106,6 +106,20 @@ public:
         mB += color.mB;
     }
 
+    // TODO: Add doc.
+    /**
+     * Overloads * operator to .
+     *
+     * @param color .
+     * @return .
+     */
+    Color operator*(const Color &color) const
+    {
+        return Color(mR * color.mR / COLOR_MAX,
+                     mG * color.mG / COLOR_MAX,
+                     mB * color.mB / COLOR_MAX);
+    }
+
     // TODO: Add doc. k must be >= 0
     /**
      * Overloads * operator to return a Color result
@@ -134,6 +148,20 @@ public:
         mB *= k;
     }
 
+    // TODO: Add doc. k must be > 0
+    /**
+     * Overloads / operator to return a Color result
+     * of dividing all values in this Color by k.
+     *
+     * @param k .
+     * @return New color result of dividing the
+     *         RGB values in this color by k.
+     */
+    Color operator/(const float k) const
+    {
+        return Color(mR/k, mG/k, mB/k);
+    }
+
 private:
 
     // TODO: Add doc.
@@ -146,6 +174,7 @@ private:
 // TODO: Add doc.
 /* . */
 static constexpr Color WHITE    (255, 255, 255);
+static constexpr Color GRAY     (128, 128, 128);
 static constexpr Color BLACK    (0, 0, 0);
 static constexpr Color RED      (255, 0, 0);
 static constexpr Color GREEN    (0, 255, 0);
