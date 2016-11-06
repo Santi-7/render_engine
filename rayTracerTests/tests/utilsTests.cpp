@@ -99,31 +99,3 @@ TEST(CreateMultiColorImage, image)
     multi.Save("multicolor.ppm");
 }
 
-// TODO: Put this in its own file since it's duplicated from poseTransformationMatrix.cpp
-static float GetRandomAngle(bool getQuarterOfAnAngle)
-{
-    static random_device randDev;
-    static mt19937 mt(randDev());
-    static uniform_real_distribution<float> fullDistribution(0, 2 * PI);
-    static uniform_real_distribution<float> quarterDistribution(0, PI/2);
-    if(getQuarterOfAnAngle) return quarterDistribution(mt);
-    else return fullDistribution(mt);
-}
-
-TEST(CorrectRandomness, MinMaxAvg)
-{
-    double quarters = 0;
-    double fulls = 0;
-    float min = 999999999;
-    float max = 0;
-    int its = 1000000;
-    for (int i = 0; i < its; ++i) {
-        float tmp = GetRandomAngle(false);
-        if(tmp < min) min = tmp;
-        if(tmp > max) max = tmp;
-        fulls += tmp;
-        tmp = GetRandomAngle(true);
-        quarters += tmp;
-    }
-    //TODO: Add expects
-}
