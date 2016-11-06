@@ -92,7 +92,11 @@ private:
 
     // TODO: Add doc.
     /* */
-    static constexpr unsigned int INDIRECT_STEPS = 1;
+    static constexpr unsigned int DIFFUSE_STEPS = 1;
+
+    // TODO: Add doc.
+    /* */
+    static constexpr unsigned int DIFFUSE_RAYS = 8;
 
     // TODO: Add doc.
     /* . */
@@ -112,12 +116,12 @@ private:
      *
      * @param lightRay .
      * @param specularSteps .
-     * @param indirectSteps .
+     * @param diffuseSteps .
      * @return .
      */
     Color GetLightRayColor(const LightRay &lightRay,
-                           const unsigned int specularSteps,
-                           const unsigned int indirectSteps) const;
+                           const int specularSteps,
+                           const int diffuseSteps) const;
 
     // TODO: Add doc.
     /**
@@ -126,9 +130,11 @@ private:
      * @param point .
      * @param normal .
      * @param seenFrom .
+     * @param shape .
      * @return .
      */
-    Color DirectLight(const Point &point, Vect &normal) const;
+    Color DirectLight(const Point &point, Vect &normal,
+                      const LightRay &seenFrom, const Shape &shape) const;
 
     // TODO: Add doc.
     /**
@@ -139,13 +145,12 @@ private:
      * @param in .
      * @param shape .
      * @param specularSteps .
-     * @param indirectSteps .
+     * @param diffuseSteps .
      * @return .
      */
     Color SpecularLight(const Point &point, const Vect &normal,
                         const LightRay &in, const Shape &shape,
-                        const unsigned int specularSteps,
-                        const unsigned int indirectSteps) const;
+                        const int specularSteps, const int diffuseSteps) const;
 
     // TODO: Add doc.
     /**
@@ -153,13 +158,14 @@ private:
      *
      * @param point .
      * @param normal .
+     * @param shape .
      * @param specularSteps .
-     * @param indirectSteps .
+     * @param diffuseSteps .
      * @return .
      */
     Color IndirectLight(const Point &point, const Vect &normal,
-                        const unsigned int specularSteps,
-                        const unsigned int indirectSteps) const;
+                        const Shape &shape,  const int specularSteps,
+                        const int diffuseSteps) const;
 
     // TODO: Add doc.
     /**

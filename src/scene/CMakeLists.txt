@@ -10,7 +10,8 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/include/scene
         ${PROJECT_SOURCE_DIR}/include/scene/geometry
         ${PROJECT_SOURCE_DIR}/include/scene/lighting
-        ${PROJECT_SOURCE_DIR}/include/scene/sensors)
+        ${PROJECT_SOURCE_DIR}/include/scene/sensors
+        ${PROJECT_SOURCE_DIR}/include/utils)
 
 add_subdirectory(geometry)
 add_subdirectory(lighting)

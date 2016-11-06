@@ -7,7 +7,8 @@ set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/sensors/pinhole.hpp)
 
 include_directories(
-        ${PROJECT_SOURCE_DIR}/include/scene/sensors)
+        ${PROJECT_SOURCE_DIR}/include/scene/sensors
+        ${PROJECT_SOURCE_DIR}/include/utils)
 
 link_libraries(container)
 

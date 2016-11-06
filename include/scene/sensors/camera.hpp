@@ -112,10 +112,6 @@ protected:
 
     // TODO: Add doc.
     /* . */
-    static constexpr float PI = 3.1415926535897932f;
-
-    // TODO: Add doc.
-    /* . */
     Vect mUp, mRight, mTowards;
 
     // TODO: Add doc.

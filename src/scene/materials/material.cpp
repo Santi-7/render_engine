@@ -7,21 +7,40 @@
 ** -------------------------------------------------------------------------*/
 
 #include <material.hpp>
+#include <math.h>
+#include <mathConstants.hpp>
 
 Material::Material()
-: mReflectance(0.0f)
+: mKd(1.0f), mKs(0.0f), mShininess(20.0f), mKr(0.0f), mKt(0.0f)
 {}
 
-Material::Material(const float reflectance)
-: mReflectance(reflectance)
+Material::Material(const float diffuse, const float specular,
+                   const float shininess, const float reflectance,
+                   const float transmittance)
+: mKd(diffuse), mKs(specular), mShininess(shininess),
+  mKr(reflectance), mKt(transmittance)
 {}
+
+float Material::PhongBRDF(const Vect &seenFrom, const Vect &light,
+                          const Vect &normal) const
+{
+    // TODO: Change to global method.
+    Vect reflected = light- normal * light.DotProduct(normal) * 2;
+    float cosine = seenFrom.DotProduct(reflected);
+    return (mKd / PI) + mKs * (mShininess + 2) / (2 * PI) * pow(cosine, mShininess);
+}
+
+float Material::GetDiffuse() const
+{
+    return mKd;
+}
 
 float Material::GetReflectance() const
 {
-    return mReflectance;
+    return mKr;
 }
 
-bool Material::IsReflective() const
+float Material::GetTransmittance() const
 {
-    return mReflectance != 0.0;
+    return mKt;
 }

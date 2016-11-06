@@ -7,9 +7,10 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/include/utils)
 
 add_executable(Ray_Tracer_Tests_run
+        collisionTest.cpp
         containerTests.cpp
         sceneTests.cpp
-        utilsTests.cpp collisionTest.cpp)
+        utilsTests.cpp)
 
 target_link_libraries(Ray_Tracer_Tests_run
         container

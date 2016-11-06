@@ -53,7 +53,7 @@ public:
      */
     constexpr float GetR() const
     {
-        return mR;
+        return min(mR, COLOR_MAX);
     }
 
     // TODO: Add doc.
@@ -64,7 +64,7 @@ public:
      */
     constexpr float GetG() const
     {
-        return mG;
+        return min(mG, COLOR_MAX);
     }
 
     // TODO: Add doc.
@@ -75,7 +75,7 @@ public:
      */
     constexpr float GetB() const
     {
-        return mB;
+        return min(mB, COLOR_MAX);
     }
 
     // TODO: Add doc. k must be >= 0
@@ -87,10 +87,9 @@ public:
      */
     Color operator+(const Color &color) const
     {
-        return Color(min(mR + color.mR, COLOR_MAX),
-                     min(mG + color.mG, COLOR_MAX),
-                     min(mB + color.mB, COLOR_MAX))
-        ;
+        return Color(mR + color.mR,
+                     mG + color.mG,
+                     mB + color.mB);
     }
 
     // TODO: Add doc. k must be >= 0
@@ -102,9 +101,9 @@ public:
      */
     void operator+=(const Color &color)
     {
-        mR = min(mR + color.mR, COLOR_MAX);
-        mG = min(mG + color.mG, COLOR_MAX);
-        mB = min(mB + color.mB, COLOR_MAX);
+        mR += color.mR;
+        mG += color.mG;
+        mB += color.mB;
     }
 
     // TODO: Add doc. k must be >= 0
@@ -118,9 +117,7 @@ public:
      */
     Color operator*(const float k) const
     {
-        return Color(min(mR*k, COLOR_MAX),
-                     min(mG*k, COLOR_MAX),
-                     min(mB*k, COLOR_MAX));
+        return Color(mR*k, mG*k, mB*k);
     }
 
     // TODO: Add doc. k must be >= 0
@@ -132,9 +129,9 @@ public:
      */
     void operator*=(const float k)
     {
-        mR = min(mR*k, COLOR_MAX);
-        mG = min(mG*k, COLOR_MAX);
-        mB = min(mB*k, COLOR_MAX);
+        mR *= k;
+        mG *= k;
+        mB *= k;
     }
 
 private:

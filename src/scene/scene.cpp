@@ -8,7 +8,10 @@
 
 #include <cfloat>
 #include <image.hpp>
+#include <poseTransformationMatrix.hpp>
+#include <random>
 #include <scene.hpp>
+#include <mathConstants.hpp>
 
 unique_ptr<Image> Scene::Render() const
 {
@@ -26,27 +29,28 @@ unique_ptr<Image> Scene::Render() const
     {
         (*rendered)[get<2>(*pixelTarget)][get<1>(*pixelTarget)] = GetLightRayColor(
                 LightRay(mCamera->GetFocalPoint(), get<0>(*pixelTarget)),
-                SPECULAR_STEPS, INDIRECT_STEPS);
+                SPECULAR_STEPS, DIFFUSE_STEPS);
         pixelTarget = pixelGetter->GetNextPixel();
     }
 
     return rendered;
 }
 
-// TODO: Temporal implementation.
+
 Color Scene::GetLightRayColor(const LightRay &lightRay,
-                              const unsigned int specularSteps,
-                              const unsigned int indirectSteps) const
+                              const int specularSteps,
+                              const int diffuseSteps) const
 {
     /* The number of specular and indirect steps has been reached.
      * Following the light will get more accurate rendered
      * images, but with much more computing cost. */
-    if (specularSteps == 0 & indirectSteps == 0) return BLACK;
+    if (specularSteps == 0 & diffuseSteps == 0) return BLACK;
 
     // Distance to the nearest shape.
     float tMin = FLT_MAX;
     // Nearest shape intersected with the ray of light.
     shared_ptr<Shape> nearestShape;
+
     /* Intersect with all the shapes in the
      * scene to know which one is the nearest. */
     for (unsigned int i = 0; i < mShapes.size(); ++i) {
@@ -57,6 +61,7 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
             nearestShape = mShapes[i];
         }
     }
+
     // No shape has been found.
     if (tMin == FLT_MAX) return BLACK;
 
@@ -65,13 +70,15 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     // Normal to the shape in the intersection point.
     Vect normal = nearestShape->GetVisibleNormal(intersection, lightRay);
 
-    return DirectLight(intersection, normal) +
+    return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay,
-                         *nearestShape, specularSteps, indirectSteps) +
-           IndirectLight(intersection, normal, specularSteps, indirectSteps);
+                         *nearestShape, specularSteps, diffuseSteps) +
+           IndirectLight(intersection, normal, *nearestShape,
+                         specularSteps, diffuseSteps);
 }
 
-Color Scene::DirectLight(const Point &point, Vect &normal) const
+Color Scene::DirectLight(const Point &point, Vect &normal,
+                         const LightRay &seenFrom, const Shape &shape) const
 {
     // Assume the path to light is blocked.
     Color retVal = BLACK;
@@ -93,43 +100,78 @@ Color Scene::DirectLight(const Point &point, Vect &normal) const
                 float multiplier = lightRay.GetDirection().DotProduct(normal);
                 /* Add the radiance from the current light if it
                    illuminates the [point] from the visible semi-sphere. */
-                retVal += mLightSources[i]->GetColor(point) * max(multiplier, 0.0f);
+                retVal += // Li.
+                          mLightSources[i]->GetColor(point) *
+                          // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
+                          shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
+                                                         lightRay.GetDirection(), normal) *
+                          // Cosine.
+                          max(multiplier, 0.0f);
             }
         }
     }
     return retVal;
 }
 
-// TODO: Add reflexion.
 Color Scene::SpecularLight(const Point &point, const Vect &normal,
                            const LightRay &in, const Shape &shape,
-                           const unsigned int specularSteps,
-                           const unsigned int indirectSteps) const
+                           const int specularSteps, const int diffuseSteps) const
 {
     if (specularSteps <= 0) return BLACK;
 
     // Ray of light reflected in the intersection point.
-    // TODO: If we change to local reference, reflection will much easier to calculate.
+    // TODO: Change to global method.
     Vect reflectedDir = in.GetDirection() - normal * in.GetDirection().DotProduct(normal) * 2;
-    LightRay out = LightRay(point, reflectedDir);
-    // The reflected light comes with an angle.
-    float multiplier = out.GetDirection().DotProduct(normal);
-    multiplier = multiplier > 0 ? multiplier : -multiplier;
-    // TODO: reflectance will be changed to a float.
-    if (shape.GetMaterial().IsReflective())
-        return GetLightRayColor(out, specularSteps-1, indirectSteps-1) * multiplier;
-    else
-        return BLACK;
+    LightRay reflectedRay = LightRay(point, reflectedDir);
+    // Ray of light refracted in the intersection point.
+    // TODO: Check this. No refracted deviation is taken.
+    LightRay refractedRay = LightRay(point, in.GetDirection());
+
+    return GetLightRayColor(reflectedRay, specularSteps-1, diffuseSteps-1) *
+                shape.GetMaterial()->GetReflectance() +
+           GetLightRayColor(refractedRay, specularSteps-1, diffuseSteps-1) *
+                shape.GetMaterial()->GetTransmittance();
+}
+
+inline static tuple<float, float> UniformCosineSampling()
+{
+    // Random generator.
+    static random_device randDev;
+    static mt19937 mt(randDev());
+    static uniform_real_distribution<float> distribution(0, 1);
+    // Inclination and azimuth angles.
+    float inclination = acos(sqrt(1 - distribution(mt)));
+    float azimuth = 2 * PI * distribution(mt);
+    return make_tuple(inclination, azimuth);
 }
 
 Color Scene::IndirectLight(const Point &point, const Vect &normal,
-                           const unsigned int specularSteps,
-                           const unsigned int indirectSteps) const
+                           const Shape &shape, const int specularSteps,
+                           const int diffuseSteps) const
 {
-    if (indirectSteps <= 0) return BLACK;
+    if (diffuseSteps <= 0) return BLACK;
 
-    // TODO: Add implementation using Monte Carlo.
-    return BLACK;
+    /* Transformation matrix from the local coordinates with [point] as the
+     * reference point, and [normal] as the z axis, to global coordinates. */
+    PoseTransformationMatrix fromLocalToGlobal =
+            PoseTransformationMatrix::GetPoseTransformation(point, normal);
+    // [DIFFUSE_RAYS] indirect rays of light using Monte Carlo sampling.
+    Color retVal = BLACK;
+    for (unsigned int i = 0; i < DIFFUSE_RAYS; i++)
+    {
+        // Generate random angles.
+        float inclination, azimuth;
+        std::tie(inclination, azimuth) = UniformCosineSampling();
+        // Direction of the ray of light expressed in local coordinates.
+        Vect localRay(sin(inclination) * cos(azimuth),
+                      sin(inclination) * sin(azimuth),
+                      cos(inclination));
+        // Transform the ray of light to global coordinates.
+        LightRay lightRay(point, fromLocalToGlobal * localRay);
+        retVal += GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1) *
+                (PI / (sin(inclination) * cos(inclination))); // 1 / PDF.
+    }
+    return retVal * (shape.GetMaterial()->GetDiffuse() / DIFFUSE_RAYS);
 }
 
 bool Scene::InShadow(const LightRay &lightRay, const Point &light) const

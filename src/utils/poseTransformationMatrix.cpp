@@ -9,16 +9,36 @@
 #include <poseTransformationMatrix.hpp>
 
 // Assuming that the initial pose's position coordinates are (0,0,0),
-PoseTransformationMatrix::PoseTransformationMatrix(const Vect &x, const Vect &y,
-                                                   const Vect &z, const Point &c)
-: Matrix(x.GetX(), y.GetX(), z.GetX(), c.GetX(),
-         x.GetY(), y.GetY(), z.GetY(), c.GetY(),
-         x.GetZ(), y.GetZ(), z.GetZ(), c.GetZ(),
-          Vect::H,  Vect::H,  Vect::H, Point::H)
+PoseTransformationMatrix::PoseTransformationMatrix(const Point &origin, const Vect &xAxis,
+                                                   const Vect &yAxis, const Vect &zAxis)
+: Matrix(xAxis.GetX(), yAxis.GetX(), zAxis.GetX(), origin.GetX(),
+         xAxis.GetY(), yAxis.GetY(), zAxis.GetY(), origin.GetY(),
+         xAxis.GetZ(), yAxis.GetZ(), zAxis.GetZ(), origin.GetZ(),
+              Vect::H,      Vect::H,      Vect::H,     Point::H)
 {}
 
+PoseTransformationMatrix PoseTransformationMatrix::GetPoseTransformation
+        (const Point &origin, const Vect &zAxis)
+{
+    Vect xAxis;
+    // [zAxis] is not parallel to (0,0,1).
+    if (zAxis.GetX() != 0)
+    {
+        xAxis = zAxis.CrossProduct(Vect(0, 0, 1)).Normalise();
+    }
+    // [zAxis] is not parallel to (1,0,0).
+    else
+    {
+        xAxis = zAxis.CrossProduct(Vect(1, 0, 0)).Normalise();
+    }
+    /* No need to normalise [yAxis] because xAxis.Abs = 1
+     * and zAxis.Abs = 1 and sin(xAxis, zAxis) = 1. */
+    Vect yAxis = xAxis.CrossProduct(zAxis);
+    return PoseTransformationMatrix(origin, xAxis, yAxis, zAxis);
+}
+
 /* Based on the doctoral thesis Local Accuracy and Global
-   Consistency for Efficient Visual SLAM [Hauke Strasdat, 2012]. */
+ * Consistency for Efficient Visual SLAM [Hauke Strasdat, 2012]. */
 PoseTransformationMatrix PoseTransformationMatrix::Inverse() const
 {
     // Transposed of the rotation matrix R, cause it's orthonormal.
@@ -31,5 +51,5 @@ PoseTransformationMatrix PoseTransformationMatrix::Inverse() const
     float cZ = mC * mD + mG * mH + mK * mL;
     Point c(-cX, -cY, -cZ);
     // Inverse pose matrix.
-    return PoseTransformationMatrix(x, y, z, c);
+    return PoseTransformationMatrix(c, x, y, z);
 }

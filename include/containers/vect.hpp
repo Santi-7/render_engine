@@ -21,6 +21,14 @@ public:
 
     // TODO: Add doc.
     /**
+     * .
+     *
+     * @return .
+     */
+    Vect();
+
+    // TODO: Add doc.
+    /**
      * Constructs a Vect.
      *
      * @param x .
@@ -116,7 +124,7 @@ public:
      * @param v .
      * @return .
      */
-    float DotProduct(const Vect& v) const;
+    float DotProduct(const Vect &v) const;
 
     // TODO: Add doc.
     /**
@@ -125,7 +133,7 @@ public:
      * @param v .
      * @return .
      */
-    Vect CrossProduct(const Vect& v) const;
+    Vect CrossProduct(const Vect &v) const;
 
     /**
      * Overloads == operator returning true if both vectors are equal

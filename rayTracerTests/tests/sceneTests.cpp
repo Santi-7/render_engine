@@ -22,7 +22,7 @@
  */
 TEST(PinholeTest, Basic)
 {
-    Pinhole phc(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point(0,0,0), (float)3.141592/2, 1.0, 2, 2);
+    Pinhole phc(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point(0,0,0), PI/2, 1.0, 2, 2);
     Point lr(phc.GetFirstPixel());
     EXPECT_LT(lr.GetX() - (-0.5), 0.0001);
     EXPECT_LT(lr.GetY() - (0.5), 0.0001);
@@ -46,7 +46,7 @@ TEST(SimpleRender, InvisiblePlane)
     Scene scene;
     scene.AddLightSource(PointLight());
     scene.AddShape(Plane(Point(0,0,0), Vect(-1,0,1)));
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/3, 1.0, 255, 255));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
     unique_ptr<Image> renderedImage = scene.Render();
     renderedImage->Save("linePlane.ppm");
 }
@@ -56,7 +56,7 @@ TEST(SimpleRender, SimpleTriangle)
     Scene scene;
     scene.AddLightSource(PointLight());
     scene.AddShape(Triangle(Point(0,1,3), Point(-1,-1,3), Point(1,-1,3)));
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/3, 1.0, 255, 255));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
     unique_ptr<Image> renderedImage = scene.Render();
     renderedImage->Save("triangle.ppm");
 }
@@ -67,7 +67,7 @@ TEST(SimpleLight, Sphere)
 { // A sphere with a light over it and slightly off to the right
     Scene scene;
     scene.AddShape(Sphere(Point(0,0,3), 1.0));
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/3, 1.0, 255, 255));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
     scene.AddLightSource(PointLight(Point(1,2,3)));
     auto renderedImage = scene.Render();
     renderedImage->Save("sphere.ppm");
@@ -79,7 +79,7 @@ TEST(SimpleLight, SphereOnAPlane)
     scene.AddShape(Sphere(Point(0,0,10), 1.0));
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
 
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), (float)3.14159/3, 1.0, 255, 255));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
     scene.AddLightSource(PointLight(Point(0,1.5,10)));
     auto renderedImage = scene.Render();
     renderedImage->Save("soap.ppm");
@@ -110,7 +110,7 @@ TEST(CornellBox, Colors)
 TEST(SimpleLight, PlaneTop)
 { // A plane as seen from the top
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(1,0,0), Vect(0,0,1), Vect(0,-1,0), Point (0,10,0), (float)3.14159/3, 1.0, 255, 255));
+    scene.SetCamera(Pinhole(Vect(1,0,0), Vect(0,0,1), Vect(0,-1,0), Point (0,10,0), PI/3, 1.0, 255, 255));
 
     scene.AddLightSource(PointLight(Point(0,1.5,0)));
     scene.AddShape(Plane(Point(0,0,0), Vect(0,1,0)));
@@ -123,17 +123,17 @@ TEST(Reflection, PlaneSphere)
 { // A sphere over a plane.
     Scene scene;
     TransformationMatrix tm;
-    tm.SetXRotation((float)3.141592/10);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-20), (float)3.14159/3, 1.0, 1920, 1080));
+    tm.SetXRotation(PI/10);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-20), PI/3, 1.0, 200, 200));
 
     scene.AddLightSource(PointLight(Point(3, 1.5, 4)));
 
     Sphere sphere(Point(0, 0.5, 4), 1);
-    sphere.SetMaterial(Material(0));
+    sphere.SetMaterial(make_shared<Material>(Material(1.0f, 0.0f, 20.0f, 0.0f, 0.0f)));
     scene.AddShape(sphere);
 
     Plane plane1(Point(0, -0.5f, 0), Vect(0, 1, 0));
-    plane1.SetMaterial(Material(1));
+    plane1.SetMaterial(make_shared<Material>(Material(0.0f, 0.0f, 20.0f, 1.0f, 0.0f)));
     scene.AddShape(plane1);
 
     Plane plane2(Point(0, 0, 60), Vect(0, 0, 1));
@@ -169,6 +169,7 @@ TEST(HiddenLight, AfterPlane)
     auto renderedImage2 = scene2.Render();
     renderedImage2->Save("hiddenLight2.ppm");
 }
+
 
 /////////////////////////////////////////////////////////////
 
@@ -234,4 +235,78 @@ TEST(Mesh, Woman)
     //scene.AddShape(Plane(Point(0,-50, 0), Vect(0,1,0)));
     auto renderedImage = scene.Render();
     renderedImage->Save("woman.ppm");
+}
+
+
+TEST(Materials, FacingMirrors)
+{
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation(PI/10);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-5), PI/3, 1.0, 50, 50));
+    scene.AddLightSource(PointLight(Point(0,5,6), 150, WHITE));
+
+    Plane visibleMirror(Point(0,0,7), Vect(-0.4f, 0, 1));
+    visibleMirror.SetMaterial(MIRROR);
+    Plane hiddenMirror(Point(0,0,-7), Vect(-0.4f,0,1));
+    hiddenMirror.SetMaterial(MIRROR);
+    Plane floor(Point(0,-5,0), Vect(0,1,0));
+    Sphere floatingSphere(Point(0,0,3), 1);
+    scene.AddShape(visibleMirror);
+    scene.AddShape(hiddenMirror);
+    scene.AddShape(floatingSphere);
+    scene.AddShape(floor);
+    auto image = scene.Render();
+    image->Save("facingMirrors.ppm");
+}
+
+TEST(Materials, XSpheres)
+{
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation(PI/4);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,10,-12), PI/3, 1.0, 500, 500));
+    scene.AddLightSource(PointLight(Point(0,12,0), 520, WHITE));
+
+    scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
+
+    const int SIZE = 20;
+
+    for(int i = -SIZE/2; i < SIZE/2; ++i)
+    {
+        for(int j = -SIZE/2; j < SIZE/2; ++j)
+        {
+            Sphere tmp = Sphere(Point(i*2.5f,0,j*2.5f), 1);
+            if(j % 2 == 0 ^ i %2 != 0) tmp.SetMaterial(MIRROR);
+            scene.AddShape(tmp);
+        }
+    }
+    auto image = scene.Render();
+    image->Save("spheres.ppm");
+
+}
+
+TEST(Materials, GlassSpheres)
+{
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation(PI/4);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,10,-12), PI/3, 1.0, 50, 50));
+    scene.AddLightSource(PointLight(Point(0,12,0), 520, WHITE));
+
+    scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
+
+    const int SIZE = 20;
+
+    for(int i = -SIZE/2; i < SIZE/2; ++i)
+    {
+        for(int j = -SIZE/2; j < SIZE/2; ++j)
+        {
+            Sphere tmp = Sphere(Point(i*2.5f,0,j*2.5f), 1);
+            if(j % 2 == 0 ^ i %2 != 0) tmp.SetMaterial(GLASS);
+            scene.AddShape(tmp);
+        }
+    }
+    auto image = scene.Render();
+    image->Save("glassSpheres.ppm");
 }
