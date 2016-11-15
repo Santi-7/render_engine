@@ -13,25 +13,70 @@
 #include <scene.hpp>
 #include <mathConstants.hpp>
 
-unique_ptr<Image> Scene::Render() const
+class PixelGetter{
+public:
+
+    PixelGetter() : mCurrentPixel(Point(0,0,0)), mxIncrement(Vect(1,0,0)), myIncrement(Vect(0,1,0)), mLock() {}
+
+    PixelGetter(Point beginning, Vect xIncrement, Vect yIncrement, unsigned int width, unsigned int height)
+            : mCurrentPixel(beginning), mxIncrement(xIncrement), myIncrement(yIncrement),
+              mWidth(width), mHeight(height), mX(0), mY(0), mLock(){}
+
+    /**
+     * Atomically returns a new point in the imaginary pixel grid.
+     * @return New point in the imaginary pixel grid or nullptr if the last
+     * valid point was returned.
+     */
+    unique_ptr<tuple<Point, unsigned int, unsigned int>> GetNextPixel() {
+        lock_guard<mutex> lock{mLock};
+        if(mY >= mHeight) return nullptr;
+
+        auto retVal = make_unique<tuple<Point, unsigned int, unsigned int>>(mCurrentPixel, mX, mY);
+        if(mX == mWidth)
+        {
+            mX = 0; mY++;
+            mCurrentPixel += myIncrement;
+            mCurrentPixel -= mxIncrement * mWidth;
+        }
+        else
+        {
+            mX++;
+            mCurrentPixel += mxIncrement;
+        }
+        return retVal;
+    }
+
+private:
+    Point mCurrentPixel;
+    Vect mxIncrement, myIncrement;
+    unsigned int mWidth, mHeight, mX, mY;
+    mutable mutex mLock;
+};
+
+static PixelGetter * sPixelGetter;
+
+shared_ptr<Image> Scene::Render() const
 {
     // The rendered image.
-    unique_ptr<Image> rendered = make_unique<Image>
+    shared_ptr<Image> rendered = make_shared<Image>
             (mCamera->GetWidth(), mCamera->GetHeight());
     // Pixels' distance in the camera intrinsics right and up.
     Vect advanceX(mCamera->GetRight() * mCamera->GetPixelSize());
     Vect advanceY(mCamera->GetUp() * mCamera->GetPixelSize());
-    shared_ptr<PixelGetter> pixelGetter(
-            new PixelGetter(mCamera->GetFirstPixel(), advanceX, advanceY, mCamera->GetWidth(), mCamera->GetHeight()));
+    sPixelGetter = new PixelGetter(mCamera->GetFirstPixel(), advanceX, advanceY, mCamera->GetWidth(), mCamera->GetHeight());
 
-    auto pixelTarget = pixelGetter->GetNextPixel();
+    auto pixelTarget = sPixelGetter->GetNextPixel();
+    int iterations = 0;
     while(pixelTarget != nullptr)
     {
+        iterations++;
         (*rendered)[get<2>(*pixelTarget)][get<1>(*pixelTarget)] = GetLightRayColor(
                 LightRay(mCamera->GetFocalPoint(), get<0>(*pixelTarget)),
                 SPECULAR_STEPS, DIFFUSE_STEPS);
-        pixelTarget = pixelGetter->GetNextPixel();
+        pixelTarget = sPixelGetter->GetNextPixel();
     }
+
+    delete sPixelGetter;
 
     return rendered;
 }
