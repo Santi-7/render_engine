@@ -16,6 +16,7 @@
 #include <sceneSamples.hpp>
 #include <transformationMatrix.hpp>
 #include <mesh.hpp>
+#include <fstream>
 
 /**
  * Test first pixel value is correct
@@ -37,7 +38,7 @@ TEST(SimpleRender, Sphere)
     scene.AddShape(Sphere(Point(0,0,3), 1.0));
     scene.AddLightSource(PointLight());
     scene.SetCamera(Pinhole());
-    unique_ptr<Image> renderedImage = scene.Render();
+    auto renderedImage = scene.Render();
     renderedImage->Save("dot.ppm");
 }
 
@@ -47,7 +48,7 @@ TEST(SimpleRender, InvisiblePlane)
     scene.AddLightSource(PointLight());
     scene.AddShape(Plane(Point(0,0,0), Vect(-1,0,1)));
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
-    unique_ptr<Image> renderedImage = scene.Render();
+    auto renderedImage = scene.Render();
     renderedImage->Save("linePlane.ppm");
 }
 
@@ -57,7 +58,10 @@ TEST(SimpleRender, SimpleTriangle)
     scene.AddLightSource(PointLight());
     scene.AddShape(Triangle(Point(0,1,3), Point(-1,-1,3), Point(1,-1,3)));
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
-    unique_ptr<Image> renderedImage = scene.Render();
+    auto renderedImage = scene.Render();
+    ofstream algo("caca.txt");
+    algo << "caca";
+    algo.close();
     renderedImage->Save("triangle.ppm");
 }
 
