@@ -11,6 +11,7 @@
 
 #include <memory>
 #include <vect.hpp>
+#include <color.hpp>
 
 using namespace std;
 
@@ -37,9 +38,9 @@ public:
      * @param transmittance .
      * @return New material with the given .
      */
-    Material(const float diffuse, const float specular,
-             const float shininess, const float reflectance,
-             const float transmittance);
+    Material(const Color diffuse, const Color specular,
+             const float shininess, const Color reflectance,
+             const Color transmittance);
 
     // TODO: Add doc.
     /**
@@ -50,7 +51,7 @@ public:
      * @param normal .
      * @return .
      */
-    float PhongBRDF(const Vect &seenFrom, const Vect &light,
+    Color PhongBRDF(const Vect &seenFrom, const Vect &light,
                     const Vect &normal) const;
 
     // TODO: Add doc.
@@ -59,7 +60,7 @@ public:
      *
      * @return  of this material.
      */
-    float GetDiffuse() const;
+    Color GetDiffuse() const;
 
     // TODO: Add doc.
     /**
@@ -67,7 +68,7 @@ public:
      *
      * @return Reflectance of this material.
      */
-    float GetReflectance() const;
+    Color GetReflectance() const;
 
     // TODO: Add doc.
     /**
@@ -75,19 +76,23 @@ public:
      *
      * @return Transmittance of this material.
      */
-    float GetTransmittance() const;
+    Color GetTransmittance() const;
 
 private:
 
     // TODO: Add doc.
     /* . */
-    float mKd, mKs, mShininess, mKr, mKt;
+    Color mKd, mKs, mKr, mKt;
+
+    // TODO: Add doc.
+    /* . */
+    float mShininess;
 };
 
 static const shared_ptr<Material> DEFAULT_MATERIAL = make_shared<Material>(Material());
-static const shared_ptr<Material> MIRROR = make_shared<Material>(Material(0, 0, 0, 1, 0));
-static const shared_ptr<Material> LAMBERTIAN = make_shared<Material>(Material(1, 0, 0, 0, 0));
-static const shared_ptr<Material> SPECKLED_LAMBERTIAN = make_shared<Material>(Material(1, 1, 0, 0, 0));
-static const shared_ptr<Material> GLASS = make_shared<Material>(Material(0.05,0,0,0.6,0.8));
+static const shared_ptr<Material> MIRROR = make_shared<Material>(Material(BLACK, BLACK, 0, WHITE, BLACK));
+static const shared_ptr<Material> LAMBERTIAN = make_shared<Material>(Material(WHITE, BLACK, 0, BLACK, BLACK));
+static const shared_ptr<Material> SPECKLED_LAMBERTIAN = make_shared<Material>(Material(WHITE, WHITE, 0, BLACK, BLACK));
+static const shared_ptr<Material> GLASS = make_shared<Material>(Material(BLACK,BLACK,0,BLACK,GRAY));
 
 #endif // RAY_TRACER_MATERIAL_HPP

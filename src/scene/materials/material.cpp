@@ -11,17 +11,17 @@
 #include <mathConstants.hpp>
 
 Material::Material()
-: mKd(1.0f), mKs(0.0f), mShininess(20.0f), mKr(0.0f), mKt(0.0f)
+: mKd(WHITE), mKs(BLACK), mShininess(20.0f), mKr(BLACK), mKt(BLACK)
 {}
 
-Material::Material(const float diffuse, const float specular,
-                   const float shininess, const float reflectance,
-                   const float transmittance)
+Material::Material(const Color diffuse, const Color specular,
+                   const float shininess, const Color reflectance,
+                   const Color transmittance)
 : mKd(diffuse), mKs(specular), mShininess(shininess),
   mKr(reflectance), mKt(transmittance)
 {}
 
-float Material::PhongBRDF(const Vect &seenFrom, const Vect &light,
+Color Material::PhongBRDF(const Vect &seenFrom, const Vect &light,
                           const Vect &normal) const
 {
     // TODO: Change to global method.
@@ -30,17 +30,17 @@ float Material::PhongBRDF(const Vect &seenFrom, const Vect &light,
     return (mKd / PI) + mKs * (mShininess + 2) / (2 * PI) * pow(cosine, mShininess);
 }
 
-float Material::GetDiffuse() const
+Color Material::GetDiffuse() const
 {
     return mKd;
 }
 
-float Material::GetReflectance() const
+Color Material::GetReflectance() const
 {
     return mKr;
 }
 
-float Material::GetTransmittance() const
+Color Material::GetTransmittance() const
 {
     return mKt;
 }

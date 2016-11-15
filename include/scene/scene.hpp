@@ -54,7 +54,7 @@ private:
 
     // TODO: Add doc.
     /* */
-    static constexpr unsigned int DIFFUSE_STEPS = 1;
+    static constexpr unsigned int DIFFUSE_STEPS = 0;
 
     // TODO: Add doc.
     /* */

@@ -127,11 +127,11 @@ TEST(Reflection, PlaneSphere)
     scene.AddLightSource(PointLight(Point(3, 1.5, 4)));
 
     Sphere sphere(Point(0, 0.5, 4), 1);
-    sphere.SetMaterial(make_shared<Material>(Material(1.0f, 0.0f, 20.0f, 0.0f, 0.0f)));
+    sphere.SetMaterial(make_shared<Material>(Material(WHITE, BLACK, 20.0f, BLACK, BLACK)));
     scene.AddShape(sphere);
 
     Plane plane1(Point(0, -0.5f, 0), Vect(0, 1, 0));
-    plane1.SetMaterial(make_shared<Material>(Material(0.0f, 0.0f, 20.0f, 1.0f, 0.0f)));
+    plane1.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 20.0f, WHITE, BLACK)));
     scene.AddShape(plane1);
 
     Plane plane2(Point(0, 0, 60), Vect(0, 0, 1));
