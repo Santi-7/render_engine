@@ -14,6 +14,7 @@
 #include <sceneSamples.hpp>
 #include <transformationMatrix.hpp>
 #include <triangle.hpp>
+#include <geometry/finitePlane.hpp>
 
 /**
  * Test first pixel value is correct
@@ -57,6 +58,16 @@ TEST(SimpleRender, SimpleTriangle)
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
     unique_ptr<Image> renderedImage = scene.Render();
     renderedImage->Save("triangle.ppm");
+}
+
+TEST(SimpleRender, FinitePlane)
+{ // Test rendering of many finite planes
+    Scene scene;
+    scene.AddLightSource(PointLight(Point(0,1,-1)));
+    scene.AddShape(FinitePlane(Vect(0,0,-1),Point(0,0,0), Point(1,1,1)));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,-3), PI/3, 1.0, 255, 255));
+    unique_ptr<Image> renderedImage = scene.Render();
+    renderedImage->Save("finitePlanes.ppm");
 }
 
 /////////////////////////////////////////////////////////////

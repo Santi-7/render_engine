@@ -1,30 +1,29 @@
 /* ---------------------------------------------------------------------------
-** plane.hpp
+** finitePlane.hpp
 ** TODO: Add doc.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
-#ifndef RAY_TRACER_PLANE_HPP
-#define RAY_TRACER_PLANE_HPP
+#ifndef RAY_TRACER_FINITEPLANE_HPP
+#define RAY_TRACER_FINITEPLANE_HPP
 
-#include <shape.hpp>
+#include <plane.hpp>
 
-class Plane : public Shape
-{
+class FinitePlane : public Plane {
 
 public:
 
     // TODO: Add doc.
     /**
-     * Constructs a Plane.
-     *
-     * @param point .
-     * @param normal .
-     * @return .
+     * Constructor for a FinitePlane only giving two corners.
+     * @param normal
+     * @param cornerA
+     * @param cornerB
+     * @return
      */
-    Plane(const Point &point, const Vect &normal);
+    FinitePlane(const Vect &normal, const Point &cornerA, const Point &cornerB);
 
     // TODO: Add doc.
     /**
@@ -45,16 +44,8 @@ public:
      */
     Vect GetVisibleNormal(const Point &point,
                           const LightRay &seenFrom) const;
-
-protected:
-
-    // TODO: Add doc.
-    /* . */
-    Point mPoint;
-
-    // TODO: Add doc.
-    /* . */
-    Vect mNormal;
+private:
+    Point mMinimums, mMaximums;
 };
 
-#endif // RAY_TRACER_PLANE_HPP
+#endif //RAY_TRACER_FINITEPLANE_HPP

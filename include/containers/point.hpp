@@ -141,6 +141,22 @@ public:
     bool operator==(const Point& v) const;
 
     /**
+     * Overloads <= operator to return true if all the values in this point are smaller or equal to those in v.
+     *
+     * @param v .
+     * @return .
+     */
+    bool operator<=(const Point& v) const;
+
+    /**
+     * Overloads >= operator to return true if all the values in this point are greater or equal to those in v.
+     *
+     * @param v .
+     * @return .
+     */
+    bool operator>=(const Point& v) const;
+
+    /**
     * Overloads != operator to return true if the points are not equal.
     *
     * @param v .
