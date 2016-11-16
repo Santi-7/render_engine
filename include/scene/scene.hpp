@@ -14,13 +14,11 @@
 #include <memory>
 #include <shape.hpp>
 #include <vector>
-#include <image.hpp>
-#include <mutex>
-#include <iostream>
 
 using namespace std;
 
-class Scene {
+class Scene
+{
 
 public:
 
@@ -46,9 +44,7 @@ public:
     /**
      *
      */
-    shared_ptr<Image> Render() const;
-
-
+    unique_ptr<Image> Render() const;
 
 private:
 
@@ -58,7 +54,7 @@ private:
 
     // TODO: Add doc.
     /* */
-    static constexpr unsigned int DIFFUSE_STEPS = 1;
+    static constexpr unsigned int DIFFUSE_STEPS = 0;
 
     // TODO: Add doc.
     /* */

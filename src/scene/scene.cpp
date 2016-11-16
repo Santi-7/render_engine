@@ -13,74 +13,36 @@
 #include <scene.hpp>
 #include <mathConstants.hpp>
 
-class PixelGetter{
-public:
-
-    PixelGetter() : mCurrentPixel(Point(0,0,0)), mxIncrement(Vect(1,0,0)), myIncrement(Vect(0,1,0)), mLock() {}
-
-    PixelGetter(Point beginning, Vect xIncrement, Vect yIncrement, unsigned int width, unsigned int height)
-            : mCurrentPixel(beginning), mxIncrement(xIncrement), myIncrement(yIncrement),
-              mWidth(width), mHeight(height), mX(0), mY(0), mLock(){}
-
-    /**
-     * Atomically returns a new point in the imaginary pixel grid.
-     * @return New point in the imaginary pixel grid or nullptr if the last
-     * valid point was returned.
-     */
-    unique_ptr<tuple<Point, unsigned int, unsigned int>> GetNextPixel() {
-        lock_guard<mutex> lock{mLock};
-        if(mY >= mHeight) return nullptr;
-
-        auto retVal = make_unique<tuple<Point, unsigned int, unsigned int>>(mCurrentPixel, mX, mY);
-        if(mX == mWidth)
-        {
-            mX = 0; mY++;
-            mCurrentPixel += myIncrement;
-            mCurrentPixel -= mxIncrement * mWidth;
-        }
-        else
-        {
-            mX++;
-            mCurrentPixel += mxIncrement;
-        }
-        return retVal;
-    }
-
-private:
-    Point mCurrentPixel;
-    Vect mxIncrement, myIncrement;
-    unsigned int mWidth, mHeight, mX, mY;
-    mutable mutex mLock;
-};
-
-static PixelGetter * sPixelGetter;
-
-shared_ptr<Image> Scene::Render() const
+unique_ptr<Image> Scene::Render() const
 {
     // The rendered image.
-    shared_ptr<Image> rendered = make_shared<Image>
+    unique_ptr<Image> rendered = make_unique<Image>
             (mCamera->GetWidth(), mCamera->GetHeight());
+    // The current pixel. We begin with the first one (0,0).
+    Point currentPixel = mCamera->GetFirstPixel();
+    // The first pixel of the current row.
+    Point currentRow = currentPixel;
     // Pixels' distance in the camera intrinsics right and up.
     Vect advanceX(mCamera->GetRight() * mCamera->GetPixelSize());
     Vect advanceY(mCamera->GetUp() * mCamera->GetPixelSize());
-    sPixelGetter = new PixelGetter(mCamera->GetFirstPixel(), advanceX, advanceY, mCamera->GetWidth(), mCamera->GetHeight());
-
-    auto pixelTarget = sPixelGetter->GetNextPixel();
-    int iterations = 0;
-    while(pixelTarget != nullptr)
+    // For all the pixels, trace a ray of light.
+    for (unsigned int i = 0; i < mCamera->GetHeight(); ++i)
     {
-        iterations++;
-        (*rendered)[get<2>(*pixelTarget)][get<1>(*pixelTarget)] = GetLightRayColor(
-                LightRay(mCamera->GetFocalPoint(), get<0>(*pixelTarget)),
-                SPECULAR_STEPS, DIFFUSE_STEPS);
-        pixelTarget = sPixelGetter->GetNextPixel();
+        for (unsigned int j = 0; j < mCamera->GetWidth(); ++j)
+        {
+            // Next pixel.
+            currentPixel += advanceX;
+            // Get the color for the current pixel.
+            (*rendered)[i][j] = GetLightRayColor(
+                    LightRay(mCamera->GetFocalPoint(), currentPixel),
+                    SPECULAR_STEPS, DIFFUSE_STEPS);
+        }
+        // Next row.
+        currentRow -= advanceY;
+        currentPixel = currentRow;
     }
-
-    delete sPixelGetter;
-
     return rendered;
 }
-
 
 Color Scene::GetLightRayColor(const LightRay &lightRay,
                               const int specularSteps,
@@ -146,12 +108,12 @@ Color Scene::DirectLight(const Point &point, Vect &normal,
                 /* Add the radiance from the current light if it
                    illuminates the [point] from the visible semi-sphere. */
                 retVal += // Li.
-                          mLightSources[i]->GetColor(point) *
-                          // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
-                          shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
-                                                         lightRay.GetDirection(), normal) *
-                          // Cosine.
-                          max(multiplier, 0.0f);
+                        mLightSources[i]->GetColor(point) *
+                        // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
+                        shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
+                                                       lightRay.GetDirection(), normal) *
+                        // Cosine.
+                        max(multiplier, 0.0f);
             }
         }
     }
@@ -173,9 +135,9 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
     LightRay refractedRay = LightRay(point, in.GetDirection());
 
     return GetLightRayColor(reflectedRay, specularSteps-1, diffuseSteps-1) *
-                shape.GetMaterial()->GetReflectance() +
+           shape.GetMaterial()->GetReflectance() +
            GetLightRayColor(refractedRay, specularSteps-1, diffuseSteps-1) *
-                shape.GetMaterial()->GetTransmittance();
+           shape.GetMaterial()->GetTransmittance();
 }
 
 inline static tuple<float, float> UniformCosineSampling()
@@ -214,7 +176,7 @@ Color Scene::IndirectLight(const Point &point, const Vect &normal,
         // Transform the ray of light to global coordinates.
         LightRay lightRay(point, fromLocalToGlobal * localRay);
         retVal += GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1) *
-                (PI / (sin(inclination) * cos(inclination))); // 1 / PDF.
+                  (PI / (sin(inclination) * cos(inclination))); // 1 / PDF.
     }
     return retVal * (shape.GetMaterial()->GetDiffuse() / DIFFUSE_RAYS);
 }
