@@ -8,6 +8,9 @@
 
 #include <point.hpp>
 
+Point::Point()
+{}
+
 Point::Point(const float x, const float y, const float z)
 {
     mX = x;
