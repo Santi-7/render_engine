@@ -168,7 +168,7 @@ Color Scene::IndirectLight(const Point &point, const Vect &normal,
     {
         // Generate random angles.
         float inclination, azimuth;
-        std::tie(inclination, azimuth) = UniformCosineSampling();
+        tie(inclination, azimuth) = UniformCosineSampling();
         // Direction of the ray of light expressed in local coordinates.
         Vect localRay(sin(inclination) * cos(azimuth),
                       sin(inclination) * sin(azimuth),

@@ -22,6 +22,14 @@ public:
 
     // TODO: Add doc.
     /**
+     * .
+     *
+     * @return .
+     */
+    Point();
+
+    // TODO: Add doc.
+    /**
      * Constructs a Point.
      *
      * @param x .

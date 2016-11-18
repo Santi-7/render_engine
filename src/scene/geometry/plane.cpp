@@ -47,3 +47,8 @@ Vect Plane::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
 {
     return VisibleNormal(mNormal, seenFrom.GetDirection());
 }
+
+Vect Plane::GetNormal() const
+{
+    return mNormal;
+}

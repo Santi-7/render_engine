@@ -6,14 +6,15 @@
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
-#include <finitePlane.hpp>
 #include <cfloat>
+#include <finitePlane.hpp>
 
 /**
- * Returns a Point which values are the minimums between the values in a and b
- * @param a
- * @param b
- * @return
+ * Returns a Point which values are the minimums between the values in a and b.
+ *
+ * @param a .
+ * @param b .
+ * @return .
  */
 inline Point GetMinimumValues(const Point &a, const Point &b)
 {
@@ -23,10 +24,11 @@ inline Point GetMinimumValues(const Point &a, const Point &b)
 }
 
 /**
- * Returns a Point which values are the maximum between the values in a and b
- * @param a
- * @param b
- * @return
+ * Returns a Point which values are the maximum between the values in a and b.
+ *
+ * @param a .
+ * @param b .
+ * @return .
  */
 inline Point GetMaximumValues(const Point &a, const Point &b)
 {
@@ -35,25 +37,31 @@ inline Point GetMaximumValues(const Point &a, const Point &b)
                  max(a.GetZ(), b.GetZ()));
 }
 
-FinitePlane::FinitePlane(const Vect &normal, const Point &cornerA, const Point &cornerB) :
-        mMinimums(GetMinimumValues(cornerA, cornerB)),
-        mMaximums(GetMaximumValues(cornerA, cornerB)),
-        Plane(cornerA, normal) {}
-
+FinitePlane::FinitePlane(const Vect &normal, const Point &cornerA, const Point &cornerB)
+: Plane(cornerA, normal),
+  mCornerA(cornerA),
+  mCornerB(cornerB),
+  mMinimums(GetMinimumValues(cornerA, cornerB)),
+  mMaximums(GetMaximumValues(cornerA, cornerB))
+{}
 
 float FinitePlane::Intersect(const LightRay &lightRay) const
 {
     float t = Plane::Intersect(lightRay);
     Point intersection = lightRay.GetPoint(t);
-    if(intersection >= mMinimums & intersection <= mMaximums)
+    // The ray of light intersects with the finite plane.
+    if (intersection >= mMinimums & intersection <= mMaximums)
     {
         return t;
     }
-    return FLT_MAX;
+    // The ray of light doesn't intersect with the finite plane.
+    else
+    {
+        return FLT_MAX;
+    }
 }
 
-Vect FinitePlane::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
+tuple<Point, Point> FinitePlane::GetLimits() const
 {
-    return Plane::GetVisibleNormal(point, seenFrom);
+    make_tuple(mCornerA, mCornerB);
 }
-

@@ -11,7 +11,8 @@
 
 #include <plane.hpp>
 
-class FinitePlane : public Plane {
+class FinitePlane : public Plane
+{
 
 public:
 
@@ -38,13 +39,18 @@ public:
     /**
      * .
      *
-     * @param point .
-     * @param seenFrom .
      * @return .
      */
-    Vect GetVisibleNormal(const Point &point,
-                          const LightRay &seenFrom) const;
+    tuple<Point, Point> GetLimits() const;
+
 private:
+
+    // Todo: Add doc.
+    /* . */
+    Point mCornerA, mCornerB;
+
+    // Todo: Add doc.
+    /* . */
     Point mMinimums, mMaximums;
 };
 
