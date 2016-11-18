@@ -30,7 +30,8 @@ vector<shared_ptr<Triangle>> ParseObjFile(const string filename)
 
     float x, y, z;
     unsigned int a, b, c;
-
+    float minX = FLT_MAX, minY = FLT_MAX, minZ = FLT_MAX;
+    float maxX = -FLT_MAX, maxY = -FLT_MAX, maxZ = -FLT_MAX;
     while(objFile.good())
     {
         getline(objFile, lineBuf);
@@ -40,6 +41,12 @@ vector<shared_ptr<Triangle>> ParseObjFile(const string filename)
         if(lineType == "v")
         {   // New vertex position
             lineStream >> x >> y >> z;
+            if ( x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if ( y < minY) minY = y;
+            if (y > maxY) maxY = y;
+            if ( z < minZ) minZ = z;
+            if (z > maxZ) maxZ = z;
             positions.push_back(Point(x, y, z));
         }
         else if(lineType == "vn")
@@ -82,6 +89,9 @@ vector<shared_ptr<Triangle>> ParseObjFile(const string filename)
                                                            normals.at(get<2>(faces.at(i))))));
         }
     }
+
+    cout << minX << ' ' << minY << ' ' << minZ << '\n';
+    cout << maxX << ' ' << maxY << ' ' << maxZ << '\n';
 
     return triangles;
 }
