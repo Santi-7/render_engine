@@ -190,7 +190,7 @@ TEST(Mesh, Tetrahedron)
         scene.AddShape(*tetrahedron.at(i));
     }
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
-    scene.AddLightSource(PointLight(Point(-1,5,0)));
+    scene.AddLightSource(PointLight(Point(-1,5,0), 30, WHITE));
     auto renderedImage = scene.Render();
     renderedImage->Save("tetrahedron.ppm");
 }
@@ -241,6 +241,27 @@ TEST(Mesh, Woman)
     renderedImage->Save("woman.ppm");
 }
 
+TEST(Mesh, IronGiant)
+{
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetYRotation((float)3.141592);
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (0,1,-1.5f), (float)3.14159/2, 1.0, 960, 540));
+    auto ironGiant = ParseObjFile("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/iron_giant.obj");
+    for(unsigned int i = 0; i < ironGiant.size(); ++i)
+    {
+        scene.AddShape(*ironGiant.at(i));
+    }
+
+    /*scene.AddShape(Plane(Point(-400, 0, 0), Vect(1,0,0))); // Left wall.
+    scene.AddShape(Plane(Point(400, 0, 0), Vect(-1,0,0))); // Right wall.
+    scene.AddShape(Plane(Point(0, 0, 400), Vect(0,0,-1))); // Back wall*/
+    scene.AddShape(Plane(Point(0,-0.2f,0), Vect(0,1,0)));
+    scene.AddLightSource(PointLight(Point(0,8,-3), 60, WHITE));
+    //scene.AddShape(Plane(Point(0,-50, 0), Vect(0,1,0)));
+    auto renderedImage = scene.Render();
+    renderedImage->Save("ironGiant.ppm");
+}
 
 TEST(Materials, FacingMirrors)
 {
