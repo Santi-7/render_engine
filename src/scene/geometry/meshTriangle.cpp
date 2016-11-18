@@ -6,7 +6,6 @@
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
-#include <cfloat>
 #include <plane.hpp>
 #include <meshTriangle.hpp>
 #include <cmath>
@@ -43,11 +42,11 @@ Vect MeshTriangle::GetNormal(const Point &point) const
     if (cost < 0) cost = 0;
     if (cost > 1) cost = 1;
 
-    double t = cos(cost);
+    double t = static_cast<float>(cos(cost));
 
     double distY = 0, distX = 0;
-    distX = dN * cos(t);
-    distY = dN * sin(t);
+    distX = dN * static_cast<float>(cos(t));
+    distY = dN * static_cast<float>(sin(t));
 
     double uDist = distX/ dU;
     double vDist = distY/ dV;
