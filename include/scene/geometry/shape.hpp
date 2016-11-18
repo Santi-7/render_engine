@@ -29,6 +29,15 @@ public:
      */
     virtual float Intersect(const LightRay &lightRay) const = 0;
 
+    // TODO: Add doc
+    /**
+     *
+     * @param lightRay
+     * @param t
+     * @param nearestShape
+     */
+    virtual void Intersect(const LightRay &lightRay, float &t, shared_ptr<Shape> nearestShape) const = 0;
+
     // TODO: Add doc.
     /**
      * .

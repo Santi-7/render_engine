@@ -17,9 +17,7 @@ using namespace std;
 
 typedef tuple<unsigned int, unsigned int, unsigned int> Face;
 
-vector<shared_ptr<Triangle>> ParseObjFile(const string filename)
-{
-    vector<shared_ptr<Triangle>> triangles;
+Mesh::Mesh(const string &filename) {
     vector<Point> positions;
     vector<Vect> normals;
     vector<Face> faces;
@@ -32,51 +30,42 @@ vector<shared_ptr<Triangle>> ParseObjFile(const string filename)
     unsigned int a, b, c;
     float minX = FLT_MAX, minY = FLT_MAX, minZ = FLT_MAX;
     float maxX = -FLT_MAX, maxY = -FLT_MAX, maxZ = -FLT_MAX;
-    while(objFile.good())
-    {
+    while (objFile.good()) {
         getline(objFile, lineBuf);
-        if(lineBuf.size() == 0) continue;
+        if (lineBuf.size() == 0) continue;
         lineStream = istringstream(lineBuf);
         lineStream >> lineType;
-        if(lineType == "v")
-        {   // New vertex position
+        if (lineType == "v") {   // New vertex position
             lineStream >> x >> y >> z;
-            if ( x < minX) minX = x;
+            if (x < minX) minX = x;
             if (x > maxX) maxX = x;
-            if ( y < minY) minY = y;
+            if (y < minY) minY = y;
             if (y > maxY) maxY = y;
-            if ( z < minZ) minZ = z;
+            if (z < minZ) minZ = z;
             if (z > maxZ) maxZ = z;
             positions.push_back(Point(x, y, z));
-        }
-        else if(lineType == "vn")
-        {   // New vertex normal
+        } else if (lineType == "vn") {   // New vertex normal
             lineStream >> x >> y >> z;
             normals.push_back(Vect(x, y, z));
-        }
-        else if(lineType == "f")
-        {   // New face
+        } else if (lineType == "f") {   // New face
             lineStream >> a >> b >> c;
-            faces.push_back(Face(a-1, b-1, c-1));
-        }
-        else continue;
+            faces.push_back(Face(a - 1, b - 1, c - 1));
+        } else continue;
     }
 
-    if(normals.size() == 0)
-    {
+    if (normals.size() == 0) {
         for (unsigned int i = 0; i < faces.size(); ++i) {
             Triangle tmp(positions.at(get<0>(faces.at(i))),
-                        positions.at(get<1>(faces.at(i))),
-                        positions.at(get<2>(faces.at(i))));
+                         positions.at(get<1>(faces.at(i))),
+                         positions.at(get<2>(faces.at(i))));
 
             triangles.push_back(make_shared<Triangle>(tmp));
         }
-    }
-    else {
+    } else {
 
         if (positions.size() != normals.size()) {
             cerr << "Error: the obj file doesn't define the same amount of vertices and normals\n";
-            throw 1;
+            throw 1; // Stop execution
         }
 
         for (unsigned int i = 0; i < faces.size(); ++i) {
@@ -92,6 +81,19 @@ vector<shared_ptr<Triangle>> ParseObjFile(const string filename)
 
     cout << minX << ' ' << minY << ' ' << minZ << '\n';
     cout << maxX << ' ' << maxY << ' ' << maxZ << '\n';
+}
 
-    return triangles;
+void Mesh::Intersect(const LightRay &lightRay, float &t, shared_ptr<Shape> nearestShape) const {
+
+    for (unsigned int i = 0; i < triangles.size(); ++i) {
+        triangles.at(i)->Intersect(lightRay, t, nearestShape);
+    }
+}
+
+Vect Mesh::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const {
+    throw 1;
+}
+
+float Mesh::Intersect(const LightRay &lightRay) const {
+    throw 1;
 }

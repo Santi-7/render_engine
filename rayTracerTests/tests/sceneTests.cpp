@@ -196,11 +196,8 @@ TEST(Mesh, Tetrahedron)
     tm.SetXRotation((float)3.141592/4);
     tm.SetYRotation((float)3.141592/4.5f);
     scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (-1.6f,2.5,1), (float)3.14159/2, 1.0, 255, 255));
-    auto tetrahedron = ParseObjFile("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/tetrahedron.obj");
-    for(unsigned int i = 0; i < tetrahedron.size(); ++i)
-    {
-        scene.AddShape(*tetrahedron.at(i));
-    }
+    Mesh tetrahedron("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/tetrahedron.obj");
+    scene.AddShape(tetrahedron);
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
     scene.AddLightSource(PointLight(Point(-1,5,0), 30, WHITE));
     auto renderedImage = scene.Render();
@@ -214,11 +211,8 @@ TEST(Mesh, Teapot)
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592/2);
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,10,-250), (float)3.14159/2, 1.0, 20, 20));
-    auto teapot = ParseObjFile("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/utah_teapot.obj");
-    for(unsigned int i = 0; i < teapot.size(); ++i)
-    {
-        scene.AddShape(*teapot.at(i));
-    }
+    Mesh teapot("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/utah_teapot.obj");
+    scene.AddShape(teapot);
 
     scene.AddShape(Plane(Point(-400, 0, 0), Vect(1,0,0))); // Left wall.
     scene.AddShape(Plane(Point(400, 0, 0), Vect(-1,0,0))); // Right wall.
@@ -237,11 +231,8 @@ TEST(Mesh, Woman)
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592);
     scene.SetCamera(Pinhole(Vect(0,0,-1), Vect(1,0,0), Vect(0,-1,0), Point (1,60,0), (float)3.14159/2, 1.0, 140, 140));
-    auto woman = ParseObjFile("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/woman.obj");
-    for(unsigned int i = 0; i < woman.size(); ++i)
-    {
-        scene.AddShape(*woman.at(i));
-    }
+    Mesh woman ("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/woman.obj");
+    scene.AddShape(woman);
 
     /*scene.AddShape(Plane(Point(-400, 0, 0), Vect(1,0,0))); // Left wall.
     scene.AddShape(Plane(Point(400, 0, 0), Vect(-1,0,0))); // Right wall.
@@ -259,11 +250,8 @@ TEST(Mesh, IronGiant)
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592);
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (0,1,-1.5f), (float)3.14159/2, 1.0, 960, 540));
-    auto ironGiant = ParseObjFile("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/iron_giant.obj");
-    for(unsigned int i = 0; i < ironGiant.size(); ++i)
-    {
-        scene.AddShape(*ironGiant.at(i));
-    }
+    Mesh ironGiant("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/iron_giant.obj");
+    scene.AddShape(ironGiant);
 
     /*scene.AddShape(Plane(Point(-400, 0, 0), Vect(1,0,0))); // Left wall.
     scene.AddShape(Plane(Point(400, 0, 0), Vect(-1,0,0))); // Right wall.

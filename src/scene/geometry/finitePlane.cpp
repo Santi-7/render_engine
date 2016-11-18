@@ -52,6 +52,16 @@ float FinitePlane::Intersect(const LightRay &lightRay) const
     return FLT_MAX;
 }
 
+void FinitePlane::Intersect(const LightRay &lightRay, float &t, shared_ptr<Shape> nearestShape) const
+{
+    float tmpT = FLT_MAX;
+    if(tmpT > t)
+    {
+        t = tmpT;
+        //nearestShape = shared_prt<Shape>(this);
+    }
+}
+
 Vect FinitePlane::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
 {
     return Plane::GetVisibleNormal(point, seenFrom);

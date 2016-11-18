@@ -8,9 +8,9 @@
 
 #include <cfloat>
 #include <intersections.hpp>
-#include <math.h>
 #include <sphere.hpp>
 #include <visibleNormal.hpp>
+#include <cmath>
 
 Sphere::Sphere(const Point &center, const float radius)
 : Shape(),
@@ -46,6 +46,16 @@ float Sphere::Intersect(const LightRay &lightRay) const
     {
         float t = -b / (2 * a);
         return GetNearestInFront(t);
+    }
+}
+
+void Sphere::Intersect(const LightRay &lightRay, float &t, shared_ptr<Shape> nearestShape) const
+{
+    float tmpT = Intersect(lightRay);
+    if(tmpT < t)
+    {
+        t = tmpT;
+        //nearestShape = shared_ptr(this);
     }
 }
 

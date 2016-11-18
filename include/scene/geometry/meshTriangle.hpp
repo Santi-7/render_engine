@@ -36,6 +36,16 @@ public:
      */
     Vect GetNormal(const Point &point) const;
 
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param point .
+     * @param seenFrom .
+     * @return .
+     */
+    Vect GetVisibleNormal(const Point &point, const LightRay &seenFrom) const;
+
 private:
 
     // TODO: Add doc.
