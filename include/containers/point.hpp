@@ -40,6 +40,7 @@ public:
      */
     float Distance(const Point &to) const;
 
+    // TODO: Add doc.
     /**
      * .
      *
@@ -132,37 +133,43 @@ public:
      */
     void operator-=(const Vect& v);
 
+    // TODO: Add doc.
     /**
      * Overloads == operator to return true if both points are equal.
      *
      * @param v .
      * @return .
      */
-    bool operator==(const Point& v) const;
+    bool operator==(const Point& p) const;
 
+    // TODO: Add doc.
     /**
-     * Overloads <= operator to return true if all the values in this point are smaller or equal to those in v.
+     * Overloads <= operator to return true if all the values in this
+     * point are smaller or equal to those in p.
      *
-     * @param v .
+     * @param p .
      * @return .
      */
-    bool operator<=(const Point& v) const;
+    bool operator<=(const Point& p) const;
 
+    // TODO: Add doc.
     /**
-     * Overloads >= operator to return true if all the values in this point are greater or equal to those in v.
+     * Overloads >= operator to return true if all the values in this
+     * point are greater or equal to those in p.
      *
-     * @param v .
+     * @param p .
      * @return .
      */
-    bool operator>=(const Point& v) const;
+    bool operator>=(const Point& p) const;
 
+    // TODO: Add doc.
     /**
     * Overloads != operator to return true if the points are not equal.
     *
-    * @param v .
+    * @param p .
     * @return .
     */
-    bool operator!=(const Point& v) const;
+    bool operator!=(const Point& p) const;
 
     // TODO: Add doc.
     /**

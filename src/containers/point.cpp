@@ -86,22 +86,24 @@ void Point::operator-=(const Vect& v)
     mZ -= v.GetZ();
 }
 
-bool Point::operator==(const Point& v) const
+bool Point::operator==(const Point& p) const
 {
-    return mX == v.GetX() & mY == v.GetY() & mZ == v.GetZ();
+    return mX == p.GetX() & mY == p.GetY() & mZ == p.GetZ();
 }
 
-bool Point::operator!=(const Point& v) const
+bool Point::operator<=(const Point &p) const
 {
-    return !(*this == v);
+    return mX <= p.GetX() & mY <= p.GetY() & mZ <= p.GetZ();
 }
 
-bool Point::operator<=(const Point &v) const {
-    return mX <= v.GetX() & mY <= v.GetY() & mZ <= v.GetZ();
+bool Point::operator>=(const Point &p) const
+{
+    return mX >= p.GetX() & mY >= p.GetY() & mZ >= p.GetZ();
 }
 
-bool Point::operator>=(const Point &v) const {
-    return mX >= v.GetX() & mY >= v.GetY() & mZ >= v.GetZ();
+bool Point::operator!=(const Point& p) const
+{
+    return !(*this == p);
 }
 
 std::ostream& operator<<(std::ostream &out, const Point &p)
