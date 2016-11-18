@@ -11,7 +11,5 @@
 
 TEST(NewMesh, FromFile)
 {
-
     Mesh mesh("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/tetrahedron.obj");
-
 }
