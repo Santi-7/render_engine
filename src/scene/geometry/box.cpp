@@ -22,13 +22,13 @@ Box::Box(const FinitePlane &base, const float depth)
     Point cornerBTop = cornerB + base.GetNormal() * depth;
     mFaces[1] = FinitePlane(base.GetNormal(), cornerATop, cornerBTop);
     /* Lateral faces. */
-    Vect lateralVect1 = (cornerA - cornerB).CrossProduct(base.GetNormal()).Normalise();
-    mFaces[2] = FinitePlane(lateralVect1, cornerA, cornerATop);
-    mFaces[3] = FinitePlane(lateralVect1, cornerB, cornerBTop);
-    // Normalisation don't needed because lateralVect and GetNormal are already normalised.
-    Vect lateralVect2 = lateralVect1.CrossProduct(base.GetNormal());
-    mFaces[4] = FinitePlane(lateralVect2, cornerA, cornerATop);
-    mFaces[5] = FinitePlane(lateralVect2, cornerB, cornerBTop);
+    Vect lateralNormal1 = (cornerA - cornerB).CrossProduct(base.GetNormal()).Normalise();
+    mFaces[2] = FinitePlane(lateralNormal1, cornerA, cornerATop);
+    mFaces[3] = FinitePlane(lateralNormal1, cornerB, cornerBTop);
+    // Normalisation don't needed because lateralNormal1 and GetNormal are already normalised.
+    Vect lateralNormal2 = lateralNormal1.CrossProduct(base.GetNormal());
+    mFaces[4] = FinitePlane(lateralNormal2, cornerA, cornerATop);
+    mFaces[5] = FinitePlane(lateralNormal2, cornerB, cornerBTop);
 }
 
 float Box::Intersect(const LightRay &lightRay) const
