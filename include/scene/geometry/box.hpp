@@ -1,30 +1,30 @@
 /* ---------------------------------------------------------------------------
-** plane.hpp
+** box.hpp
 ** TODO: Add doc.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
-#ifndef RAY_TRACER_PLANE_HPP
-#define RAY_TRACER_PLANE_HPP
+#ifndef RAY_TRACER_BOX_HPP
+#define RAY_TRACER_BOX_HPP
 
-#include <shape.hpp>
+#include <finitePlane.hpp>
 
-class Plane : public Shape
+class Box : public Shape
 {
 
 public:
 
     // TODO: Add doc.
     /**
-     * Constructs a Plane.
+     * Constructs a Box.
      *
-     * @param point .
-     * @param normal .
+     * @param base .
+     * @param depth .
      * @return .
      */
-    Plane(const Point &point, const Vect &normal);
+    Box(const FinitePlane &base, const float depth);
 
     // TODO: Add doc.
     /**
@@ -38,15 +38,6 @@ public:
     // TODO: Add doc.
     /**
      * .
-     * @param lightRay .
-     * @param t .
-     * @param nearestShape .
-     */
-    void Intersect(const LightRay &lightRay, float &t, shared_ptr<Shape> nearestShape) const;
-
-    // TODO: Add doc.
-    /**
-     * .
      *
      * @param point .
      * @param seenFrom .
@@ -55,23 +46,11 @@ public:
     Vect GetVisibleNormal(const Point &point,
                           const LightRay &seenFrom) const;
 
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @return .
-     */
-    Vect GetNormal() const;
-
 protected:
 
     // TODO: Add doc.
     /* . */
-    Point mPoint;
-
-    // TODO: Add doc.
-    /* . */
-    Vect mNormal;
+    array<FinitePlane, 6> mFaces; // A box has 6 faces.
 };
 
-#endif // RAY_TRACER_PLANE_HPP
+#endif //RAY_TRACER_BOX_HPP
