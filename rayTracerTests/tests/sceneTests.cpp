@@ -141,9 +141,11 @@ TEST(SimpleLight, Box)
     Scene scene;
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,-10), PI/3, 1.0, 255, 255));
 
-    scene.AddLightSource(PointLight(Point(1,3.5,0), 200, WHITE));
-    scene.AddShape(Box(FinitePlane(Vect(0,0,1), Point(-2,-2,8), Point(2,-2,12)), 4));
-    scene.AddShape(Plane(Point(0,0,0), Vect(0,1,0)));
+    scene.AddLightSource(PointLight(Point(1,5.5,0), 75, WHITE));
+
+    scene.AddShape(Box(FinitePlane(Vect(0,1,0), Point(-0.5f, -0.5f, -0.5f), Point(0.5f, -0.5f, 0.5f)), 4));
+
+    scene.AddShape(Plane(Point(0,-2.5f,0), Vect(0,1,0)));
     auto renderedImage = scene.Render();
     renderedImage->Save("box.ppm");
 }
