@@ -1,12 +1,18 @@
 set(SOURCE_FILES
         plane.cpp
         sphere.cpp
-        triangle.cpp finitePlane.cpp)
+        triangle.cpp
+        meshTriangle.cpp
+        mesh.cpp
+        finitePlane.cpp
+        )
 
 set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/plane.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/shape.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/sphere.hpp
+        ${PROJECT_SOURCE_DIR}/include/scene/geometry/mesh.hpp
+        ${PROJECT_SOURCE_DIR}/include/scene/geometry/meshTriangle.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/triangle.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/finitePlane.hpp
         )

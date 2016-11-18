@@ -108,12 +108,12 @@ Color Scene::DirectLight(const Point &point, Vect &normal,
                 /* Add the radiance from the current light if it
                    illuminates the [point] from the visible semi-sphere. */
                 retVal += // Li.
-                          mLightSources[i]->GetColor(point) *
-                          // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
-                          shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
-                                                         lightRay.GetDirection(), normal) *
-                          // Cosine.
-                          max(multiplier, 0.0f);
+                        mLightSources[i]->GetColor(point) *
+                        // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
+                        shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
+                                                       lightRay.GetDirection(), normal) *
+                        // Cosine.
+                        max(multiplier, 0.0f);
             }
         }
     }
@@ -135,9 +135,9 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
     LightRay refractedRay = LightRay(point, in.GetDirection());
 
     return GetLightRayColor(reflectedRay, specularSteps-1, diffuseSteps-1) *
-                shape.GetMaterial()->GetReflectance() +
+           shape.GetMaterial()->GetReflectance() +
            GetLightRayColor(refractedRay, specularSteps-1, diffuseSteps-1) *
-                shape.GetMaterial()->GetTransmittance();
+           shape.GetMaterial()->GetTransmittance();
 }
 
 inline static tuple<float, float> UniformCosineSampling()
@@ -176,7 +176,7 @@ Color Scene::IndirectLight(const Point &point, const Vect &normal,
         // Transform the ray of light to global coordinates.
         LightRay lightRay(point, fromLocalToGlobal * localRay);
         retVal += GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1) *
-                (PI / (sin(inclination) * cos(inclination))); // 1 / PDF.
+                  (PI / (sin(inclination) * cos(inclination))); // 1 / PDF.
     }
     return retVal * (shape.GetMaterial()->GetDiffuse() / DIFFUSE_RAYS);
 }

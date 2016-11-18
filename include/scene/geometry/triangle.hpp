@@ -47,7 +47,7 @@ public:
     Vect GetVisibleNormal(const Point &point,
                           const LightRay &seenFrom) const;
 
-private:
+protected:
 
     // TODO: Add doc.
     /* . */

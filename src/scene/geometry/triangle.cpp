@@ -11,18 +11,18 @@
 #include <triangle.hpp>
 
 Triangle::Triangle(const Point &a, const Point &b, const Point &c)
-: Shape(),
-  mA(a),
-  mB(b),
-  mC(c),
-  // Cached values.
-  v0(b - a),
-  v1(c - a),
-  d00(v0.DotProduct(v0)),
-  d01(v0.DotProduct(v1)),
-  d11(v1.DotProduct(v1)),
-  denominator(d00 * d11 - d01 * d01),
-  plane(mA, v0.CrossProduct(v1).Normalise())
+        : Shape(),
+          mA(a),
+          mB(b),
+          mC(c),
+          // Cached values.
+          v0(b - a),
+          v1(c - a),
+          d00(v0.DotProduct(v0)),
+          d01(v0.DotProduct(v1)),
+          d11(v1.DotProduct(v1)),
+          denominator(d00 * d11 - d01 * d01),
+          plane(mA, v0.CrossProduct(v1).Normalise())
 {}
 
 // TODO: Check if t = threshold, this is, the lightray lies inside the plane.

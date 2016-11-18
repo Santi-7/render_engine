@@ -174,7 +174,7 @@ public:
      */
     friend std::ostream& operator<<(std::ostream &out, const Point &p);
 
-private:
+protected:
 
     // TODO: Add doc.
     /* . */

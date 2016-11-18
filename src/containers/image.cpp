@@ -40,6 +40,8 @@ void Image::Save(const string filename) const
         }
         outputFile << '\n';
     }
+
+    outputFile.close();
 }
 
 unsigned int Image::GetWidth() const
