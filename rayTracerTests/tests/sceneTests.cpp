@@ -18,7 +18,7 @@
 #include <mesh.hpp>
 #include <fstream>
 #include <triangle.hpp>
-#include <geometry/finitePlane.hpp>
+#include <geometry/rectangle.hpp>
 #include <geometry/box.hpp>
 
 /**
@@ -72,7 +72,7 @@ TEST(SimpleRender, FinitePlane)
 { // Test rendering of many finite planes
     Scene scene;
     scene.AddLightSource(PointLight(Point(0,1,-1)));
-    scene.AddShape(FinitePlane(Vect(0,0,-1),Point(0,0,0), Point(1,1,1)));
+    scene.AddShape(Rectangle(Vect(0,0,-1),Point(0,0,0), Point(1,1,1)));
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,-3), PI/3, 1.0, 255, 255));
     unique_ptr<Image> renderedImage = scene.Render();
     renderedImage->Save("finitePlanes.ppm");
@@ -110,7 +110,7 @@ TEST(CornellBox, BigSpheres)
 }
 
 TEST(CornellBox, Planes)
-{ // Cornell's box. The sides of the box are planes
+{ // Cornell's box. The sides of the box are planes.
     Scene scene = CornellBox(false);
     auto renderedImage = scene.Render();
     renderedImage->Save("cornellP.ppm");
@@ -125,7 +125,7 @@ TEST(CornellBox, Colors)
 }
 
 TEST(SimpleLight, PlaneTop)
-{ // A plane as seen from the top
+{ // A plane as seen from the top.
     Scene scene;
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
 
@@ -137,15 +137,16 @@ TEST(SimpleLight, PlaneTop)
 }
 
 TEST(SimpleLight, Box)
-{ // A plane as seen from the top
+{ // A plane as seen from the .
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,-10), PI/3, 1.0, 255, 255));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,-5), PI/3, 1.0, 1023, 1023));
 
-    scene.AddLightSource(PointLight(Point(1,5.5,0), 75, WHITE));
+    scene.AddLightSource(PointLight(Point(0,5,2), 20, WHITE));
+    scene.AddLightSource(PointLight(Point(5,0,2), 20, WHITE));
 
-    scene.AddShape(Box(FinitePlane(Vect(0,1,0), Point(-0.5f, -0.5f, -0.5f), Point(0.5f, -0.5f, 0.5f)), 4));
+    scene.AddShape(Box(Rectangle(Vect(0,0,1), Point(-0.5f, 0.5f, 0), Point(0.5f, -0.5f, 0)), 2));
 
-    scene.AddShape(Plane(Point(0,-2.5f,0), Vect(0,1,0)));
+    scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
     auto renderedImage = scene.Render();
     renderedImage->Save("box.ppm");
 }

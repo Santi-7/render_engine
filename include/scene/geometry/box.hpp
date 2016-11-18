@@ -9,7 +9,7 @@
 #ifndef RAY_TRACER_BOX_HPP
 #define RAY_TRACER_BOX_HPP
 
-#include <finitePlane.hpp>
+#include <rectangle.hpp>
 
 class Box : public Shape
 {
@@ -24,7 +24,7 @@ public:
      * @param depth .
      * @return .
      */
-    Box(const FinitePlane &base, const float depth);
+    Box(const Rectangle &base, const float depth);
 
     // TODO: Add doc.
     /**
@@ -59,7 +59,7 @@ protected:
 
     // TODO: Add doc.
     /* . */
-    array<shared_ptr<FinitePlane>, 6> mFaces; // A box has 6 faces.
+    array<shared_ptr<Rectangle>, 6> mFaces; // A box has 6 faces.
 };
 
 #endif //RAY_TRACER_BOX_HPP

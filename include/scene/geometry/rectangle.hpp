@@ -11,20 +11,21 @@
 
 #include <plane.hpp>
 
-class FinitePlane : public Plane
+class Rectangle : public Plane
 {
 
 public:
 
     // TODO: Add doc.
     /**
-     * Constructor for a FinitePlane only giving two corners.
-     * @param normal
-     * @param cornerA
-     * @param cornerB
-     * @return
+     * Constructor for a Rectangle only giving two corners and its normal.
+     *
+     * @param normal .
+     * @param cornerA .
+     * @param cornerB .
+     * @return .
      */
-    FinitePlane(const Vect &normal, const Point &cornerA, const Point &cornerB);
+    Rectangle(const Vect &normal, const Point &cornerA, const Point &cornerB);
 
     // TODO: Add doc.
     /**
@@ -50,7 +51,7 @@ public:
      *
      * @return .
      */
-    tuple<Point, Point> GetLimits() const;
+    tuple<Point, Point, Point, Point> GetLimits() const;
 
 private:
 

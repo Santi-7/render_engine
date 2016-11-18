@@ -1,18 +1,18 @@
 set(SOURCE_FILES
         box.cpp
-        finitePlane.cpp
         mesh.cpp
         meshTriangle.cpp
         plane.cpp
+        rectangle.cpp
         sphere.cpp
         triangle.cpp)
 
 set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/box.hpp
-        ${PROJECT_SOURCE_DIR}/include/scene/geometry/finitePlane.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/mesh.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/meshTriangle.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/plane.hpp
+        ${PROJECT_SOURCE_DIR}/include/scene/geometry/rectangle.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/shape.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/sphere.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/triangle.hpp)
