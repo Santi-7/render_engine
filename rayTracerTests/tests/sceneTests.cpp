@@ -139,13 +139,14 @@ TEST(SimpleLight, PlaneTop)
 TEST(SimpleLight, Box)
 { // A plane as seen from the .
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,-5), PI/3, 1.0, 1023, 1023));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (1,1,-5), PI/3, 1.0, 255, 255));
 
     scene.AddLightSource(PointLight(Point(0,5,2), 20, WHITE));
-    scene.AddLightSource(PointLight(Point(5,0,2), 20, WHITE));
+    scene.AddLightSource(PointLight(Point(3,1,-2), 30, WHITE));
 
     scene.AddShape(Box(Rectangle(Vect(0,0,1), Point(-0.5f, 0.5f, 0), Point(0.5f, -0.5f, 0)), 2));
 
+    scene.AddShape(Plane(Point(0, 0, 10), Vect(0,0,-1)));
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
     auto renderedImage = scene.Render();
     renderedImage->Save("box.ppm");

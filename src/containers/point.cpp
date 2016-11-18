@@ -7,6 +7,10 @@
  ** -------------------------------------------------------------------------*/
 
 #include <point.hpp>
+#include <cmath>
+
+// When comparing float values we want to consider that two values that differ by this threshold are equal
+const double TH = 0.00025;
 
 Point::Point()
 {}
@@ -91,17 +95,17 @@ void Point::operator-=(const Vect& v)
 
 bool Point::operator==(const Point& p) const
 {
-    return mX == p.GetX() & mY == p.GetY() & mZ == p.GetZ();
+    return std::abs(mX - p.GetX()) <= TH & std::abs(mY - p.GetY()) <= TH & std::abs(mZ - p.GetZ()) <= TH;
 }
 
 bool Point::operator<=(const Point &p) const
 {
-    return mX <= p.GetX() & mY <= p.GetY() & mZ <= p.GetZ();
+    return mX - p.GetX() <= TH & mY - p.GetY() <= TH & mZ - p.GetZ() <= TH;
 }
 
 bool Point::operator>=(const Point &p) const
 {
-    return mX >= p.GetX() & mY >= p.GetY() & mZ >= p.GetZ();
+    return p.GetX() - mX <= TH & p.GetY() - mY <= TH & p.GetZ() - mZ <= TH;
 }
 
 bool Point::operator!=(const Point& p) const
