@@ -45,13 +45,13 @@ float Triangle::Intersect(const LightRay &lightRay) const
     return alpha >= 0 & beta >= 0 & alpha + beta < 1 ? t : FLT_MAX;
 }
 
-void Triangle::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> nearestShape) const
+void Triangle::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
 {
     float tmpT = Intersect(lightRay);
     if(tmpT < minT)
     {
         minT = tmpT;
-        //nearestShape = shared_prt<Shape>(this);
+        nearestShape = thisShape;
     }
 }
 

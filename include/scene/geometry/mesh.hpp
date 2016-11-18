@@ -41,8 +41,7 @@ public:
      * @param nearestShape Shape that is at distance t from the lightray's origin.
      * @param lightRay The LightRay we are checking for intersections.
      */
-    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> nearestShape) const;
-
+    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
     /**
      * This method is not usable for this shape.
      * If called, a static error should pop up.

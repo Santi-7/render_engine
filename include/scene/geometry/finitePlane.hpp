@@ -42,7 +42,7 @@ public:
      * @param minT
      * @param nearestShape
      */
-    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> nearestShape) const;
+    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
 
     // TODO: Add doc.
     /**

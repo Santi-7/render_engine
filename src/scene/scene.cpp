@@ -54,26 +54,21 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     if (specularSteps == 0 & diffuseSteps == 0) return BLACK;
 
     // Distance to the nearest shape.
-    float tMin = FLT_MAX;
+    float minT = FLT_MAX;
     // Nearest shape intersected with the ray of light.
     shared_ptr<Shape> nearestShape;
 
     /* Intersect with all the shapes in the
      * scene to know which one is the nearest. */
     for (unsigned int i = 0; i < mShapes.size(); ++i) {
-        float t = mShapes[i]->Intersect(lightRay);
-        if (t < tMin)
-        {
-            tMin = t;
-            nearestShape = mShapes[i];
-        }
+        mShapes.at(i)->Intersect(lightRay, minT, nearestShape, mShapes.at(i));
     }
 
     // No shape has been found.
-    if (tMin == FLT_MAX) return BLACK;
+    if (minT == FLT_MAX) return BLACK;
 
     // Intersection point with the nearest shape found.
-    Point intersection(lightRay.GetPoint(tMin));
+    Point intersection(lightRay.GetPoint(minT));
     // Normal to the shape in the intersection point.
     Vect normal = nearestShape->GetVisibleNormal(intersection, lightRay);
 

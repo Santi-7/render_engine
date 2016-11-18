@@ -83,10 +83,10 @@ Mesh::Mesh(const string &filename) {
     cout << maxX << ' ' << maxY << ' ' << maxZ << '\n';
 }
 
-void Mesh::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> nearestShape) const {
+void Mesh::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const {
 
     for (unsigned int i = 0; i < triangles.size(); ++i) {
-        triangles.at(i)->Intersect(lightRay, minT, nearestShape);
+        triangles.at(i)->Intersect(lightRay, minT, nearestShape, triangles.at(i));
     }
 }
 
@@ -95,5 +95,8 @@ Vect Mesh::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const 
 }
 
 float Mesh::Intersect(const LightRay &lightRay) const {
-    throw 1;
+    for (unsigned int i = 0; i < triangles.size(); ++i) {
+        float tmp = triangles.at(i)->Intersect(lightRay);
+        if (tmp != FLT_MAX) return tmp;
+    }
 }

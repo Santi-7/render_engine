@@ -33,18 +33,26 @@ Box::Box(const FinitePlane &base, const float depth)
 
 float Box::Intersect(const LightRay &lightRay) const
 {
-    // Check if the ray of light intersects with any of the box's face.
+    float tMin = FLT_MAX;// Check if the ray of light intersects with any of the box's face.
     for (const shared_ptr<FinitePlane> &face : mFaces)
     {
         float t = face->Intersect(lightRay);
-        // The ray of light intersects with the current face.
-        if (t < FLT_MAX) return t;
+        if (t < tMin) tMin = t;
     }
-    // The ray of light hasn't intersected with any of the box's faces.
-    return FLT_MAX;
+    // The ray of light intersects with the current face.
+    return tMin;
 }
 
 Vect Box::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
 {
-    static_assert(true, "This method should not be called, call the method on an individual finite plane.\n");
+    throw 1;
+}
+
+void Box::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                    shared_ptr<Shape> thisShape) const {
+    // Check if the ray of light intersects with any of the box's face.
+    for (const shared_ptr<FinitePlane> &face : mFaces)
+    {
+        face->Intersect(lightRay, minT, nearestShape, face);
+    }
 }

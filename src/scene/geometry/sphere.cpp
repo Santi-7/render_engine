@@ -49,13 +49,13 @@ float Sphere::Intersect(const LightRay &lightRay) const
     }
 }
 
-void Sphere::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> nearestShape) const
+void Sphere::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
 {
     float tmpT = Intersect(lightRay);
     if (tmpT < minT)
     {
         minT = tmpT;
-        //nearestShape = shared_ptr(this);
+        nearestShape = thisShape;
     }
 }
 

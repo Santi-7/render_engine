@@ -43,13 +43,13 @@ float Plane::Intersect(const LightRay &lightRay) const
     }
 }
 
-void Plane::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> nearestShape) const
+void Plane::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
 {
     float tmpT = Intersect(lightRay);
     if (tmpT < minT)
     {
         minT = tmpT;
-        //nearestShape = shared_prt<Shape>(this);
+        nearestShape = thisShape;
     }
 }
 

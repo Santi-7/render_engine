@@ -19,6 +19,7 @@
 #include <fstream>
 #include <triangle.hpp>
 #include <geometry/finitePlane.hpp>
+#include <geometry/box.hpp>
 
 /**
  * Test first pixel value is correct
@@ -126,13 +127,25 @@ TEST(CornellBox, Colors)
 TEST(SimpleLight, PlaneTop)
 { // A plane as seen from the top
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(1,0,0), Vect(0,0,1), Vect(0,-1,0), Point (0,10,0), PI/3, 1.0, 255, 255));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
 
     scene.AddLightSource(PointLight(Point(0,1.5,0)));
     scene.AddShape(Plane(Point(0,0,0), Vect(0,1,0)));
 
     auto renderedImage = scene.Render();
     renderedImage->Save("planeTop.ppm");
+}
+
+TEST(SimpleLight, Box)
+{ // A plane as seen from the top
+    Scene scene;
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,-10), PI/3, 1.0, 255, 255));
+
+    scene.AddLightSource(PointLight(Point(1,3.5,0), 200, WHITE));
+    scene.AddShape(Box(FinitePlane(Vect(0,0,1), Point(-2,-2,8), Point(2,-2,12)), 4));
+    scene.AddShape(Plane(Point(0,0,0), Vect(0,1,0)));
+    auto renderedImage = scene.Render();
+    renderedImage->Save("box.ppm");
 }
 
 TEST(Reflection, PlaneSphere)
@@ -249,7 +262,7 @@ TEST(Mesh, IronGiant)
     Scene scene;
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592);
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (0,1,-1.5f), (float)3.14159/2, 1.0, 960, 540));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (0,1,-1.5f), (float)3.14159/2, 1.0, 10, 10));
     Mesh ironGiant("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/iron_giant.obj");
     scene.AddShape(ironGiant);
 

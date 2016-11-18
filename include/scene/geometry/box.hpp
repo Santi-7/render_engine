@@ -38,6 +38,16 @@ public:
     // TODO: Add doc.
     /**
      * .
+     * @param lightRay
+     * @param minT
+     * @param nearestShape
+     * @param thisShape
+     */
+    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
+
+    // TODO: Add doc.
+    /**
+     * .
      *
      * @param point .
      * @param seenFrom .

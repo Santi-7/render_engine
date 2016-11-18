@@ -36,7 +36,7 @@ public:
      * @param minT
      * @param nearestShape
      */
-    virtual void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> nearestShape) const = 0;
+    virtual void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const = 0;
 
     // TODO: Add doc.
     /**
