@@ -9,7 +9,10 @@ set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/plane.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/shape.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/sphere.hpp
-        ${PROJECT_SOURCE_DIR}/include/scene/geometry/meshTriangle.hpp)
+        ${PROJECT_SOURCE_DIR}/include/scene/geometry/mesh.hpp
+        ${PROJECT_SOURCE_DIR}/include/scene/geometry/meshTriangle.hpp
+        ${PROJECT_SOURCE_DIR}/include/scene/geometry/triangle.hpp
+        )
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/containers

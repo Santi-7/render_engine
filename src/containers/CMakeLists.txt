@@ -4,6 +4,7 @@ set(SOURCE_FILES
         matrix.cpp
         point.cpp
         vect.cpp
+        vertex.cpp
         )
 
 set(HEADER_FILES
@@ -13,6 +14,7 @@ set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/containers/matrix.hpp
         ${PROJECT_SOURCE_DIR}/include/containers/point.hpp
         ${PROJECT_SOURCE_DIR}/include/containers/vect.hpp
+        ${PROJECT_SOURCE_DIR}/include/containers/vertex.hpp
         )
 
 include_directories(
