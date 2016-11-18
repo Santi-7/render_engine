@@ -61,12 +61,12 @@ float FinitePlane::Intersect(const LightRay &lightRay) const
     }
 }
 
-void FinitePlane::Intersect(const LightRay &lightRay, float &t, shared_ptr<Shape> nearestShape) const
+void FinitePlane::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> nearestShape) const
 {
     float tmpT = FLT_MAX;
-    if(tmpT > t)
+    if(tmpT > minT)
     {
-        t = tmpT;
+        minT = tmpT;
         //nearestShape = shared_prt<Shape>(this);
     }
 }

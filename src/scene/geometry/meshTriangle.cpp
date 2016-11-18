@@ -58,6 +58,6 @@ Vect MeshTriangle::GetNormal(const Point &point) const
 
 Vect MeshTriangle::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
 {
-    // Not implemented
+    // Not implemented yet!
     return Triangle::GetVisibleNormal(point, seenFrom);
 }

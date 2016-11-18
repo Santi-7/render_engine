@@ -39,10 +39,10 @@ public:
     /**
      * .
      * @param lightRay
-     * @param t
+     * @param minT
      * @param nearestShape
      */
-    void Intersect(const LightRay &lightRay, float &t, shared_ptr<Shape> nearestShape) const;
+    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> nearestShape) const;
 
     // TODO: Add doc.
     /**

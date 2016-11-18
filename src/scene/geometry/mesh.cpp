@@ -83,10 +83,10 @@ Mesh::Mesh(const string &filename) {
     cout << maxX << ' ' << maxY << ' ' << maxZ << '\n';
 }
 
-void Mesh::Intersect(const LightRay &lightRay, float &t, shared_ptr<Shape> nearestShape) const {
+void Mesh::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> nearestShape) const {
 
     for (unsigned int i = 0; i < triangles.size(); ++i) {
-        triangles.at(i)->Intersect(lightRay, t, nearestShape);
+        triangles.at(i)->Intersect(lightRay, minT, nearestShape);
     }
 }
 
