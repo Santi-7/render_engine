@@ -6,11 +6,8 @@
  **         Santiago Gil Begué, NIA: 683482
  ** -------------------------------------------------------------------------*/
 
-#include <point.hpp>
 #include <cmath>
-
-// When comparing float values we want to consider that two values that differ by this threshold are equal
-const double TH = 0.00025;
+#include <point.hpp>
 
 Point::Point()
 {}
@@ -95,22 +92,28 @@ void Point::operator-=(const Vect& v)
 
 bool Point::operator==(const Point& p) const
 {
-    return std::abs(mX - p.GetX()) <= TH & std::abs(mY - p.GetY()) <= TH & std::abs(mZ - p.GetZ()) <= TH;
-}
-
-bool Point::operator<=(const Point &p) const
-{
-    return mX - p.GetX() <= TH & mY - p.GetY() <= TH & mZ - p.GetZ() <= TH;
-}
-
-bool Point::operator>=(const Point &p) const
-{
-    return p.GetX() - mX <= TH & p.GetY() - mY <= TH & p.GetZ() - mZ <= TH;
+    return std::abs(mX - p.GetX()) <= TH &
+           std::abs(mY - p.GetY()) <= TH &
+           std::abs(mZ - p.GetZ()) <= TH;
 }
 
 bool Point::operator!=(const Point& p) const
 {
     return !(*this == p);
+}
+
+bool Point::operator<=(const Point &p) const
+{
+    return mX - p.GetX() <= TH &
+           mY - p.GetY() <= TH &
+           mZ - p.GetZ() <= TH;
+}
+
+bool Point::operator>=(const Point &p) const
+{
+    return p.GetX() - mX <= TH &
+           p.GetY() - mY <= TH &
+           p.GetZ() - mZ <= TH;
 }
 
 std::ostream& operator<<(std::ostream &out, const Point &p)

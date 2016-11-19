@@ -20,6 +20,10 @@ public:
     /* */
     static constexpr float H = 1;
 
+    /* When comparing float values we want to consider that
+     * two values that differ by this threshold are equal. */
+    static constexpr float TH = 0.00025;
+
     // TODO: Add doc.
     /**
      * .
@@ -152,6 +156,15 @@ public:
 
     // TODO: Add doc.
     /**
+     * Overloads != operator to return true if the points are not equal.
+     *
+     * @param p .
+     * @return .
+     */
+    bool operator!=(const Point& p) const;
+
+    // TODO: Add doc.
+    /**
      * Overloads <= operator to return true if all the values in this
      * point are smaller or equal to those in p.
      *
@@ -169,15 +182,6 @@ public:
      * @return .
      */
     bool operator>=(const Point& p) const;
-
-    // TODO: Add doc.
-    /**
-    * Overloads != operator to return true if the points are not equal.
-    *
-    * @param p .
-    * @return .
-    */
-    bool operator!=(const Point& p) const;
 
     // TODO: Add doc.
     /**

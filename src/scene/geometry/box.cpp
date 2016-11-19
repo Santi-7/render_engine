@@ -8,7 +8,6 @@
 
 #include <box.hpp>
 #include <cfloat>
-#include <iostream>
 
 Box::Box(const Rectangle &base, const float depth)
 : Shape()
@@ -25,11 +24,6 @@ Box::Box(const Rectangle &base, const float depth)
     /* Lateral faces. */
     Vect up = (cornerA1 - cornerA2).Normalise();
     Vect right = (cornerB2 - cornerA1).Normalise();
-    cout << endl;
-    cout << cornerA1 << " " << cornerB2 << endl;
-    cout << cornerA2 << " " << cornerB1 << endl;
-    cout << "UP" << up << endl;
-    cout << "RIGHT" << right << endl;
     mFaces[2] = make_shared<Rectangle>(Rectangle(up, cornerB2, cornerATop));
     mFaces[3] = make_shared<Rectangle>(Rectangle(up, cornerA2, cornerBTop));
     mFaces[4] = make_shared<Rectangle>(Rectangle(right, cornerA2, cornerATop));
