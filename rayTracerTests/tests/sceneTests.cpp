@@ -152,6 +152,31 @@ TEST(SimpleLight, Box)
     renderedImage->Save("box.ppm");
 }
 
+TEST(Render, XBoxes)
+{
+    Scene scene;
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,2, -6), PI/3, 1.0, 500, 500));
+    scene.AddLightSource(PointLight(Point(0,7,-0.5f), 220, WHITE));
+
+    scene.AddShape(Plane(Point(0,-0.5f,0), Vect(0,1,0)));
+    scene.AddShape(Plane(Point(0,-0.5f,8), Vect(0,0,-1)));
+
+    array<Vect, 6> normals = {Vect(1,0,0), Vect(-1,0,0), Vect(0,1,0), Vect(0,-1,0), Vect(0,0,1), Vect(0,0,-1)};
+
+    scene.AddShape(Box(Rectangle(Vect(1,0,0), Point(0, 0, 0), Point(0, 1, 1)), 1));
+    scene.AddShape(Box(Rectangle(Vect(-1,0,0), Point(3, 0, 1.5), Point(3, 1, 2.5)), 1));
+
+    scene.AddShape(Box(Rectangle(Vect(0,1,0), Point(-3, 0, 1.5), Point(-2, 0, 2.5)), 1));
+    scene.AddShape(Box(Rectangle(Vect(0,-1,0), Point(-1.5f, 2, 0.5), Point(-2.5f, 2, -0.5f)), 1));
+
+    scene.AddShape(Box(Rectangle(Vect(0,0,1), Point(-3, 2, 2.5), Point(-2, 3, 2.5)), 1));
+    scene.AddShape(Box(Rectangle(Vect(0,0,-1), Point(3, 1, 1.5), Point(4, 2, 1.5)), 1));
+
+
+    auto image = scene.Render();
+    image->Save("sixBoxes.ppm");
+}
+
 TEST(Reflection, PlaneSphere)
 { // A sphere over a plane.
     Scene scene;
@@ -343,7 +368,6 @@ TEST(Materials, XSpheres)
     }
     auto image = scene.Render();
     image->Save("spheres.ppm");
-
 }
 
 TEST(Materials, GlassSpheres)
