@@ -18,15 +18,15 @@ void printProgressBar(unsigned int pixel, unsigned int total)
 {
     int percentCompleted = static_cast<int>((pixel / static_cast<float>(total)) * 100);
     cout << '[';
-    for (int i = 0; i < percentCompleted / 1.5; ++i)
+    for (int i = 0; i < round(percentCompleted / 1.5); ++i)
     {
         cout << '=';
     }
-    for (int i = 0; i < 100/1.5 - percentCompleted / 1.5; ++i)
+    for (int i = 0; i < static_cast<int>(100/1.5) - round(percentCompleted / 1.5); ++i)
     {
         cout << ' ';
     }
-    cout << "] " <<  percentCompleted << "% \r";
+    cout << "] " <<  percentCompleted << "% \r" << std::flush;
 }
 
 unique_ptr<Image> Scene::Render() const
