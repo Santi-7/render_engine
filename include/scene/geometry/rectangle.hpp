@@ -64,4 +64,4 @@ private:
     Point mMinimums, mMaximums;
 };
 
-#endif //RAY_TRACER_FINITEPLANE_HPP
+#endif // RAY_TRACER_FINITEPLANE_HPP
