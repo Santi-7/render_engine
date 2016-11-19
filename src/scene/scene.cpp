@@ -26,7 +26,7 @@ void printProgressBar(unsigned int pixel, unsigned int total)
     {
         cout << ' ';
     }
-    cout << "] " <<  percentCompleted << "%\r";
+    cout << "] " <<  percentCompleted << "% \r";
 }
 
 unique_ptr<Image> Scene::Render() const
