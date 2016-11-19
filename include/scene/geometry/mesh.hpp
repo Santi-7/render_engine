@@ -27,7 +27,7 @@ public:
      * @param filename Path to the obj file containing a mesh.
      * @return Mesh object.
      */
-    Mesh(const string &filename);
+    Mesh(const string &filename, bool clampValues);
 
     float Intersect(const LightRay &lightRay) const;
 
@@ -50,7 +50,7 @@ public:
 
 private:
     vector<shared_ptr<Triangle>> triangles;
-
+    shared_ptr<Shape> boundingShape;
 };
 
 /**
