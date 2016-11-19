@@ -53,10 +53,4 @@ private:
     shared_ptr<Shape> boundingShape;
 };
 
-/**
- * Create a new Mesh from an obj (a simple one that defines vertices, vertex normals and faces)
- * @param filename must be a valid obj file path
- */
-vector<shared_ptr<Triangle>> ParseObjFile(const string filename);
-
 #endif //RAY_TRACER_MESH_HPP
