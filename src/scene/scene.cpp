@@ -12,6 +12,22 @@
 #include <random>
 #include <scene.hpp>
 #include <mathConstants.hpp>
+#include <iostream>
+
+void printProgressBar(unsigned int pixel, unsigned int total)
+{
+    int percentCompleted = static_cast<int>((pixel / static_cast<float>(total)) * 100);
+    cout << '[';
+    for (int i = 0; i < percentCompleted / 1.5; ++i)
+    {
+        cout << '=';
+    }
+    for (int i = 0; i < 100/1.5 - percentCompleted / 1.5; ++i)
+    {
+        cout << ' ';
+    }
+    cout << "] " <<  percentCompleted << "%\r";
+}
 
 unique_ptr<Image> Scene::Render() const
 {
@@ -28,6 +44,7 @@ unique_ptr<Image> Scene::Render() const
     // For all the pixels, trace a ray of light.
     for (unsigned int i = 0; i < mCamera->GetHeight(); ++i)
     {
+        printProgressBar(i, mCamera->GetHeight());
         for (unsigned int j = 0; j < mCamera->GetWidth(); ++j)
         {
             // Next pixel.
@@ -41,6 +58,8 @@ unique_ptr<Image> Scene::Render() const
         currentRow -= advanceY;
         currentPixel = currentRow;
     }
+    printProgressBar(1,1);
+
     return rendered;
 }
 
