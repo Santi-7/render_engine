@@ -258,12 +258,12 @@ TEST(Mesh, Woman)
     renderedImage->Save("woman.ppm");
 }
 
-TEST(Mesh, IronGiant)
+TEST(Mesh, IronGiantObj)
 {
     Scene scene;
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592);
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (1,2,+1.5f), (float)3.14159/2, 1.0, 755, 755));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (1, 2, 0.5f), (float)3.14159/2, 1.0, 5, 5));
     Mesh ironGiant("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/iron_giant.obj", false);
     scene.AddShape(ironGiant);
 
@@ -271,8 +271,28 @@ TEST(Mesh, IronGiant)
     scene.AddShape(Plane(Point(7, 0, 0), Vect(-1,0,0))); // Right wall.
     scene.AddShape(Plane(Point(0, 0, 10), Vect(0,0,-1))); // Back wall*/
     scene.AddShape(Plane(Point(0,-0.2f,0), Vect(0,1,0)));
-    scene.AddLightSource(PointLight(Point(0,10,1.6), 90, WHITE));
+    scene.AddLightSource(PointLight(Point(0,8,1.6), 90, WHITE));
 
+    //scene.AddShape(Plane(Point(0,-50, 0), Vect(0,1,0)));
+    auto renderedImage = scene.Render();
+    renderedImage->Save("ironGiant.ppm");
+}
+
+TEST(Mesh, IronGiant)
+{
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetYRotation((float)3.141592);
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (0.1, 0.35f, 0), (float)3.14159/2, 1.0, 10, 10));
+    Mesh ironGiant("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/iron_giant.obj", true);
+    scene.AddShape(ironGiant);
+
+    scene.AddShape(Plane(Point(-2, 0, 0), Vect(1,0,0))); // Left wall.
+    scene.AddShape(Plane(Point(2, 0, 0), Vect(-1,0,0))); // Right wall.
+    scene.AddShape(Plane(Point(0, 0, 10), Vect(0,0,-1))); // Back wall*/
+    scene.AddShape(Plane(Point(0,-0.0284446f,0), Vect(0,1,0))); // Floor
+    scene.AddLightSource(PointLight(Point(0,2,0.6), 10, WHITE));
+    scene.AddLightSource(PointLight(Point(0,1,0.6), 5, WHITE));
     //scene.AddShape(Plane(Point(0,-50, 0), Vect(0,1,0)));
     auto renderedImage = scene.Render();
     renderedImage->Save("ironGiant.ppm");
