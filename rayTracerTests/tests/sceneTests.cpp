@@ -235,7 +235,7 @@ TEST(Mesh, Tetrahedron)
     Mesh tetrahedron("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/tetrahedron.obj", true);
     scene.AddShape(tetrahedron);
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
-    scene.AddLightSource(PointLight(Point(-1,5,0), 30, WHITE));
+    scene.AddLightSource(PointLight(Point(-1,1,0), 5, WHITE));
     auto renderedImage = scene.Render();
     renderedImage->Save("tetrahedron.ppm");
 }
@@ -246,16 +246,16 @@ TEST(Mesh, Teapot)
     Scene scene;
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592/2);
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,1,-2), (float)3.14159/2, 1.0, 350, 350));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0.3,-2), (float)3.14159/2, 1.0, 350, 350));
     Mesh teapot("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/utah_teapot.obj", true);
     scene.AddShape(teapot);
 
     scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.
     scene.AddShape(Plane(Point(1.5f, 0, 0), Vect(-1,0,0))); // Right wall.
-    scene.AddShape(Plane(Point(0, 0, 3), Vect(0,0,-1))); // Back wall
+    scene.AddShape(Plane(Point(0, 0, 2), Vect(0,0,-1))); // Back wall
+    scene.AddShape(Plane(Point(0,-0.5f, 0), Vect(0,1,0)));
 
-    scene.AddLightSource(PointLight(Point(0,2.5f, 0), 15, WHITE));
-    scene.AddShape(Plane(Point(0,-1.5f, 0), Vect(0,1,0)));
+    scene.AddLightSource(PointLight(Point(0,2.5f, 0), 10, WHITE));
     auto renderedImage = scene.Render();
     renderedImage->Save("teapot.ppm");
 }
