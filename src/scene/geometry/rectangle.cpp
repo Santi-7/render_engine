@@ -7,6 +7,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <cfloat>
+#include <poseTransformationMatrix.hpp>
 #include <rectangle.hpp>
 
 /**
@@ -73,14 +74,19 @@ void Rectangle::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shap
 
 tuple<Point, Point, Point, Point> Rectangle::GetLimits() const
 {
-    Vect halfDiagonalAB = (mCornerA - mCornerB) / 2;
     // The center of the rectangle.
-    Point center = mCornerB + halfDiagonalAB;
-    // In a rectangle, the distance from each vertex to its center is the same.
-    Vect halfDiagonalA2B2 = halfDiagonalAB.CrossProduct(mNormal);
-    // The other two vertexes of the tectangle.
-    Point cornerA2 = center - halfDiagonalA2B2;
-    Point cornerB2 = center + halfDiagonalA2B2;
-    // Return the 4 vertexes of the rectangle.
+    Point center = mCornerB + (mCornerA - mCornerB) / 2;
+    /* Change to local coordinates with the center of the rectangle as the origin. */
+    PoseTransformationMatrix fromLocalToGlobal = PoseTransformationMatrix::GetPoseTransformation(center, mNormal);
+    PoseTransformationMatrix fromGlobalToLocal = fromLocalToGlobal.Inverse();
+    // Local coordinates of a known corners.
+    Point localCornerA = fromGlobalToLocal * mCornerA;
+    // Local coordinates of the other two corners.
+    Point localCornerA2 = Point(-localCornerA.GetX(), localCornerA.GetY(), 0);
+    Point localCornerB2 = Point(localCornerA.GetX(), -localCornerA.GetY(), 0);
+    // Global coordinates ohe other two corners of the rectangle.
+    Point cornerA2 = fromLocalToGlobal * localCornerA2;
+    Point cornerB2 = fromLocalToGlobal * localCornerB2;
+    // Return the 4 corners of the rectangle.
     return make_tuple(mCornerA, cornerA2, mCornerB, cornerB2);
 }

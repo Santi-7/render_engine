@@ -358,7 +358,7 @@ TEST(Materials, MirrorBox)
 
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
 
-    Box container(Rectangle(Vect(0,-1,0), Point(0.5f, 0, -0.75f), Point(-0.5f, 0, 0.75f)), 1);
+    Box container(Rectangle(Vect(0,1,0), Point(0.5f, 0, -0.75f), Point(-0.5f, 0, 0.75f)), 1);
     scene.AddShape(container);
     auto image = scene.Render();
     image->Save("mirrorBox.ppm");
