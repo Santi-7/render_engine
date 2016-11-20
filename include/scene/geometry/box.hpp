@@ -55,6 +55,8 @@ public:
      */
     Vect GetVisibleNormal(const Point &point, const LightRay &seenFrom) const;
 
+    void SetMaterial(shared_ptr<Material> material);
+
 protected:
 
     // TODO: Add doc.

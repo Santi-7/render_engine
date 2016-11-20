@@ -343,23 +343,21 @@ TEST(Materials, FacingMirrors)
 }
 
 TEST(Materials, MirrorBox)
-{ // A monster inside a reflective box
+{ // A cube inside a reflective box
     Scene scene;
-    //scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (-0.3f,0.1,-0.65f), PI/3, 1.0, 700, 700));
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (-0.3f,0.7f,-2.65f), PI/3, 1.0, 700, 700));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0.2f,0.1,-0.65f), PI/3, 1.0, 700, 700));
 
-    //scene.AddLightSource(PointLight(Point(0,0.55f,0), 1, WHITE));
-    scene.AddLightSource(PointLight(Point(0,2.55f,-2.1f), 10, WHITE));
-
-    /*scene.AddLightSource(PointLight(Point(0,5,-22), 200, WHITE));
-    scene.AddLightSource(PointLight(Point(5,5,-22), 200, WHITE));
-    scene.AddLightSource(PointLight(Point(-5, 5,-22), 200, WHITE));
-    scene.AddLightSource(PointLight(Point(-5, 0,-25), 200, WHITE));*/
+    scene.AddLightSource(PointLight(Point(0,0.55f,0), 1, WHITE));
+    scene.AddLightSource(PointLight(Point(0,0.15f,-0.65f), 0.5, WHITE));
 
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
 
     Box container(Rectangle(Vect(0,1,0), Point(0.5f, 0, -0.75f), Point(-0.5f, 0, 0.75f)), 1);
+    container.SetMaterial(MIRROR);
     scene.AddShape(container);
+
+    scene.AddShape(Box(Rectangle(Vect(0,1,0), Point(0.1, 0.3, 0.1), Point(-0.1f, 0.3, -0.1f)), 0.2));
+
     auto image = scene.Render();
     image->Save("mirrorBox.ppm");
 }
