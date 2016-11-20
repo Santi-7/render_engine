@@ -79,7 +79,7 @@ tuple<Point, Point, Point, Point> Rectangle::GetLimits() const
     /* Change to local coordinates with the center of the rectangle as the origin. */
     PoseTransformationMatrix fromLocalToGlobal = PoseTransformationMatrix::GetPoseTransformation(center, mNormal);
     PoseTransformationMatrix fromGlobalToLocal = fromLocalToGlobal.Inverse();
-    // Local coordinates of a known corners.
+    // Local coordinates of a known corner.
     Point localCornerA = fromGlobalToLocal * mCornerA;
     // Local coordinates of the other two corners.
     Point localCornerA2 = Point(-localCornerA.GetX(), localCornerA.GetY(), 0);
