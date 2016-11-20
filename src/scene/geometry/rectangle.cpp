@@ -84,7 +84,7 @@ tuple<Point, Point, Point, Point> Rectangle::GetLimits() const
     // Local coordinates of the other two corners.
     Point localCornerA2 = Point(-localCornerA.GetX(), localCornerA.GetY(), 0);
     Point localCornerB2 = Point(localCornerA.GetX(), -localCornerA.GetY(), 0);
-    // Global coordinates ohe other two corners of the rectangle.
+    // Global coordinates of the other two corners of the rectangle.
     Point cornerA2 = fromLocalToGlobal * localCornerA2;
     Point cornerB2 = fromLocalToGlobal * localCornerB2;
     // Return the 4 corners of the rectangle.
