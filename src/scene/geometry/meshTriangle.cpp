@@ -6,12 +6,13 @@
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
-#include <plane.hpp>
 #include <meshTriangle.hpp>
-#include <cmath>
+#include <plane.hpp>
 
-MeshTriangle::MeshTriangle(const Point &a, const Point &b, const Point &c, const Vect &nA, const Vect &nB, const Vect &nC )
-        : Triangle(a, b, c), mNormalA(nA), mNormalB(nB), mNormalC(nC){}
+MeshTriangle::MeshTriangle(const Point &a, const Point &b, const Point &c,
+                           const Vect &nA, const Vect &nB, const Vect &nC)
+: Triangle(a, b, c), mNormalA(nA), mNormalB(nB), mNormalC(nC)
+{}
 
 Vect MeshTriangle::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
 {
@@ -48,4 +49,3 @@ Vect MeshTriangle::GetVisibleNormal(const Point &point, const LightRay &seenFrom
                 (float)-((1.0 - (uDist + vDist)) * mNormalB.GetX() + mNormalB.GetY() * uDist + mNormalB.GetZ() * vDist),
                 (float)-((1.0 - (uDist + vDist)) * mNormalC.GetX() + mNormalC.GetY() * uDist + mNormalC.GetZ() * vDist));*/
 }
-

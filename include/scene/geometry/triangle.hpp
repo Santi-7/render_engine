@@ -39,6 +39,7 @@ public:
     // TODO: Add doc.
     /**
      * .
+     *
      * @param lightRay .
      * @param minT .
      * @param nearestShape .

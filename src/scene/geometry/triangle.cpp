@@ -11,17 +11,18 @@
 #include <triangle.hpp>
 
 Triangle::Triangle(const Point &a, const Point &b, const Point &c)
-        : Plane(a, (b-a).CrossProduct(c-a).Normalise()),
-          mA(a),
-          mB(b),
-          mC(c),
-          // Cached values.
-          v0(b - a),
-          v1(c - a),
-          d00(v0.DotProduct(v0)),
-          d01(v0.DotProduct(v1)),
-          d11(v1.DotProduct(v1)),
-          denominator(d00 * d11 - d01 * d01){}
+: Plane(a, (b-a).CrossProduct(c-a).Normalise()),
+  mA(a),
+  mB(b),
+  mC(c),
+  // Cached values.
+  v0(b - a),
+  v1(c - a),
+  d00(v0.DotProduct(v0)),
+  d01(v0.DotProduct(v1)),
+  d11(v1.DotProduct(v1)),
+  denominator(d00 * d11 - d01 * d01)
+{}
 
 // TODO: Check if t = threshold, this is, the lightray lies inside the plane.
 float Triangle::Intersect(const LightRay &lightRay) const
@@ -46,10 +47,9 @@ float Triangle::Intersect(const LightRay &lightRay) const
 void Triangle::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
 {
     float tmpT = Intersect(lightRay);
-    if(tmpT < minT)
+    if (tmpT < minT)
     {
         minT = tmpT;
         nearestShape = thisShape;
     }
 }
-
