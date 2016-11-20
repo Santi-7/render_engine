@@ -1,8 +1,8 @@
 set(SOURCE_FILES
-        material.cpp)
+        material.cpp checkerBoard.cpp)
 
 set(HEADER_FILES
-        ${PROJECT_SOURCE_DIR}/include/scene/materials/material.hpp)
+        ${PROJECT_SOURCE_DIR}/include/scene/materials/material.hpp ../../../include/scene/materials/checkerBoard.hpp)
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/utils

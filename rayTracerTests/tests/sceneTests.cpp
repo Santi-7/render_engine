@@ -19,6 +19,7 @@
 #include <fstream>
 #include <geometry/rectangle.hpp>
 #include <geometry/box.hpp>
+#include <materials/checkerBoard.hpp>
 
 /**
  * Test first pixel value is correct
@@ -410,4 +411,18 @@ TEST(Materials, GlassSpheres)
     }
     auto image = scene.Render();
     image->Save("glassSpheres.ppm");
+}
+
+TEST(Materials, CheckerBoard)
+{
+    Scene scene;
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 700, 700));
+    scene.AddLightSource(PointLight(Point(0,12,0), 520, WHITE));
+
+    Plane checkerboard(Point(0,0,0), Vect(0,1,0));
+    checkerboard.SetMaterial(make_shared<Material>(CheckerBoard(0.1, BLACK, WHITE)));
+    scene.AddShape(checkerboard);
+
+    auto image = scene.Render();
+    image->Save("chess.ppm");
 }

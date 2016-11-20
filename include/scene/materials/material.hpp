@@ -12,6 +12,7 @@
 #include <memory>
 #include <vect.hpp>
 #include <color.hpp>
+#include <point.hpp>
 
 using namespace std;
 
@@ -60,7 +61,7 @@ public:
      *
      * @return  of this material.
      */
-    Color GetDiffuse() const;
+    Color GetDiffuse(const Point &point) const;
 
     // TODO: Add doc.
     /**
