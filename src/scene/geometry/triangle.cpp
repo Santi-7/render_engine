@@ -11,7 +11,7 @@
 #include <triangle.hpp>
 
 Triangle::Triangle(const Point &a, const Point &b, const Point &c)
-        : Shape(),
+        : Plane(a, (b-a).CrossProduct(c-a).Normalise()),
           mA(a),
           mB(b),
           mC(c),
@@ -21,15 +21,13 @@ Triangle::Triangle(const Point &a, const Point &b, const Point &c)
           d00(v0.DotProduct(v0)),
           d01(v0.DotProduct(v1)),
           d11(v1.DotProduct(v1)),
-          denominator(d00 * d11 - d01 * d01),
-          plane(mA, v0.CrossProduct(v1).Normalise())
-{}
+          denominator(d00 * d11 - d01 * d01){}
 
 // TODO: Check if t = threshold, this is, the lightray lies inside the plane.
 float Triangle::Intersect(const LightRay &lightRay) const
 {
     // Intersection of the ray of light with the plane.
-    float t = plane.Intersect(lightRay);
+    float t = Plane::Intersect(lightRay);
     Point intersection = lightRay.GetPoint(t);
     // Based in Christer Ericson's Real-Time Collision Detection.
     /* Get the barycentric coordinates for the intersection
@@ -55,7 +53,3 @@ void Triangle::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape
     }
 }
 
-Vect Triangle::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
-{
-    return plane.GetVisibleNormal(point, seenFrom);
-}

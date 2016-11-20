@@ -32,15 +32,6 @@ public:
      * .
      *
      * @param point .
-     * @return .
-     */
-    Vect GetNormal(const Point &point) const;
-
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @param point .
      * @param seenFrom .
      * @return .
      */
@@ -52,13 +43,6 @@ private:
     /* . */
     Vect mNormalA, mNormalB, mNormalC;
 
-    /* Cached values. */
-
-    // TODO: Add doc.
-    /* . */
-    Vect v0, v1;
-    float d00, d01, d11, denominator;
-    Plane plane;
 };
 
 #endif // RAY_TRACER_MESHTRIANGLE_HPP

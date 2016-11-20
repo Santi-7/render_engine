@@ -11,7 +11,7 @@
 
 #include <shape.hpp>
 
-class Triangle : public Shape
+class Triangle : public Plane
 {
 
 public:
@@ -45,17 +45,6 @@ public:
      */
     void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
 
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @param point .
-     * @param seenFrom .
-     * @return .
-     */
-    Vect GetVisibleNormal(const Point &point,
-                          const LightRay &seenFrom) const;
-
 protected:
 
     // TODO: Add doc.
@@ -68,7 +57,6 @@ protected:
     /* . */
     Vect v0, v1;
     float d00, d01, d11, denominator;
-    Plane plane;
 };
 
 #endif // RAY_TRACER_TRIANGLE_HPP

@@ -17,7 +17,6 @@
 #include <transformationMatrix.hpp>
 #include <mesh.hpp>
 #include <fstream>
-#include <triangle.hpp>
 #include <geometry/rectangle.hpp>
 #include <geometry/box.hpp>
 
@@ -249,7 +248,7 @@ TEST(Mesh, Teapot)
     Scene scene;
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592/2);
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,1,-2), (float)3.14159/2, 1.0, 500, 500));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,1,-2), (float)3.14159/2, 1.0, 350, 350));
     Mesh teapot("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/utah_teapot.obj", true);
     scene.AddShape(teapot);
 
@@ -308,7 +307,7 @@ TEST(Mesh, IronGiant)
     Scene scene;
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592);
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (0.1, 0.35f, 0), (float)3.14159/2, 1.0, 10, 10));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (0.1, 0.35f, 0), (float)3.14159/2, 1.0, 5, 5));
     Mesh ironGiant("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/iron_giant.obj", true);
     scene.AddShape(ironGiant);
 

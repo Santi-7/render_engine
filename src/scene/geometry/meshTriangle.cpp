@@ -11,19 +11,12 @@
 #include <cmath>
 
 MeshTriangle::MeshTriangle(const Point &a, const Point &b, const Point &c, const Vect &nA, const Vect &nB, const Vect &nC )
-        : Triangle(a, b, c), mNormalA(nA), mNormalB(nB), mNormalC(nC),
-          // Cached values.
-          v0(b - a),
-          v1(c - a),
-          d00(v0.DotProduct(v0)),
-          d01(v0.DotProduct(v1)),
-          d11(v1.DotProduct(v1)),
-          denominator(d00 * d11 - d01 * d01),
-          plane(mA, v0.CrossProduct(v1).Normalise()) {}
+        : Triangle(a, b, c), mNormalA(nA), mNormalB(nB), mNormalC(nC){}
 
-Vect MeshTriangle::GetNormal(const Point &point) const
+Vect MeshTriangle::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
 {
-    Vect u = mA - mB;
+    return Triangle::GetVisibleNormal(point, seenFrom);
+    /*Vect u = mA - mB;
 
     Vect v = mC - mB;
 
@@ -53,11 +46,6 @@ Vect MeshTriangle::GetNormal(const Point &point) const
 
     return Vect((float)-((1.0 - (uDist + vDist)) * mNormalA.GetX() + mNormalA.GetY() * uDist + mNormalA.GetZ() * vDist),
                 (float)-((1.0 - (uDist + vDist)) * mNormalB.GetX() + mNormalB.GetY() * uDist + mNormalB.GetZ() * vDist),
-                (float)-((1.0 - (uDist + vDist)) * mNormalC.GetX() + mNormalC.GetY() * uDist + mNormalC.GetZ() * vDist));
+                (float)-((1.0 - (uDist + vDist)) * mNormalC.GetX() + mNormalC.GetY() * uDist + mNormalC.GetZ() * vDist));*/
 }
 
-Vect MeshTriangle::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
-{
-    // Not implemented yet!
-    return Triangle::GetVisibleNormal(point, seenFrom);
-}
