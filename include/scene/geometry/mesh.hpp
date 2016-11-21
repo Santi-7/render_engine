@@ -48,6 +48,8 @@ public:
      */
     Vect GetVisibleNormal(const Point &point, const LightRay &seenFrom) const;
 
+    void SetMaterial(shared_ptr<Material> material);
+
 private:
     vector<shared_ptr<Triangle>> triangles;
     shared_ptr<Shape> boundingShape;

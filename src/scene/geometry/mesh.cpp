@@ -160,3 +160,10 @@ float Mesh::Intersect(const LightRay &lightRay) const {
     }
 
 }
+
+void Mesh::SetMaterial(shared_ptr<Material> material)
+{
+    for (unsigned int i = 0; i < triangles.size(); ++i) {
+        triangles.at(i)->SetMaterial(material);
+    }
+}

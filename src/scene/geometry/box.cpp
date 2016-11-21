@@ -59,3 +59,11 @@ Vect Box::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
 {
     throw 1;
 }
+
+void Box::SetMaterial(shared_ptr<Material> material)
+{
+    for (const shared_ptr<Rectangle> &face : mFaces)
+    {
+        face->SetMaterial(material);
+    }
+}
