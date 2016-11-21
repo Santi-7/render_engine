@@ -29,6 +29,15 @@ public:
 
     // TODO: Add doc.
     /**
+     * .
+     *
+     * @param material .
+     * @return .
+     */
+    Material(shared_ptr<Material> material);
+
+    // TODO: Add doc.
+    /**
      * Creates a material with the given reflectance.
      *
      * @param diffuse .
@@ -92,7 +101,7 @@ private:
 static const shared_ptr<Material> DEFAULT_MATERIAL = make_shared<Material>(Material());
 static const shared_ptr<Material> MIRROR = make_shared<Material>(Material(BLACK, BLACK, 0, WHITE, BLACK));
 static const shared_ptr<Material> LAMBERTIAN = make_shared<Material>(Material(WHITE, BLACK, 0, BLACK, BLACK));
-static const shared_ptr<Material> SPECKLED_LAMBERTIAN = make_shared<Material>(Material(WHITE, WHITE, 0, BLACK, BLACK));
+static const shared_ptr<Material> SPECKLED_LAMBERTIAN = make_shared<Material>(Material(GRAY, GRAY, 20, BLACK, BLACK));
 static const shared_ptr<Material> GLASS = make_shared<Material>(Material(BLACK,BLACK,0,BLACK,GRAY));
 
 #endif // RAY_TRACER_MATERIAL_HPP
