@@ -19,7 +19,6 @@
 #include <fstream>
 #include <geometry/rectangle.hpp>
 #include <geometry/box.hpp>
-#include <materials/checkerBoard.hpp>
 
 /**
  * Test first pixel value is correct
@@ -32,6 +31,7 @@ TEST(PinholeTest, Basic)
     EXPECT_LT(lr.GetY() - (0.5), 0.0001);
     EXPECT_LT(lr.GetZ() - (1), 0.0001);
 }
+
 /////////////////////////////////////////////////////////////
 // These tests will not work when proper lighting is added //
 /////////////////////////////////////////////////////////////
@@ -127,10 +127,12 @@ TEST(CornellBox, Colors)
 TEST(SimpleLight, PlaneTop)
 { // A plane as seen from the top.
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,2,-2), PI/3, 1.0, 255, 255));
 
-    scene.AddLightSource(PointLight(Point(0,1.5,0)));
-    scene.AddShape(Plane(Point(0,0,0), Vect(0,1,0)));
+    scene.AddLightSource(PointLight(Point(0,3,7), 20, WHITE));
+    Plane plane(Point(0,0,0), Vect(0,1,0));
+    plane.SetMaterial(SPECKLED_LAMBERTIAN);
+    scene.AddShape(plane);
 
     auto renderedImage = scene.Render();
     renderedImage->Save("planeTop.ppm");
@@ -236,7 +238,7 @@ TEST(Mesh, Tetrahedron)
     Mesh tetrahedron("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/tetrahedron.obj", true);
     scene.AddShape(tetrahedron);
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
-    scene.AddLightSource(PointLight(Point(-1,1,0), 5, WHITE));
+    scene.AddLightSource(PointLight(Point(-1,5,0), 30, WHITE));
     auto renderedImage = scene.Render();
     renderedImage->Save("tetrahedron.ppm");
 }
@@ -247,16 +249,16 @@ TEST(Mesh, Teapot)
     Scene scene;
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592/2);
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0.3,-2), (float)3.14159/2, 1.0, 350, 350));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,1,-2), (float)3.14159/2, 1.0, 350, 350));
     Mesh teapot("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/utah_teapot.obj", true);
     scene.AddShape(teapot);
 
     scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.
     scene.AddShape(Plane(Point(1.5f, 0, 0), Vect(-1,0,0))); // Right wall.
-    scene.AddShape(Plane(Point(0, 0, 2), Vect(0,0,-1))); // Back wall
-    scene.AddShape(Plane(Point(0,-0.5f, 0), Vect(0,1,0)));
+    scene.AddShape(Plane(Point(0, 0, 3), Vect(0,0,-1))); // Back wall
 
-    scene.AddLightSource(PointLight(Point(0,2.5f, 0), 10, WHITE));
+    scene.AddLightSource(PointLight(Point(0,2.5f, 0), 15, WHITE));
+    scene.AddShape(Plane(Point(0,-1.5f, 0), Vect(0,1,0)));
     auto renderedImage = scene.Render();
     renderedImage->Save("teapot.ppm");
 }
@@ -344,21 +346,23 @@ TEST(Materials, FacingMirrors)
 }
 
 TEST(Materials, MirrorBox)
-{ // A cube inside a reflective box
+{ // A monster inside a reflective box
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0.2f,0.1,-0.65f), PI/3, 1.0, 700, 700));
+    //scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (-0.3f,0.1,-0.65f), PI/3, 1.0, 700, 700));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (-0.3f,0.7f,-2.65f), PI/3, 1.0, 700, 700));
 
-    scene.AddLightSource(PointLight(Point(0,0.55f,0), 1, WHITE));
-    scene.AddLightSource(PointLight(Point(0,0.15f,-0.65f), 0.5, WHITE));
+    //scene.AddLightSource(PointLight(Point(0,0.55f,0), 1, WHITE));
+    scene.AddLightSource(PointLight(Point(0,2.55f,-2.1f), 10, WHITE));
+
+    /*scene.AddLightSource(PointLight(Point(0,5,-22), 200, WHITE));
+    scene.AddLightSource(PointLight(Point(5,5,-22), 200, WHITE));
+    scene.AddLightSource(PointLight(Point(-5, 5,-22), 200, WHITE));
+    scene.AddLightSource(PointLight(Point(-5, 0,-25), 200, WHITE));*/
 
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
 
     Box container(Rectangle(Vect(0,1,0), Point(0.5f, 0, -0.75f), Point(-0.5f, 0, 0.75f)), 1);
-    container.SetMaterial(MIRROR);
     scene.AddShape(container);
-
-    scene.AddShape(Box(Rectangle(Vect(0,1,0), Point(0.1, 0.3, 0.1), Point(-0.1f, 0.3, -0.1f)), 0.2));
-
     auto image = scene.Render();
     image->Save("mirrorBox.ppm");
 }
@@ -413,16 +417,27 @@ TEST(Materials, GlassSpheres)
     image->Save("glassSpheres.ppm");
 }
 
-TEST(Materials, CheckerBoard)
+TEST(Materials, SpeckledLambiertianSpheres)
 {
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 700, 700));
+    TransformationMatrix tm;
+    tm.SetXRotation(PI/4);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,10,-12), PI/3, 1.0, 450, 450));
     scene.AddLightSource(PointLight(Point(0,12,0), 520, WHITE));
 
-    Plane checkerboard(Point(0,0,0), Vect(0,1,0));
-    checkerboard.SetMaterial(make_shared<Material>(CheckerBoard(0.1, BLACK, WHITE)));
-    scene.AddShape(checkerboard);
+    scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
 
+    const int SIZE = 20;
+
+    for(int i = -SIZE/2; i < SIZE/2; ++i)
+    {
+        for(int j = -SIZE/2; j < SIZE/2; ++j)
+        {
+            Sphere tmp = Sphere(Point(i*2.5f,0,j*2.5f), 1);
+            if(j % 2 == 0 ^ i %2 != 0) tmp.SetMaterial(SPECKLED_LAMBERTIAN);
+            scene.AddShape(tmp);
+        }
+    }
     auto image = scene.Render();
-    image->Save("chess.ppm");
+    image->Save("speckledLambertianSpheres.ppm");
 }
