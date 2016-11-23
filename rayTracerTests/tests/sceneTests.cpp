@@ -143,12 +143,12 @@ TEST(SimpleLight, Box)
     Scene scene;
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (1,1,-5), PI/3, 1.0, 255, 255));
 
-    scene.AddLightSource(PointLight(Point(0,5,2), 20, WHITE));
-    scene.AddLightSource(PointLight(Point(3,1,-2), 30, WHITE));
+    scene.AddLightSource(PointLight(Point(1.5f,1,0), 40, WHITE));
+    Box redBox(Rectangle(Vect(0,0,1), Point(-0.5f, 0, 0), Point(0.5f, -1, 0)), 2);
+    redBox.SetMaterial(make_shared<Material>(Color(0.5f, 0.1f, 0.2f), BLACK, 0.0f, BLACK, BLACK));
+    scene.AddShape(redBox);
 
-    scene.AddShape(Box(Rectangle(Vect(0,0,1), Point(-0.5f, 0.5f, 0), Point(0.5f, -0.5f, 0)), 2));
-
-    scene.AddShape(Plane(Point(0, 0, 10), Vect(0,0,-1)));
+    scene.AddShape(Plane(Point(0, 0, 1.75f), Vect(0,0,-1)));
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
     auto renderedImage = scene.Render();
     renderedImage->Save("box.ppm");
@@ -249,7 +249,7 @@ TEST(Mesh, Teapot)
     Scene scene;
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592/2);
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,1,-2), (float)3.14159/2, 1.0, 350, 350));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,1,-2), (float)3.14159/2, 1.0, 600, 600));
     Mesh teapot(string(PROJECT_DIR) + "/resources/utah_teapot.obj", true);
     scene.AddShape(teapot);
 
