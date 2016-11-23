@@ -70,6 +70,14 @@ public:
      *
      * @return  of this material.
      */
+    Color GetDiffuse() const;
+
+    // TODO: Add doc.
+    /**
+     * Returns this material's .
+     *
+     * @return  of this material.
+     */
     Color GetDiffuse(const Point &point) const;
 
     // TODO: Add doc.
