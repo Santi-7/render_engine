@@ -29,14 +29,26 @@ void Image::Save(const string filename) const
                mImage[0].size() << ' ' << mImage.size() << '\n' <<
                255 << '\n';
 
+    // Find the largest single color value in the image to give it the value 255
+    float largest = -1;
+    for (unsigned int i = 0; i < mImage.size(); ++i)
+    {
+        for (unsigned int j = 0; j < mImage.at(i).size(); ++j)
+        {
+            if (mImage.at(i).at(j).GetR() > largest) largest = mImage.at(i).at(j).GetR();
+            else if (mImage.at(i).at(j).GetG() > largest) largest = mImage.at(i).at(j).GetG();
+            else if (mImage.at(i).at(j).GetB() > largest) largest = mImage.at(i).at(j).GetB();
+        }
+    }
+
     // Write the image's 2-dimensional array.
     for (unsigned int i = 0; i < mImage.size(); ++i)
     {
         for (unsigned int j = 0; j < mImage[0].size(); ++j)
         {
-            outputFile << static_cast<int>(mImage[i][j].GetR()) << ' ' <<
-                          static_cast<int>(mImage[i][j].GetG()) << ' ' <<
-                          static_cast<int>(mImage[i][j].GetB()) << '\t';
+            outputFile << static_cast<int>(255 * mImage[i][j].GetR() / largest) << ' ' <<
+                          static_cast<int>(255 * mImage[i][j].GetG() / largest) << ' ' <<
+                          static_cast<int>(255 * mImage[i][j].GetB() / largest) << '\t';
         }
         outputFile << '\n';
     }

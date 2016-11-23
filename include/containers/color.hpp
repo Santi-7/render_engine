@@ -16,7 +16,7 @@ using namespace std;
 
 // TODO: Add doc.
 /* . */
-static constexpr float COLOR_MAX = UCHAR_MAX;
+static constexpr float COLOR_MAX = 1.0f;
 
 class Color
 {
@@ -173,11 +173,11 @@ private:
 
 // TODO: Add doc.
 /* . */
-static constexpr Color WHITE    (255, 255, 255);
-static constexpr Color GRAY     (128, 128, 128);
-static constexpr Color BLACK    (0, 0, 0);
-static constexpr Color RED      (255, 0, 0);
-static constexpr Color GREEN    (0, 255, 0);
-static constexpr Color BLUE     (0, 0, 255);
+static constexpr Color WHITE    (1.0f, 1.0f, 1.0f);
+static constexpr Color GRAY     (0.5f, 0.5f, 0.5f);
+static constexpr Color BLACK    (0.0f, 0.0f, 0.0f);
+static constexpr Color RED      (1.0f, 0.0f, 0.0f);
+static constexpr Color GREEN    (0.0f, 1.0f, 0.0f);
+static constexpr Color BLUE     (0.0f, 0.0f, 1.0f);
 
 #endif // RAY_TRACER_COLOR_HPP
