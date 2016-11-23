@@ -235,7 +235,7 @@ TEST(Mesh, Tetrahedron)
 {
     Scene scene;
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0.25f,0.25f,0), (float)3.14159/2, 1.0, 255, 255));
-    Mesh tetrahedron("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/tetrahedron.obj", true);
+    Mesh tetrahedron(string(PROJECT_DIR) + "/resources/tetrahedron.obj", true);
     scene.AddShape(tetrahedron);
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
     scene.AddLightSource(PointLight(Point(-1,5,0), 30, WHITE));
@@ -250,7 +250,7 @@ TEST(Mesh, Teapot)
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592/2);
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,1,-2), (float)3.14159/2, 1.0, 350, 350));
-    Mesh teapot("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/utah_teapot.obj", true);
+    Mesh teapot(string(PROJECT_DIR) + "/resources/utah_teapot.obj", true);
     scene.AddShape(teapot);
 
     scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.
@@ -270,7 +270,7 @@ TEST(Mesh, Woman)
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592);
     scene.SetCamera(Pinhole(Vect(0,0,-1), Vect(1,0,0), Vect(0,-1,0), Point (1,60,0), (float)3.14159/2, 1.0, 140, 140));
-    Mesh woman ("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/woman.obj", false);
+    Mesh woman (string(PROJECT_DIR) + "/resources/woman.obj", false);
     scene.AddShape(woman);
 
     /*scene.AddShape(Plane(Point(-400, 0, 0), Vect(1,0,0))); // Left wall.
@@ -289,7 +289,7 @@ TEST(Mesh, IronGiantObj)
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592);
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (1, 2, 0.5f), (float)3.14159/2, 1.0, 5, 5));
-    Mesh ironGiant("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/iron_giant.obj", false);
+    Mesh ironGiant(string(PROJECT_DIR) + "/resources/iron_giant.obj", false);
     scene.AddShape(ironGiant);
 
     scene.AddShape(Plane(Point(-7, 0, 0), Vect(1,0,0))); // Left wall.
@@ -309,7 +309,7 @@ TEST(Mesh, IronGiant)
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592);
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (0.1, 0.35f, 0), (float)3.14159/2, 1.0, 5, 5));
-    Mesh ironGiant("/home/mjgalindo/ClionProjects/Ray_Tracer/resources/iron_giant.obj", true);
+    Mesh ironGiant(string(PROJECT_DIR) + "/resources/iron_giant.obj", true);
     scene.AddShape(ironGiant);
 
     scene.AddShape(Plane(Point(-2, 0, 0), Vect(1,0,0))); // Left wall.
