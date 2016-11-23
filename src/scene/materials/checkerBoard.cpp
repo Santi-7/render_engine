@@ -14,6 +14,11 @@ CheckerBoard::CheckerBoard(const float squareSize, Color color1, Color color2) :
 CheckerBoard::CheckerBoard(const float squareSize, Color color1, Color color2, Color specular) :
         Material(color1, specular, 0.0f, BLACK, BLACK), mSquareSize(squareSize), mColor1(color1), mColor2(color2){}
 
+
 Color CheckerBoard::GetDiffuse(const Point &point) const {
-    return Material::GetDiffuse();
+    if (static_cast<int>(point.GetX() / mSquareSize) % 2 == static_cast<int>(point.GetY() / mSquareSize) % 2 )
+    {
+        return mColor1;
+    }
+    else return mColor2;
 }

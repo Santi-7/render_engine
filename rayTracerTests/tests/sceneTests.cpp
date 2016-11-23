@@ -19,6 +19,7 @@
 #include <fstream>
 #include <geometry/rectangle.hpp>
 #include <geometry/box.hpp>
+#include <materials/checkerBoard.hpp>
 
 /**
  * Test first pixel value is correct
@@ -440,4 +441,21 @@ TEST(Materials, SpeckledLambiertianSpheres)
     }
     auto image = scene.Render();
     image->Save("speckledLambertianSpheres.ppm");
+}
+
+TEST(Materials, Chess)
+{
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation(PI/4);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,10,-12), PI/3, 1.0, 450, 450));
+    scene.AddLightSource(PointLight(Point(0,12,0), 520, WHITE));
+
+    Plane board(Plane(Point(0,-1,0), Vect(0,1,0)));
+    auto chessMat = CheckerBoard(0.25f, WHITE, BLACK);
+    board.SetMaterial(make_shared<Material>(chessMat));
+    scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
+
+    auto image = scene.Render();
+    image->Save("chess.ppm");
 }

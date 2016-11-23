@@ -53,7 +53,7 @@ public:
      * @return .
      */
     Color PhongBRDF(const Vect &seenFrom, const Vect &light,
-                    const Vect &normal) const;
+                    const Vect &normal, const Point &point) const;
 
     // TODO: Add doc.
     /**
@@ -69,7 +69,7 @@ public:
      *
      * @return  of this material.
      */
-    Color GetDiffuse(const Point &point) const;
+    virtual Color GetDiffuse(const Point &point) const;
 
     // TODO: Add doc.
     /**
