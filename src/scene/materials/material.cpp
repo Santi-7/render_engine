@@ -11,13 +11,8 @@
 #include <mathConstants.hpp>
 
 Material::Material()
-: Material(LAMBERTIAN)
-{}
-
-Material::Material(shared_ptr<Material> material)
-: mKd(material->mKd), mKs(material->mKs),
-  mShininess(material->mShininess),
-  mKr(material->mKr), mKt(material->mKt)
+: mKd(GRAY), mKs(BLACK),
+  mShininess(0.0f),  mKr(BLACK), mKt(BLACK)
 {}
 
 Material::Material(const Color diffuse, const Color specular,

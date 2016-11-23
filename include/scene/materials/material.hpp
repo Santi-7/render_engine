@@ -30,15 +30,6 @@ public:
 
     // TODO: Add doc.
     /**
-     * .
-     *
-     * @param material .
-     * @return .
-     */
-    Material(shared_ptr<Material> material);
-
-    // TODO: Add doc.
-    /**
      * Creates a material with the given reflectance.
      *
      * @param diffuse .
