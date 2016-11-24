@@ -6,15 +6,13 @@
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
-#include <mesh.hpp>
+#include <box.hpp>
+#include <cfloat>
+#include <cmath>
 #include <fstream>
 #include <iostream>
+#include <mesh.hpp>
 #include <sstream>
-#include <cfloat>
-#include <geometry/box.hpp>
-#include <cmath>
-
-using namespace std;
 
 typedef std::tuple<unsigned int, unsigned int, unsigned int> Face;
 
@@ -29,7 +27,7 @@ float ClampPoints(vector<Point> &points, const Point &maxValues, const Point &mi
     while (scaledMaxValue > desiredMax)
     {
         scaler += 2;
-        scaledMaxValue = maxValue/scaler;
+        scaledMaxValue = maxValue / scaler;
     }
     // If the greatest value is smaller than the desiredMax value we can't make it any smaller
     if (scaler == 1.0) return 1.0;
@@ -39,7 +37,7 @@ float ClampPoints(vector<Point> &points, const Point &maxValues, const Point &mi
     float leftScaler = scaler / 2;
     float rightScaler = scaler;
     scaler -= scaler / 4;
-    while( maxValue / scaler - desiredMax > 0.01)
+    while (maxValue / scaler - desiredMax > 0.01)
     {
         if (maxValue / scaler > desiredMax)
         {
@@ -54,13 +52,16 @@ float ClampPoints(vector<Point> &points, const Point &maxValues, const Point &mi
 
     for (unsigned int i = 0; i < points.size(); ++i)
     {
-        points.at(i) = Point(points.at(i).GetX() / scaler, points.at(i).GetY() / scaler, points.at(i).GetZ() / scaler);
+        points.at(i) = Point(points.at(i).GetX() / scaler,
+                             points.at(i).GetY() / scaler,
+                             points.at(i).GetZ() / scaler);
     }
 
     return scaler;
 }
 
-Mesh::Mesh(const string &filename, bool clampValues) {
+Mesh::Mesh(const string &filename, bool clampValues)
+{
     vector<Point> positions;
     vector<Vect> normals;
     vector<Face> faces;
@@ -78,7 +79,8 @@ Mesh::Mesh(const string &filename, bool clampValues) {
         if (lineBuf.size() == 0) continue;
         lineStream = istringstream(lineBuf);
         lineStream >> lineType;
-        if (lineType == "v") {   // New vertex position
+        if (lineType == "v")    // New vertex position
+        {
             lineStream >> x >> y >> z;
             if (x < minX) minX = x;
             if (x > maxX) maxX = x;
@@ -100,29 +102,35 @@ Mesh::Mesh(const string &filename, bool clampValues) {
     {
         float scaleReducedBy = ClampPoints(positions, Point(maxX, maxY, maxZ), Point(minX, minY, minZ), 1.0f);
         minX /= scaleReducedBy;
-        minY/= scaleReducedBy;
+        minY /= scaleReducedBy;
         minZ /= scaleReducedBy;
         maxX /= scaleReducedBy;
-        maxY/= scaleReducedBy;
+        maxY /= scaleReducedBy;
         maxZ /= scaleReducedBy;
     }
 
-    if (normals.size() == 0) {
-        for (unsigned int i = 0; i < faces.size(); ++i) {
+    if (normals.size() == 0)
+    {
+        for (unsigned int i = 0; i < faces.size(); ++i)
+        {
             Triangle tmp(positions.at(get<0>(faces.at(i))),
                          positions.at(get<1>(faces.at(i))),
                          positions.at(get<2>(faces.at(i))));
 
             triangles.push_back(make_shared<Triangle>(tmp));
         }
-    } else {
+    }
+    else
+    {
 
-        if (positions.size() != normals.size()) {
+        if (positions.size() != normals.size())
+        {
             cerr << "Error: the obj file doesn't define the same amount of vertices and normals\n";
             throw 1; // Stop execution
         }
 
-        for (unsigned int i = 0; i < faces.size(); ++i) {
+        for (unsigned int i = 0; i < faces.size(); ++i)
+        {
             triangles.push_back(
                     make_shared<MeshTriangle>(MeshTriangle(positions.at(get<0>(faces.at(i))),
                                                            positions.at(get<1>(faces.at(i))),
@@ -137,23 +145,28 @@ Mesh::Mesh(const string &filename, bool clampValues) {
     cout << maxX << ' ' << maxY << ' ' << maxZ << '\n';
 }
 
-void Mesh::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const {
+void Mesh::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
+{
     if (boundingShape->Intersect(lightRay) != FLT_MAX)
     {
-        for (unsigned int i = 0; i < triangles.size(); ++i) {
+        for (unsigned int i = 0; i < triangles.size(); ++i)
+        {
             triangles.at(i)->Intersect(lightRay, minT, nearestShape, triangles.at(i));
         }
     }
 }
 
-Vect Mesh::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const {
+Vect Mesh::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
+{
     throw 1;
 }
 
-float Mesh::Intersect(const LightRay &lightRay) const {
+float Mesh::Intersect(const LightRay &lightRay) const
+{
     if (boundingShape->Intersect(lightRay) != FLT_MAX)
     {
-        for (unsigned int i = 0; i < triangles.size(); ++i) {
+        for (unsigned int i = 0; i < triangles.size(); ++i)
+        {
             float tmp = triangles.at(i)->Intersect(lightRay);
             if (tmp != FLT_MAX) return tmp;
         }
