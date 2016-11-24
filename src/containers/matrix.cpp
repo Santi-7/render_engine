@@ -59,10 +59,10 @@ Matrix Matrix::operator*(const Matrix &mat) const
 
 bool Matrix::operator==(const Matrix &m) const
 {
-    return mA == m.mA & mB == m.mB & mC == m.mC & mD == m.mD &
-           mE == m.mE & mF == m.mF & mG == m.mG & mH == m.mH &
-           mI == m.mI & mJ == m.mJ & mK == m.mK & mL == m.mL &
-           mM == m.mM & mN == m.mN & mO == m.mO & mP == m.mP;
+    return (mA == m.mA) & (mB == m.mB) & (mC == m.mC) & (mD == m.mD) &
+           (mE == m.mE) & (mF == m.mF) & (mG == m.mG) & (mH == m.mH) &
+           (mI == m.mI) & (mJ == m.mJ) & (mK == m.mK) & (mL == m.mL) &
+           (mM == m.mM) & (mN == m.mN) & (mO == m.mO) & (mP == m.mP);
 }
 
 bool Matrix::operator!=(const Matrix &m) const

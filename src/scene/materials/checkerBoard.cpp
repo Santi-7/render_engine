@@ -8,11 +8,11 @@
 
 #include <checkerBoard.hpp>
 
-CheckerBoard::CheckerBoard(const float squareSize, Color color1, Color color2) : Material(color1, BLACK, 0.0f, BLACK, BLACK),
-    mSquareSize(squareSize), mColor1(color1), mColor2(color2){}
+CheckerBoard::CheckerBoard(const float squareSize, Color color1, Color color2)
+        : Material(color1, BLACK, 0.0f, BLACK, BLACK), mColor1(color1), mColor2(color2), mSquareSize(squareSize){}
 
-CheckerBoard::CheckerBoard(const float squareSize, Color color1, Color color2, Color specular) :
-        Material(color1, specular, 0.0f, BLACK, BLACK), mSquareSize(squareSize), mColor1(color1), mColor2(color2){}
+CheckerBoard::CheckerBoard(const float squareSize, Color color1, Color color2, Color specular)
+        : Material(color1, specular, 0.0f, BLACK, BLACK), mColor1(color1), mColor2(color2), mSquareSize(squareSize){}
 
 
 Color CheckerBoard::GetDiffuse(const Point &point) const {

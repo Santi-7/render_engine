@@ -92,9 +92,9 @@ void Point::operator-=(const Vect& v)
 
 bool Point::operator==(const Point& p) const
 {
-    return std::abs(mX - p.GetX()) <= TH &
-           std::abs(mY - p.GetY()) <= TH &
-           std::abs(mZ - p.GetZ()) <= TH;
+    return (std::abs(mX - p.GetX()) <= TH )&
+           (std::abs(mY - p.GetY()) <= TH )&
+           (std::abs(mZ - p.GetZ()) <= TH);
 }
 
 bool Point::operator!=(const Point& p) const
@@ -104,16 +104,16 @@ bool Point::operator!=(const Point& p) const
 
 bool Point::operator<=(const Point &p) const
 {
-    return mX - p.GetX() <= TH &
-           mY - p.GetY() <= TH &
-           mZ - p.GetZ() <= TH;
+    return (mX - p.GetX() <= TH) &
+           (mY - p.GetY() <= TH) &
+           (mZ - p.GetZ() <= TH);
 }
 
 bool Point::operator>=(const Point &p) const
 {
-    return p.GetX() - mX <= TH &
-           p.GetY() - mY <= TH &
-           p.GetZ() - mZ <= TH;
+    return (p.GetX() - mX <= TH) &
+           (p.GetY() - mY <= TH) &
+           (p.GetZ() - mZ <= TH);
 }
 
 std::ostream& operator<<(std::ostream &out, const Point &p)

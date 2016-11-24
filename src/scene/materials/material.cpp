@@ -12,14 +12,14 @@
 
 Material::Material()
 : mKd(GRAY), mKs(BLACK),
-  mShininess(0.0f),  mKr(BLACK), mKt(BLACK)
+  mKr(BLACK), mKt(BLACK), mShininess(0.0f)
 {}
 
 Material::Material(const Color diffuse, const Color specular,
                    const float shininess, const Color reflectance,
                    const Color transmittance)
-: mKd(diffuse), mKs(specular), mShininess(shininess),
-  mKr(reflectance), mKt(transmittance)
+: mKd(diffuse), mKs(specular), mKr(reflectance),
+  mKt(transmittance), mShininess(shininess)
 {}
 
 Color Material::PhongBRDF(const Vect &seenFrom, const Vect &light,

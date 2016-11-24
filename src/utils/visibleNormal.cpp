@@ -13,10 +13,10 @@ Vect VisibleNormal(const Vect &normal, const Vect &seenFrom)
 {
     // Take the normal which looks at the visible semi-sphere.
     float cosine = normal.DotProduct(seenFrom);
-    if ((cosine > 0) | (cosine == 0 &
-                        signbit(normal.GetX()) == signbit(seenFrom.GetX()) &
-                        signbit(normal.GetY()) == signbit(seenFrom.GetY()) &
-                        signbit(normal.GetZ()) == signbit(seenFrom.GetZ())))
+    if ((cosine > 0) | ((cosine == 0) &
+            (signbit(normal.GetX()) == signbit(seenFrom.GetX())) &
+            (signbit(normal.GetY()) == signbit(seenFrom.GetY())) &
+            (signbit(normal.GetZ()) == signbit(seenFrom.GetZ()))))
     {
         return normal * -1;
     }

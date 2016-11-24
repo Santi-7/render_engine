@@ -70,7 +70,7 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     /* The number of specular and indirect steps has been reached.
      * Following the light will get more accurate rendered
      * images, but with much more computing cost. */
-    if (specularSteps == 0 & diffuseSteps == 0) return BLACK;
+    if ((specularSteps == 0) & (diffuseSteps == 0)) return BLACK;
 
     // Distance to the nearest shape.
     float minT = FLT_MAX;
@@ -206,7 +206,7 @@ bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
          * a shape that intersects the ray of light. */
         float tShape = mShapes[i]->Intersect(lightRay);
         // TODO: 0.015 is different from threshold since the error can get to be this big?
-        if (tShape > 0.015 & tShape < tLight)
+        if ((tShape > 0.015) & (tShape < tLight))
         {
             return true;
         }

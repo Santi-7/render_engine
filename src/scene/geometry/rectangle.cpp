@@ -51,7 +51,7 @@ float Rectangle::Intersect(const LightRay &lightRay) const
     float t = Plane::Intersect(lightRay);
     Point intersection = lightRay.GetPoint(t);
     // The ray of light intersects with the rectangle.
-    if (intersection >= mMinimums & intersection <= mMaximums)
+    if ((intersection >= mMinimums) & (intersection <= mMaximums))
     {
         return t;
     }

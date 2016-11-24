@@ -16,7 +16,7 @@
 
 using namespace std;
 
-typedef tuple<unsigned int, unsigned int, unsigned int> Face;
+typedef std::tuple<unsigned int, unsigned int, unsigned int> Face;
 
 float ClampPoints(vector<Point> &points, const Point &maxValues, const Point &minValues, float desiredMax)
 {
@@ -158,7 +158,7 @@ float Mesh::Intersect(const LightRay &lightRay) const {
             if (tmp != FLT_MAX) return tmp;
         }
     }
-
+    return FLT_MAX;
 }
 
 void Mesh::SetMaterial(shared_ptr<Material> material)

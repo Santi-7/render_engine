@@ -385,7 +385,7 @@ TEST(Materials, XSpheres)
         for(int j = -SIZE/2; j < SIZE/2; ++j)
         {
             Sphere tmp = Sphere(Point(i*2.5f,0,j*2.5f), 1);
-            if(j % 2 == 0 ^ i %2 != 0) tmp.SetMaterial(MIRROR);
+            if((j % 2 == 0) ^ (i %2 != 0)) tmp.SetMaterial(MIRROR);
             scene.AddShape(tmp);
         }
     }
@@ -410,7 +410,7 @@ TEST(Materials, GlassSpheres)
         for(int j = -SIZE/2; j < SIZE/2; ++j)
         {
             Sphere tmp = Sphere(Point(i*2.5f,0,j*2.5f), 1);
-            if(j % 2 == 0 ^ i %2 != 0) tmp.SetMaterial(GLASS);
+            if((j % 2 == 0) ^ (i %2 != 0)) tmp.SetMaterial(GLASS);
             scene.AddShape(tmp);
         }
     }
@@ -435,7 +435,7 @@ TEST(Materials, SpeckledLambiertianSpheres)
         for(int j = -SIZE/2; j < SIZE/2; ++j)
         {
             Sphere tmp = Sphere(Point(i*2.5f,0,j*2.5f), 1);
-            if(j % 2 == 0 ^ i %2 != 0) tmp.SetMaterial(SPECKLED_LAMBERTIAN);
+            if((j % 2 == 0) ^ (i %2 != 0)) tmp.SetMaterial(SPECKLED_LAMBERTIAN);
             scene.AddShape(tmp);
         }
     }
@@ -452,8 +452,8 @@ TEST(Materials, Chess)
     scene.AddLightSource(PointLight(Point(0,12,0), 520, WHITE));
 
     Plane board(Plane(Point(0,-1,0), Vect(0,1,0)));
-    auto chessMat = CheckerBoard(0.25f, WHITE, BLACK);
-    board.SetMaterial(make_shared<Material>(chessMat));
+    auto chessMat = make_shared<Material>(CheckerBoard(0.25f, WHITE, BLACK));
+    board.SetMaterial(chessMat);
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
 
     auto image = scene.Render();
