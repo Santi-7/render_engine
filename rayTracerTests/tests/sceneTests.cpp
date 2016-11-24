@@ -447,14 +447,18 @@ TEST(Materials, Chess)
 {
     Scene scene;
     TransformationMatrix tm;
-    tm.SetXRotation(PI/4);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,10,-12), PI/3, 1.0, 450, 450));
-    scene.AddLightSource(PointLight(Point(0,12,0), 520, WHITE));
+    tm.SetXRotation(PI/6);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,-0.3f,-1), PI/3, 1.0, 1920, 1080));
+    scene.AddLightSource(PointLight(Point(0,1,-0.4f), 3, WHITE));
 
     Plane board(Plane(Point(0,-1,0), Vect(0,1,0)));
-    auto chessMat = make_shared<Material>(CheckerBoard(0.25f, WHITE, BLACK));
+    auto chessMat = CheckerBoard(0.49f, WHITE, BLACK);
     board.SetMaterial(chessMat);
-    scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
+    scene.AddShape(board);
+
+    Sphere oSphere(Point(0,-0.75f,0), 0.25f);
+    oSphere.SetMaterial(MIRROR);
+    scene.AddShape(oSphere);
 
     auto image = scene.Render();
     image->Save("chess.ppm");

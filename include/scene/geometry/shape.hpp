@@ -71,6 +71,12 @@ public:
         mMaterial = material;
     }
 
+    template <class M>
+    void SetMaterial(M material)
+    {
+        mMaterial = make_shared<M>(material);
+    }
+
 private:
 
     shared_ptr<Material> mMaterial = DEFAULT_MATERIAL;
