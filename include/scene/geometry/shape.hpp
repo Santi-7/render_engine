@@ -66,7 +66,7 @@ public:
      *
      * @param material .
      */
-    void SetMaterial(shared_ptr<Material> material)
+    virtual void SetMaterial(shared_ptr<Material> material)
     {
         mMaterial = material;
     }

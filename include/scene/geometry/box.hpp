@@ -57,6 +57,15 @@ public:
 
     void SetMaterial(shared_ptr<Material> material);
 
+    template <class M>
+    void SetMaterial(M material)
+    {
+        for (const shared_ptr<Rectangle> &face : mFaces)
+        {
+            face->SetMaterial(material);
+        }
+    }
+
 protected:
 
     // TODO: Add doc.
