@@ -142,11 +142,11 @@ TEST(SimpleLight, PlaneTop)
 TEST(SimpleLight, Box)
 { // A plane as seen from the .
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (1,1,-5), PI/3, 1.0, 1055, 1055));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (1,1,-5), PI/3, 1.0, 960, 540));
 
-    scene.AddLightSource(PointLight(Point(1.5f,1,-0.5f), 40, WHITE));
+    scene.AddLightSource(PointLight(Point(1.5f,1.5f,-1.5f), 20, WHITE));
     Box redBox(Rectangle(Vect(0,0,1), Point(-0.4999f, 0, 0), Point(0.5f, -1, 0)), 1);
-    redBox.SetMaterial(CheckerBoard(0.24999f, RED, BLUE));
+    redBox.SetMaterial(CheckerBoard(0.24999f, Color(0.85f, 0.22f, 0.04f), Color(0.15f, 0.12f, 0.9f)));
     scene.AddShape(redBox);
 
     scene.AddShape(Plane(Point(0, 0, 1.75f), Vect(0,0,-1)));

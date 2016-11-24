@@ -192,7 +192,7 @@ Color Scene::IndirectLight(const Point &point, const Vect &normal,
         retVal += GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1) *
                   (PI / (sin(inclination) * cos(inclination))); // 1 / PDF.
     }
-    return retVal * (shape.GetMaterial()->GetDiffuse() / DIFFUSE_RAYS);
+    return retVal * (shape.GetMaterial()->GetDiffuse(point) / DIFFUSE_RAYS);
 }
 
 bool Scene::InShadow(const LightRay &lightRay, const Point &light) const

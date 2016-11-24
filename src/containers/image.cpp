@@ -46,9 +46,9 @@ void Image::Save(const string filename) const
     {
         for (unsigned int j = 0; j < mImage[0].size(); ++j)
         {
-            outputFile << static_cast<int>(255 * mImage[i][j].GetR() / largest) << ' ' <<
-                          static_cast<int>(255 * mImage[i][j].GetG() / largest) << ' ' <<
-                          static_cast<int>(255 * mImage[i][j].GetB() / largest) << '\t';
+            outputFile << static_cast<unsigned int>(static_cast<unsigned char>(255 * mImage[i][j].GetR() / largest)) << ' ' <<
+                          static_cast<unsigned int>(static_cast<unsigned char>(255 * mImage[i][j].GetG() / largest)) << ' ' <<
+                          static_cast<unsigned int>(static_cast<unsigned char>(255 * mImage[i][j].GetB() / largest)) << '\t';
         }
         outputFile << '\n';
     }
