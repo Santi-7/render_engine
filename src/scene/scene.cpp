@@ -145,8 +145,7 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
     Vect reflectedDir = in.GetDirection() - normal * in.GetDirection().DotProduct(normal) * 2;
     LightRay reflectedRay = LightRay(point, reflectedDir);
     // Ray of light refracted in the intersection point.
-    // TODO: Check this. No refracted deviation is taken.
-    LightRay refractedRay = LightRay(point, in.GetDirection());
+    LightRay refractedRay = shape.Refract(in, point, normal);
 
     return GetLightRayColor(reflectedRay, specularSteps-1, diffuseSteps-1) *
            shape.GetMaterial()->GetReflectance() +

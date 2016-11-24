@@ -45,15 +45,11 @@ public:
      */
     void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param point .
-     * @param seenFrom .
-     * @return .
+     * This method is not usable for this shape.
+     * If called, a static error should pop up.
      */
-    Vect GetVisibleNormal(const Point &point, const LightRay &seenFrom) const;
+    Vect GetNormal(const Point &point) const;
 
     void SetMaterial(shared_ptr<Material> material);
 

@@ -14,9 +14,9 @@ MeshTriangle::MeshTriangle(const Point &a, const Point &b, const Point &c,
 : Triangle(a, b, c), mNormalA(nA), mNormalB(nB), mNormalC(nC)
 {}
 
-Vect MeshTriangle::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
-{
-    return Triangle::GetVisibleNormal(point, seenFrom);
+//Vect MeshTriangle::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
+//{
+//    return Triangle::GetVisibleNormal(point, seenFrom);
     /*Vect u = mA - mB;
 
     Vect v = mC - mB;
@@ -48,4 +48,4 @@ Vect MeshTriangle::GetVisibleNormal(const Point &point, const LightRay &seenFrom
     return Vect((float)-((1.0 - (uDist + vDist)) * mNormalA.GetX() + mNormalA.GetY() * uDist + mNormalA.GetZ() * vDist),
                 (float)-((1.0 - (uDist + vDist)) * mNormalB.GetX() + mNormalB.GetY() * uDist + mNormalB.GetZ() * vDist),
                 (float)-((1.0 - (uDist + vDist)) * mNormalC.GetX() + mNormalC.GetY() * uDist + mNormalC.GetZ() * vDist));*/
-}
+//}

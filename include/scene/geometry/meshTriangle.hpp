@@ -37,7 +37,7 @@ public:
      * @param seenFrom .
      * @return .
      */
-    Vect GetVisibleNormal(const Point &point, const LightRay &seenFrom) const;
+    //Vect GetVisibleNormal(const Point &point, const LightRay &seenFrom) const;
 
 private:
 

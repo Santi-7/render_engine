@@ -9,9 +9,12 @@
 #ifndef RAY_TRACER_SHAPE_HPP
 #define RAY_TRACER_SHAPE_HPP
 
+#include <cmath>
 #include <lightRay.hpp>
 #include <materials/material.hpp>
 #include <memory>
+#include <mathConstants.hpp>
+#include <visibleNormal.hpp>
 
 using namespace std;
 
@@ -38,6 +41,52 @@ public:
      */
     virtual void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const = 0;
 
+    // TODO: Add doc
+    /**
+     * .
+     *
+     * Based on http://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf.
+     *
+     * @param in .
+     * @param point .
+     * @param visibleNormal .
+     * @return .
+     */
+    LightRay Refract(const LightRay &in, const Point &point, const Vect &visibleNormal) const
+    {
+        // TODO: Temporal implementation. A lightray should contain a stack of the passing mediums.
+        float n;
+        // The ray of light is arriving the shape medium.
+        if (visibleNormal == GetNormal(point))
+        {
+            n = mN;
+        }
+        // The ray of light is exiting the shape medium.
+        else
+        {
+            n = 1 / mN;
+        }
+        // Calculate the refracted ray of light.
+        float cosI = -visibleNormal.DotProduct(in.GetDirection());
+        float sinT2 = n * n * (1 - cosI * cosI);
+        if (sinT2 > 1)
+            // Error.
+            // TODO: Check what to do here.
+            ;
+        float cosT = sqrt(1 - sinT2);
+        Vect reflected = in.GetDirection() * n + visibleNormal * (n * cosI - cosT);
+        return LightRay(point, reflected);
+    }
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param point .
+     * @return .
+     */
+    virtual Vect GetNormal(const Point &point) const = 0;
+
     // TODO: Add doc.
     /**
      * .
@@ -46,8 +95,10 @@ public:
      * @param seenFrom .
      * @return .
      */
-    virtual Vect GetVisibleNormal(const Point &point,
-                                  const LightRay &seenFrom) const = 0;
+    Vect GetVisibleNormal(const Point &point, const LightRay &seenFrom)
+    {
+        return VisibleNormal(GetNormal(point), seenFrom.GetDirection());
+    }
 
     // TODO: Add doc.
     /**
@@ -66,20 +117,37 @@ public:
      *
      * @param material .
      */
-    virtual void SetMaterial(shared_ptr<Material> material)
+    virtual void SetMaterial(const shared_ptr<Material> material)
     {
         mMaterial = material;
     }
 
     template <class M>
-    void SetMaterial(M material)
+    void SetMaterial(const M material)
     {
         mMaterial = make_shared<M>(material);
     }
 
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param material .
+     */
+    void SetRefractiveIndex(const float refractiveIndex)
+    {
+        mN = refractiveIndex;
+    }
+
 private:
 
-    shared_ptr<Material> mMaterial = DEFAULT_MATERIAL;
+    // TODO: Add doc.
+    /* . */
+    shared_ptr<Material> mMaterial = LAMBERTIAN;
+
+    // TODO: Add doc.
+    /* . */
+    refractiveIndex mN = AIR_RI;
 };
 
 #endif // RAY_TRACER_SHAPE_HPP

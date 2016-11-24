@@ -156,7 +156,7 @@ void Mesh::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &n
     }
 }
 
-Vect Mesh::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
+Vect Mesh::GetNormal(const Point &point) const
 {
     throw 1;
 }

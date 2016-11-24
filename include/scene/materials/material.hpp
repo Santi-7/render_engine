@@ -9,24 +9,17 @@
 #ifndef RAY_TRACER_MATERIAL_HPP
 #define RAY_TRACER_MATERIAL_HPP
 
-#include <memory>
-#include <vect.hpp>
 #include <color.hpp>
+#include <memory>
 #include <point.hpp>
+#include <vect.hpp>
 
 using namespace std;
 
-class Material {
+class Material
+{
 
 public:
-
-    // TODO: Add doc.
-    /**
-     * Creates a Lambertian material.
-     *
-     * @return Lambertian material.
-     */
-    Material();
 
     // TODO: Add doc.
     /**
@@ -98,7 +91,6 @@ private:
     float mShininess;
 };
 
-static const shared_ptr<Material> DEFAULT_MATERIAL = make_shared<Material>(Material());
 static const shared_ptr<Material> MIRROR = make_shared<Material>(Material(BLACK, BLACK, 0, WHITE, BLACK));
 static const shared_ptr<Material> LAMBERTIAN = make_shared<Material>(Material(WHITE, BLACK, 0, BLACK, BLACK));
 static const shared_ptr<Material> SPECKLED_LAMBERTIAN = make_shared<Material>(Material(GRAY, GRAY, 20, BLACK, BLACK));

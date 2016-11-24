@@ -205,6 +205,33 @@ TEST(Reflection, PlaneSphere)
     renderedImage->Save("reflection.ppm");
 }
 
+TEST(Refraction, PlaneSphere)
+{ // A sphere over a plane.
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation(PI/10);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-4), PI/3, 1.0, 500, 500));
+
+    scene.AddLightSource(PointLight(Point(3, 1.5, 4), 20, WHITE));
+
+    Sphere sphere(Point(0, 0.5, 4), 1);
+    sphere.SetMaterial(GLASS);
+    sphere.SetRefractiveIndex(WATER_RI);
+    scene.AddShape(sphere);
+
+    Plane plane1(Point(0, -0.5f, 0), Vect(0, 1, 0));
+    scene.AddShape(plane1);
+
+    Plane plane2(Point(0, 0, 60), Vect(0, 0, 1));
+    scene.AddShape(plane2);
+    Plane plane3(Point(-20, 0, 0), Vect(1, 0, 0));
+    Plane plane4(Point(20, 0, 60), Vect(-1, 0,0));
+    scene.AddShape(plane3);
+    scene.AddShape(plane4);
+    auto renderedImage = scene.Render();
+    renderedImage->Save("refraction.ppm");
+}
+
 TEST(HiddenLight, AfterPlane)
 { // A camera, a plane, and a light.
     Scene scene;

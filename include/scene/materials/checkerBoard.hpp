@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
-** checkBoard.hpp
+** checkerBoard.hpp
 ** TODO: Add doc.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
@@ -11,11 +11,14 @@
 
 #include "material.hpp"
 
-class CheckerBoard : public Material {
+class CheckerBoard : public Material
+{
+
 public:
 
     //TODO: Add doc
     /**
+     *
      *
      * @param squareSize
      * @param color
@@ -25,6 +28,7 @@ public:
 
     //TODO: Add doc
     /**
+     *
      *
      * @param squareSize
      * @param color
@@ -42,10 +46,15 @@ public:
     Color GetDiffuse(const Point &point) const;
 
 private:
+
+    // TODO: Add doc.
+    /* . */
     Color mColor1;
     Color mColor2;
 
+    // TODO: Add doc.
+    /* . */
     float mSquareSize;
 };
 
-#endif //RAY_TRACER_CHECKBOARD_HPP
+#endif // RAY_TRACER_CHECKBOARD_HPP

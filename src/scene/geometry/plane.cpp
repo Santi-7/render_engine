@@ -53,12 +53,12 @@ void Plane::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &
     }
 }
 
-Vect Plane::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
+Vect Plane::GetNormal() const
 {
-    return VisibleNormal(mNormal, seenFrom.GetDirection());
+    return mNormal;
 }
 
-Vect Plane::GetNormal() const
+Vect Plane::GetNormal(const Point &point) const
 {
     return mNormal;
 }

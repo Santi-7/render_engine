@@ -59,7 +59,7 @@ void Sphere::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> 
     }
 }
 
-Vect Sphere::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
+Vect Sphere::GetNormal(const Point &point) const
 {
-    return VisibleNormal((point - mCenter) / mRadius, seenFrom.GetDirection());
+    return (mCenter - point) / mRadius;
 }

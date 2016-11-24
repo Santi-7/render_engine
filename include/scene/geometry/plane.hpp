@@ -43,16 +43,6 @@ public:
      * @param nearestShape .
      */
     void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @param point .
-     * @param seenFrom .
-     * @return .
-     */
-    Vect GetVisibleNormal(const Point &point,
-                          const LightRay &seenFrom) const;
 
     // TODO: Add doc.
     /**
@@ -61,6 +51,15 @@ public:
      * @return .
      */
     Vect GetNormal() const;
+
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param point .
+     * @return .
+     */
+    Vect GetNormal(const Point &point) const;
 
 protected:
 

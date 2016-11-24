@@ -55,7 +55,7 @@ void Box::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &ne
     }
 }
 
-Vect Box::GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
+Vect Box::GetNormal(const Point &point) const
 {
     throw 1;
 }
