@@ -21,7 +21,7 @@ float GetNearestInFront(const float t_1, const float t_2)
      * Intersection Point 1 is in front of the camera and
      * (before Point 2 or it is the only in front of the camera).
      */
-    if ((t_1 > threshold) & (t_1 < t_2 | t_2 <= threshold))
+    if ((t_1 > threshold) & ((t_1 < t_2) | (t_2 <= threshold)))
     {
         return t_1;
     }
@@ -29,7 +29,7 @@ float GetNearestInFront(const float t_1, const float t_2)
      * Intersection Point 2 is in front of the camera and
      * (before Point 1 or it is the only in front of the camera).
      */
-    else if ((t_2 > threshold) & (t_2 < t_1 | t_1 <= threshold))
+    else if ((t_2 > threshold) & ((t_2 < t_1) | (t_1 <= threshold)))
     {
         return t_2;
     }

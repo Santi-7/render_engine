@@ -91,7 +91,7 @@ Vect Vect::CrossProduct(const Vect &v) const
 
 bool Vect::operator==(const Vect &v) const
 {
-    return mX == v.mX & mY == v.mY & mZ == v.mZ;
+    return (mX == v.mX) & (mY == v.mY) & (mZ == v.mZ);
 }
 
 bool Vect::operator!=(const Vect &v) const

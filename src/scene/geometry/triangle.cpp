@@ -41,7 +41,7 @@ float Triangle::Intersect(const LightRay &lightRay) const
     float beta = (d00 * d21 - d01 * d20) / denominator;
     // Gamma is not necessary: float gamma = 1.0f - alpha - beta;
     // Check if the intersection point is inside the triangle bounds.
-    return alpha >= 0 & beta >= 0 & alpha + beta < 1 ? t : FLT_MAX;
+    return (alpha >= 0) & (beta >= 0) & (alpha + beta < 1) ? t : FLT_MAX;
 }
 
 void Triangle::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
