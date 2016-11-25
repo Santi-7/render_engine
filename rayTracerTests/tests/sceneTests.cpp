@@ -206,28 +206,33 @@ TEST(Reflection, PlaneSphere)
 }
 
 TEST(Refraction, PlaneSphere)
-{ // A sphere over a plane.
+{
     Scene scene;
-    TransformationMatrix tm;
-    tm.SetXRotation(PI/10);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-4), PI/3, 1.0, 500, 500));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,-0.5f,-1), PI/3, 1.0, 500, 500));
 
-    scene.AddLightSource(PointLight(Point(3, 1.5, 4), 20, WHITE));
+    scene.AddLightSource(PointLight(Point(0.2f, 0.5f, -1), 2, WHITE));
 
-    Sphere sphere(Point(0, 0.5, 4), 1);
-    sphere.SetMaterial(GLASS);
-    sphere.SetRefractiveIndex(WATER_RI);
+    Sphere sphere(Point(0, -0.75f, 0), 0.25f);
+    sphere.SetMaterial(Material(BLACK, BLACK, 0.0f, GRAY, GRAY));
+    sphere.SetRefractiveIndex(GLASS_RI);
     scene.AddShape(sphere);
 
-    Plane plane1(Point(0, -0.5f, 0), Vect(0, 1, 0));
-    scene.AddShape(plane1);
+    Plane floor(Point(0, -1.0f, 0), Vect(0, 1, 0));
+    floor.SetMaterial(CheckerBoard(0.149f, RED, BLUE));
+    scene.AddShape(floor);
 
-    Plane plane2(Point(0, 0, 60), Vect(0, 0, 1));
-    scene.AddShape(plane2);
-    Plane plane3(Point(-20, 0, 0), Vect(1, 0, 0));
-    Plane plane4(Point(20, 0, 60), Vect(-1, 0,0));
-    scene.AddShape(plane3);
-    scene.AddShape(plane4);
+    Plane rightWall(Point(1, 0, 0), Vect(-1, 0, 0));
+    rightWall.SetMaterial(CheckerBoard(0.149f, GREEN, BLUE));
+    scene.AddShape(rightWall);
+
+    Plane leftWall(Point(-1, 0, 0), Vect(1, 0, 0));
+    leftWall.SetMaterial(CheckerBoard(0.149f, GREEN, RED));
+    scene.AddShape(leftWall);
+
+    Plane backWall(Point(0, 0, 1), Vect(0, 0, -1));
+    backWall.SetMaterial(CheckerBoard(0.149f, BLACK, Color(1.0f, 1.0f, 0.0f)));
+    scene.AddShape(backWall);
+
     auto renderedImage = scene.Render();
     renderedImage->Save("refraction.ppm");
 }

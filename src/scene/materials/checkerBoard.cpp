@@ -21,7 +21,7 @@ CheckerBoard::CheckerBoard(const float squareSize, Color color1, Color color2, C
 Color CheckerBoard::GetDiffuse(const Point &point) const
 {
     int x = static_cast<int>((point.GetX() > 0 ? point.GetX() : -point.GetX() + mSquareSize) / mSquareSize);
-    int y = static_cast<int>((point.GetY() > 0 ? point.GetY() : -point.GetY() /*+ mSquareSize*/) / mSquareSize);
+    int y = static_cast<int>((point.GetY() > 0 ? point.GetY() : -point.GetY() + mSquareSize) / mSquareSize);
     int z = static_cast<int>((point.GetZ() > 0 ? point.GetZ() : -point.GetZ() + mSquareSize) / mSquareSize);
 
     if (!(x % 2) ^ (y % 2) ^ !(z % 2))
