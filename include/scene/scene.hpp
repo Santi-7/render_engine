@@ -125,9 +125,9 @@ private:
      * @param diffuseSteps .
      * @return .
      */
-    Color IndirectLight(const Point &point, const Vect &normal,
-                        const Shape &shape,  const int specularSteps,
-                        const int diffuseSteps) const;
+    Color DiffuseLight(const Point &point, const Vect &normal,
+                       const Shape &shape, const int specularSteps,
+                       const int diffuseSteps) const;
 
     // TODO: Add doc.
     /**
