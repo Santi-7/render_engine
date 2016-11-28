@@ -30,6 +30,13 @@ public:
      */
     Image(const unsigned int width, const unsigned int height);
 
+
+    /**
+     * Parses a ppm image as an image
+     * @param filename Path to the file containing a ppm image.
+     */
+    Image(const string & filename);
+
     // TODO: Add doc.
     /**
      * Saves the image as a ppm file with the given filename.

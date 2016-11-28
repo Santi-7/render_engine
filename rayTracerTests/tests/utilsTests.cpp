@@ -99,3 +99,8 @@ TEST(CreateMultiColorImage, image)
     multi.Save("multicolor.ppm");
 }
 
+TEST(LoadTexture, Image)
+{
+    Image texture(string(PROJECT_DIR) + "/build/cacafuti.ppm");
+    texture.Save("loadedTeapot.ppm");
+}
