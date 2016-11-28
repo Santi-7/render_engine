@@ -63,44 +63,47 @@ unique_ptr<Image> Scene::Render() const
     return rendered;
 }
 
-unique_ptr<Image> Scene::RenderMultiThread(unsigned int threadCount) const {
+unique_ptr<Image> Scene::RenderMultiThread(const unsigned int threadCount) const
+{
     shared_ptr<Image> image(new Image(mCamera->GetHeight(), mCamera->GetWidth()));
 
     vector<shared_ptr<vector<unsigned int>>> linesPerThread(threadCount);
 
-    // Initialize all line vectors
-    for (unsigned int j = 0; j < threadCount; ++j){
-       linesPerThread[j] = make_shared<vector<unsigned int>>(0);
+    // Initialize all line vectors.
+    for (unsigned int i = 0; i < threadCount; ++i){
+       linesPerThread[i] = make_shared<vector<unsigned int>>(0);
     }
 
     unsigned int lineIndex = 0;
 
-    // Fill all line vectors
-    for (unsigned int j = 0; j < mCamera->GetHeight(); ++j)
+    // Fill all line vectors.
+    for (unsigned int i = 0; i < mCamera->GetHeight(); ++i)
     {
-        linesPerThread[lineIndex]->push_back(j);
+        linesPerThread[lineIndex]->push_back(i);
         lineIndex = (lineIndex + 1) % threadCount;
     }
 
     vector<thread> threads(threadCount);
-    // Initialize and start threads. Each thread will render the lines in their corresponding vector
-    for (unsigned int j = 0; j < threadCount; ++j)
+    // Initialize and start threads. Each thread will render the lines in their corresponding vector.
+    for (unsigned int i = 0; i < threadCount; ++i)
     {
-        threads[j] = thread(&Scene::RenderPixelRange, this, linesPerThread[j], image, j == 0);
+        // j == 0 because only the first thread will print the progress bar.
+        threads[i] = thread(&Scene::RenderPixelRange, this, linesPerThread[i], image, i == 0);
     }
 
-    // Wait for all threads to end rendering their lines
-    for (unsigned int j = 0; j < threadCount; ++j)
+    // Wait for all threads to end rendering their lines.
+    for (unsigned int i = 0; i < threadCount; ++i)
     {
-        threads[j].join();
+        threads[i].join();
     }
 
-    printProgressBar(1,1);
+    printProgressBar(1, 1);
 
     return make_unique<Image>(*image);
 }
 
-void Scene::RenderPixelRange(shared_ptr<vector<unsigned int>>horizontalLines, shared_ptr<Image> image, bool printProgress) const
+void Scene::RenderPixelRange(const shared_ptr<vector<unsigned int>> horizontalLines,
+                             const shared_ptr<Image> image, const bool printProgress) const
 {
     // The current pixel. We begin with the first one (0,0).
     const Point firstPixel = mCamera->GetFirstPixel();
@@ -276,4 +279,3 @@ bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
     // No shape has intersected the ray of light.
     return false;
 }
-
