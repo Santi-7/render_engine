@@ -46,7 +46,14 @@ public:
      */
     unique_ptr<Image> Render() const;
 
-    unique_ptr<Image> RenderMultiThread(unsigned int threads) const;
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param threads .
+     * @return .
+     */
+    unique_ptr<Image> RenderMultiThread(const unsigned int threads) const;
 
 private:
 
@@ -74,7 +81,16 @@ private:
     /* . */
     vector<shared_ptr<Shape>> mShapes;
 
-    void RenderPixelRange(shared_ptr<vector<unsigned int>>horizontalLines, shared_ptr<Image> image, bool printProgress) const;
+    // TODO: Add doc.
+    /**
+     * .
+     *
+     * @param horizontalLines .
+     * @param image .
+     * @param printProgress .
+     */
+    void RenderPixelRange(const shared_ptr<vector<unsigned int>>horizontalLines,
+                          const shared_ptr<Image> image, const bool printProgress) const;
 
     // TODO: Add doc.
     /**
