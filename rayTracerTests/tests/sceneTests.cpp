@@ -22,7 +22,7 @@
 #include <materials/checkerBoard.hpp>
 #include <thread>
 
-static const unsigned int THREADS = std::thread::hardware_concurrency();
+static constexpr unsigned int THREADS = std::thread::hardware_concurrency();
 
 /**
  * Test first pixel value is correct
