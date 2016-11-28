@@ -157,8 +157,8 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay,
                          *nearestShape, specularSteps, diffuseSteps) +
-           IndirectLight(intersection, normal, *nearestShape,
-                         specularSteps, diffuseSteps);
+           DiffuseLight(intersection, normal, *nearestShape,
+                        specularSteps, diffuseSteps);
 }
 
 Color Scene::DirectLight(const Point &point, Vect &normal,
@@ -228,9 +228,9 @@ inline static tuple<float, float> UniformCosineSampling()
     return make_tuple(inclination, azimuth);
 }
 
-Color Scene::IndirectLight(const Point &point, const Vect &normal,
-                           const Shape &shape, const int specularSteps,
-                           const int diffuseSteps) const
+Color Scene::DiffuseLight(const Point &point, const Vect &normal,
+                          const Shape &shape, const int specularSteps,
+                          const int diffuseSteps) const
 {
     if (diffuseSteps <= 0) return BLACK;
 
