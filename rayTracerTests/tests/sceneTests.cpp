@@ -20,6 +20,9 @@
 #include <geometry/rectangle.hpp>
 #include <geometry/box.hpp>
 #include <materials/checkerBoard.hpp>
+#include <thread>
+
+static const unsigned int THREADS = std::thread::hardware_concurrency();
 
 /**
  * Test first pixel value is correct
@@ -42,7 +45,7 @@ TEST(SimpleRender, Sphere)
     scene.AddShape(Sphere(Point(0,0,3), 1.0));
     scene.AddLightSource(PointLight());
     scene.SetCamera(Pinhole());
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("dot.ppm");
 }
 
@@ -52,7 +55,7 @@ TEST(SimpleRender, InvisiblePlane)
     scene.AddLightSource(PointLight());
     scene.AddShape(Plane(Point(0,0,0), Vect(-1,0,1)));
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("linePlane.ppm");
 }
 
@@ -62,7 +65,7 @@ TEST(SimpleRender, SimpleTriangle)
     scene.AddLightSource(PointLight());
     scene.AddShape(Triangle(Point(0,1,3), Point(-1,-1,3), Point(1,-1,3)));
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     ofstream algo("caca.txt");
     algo << "caca";
     algo.close();
@@ -75,7 +78,7 @@ TEST(SimpleRender, FinitePlane)
     scene.AddLightSource(PointLight(Point(0,1,-1)));
     scene.AddShape(Rectangle(Vect(0,0,-1),Point(0,0,0), Point(1,1,1)));
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,-3), PI/3, 1.0, 255, 255));
-    unique_ptr<Image> renderedImage = scene.Render();
+    unique_ptr<Image> renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("finitePlanes.ppm");
 }
 
@@ -87,7 +90,7 @@ TEST(SimpleLight, Sphere)
     scene.AddShape(Sphere(Point(0,0,3), 1.0));
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
     scene.AddLightSource(PointLight(Point(1,2,3)));
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("sphere.ppm");
 }
 
@@ -99,21 +102,21 @@ TEST(SimpleLight, SphereOnAPlane)
 
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0,0), PI/3, 1.0, 255, 255));
     scene.AddLightSource(PointLight(Point(0,1.5,10)));
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("soap.ppm");
 }
 
 TEST(CornellBox, BigSpheres)
 { // Cornell's box. The sides of the box are spheres
     Scene scene = CornellBox(true);
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("cornellS.ppm");
 }
 
 TEST(CornellBox, Planes)
 { // Cornell's box. The sides of the box are planes.
     Scene scene = CornellBox(false);
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("cornellP.ppm");
 }
 
@@ -121,7 +124,7 @@ TEST(CornellBox, Colors)
 { // Cornell's box. Lights of colors distinct of white.
     Scene scene = CornellBox(false);
     scene.AddLightSource(PointLight(Point(0, 0, -5), 500.0, BLUE));
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("cornellColors.ppm");
 }
 
@@ -135,7 +138,7 @@ TEST(SimpleLight, PlaneTop)
     plane.SetMaterial(SPECKLED_LAMBERTIAN);
     scene.AddShape(plane);
 
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("planeTop.ppm");
 }
 
@@ -151,7 +154,7 @@ TEST(SimpleLight, Box)
 
     scene.AddShape(Plane(Point(0, 0, 1.75f), Vect(0,0,-1)));
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("box.ppm");
 }
 
@@ -174,7 +177,7 @@ TEST(Render, XBoxes)
     scene.AddShape(Box(Rectangle(Vect(0,0,-1), Point(3, 1, 1.5), Point(4, 2, 1.5)), 1));
 
 
-    auto image = scene.Render();
+    auto image = scene.RenderMultiThread(THREADS);
     image->Save("sixBoxes.ppm");
 }
 
@@ -201,7 +204,7 @@ TEST(Reflection, PlaneSphere)
     Plane plane4(Point(20, 0, 60), Vect(-1, 0,0));
     scene.AddShape(plane3);
     scene.AddShape(plane4);
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("reflection.ppm");
 }
 
@@ -233,7 +236,7 @@ TEST(Refraction, PlaneSphere)
     backWall.SetMaterial(CheckerBoard(0.149f, BLACK, Color(1.0f, 1.0f, 0.0f)));
     scene.AddShape(backWall);
 
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("refraction.ppm");
 }
 
@@ -246,7 +249,7 @@ TEST(HiddenLight, AfterPlane)
     scene.AddShape(Plane(Point(0,0,3), Vect(0,0,1)));
     // And then a light, that should be hidden by the plane.
     scene.AddLightSource(PointLight(Point(0,0,6)));
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("hiddenLight.ppm");
 
     // Same scene but with normal of the plane declared in the other direction.
@@ -272,7 +275,7 @@ TEST(Mesh, Tetrahedron)
     scene.AddShape(tetrahedron);
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
     scene.AddLightSource(PointLight(Point(-1,5,0), 30, WHITE));
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("tetrahedron.ppm");
 }
 
@@ -292,7 +295,7 @@ TEST(Mesh, Teapot)
 
     scene.AddLightSource(PointLight(Point(0,2.5f, 0), 15, WHITE));
     scene.AddShape(Plane(Point(0,-1.5f, 0), Vect(0,1,0)));
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("teapot.ppm");
 }
 
@@ -300,19 +303,18 @@ TEST(Mesh, Teapot)
 TEST(Mesh, Woman)
 {
     Scene scene;
-    TransformationMatrix tm;
-    tm.SetYRotation((float)3.141592);
-    scene.SetCamera(Pinhole(Vect(0,0,-1), Vect(1,0,0), Vect(0,-1,0), Point (1,60,0), (float)3.14159/2, 1.0, 140, 140));
-    Mesh woman (string(PROJECT_DIR) + "/resources/woman.obj", false);
+    scene.SetCamera(Pinhole(Vect(0,0,1), Vect(1,0,0), Vect(0,1,0), Point (0,-3,0), (float)3.14159/2, 1.0, 300, 300));
+    scene.AddLightSource(PointLight(Point(0,-1.5f,0), 10, WHITE));
+
+    Mesh woman (string(PROJECT_DIR) + "/resources/woman.obj", true);
     scene.AddShape(woman);
 
-    /*scene.AddShape(Plane(Point(-400, 0, 0), Vect(1,0,0))); // Left wall.
-    scene.AddShape(Plane(Point(400, 0, 0), Vect(-1,0,0))); // Right wall.
-    scene.AddShape(Plane(Point(0, 0, 400), Vect(0,0,-1))); // Back wall*/
+    scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.
+    scene.AddShape(Plane(Point(1.5f, 0, 0), Vect(-1,0,0))); // Right wall.
+    scene.AddShape(Plane(Point(0, 0, -2), Vect(0,0,-1))); // Back wall
 
     scene.AddLightSource(PointLight(Point(0,20,-25)));
-    //scene.AddShape(Plane(Point(0,-50, 0), Vect(0,1,0)));
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("woman.ppm");
 }
 
@@ -321,7 +323,7 @@ TEST(Mesh, IronGiantObj)
     Scene scene;
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592);
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (1, 2, 0.5f), (float)3.14159/2, 1.0, 5, 5));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (1, 2, 0.5f), (float)3.14159/2, 1.0, 300, 300));
     Mesh ironGiant(string(PROJECT_DIR) + "/resources/iron_giant.obj", false);
     scene.AddShape(ironGiant);
 
@@ -332,7 +334,7 @@ TEST(Mesh, IronGiantObj)
     scene.AddLightSource(PointLight(Point(0,8,1.6), 90, WHITE));
 
     //scene.AddShape(Plane(Point(0,-50, 0), Vect(0,1,0)));
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("ironGiant.ppm");
 }
 
@@ -352,7 +354,7 @@ TEST(Mesh, IronGiant)
     scene.AddLightSource(PointLight(Point(0,2,0.6), 10, WHITE));
     scene.AddLightSource(PointLight(Point(0,1,0.6), 5, WHITE));
     //scene.AddShape(Plane(Point(0,-50, 0), Vect(0,1,0)));
-    auto renderedImage = scene.Render();
+    auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("ironGiant.ppm");
 }
 
@@ -374,7 +376,7 @@ TEST(Materials, FacingMirrors)
     scene.AddShape(hiddenMirror);
     scene.AddShape(floatingSphere);
     scene.AddShape(floor);
-    auto image = scene.Render();
+    auto image = scene.RenderMultiThread(THREADS);
     image->Save("facingMirrors.ppm");
 }
 
@@ -396,7 +398,7 @@ TEST(Materials, MirrorBox)
 
     Box container(Rectangle(Vect(0,1,0), Point(0.5f, 0, -0.75f), Point(-0.5f, 0, 0.75f)), 1);
     scene.AddShape(container);
-    auto image = scene.Render();
+    auto image = scene.RenderMultiThread(THREADS);
     image->Save("mirrorBox.ppm");
 }
 
@@ -421,7 +423,7 @@ TEST(Materials, XSpheres)
             scene.AddShape(tmp);
         }
     }
-    auto image = scene.Render();
+    auto image = scene.RenderMultiThread(THREADS);
     image->Save("spheres.ppm");
 }
 
@@ -446,7 +448,7 @@ TEST(Materials, GlassSpheres)
             scene.AddShape(tmp);
         }
     }
-    auto image = scene.Render();
+    auto image = scene.RenderMultiThread(THREADS);
     image->Save("glassSpheres.ppm");
 }
 
@@ -471,7 +473,7 @@ TEST(Materials, SpeckledLambiertianSpheres)
             scene.AddShape(tmp);
         }
     }
-    auto image = scene.Render();
+    auto image = scene.RenderMultiThread(THREADS);
     image->Save("speckledLambertianSpheres.ppm");
 }
 
@@ -492,6 +494,6 @@ TEST(Materials, Chess)
     oSphere.SetMaterial(MIRROR);
     scene.AddShape(oSphere);
 
-    auto image = scene.Render();
+    auto image = scene.RenderMultiThread(THREADS);
     image->Save("chess.ppm");
 }
