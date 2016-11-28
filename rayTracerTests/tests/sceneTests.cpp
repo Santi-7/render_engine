@@ -358,6 +358,30 @@ TEST(Mesh, IronGiant)
     renderedImage->Save("ironGiant.ppm");
 }
 
+TEST(Mesh, Falcon)
+{
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation(0*-PI/9);
+
+    Mesh falcon(string(PROJECT_DIR) + "/resources/falcon.obj", true);
+    falcon.SetMaterial(make_shared<Material>(Material(RED / 2, BLACK, 0, BLACK, BLACK)));
+    scene.AddShape(falcon);
+    scene.SetCamera(Pinhole(Vect(0,0,1), tm*Vect(1,0,0), tm*Vect(0, 1, 0), tm*Point (0, -2, 0), (float)3.14159/2, 1.0, 50, 40));
+    //scene.SetCamera(Pinhole(Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0, 0, 1), tm*Point (0, 0, -2), (float)3.14159/2, 1.0, 50, 40));
+
+    scene.AddShape(Plane(Point(-2, 0, 0), Vect(1,0,0))); // Left wall.
+    scene.AddShape(Plane(Point(2, 0, 0), Vect(-1,0,0))); // Right wall.
+    scene.AddShape(Plane(Point(0, 0, 10), Vect(0,0,-1))); // Back wall*/
+    //scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0))); // Floor
+
+    scene.AddLightSource(PointLight(Point(0,2,-1.6f), 10, WHITE));
+    scene.AddLightSource(PointLight(Point(0,1,0.6), 5, WHITE));
+
+    auto renderedImage = scene.RenderMultiThread(THREADS);
+    renderedImage->Save("falcon.ppm");
+}
+
 TEST(Materials, FacingMirrors)
 {
     Scene scene;
