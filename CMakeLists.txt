@@ -18,4 +18,4 @@ add_subdirectory(lib)
 add_subdirectory(rayTracerTests)
 add_subdirectory(src)
 
-target_link_libraries(Ray_Tracer_run container)
+target_link_libraries(Ray_Tracer_run container pthread)

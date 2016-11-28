@@ -46,6 +46,8 @@ public:
      */
     unique_ptr<Image> Render() const;
 
+    unique_ptr<Image> RenderMultiThread(unsigned int threads) const;
+
 private:
 
     // TODO: Add doc.
@@ -71,6 +73,8 @@ private:
     // TODO: Add doc.
     /* . */
     vector<shared_ptr<Shape>> mShapes;
+
+    void RenderPixelRange(shared_ptr<vector<unsigned int>>horizontalLines, shared_ptr<Image> image, bool printProgress) const;
 
     // TODO: Add doc.
     /**

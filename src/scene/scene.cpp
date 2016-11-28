@@ -11,8 +11,8 @@
 #include <poseTransformationMatrix.hpp>
 #include <random>
 #include <scene.hpp>
-#include <mathConstants.hpp>
 #include <iostream>
+#include <thread>
 
 void printProgressBar(unsigned int pixel, unsigned int total)
 {
@@ -61,6 +61,69 @@ unique_ptr<Image> Scene::Render() const
     printProgressBar(1,1);
 
     return rendered;
+}
+
+unique_ptr<Image> Scene::RenderMultiThread(unsigned int threadCount) const {
+    shared_ptr<Image> image(new Image(mCamera->GetHeight(), mCamera->GetWidth()));
+
+    vector<shared_ptr<vector<unsigned int>>> linesPerThread(threadCount);
+
+    // Initialize all line vectors
+    for (unsigned int j = 0; j < threadCount; ++j){
+       linesPerThread[j] = make_shared<vector<unsigned int>>(0);
+    }
+
+    unsigned int lineIndex = 0;
+
+    // Fill all line vectors
+    for (unsigned int j = 0; j < mCamera->GetHeight(); ++j)
+    {
+        linesPerThread[lineIndex]->push_back(j);
+        lineIndex = (lineIndex + 1) % threadCount;
+    }
+
+    vector<thread> threads(threadCount);
+    // Initialize and start threads. Each thread will render the lines in their corresponding vector
+    for (unsigned int j = 0; j < threadCount; ++j)
+    {
+        threads[j] = thread(&Scene::RenderPixelRange, this, linesPerThread[j], image, j == 0);
+    }
+
+    // Wait for all threads to end rendering their lines
+    for (unsigned int j = 0; j < threadCount; ++j)
+    {
+        threads[j].join();
+    }
+
+    printProgressBar(1,1);
+
+    return make_unique<Image>(*image);
+}
+
+void Scene::RenderPixelRange(shared_ptr<vector<unsigned int>>horizontalLines, shared_ptr<Image> image, bool printProgress) const
+{
+    // The current pixel. We begin with the first one (0,0).
+    const Point firstPixel = mCamera->GetFirstPixel();
+    // Pixels' distance in the camera intrinsics right and up.
+    Vect advanceX(mCamera->GetRight() * mCamera->GetPixelSize());
+    Vect advanceY(mCamera->GetUp() * mCamera->GetPixelSize());
+    // The first pixel of the current row.
+    Point currentPixel;
+    // For all the pixels, trace a ray of light.
+    for (unsigned int i = 0; i < horizontalLines->size(); ++i)
+    {
+        currentPixel = firstPixel - advanceY * (*horizontalLines)[i];
+        for (unsigned int j = 0; j < mCamera->GetWidth(); ++j)
+        {
+            // Next pixel.
+            currentPixel += advanceX;
+            // Get the color for the current pixel.
+            (*image)[(*horizontalLines)[i]][j] = GetLightRayColor(
+                    LightRay(mCamera->GetFocalPoint(), currentPixel),
+                    SPECULAR_STEPS, DIFFUSE_STEPS);
+        }
+        if (printProgress) printProgressBar(i, static_cast<unsigned int>(horizontalLines->size()));
+    }
 }
 
 Color Scene::GetLightRayColor(const LightRay &lightRay,
@@ -213,3 +276,4 @@ bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
     // No shape has intersected the ray of light.
     return false;
 }
+
