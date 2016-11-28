@@ -7,7 +7,6 @@
 ** -------------------------------------------------------------------------*/
 
 #include <cfloat>
-#include <plane.hpp>
 #include <triangle.hpp>
 
 Triangle::Triangle(const Point &a, const Point &b, const Point &c)

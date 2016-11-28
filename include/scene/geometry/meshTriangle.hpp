@@ -9,7 +9,6 @@
 #ifndef RAY_TRACER_MESHTRIANGLE_HPP
 #define RAY_TRACER_MESHTRIANGLE_HPP
 
-#include <plane.hpp>
 #include <triangle.hpp>
 
 class MeshTriangle : public Triangle
@@ -19,7 +18,7 @@ public:
 
     // TODO: Add doc.
     /**
-     * Constructs a Triangle.
+     * Constructs a .
      *
      * @param a .
      * @param b .
@@ -34,10 +33,9 @@ public:
      * .
      *
      * @param point .
-     * @param seenFrom .
      * @return .
      */
-    //Vect GetVisibleNormal(const Point &point, const LightRay &seenFrom) const;
+    Vect GetNormal(const Point &point) const;
 
 private:
 

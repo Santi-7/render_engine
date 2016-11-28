@@ -9,7 +9,7 @@
 #ifndef RAY_TRACER_TRIANGLE_HPP
 #define RAY_TRACER_TRIANGLE_HPP
 
-#include <shape.hpp>
+#include <plane.hpp>
 
 class Triangle : public Plane
 {

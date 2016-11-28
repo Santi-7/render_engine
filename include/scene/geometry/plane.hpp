@@ -59,7 +59,7 @@ public:
      * @param point .
      * @return .
      */
-    Vect GetNormal(const Point &point) const;
+    virtual Vect GetNormal(const Point &point) const;
 
 protected:
 
