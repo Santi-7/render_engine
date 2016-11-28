@@ -65,7 +65,7 @@ unique_ptr<Image> Scene::Render() const
 
 unique_ptr<Image> Scene::RenderMultiThread(const unsigned int threadCount) const
 {
-    shared_ptr<Image> image(new Image(mCamera->GetHeight(), mCamera->GetWidth()));
+    shared_ptr<Image> image(new Image(mCamera->GetWidth(), mCamera->GetHeight()));
 
     vector<shared_ptr<vector<unsigned int>>> linesPerThread(threadCount);
 
@@ -74,13 +74,10 @@ unique_ptr<Image> Scene::RenderMultiThread(const unsigned int threadCount) const
        linesPerThread[i] = make_shared<vector<unsigned int>>(0);
     }
 
-    unsigned int lineIndex = 0;
-
     // Fill all line vectors.
     for (unsigned int i = 0; i < mCamera->GetHeight(); ++i)
     {
-        linesPerThread[lineIndex]->push_back(i);
-        lineIndex = (lineIndex + 1) % threadCount;
+        linesPerThread[i % threadCount]->push_back(i);
     }
 
     vector<thread> threads(threadCount);
