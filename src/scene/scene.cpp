@@ -279,4 +279,3 @@ bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
     // No shape has intersected the ray of light.
     return false;
 }
-
