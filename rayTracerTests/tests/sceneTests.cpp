@@ -271,7 +271,7 @@ TEST(Mesh, Tetrahedron)
 {
     Scene scene;
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0.25f,0.25f,0), (float)3.14159/2, 1.0, 255, 255));
-    Mesh tetrahedron(string(PROJECT_DIR) + "/resources/tetrahedron.obj", true);
+    Mesh tetrahedron(string(PROJECT_DIR) + "/resources/tetrahedron.obj", 0.0f);
     scene.AddShape(tetrahedron);
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
     scene.AddLightSource(PointLight(Point(-1,5,0), 30, WHITE));
@@ -285,8 +285,8 @@ TEST(Mesh, Teapot)
     Scene scene;
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592/2);
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,1,-2), (float)3.14159/2, 1.0, 600, 600));
-    Mesh teapot(string(PROJECT_DIR) + "/resources/utah_teapot.obj", true);
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0.2,-0.55f), (float)3.14159/2, 1.0, 600, 600));
+    Mesh teapot(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.35f);
     scene.AddShape(teapot);
 
     scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.
@@ -303,57 +303,38 @@ TEST(Mesh, Teapot)
 TEST(Mesh, Woman)
 {
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,0,1), Vect(1,0,0), Vect(0,1,0), Point (0,-3,0), (float)3.14159/2, 1.0, 300, 300));
-    scene.AddLightSource(PointLight(Point(0,-1.5f,0), 10, WHITE));
+    scene.SetCamera(Pinhole(Vect(0,0,1), Vect(1,0,0), Vect(0,1,0), Point (0,-0.6f,0), (float)3.14159/2, 1.0, 300, 300));
+    scene.AddLightSource(PointLight(Point(0,-0.5f,0), 1, WHITE));
 
-    Mesh woman (string(PROJECT_DIR) + "/resources/woman.obj", true);
+    Mesh woman (string(PROJECT_DIR) + "/resources/woman.obj", 0.35f);
     scene.AddShape(woman);
 
     scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.
     scene.AddShape(Plane(Point(1.5f, 0, 0), Vect(-1,0,0))); // Right wall.
     scene.AddShape(Plane(Point(0, 0, -2), Vect(0,0,-1))); // Back wall
 
-    scene.AddLightSource(PointLight(Point(0,20,-25)));
     auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("woman.ppm");
-}
-
-TEST(Mesh, IronGiantObj)
-{
-    Scene scene;
-    TransformationMatrix tm;
-    tm.SetYRotation((float)3.141592);
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (1, 2, 0.5f), (float)3.14159/2, 1.0, 300, 300));
-    Mesh ironGiant(string(PROJECT_DIR) + "/resources/iron_giant.obj", false);
-    scene.AddShape(ironGiant);
-
-    scene.AddShape(Plane(Point(-7, 0, 0), Vect(1,0,0))); // Left wall.
-    scene.AddShape(Plane(Point(7, 0, 0), Vect(-1,0,0))); // Right wall.
-    scene.AddShape(Plane(Point(0, 0, 10), Vect(0,0,-1))); // Back wall*/
-    scene.AddShape(Plane(Point(0,-0.2f,0), Vect(0,1,0)));
-    scene.AddLightSource(PointLight(Point(0,8,1.6), 90, WHITE));
-
-    //scene.AddShape(Plane(Point(0,-50, 0), Vect(0,1,0)));
-    auto renderedImage = scene.RenderMultiThread(THREADS);
-    renderedImage->Save("ironGiant.ppm");
 }
 
 TEST(Mesh, IronGiant)
 {
     Scene scene;
     TransformationMatrix tm;
-    tm.SetYRotation((float)3.141592);
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0, 0,-1), Point (0.1, 0.35f, 0), (float)3.14159/2, 1.0, 5, 5));
-    Mesh ironGiant(string(PROJECT_DIR) + "/resources/iron_giant.obj", true);
+    tm.SetYRotation((float) 3.141592);
+    scene.SetCamera(Pinhole(Vect(0, 1, 0), Vect(1, 0, 0), Vect(0, 0, -1), Point(0, 0.35f, 0.95f), (float) 3.14159 / 2, 1.0, 50, 50));
+    Mesh ironGiant(string(PROJECT_DIR) + "/resources/iron_giant.obj", 0.35f);
     scene.AddShape(ironGiant);
 
-    scene.AddShape(Plane(Point(-2, 0, 0), Vect(1,0,0))); // Left wall.
-    scene.AddShape(Plane(Point(2, 0, 0), Vect(-1,0,0))); // Right wall.
-    scene.AddShape(Plane(Point(0, 0, 10), Vect(0,0,-1))); // Back wall*/
-    scene.AddShape(Plane(Point(0,-0.0284446f,0), Vect(0,1,0))); // Floor
-    scene.AddLightSource(PointLight(Point(0,2,0.6), 10, WHITE));
-    scene.AddLightSource(PointLight(Point(0,1,0.6), 5, WHITE));
-    //scene.AddShape(Plane(Point(0,-50, 0), Vect(0,1,0)));
+    scene.AddShape(Plane(Point(-1, 0, 0), Vect(1, 0, 0))); // Left wall.
+    scene.AddShape(Plane(Point(1, 0, 0), Vect(-1, 0, 0))); // Right wall.
+    scene.AddShape(Plane(Point(0, 0, 1), Vect(0, 0, -1))); // Back wall*/
+    scene.AddShape(Plane(Point(0, 0, -1), Vect(0, 0, 1))); // Front wall*/
+    scene.AddShape(Plane(Point(0, -0.346682f, 0), Vect(0, 1, 0))); // Floor
+    scene.AddShape(Plane(Point(0, 1, 0), Vect(0, -1, 0))); // Ceiling
+    scene.AddLightSource(PointLight(Point(0.1, 0.2f, -0.1f), 3, WHITE));
+    scene.AddLightSource(PointLight(Point(-0.2f, -0.2f, 0.1f), 3, WHITE));
+
     auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("ironGiant.ppm");
 }
@@ -364,7 +345,7 @@ TEST(Mesh, Falcon)
     TransformationMatrix tm;
     tm.SetXRotation(-PI/9);
 
-    Mesh falcon(string(PROJECT_DIR) + "/resources/falcon2.obj", true);
+    Mesh falcon(string(PROJECT_DIR) + "/resources/falcon2.obj", 0.35f);
     falcon.SetMaterial(make_shared<Material>(Material(RED / 2, BLACK, 0, BLACK, BLACK)));
     scene.AddShape(falcon);
     //scene.SetCamera(Pinhole(Vect(0,0,1), tm*Vect(1,0,0), tm*Vect(0, 1, 0), tm*Point (0, -2, 0), (float)3.14159/2, 1.0, 50, 40));

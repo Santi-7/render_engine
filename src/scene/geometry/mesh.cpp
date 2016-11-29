@@ -72,7 +72,7 @@ void ClampPoints(vector<Point> &points, Point &maxValues, Point &minValues, floa
 
 }
 
-Mesh::Mesh(const string &filename, bool clampValues)
+Mesh::Mesh(const string &filename, float maxDistFromOrigin)
 {
     vector<Point> positions;
     vector<Vect> normals;
@@ -113,9 +113,9 @@ Mesh::Mesh(const string &filename, bool clampValues)
     Point maxValues(maxX, maxY, maxZ);
     Point minValues(minX, minY, minZ);
 
-    if (clampValues)
+    if (maxDistFromOrigin != 0.0f)
     {
-        ClampPoints(positions, maxValues, minValues, 0.35f);
+        ClampPoints(positions, maxValues, minValues, maxDistFromOrigin);
     }
 
     if (normals.size() == 0)
