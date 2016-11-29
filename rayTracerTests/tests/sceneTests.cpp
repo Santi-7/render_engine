@@ -362,13 +362,13 @@ TEST(Mesh, Falcon)
 {
     Scene scene;
     TransformationMatrix tm;
-    tm.SetXRotation(0*-PI/9);
+    tm.SetXRotation(-PI/9);
 
-    Mesh falcon(string(PROJECT_DIR) + "/resources/falcon.obj", true);
+    Mesh falcon(string(PROJECT_DIR) + "/resources/falcon2.obj", true);
     falcon.SetMaterial(make_shared<Material>(Material(RED / 2, BLACK, 0, BLACK, BLACK)));
     scene.AddShape(falcon);
-    scene.SetCamera(Pinhole(Vect(0,0,1), tm*Vect(1,0,0), tm*Vect(0, 1, 0), tm*Point (0, -2, 0), (float)3.14159/2, 1.0, 50, 40));
-    //scene.SetCamera(Pinhole(Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0, 0, 1), tm*Point (0, 0, -2), (float)3.14159/2, 1.0, 50, 40));
+    //scene.SetCamera(Pinhole(Vect(0,0,1), tm*Vect(1,0,0), tm*Vect(0, 1, 0), tm*Point (0, -2, 0), (float)3.14159/2, 1.0, 50, 40));
+    scene.SetCamera(Pinhole(Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0, 0, 1), tm*Point (0, 0, -2), (float)3.14159/2, 1.0, 100, 100));
 
     scene.AddShape(Plane(Point(-2, 0, 0), Vect(1,0,0))); // Left wall.
     scene.AddShape(Plane(Point(2, 0, 0), Vect(-1,0,0))); // Right wall.

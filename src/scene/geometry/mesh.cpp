@@ -16,28 +16,37 @@
 
 typedef std::tuple<unsigned int, unsigned int, unsigned int> Face;
 
-float ClampPoints(vector<Point> &points, const Point &maxValues, const Point &minValues, float desiredMax)
+float ClampPoints(vector<Point> &points, Point maxValues, Point minValues, float desiredMax)
 {
-    float maxValue = max({std::abs(minValues.GetX()), maxValues.GetX(),
-                          std::abs(minValues.GetY()), maxValues.GetY(),
-                          std::abs(minValues.GetZ()), maxValues.GetZ()});
+    Point meanValues((minValues.GetX() + maxValues.GetX()) / 2,
+                     (minValues.GetY() + maxValues.GetY()) / 2,
+                     (minValues.GetZ() + maxValues.GetZ()) / 2);
+
+    // Center the maximum points in the origin of coordinates for the maximum values. The minimum values are -maxValues
+    maxValues = Point(maxValues.GetX() - meanValues.GetX(),
+                      maxValues.GetY() - meanValues.GetY(),
+                      maxValues.GetZ() - meanValues.GetZ());
+
+    // Get the maximum absolute value from all the values in the points. This way we can limit the maximum value to
+    // be touching a face of a Cube in the origin between points -desiredMax and desiredMax
+    float maxValue = max({maxValues.GetX(),
+                          maxValues.GetY(),
+                          maxValues.GetZ()});
     float scaler = 1.0;
     float scaledMaxValue = maxValue / scaler;
     // Get a rough scale quickly
     while (scaledMaxValue > desiredMax)
     {
-        scaler += 2;
+        scaler *= 2;
         scaledMaxValue = maxValue / scaler;
     }
     // If the greatest value is smaller than the desiredMax value we can't make it any smaller
     if (scaler == 1.0) return 1.0;
-    // Dichotomic search for a better scale.
-    // (e.g scaler is 32, leftScaler is 16, if 24 is over the desiredMax then 24 is the next leftScaler and rightScaler
-    // is still 32)
+    // Dichotomic search for a more precise scaler.
     float leftScaler = scaler / 2;
     float rightScaler = scaler;
     scaler -= scaler / 4;
-    while (maxValue / scaler - desiredMax > 0.01)
+    while (maxValue / scaler - desiredMax > desiredMax/10000)
     {
         if (maxValue / scaler > desiredMax)
         {
@@ -52,9 +61,9 @@ float ClampPoints(vector<Point> &points, const Point &maxValues, const Point &mi
 
     for (unsigned int i = 0; i < points.size(); ++i)
     {
-        points.at(i) = Point(points.at(i).GetX() / scaler,
-                             points.at(i).GetY() / scaler,
-                             points.at(i).GetZ() / scaler);
+        points[i] = Point((points.at(i).GetX() - meanValues.GetX()) / scaler,
+                          (points.at(i).GetY() - meanValues.GetY()) / scaler,
+                          (points.at(i).GetZ() - meanValues.GetZ()) / scaler);
     }
 
     return scaler;
