@@ -16,22 +16,17 @@
 
 typedef std::tuple<unsigned int, unsigned int, unsigned int> Face;
 
-float ClampPoints(vector<Point> &points, Point maxValues, Point minValues, float desiredMax)
+void ClampPoints(vector<Point> &points, Point &maxValues, Point &minValues, float desiredMax)
 {
     Point meanValues((minValues.GetX() + maxValues.GetX()) / 2,
                      (minValues.GetY() + maxValues.GetY()) / 2,
                      (minValues.GetZ() + maxValues.GetZ()) / 2);
 
-    // Center the maximum points in the origin of coordinates for the maximum values. The minimum values are -maxValues
-    maxValues = Point(maxValues.GetX() - meanValues.GetX(),
-                      maxValues.GetY() - meanValues.GetY(),
-                      maxValues.GetZ() - meanValues.GetZ());
-
     // Get the maximum absolute value from all the values in the points. This way we can limit the maximum value to
     // be touching a face of a Cube in the origin between points -desiredMax and desiredMax
-    float maxValue = max({maxValues.GetX(),
-                          maxValues.GetY(),
-                          maxValues.GetZ()});
+    float maxValue = max({maxValues.GetX() - meanValues.GetX(),
+                          maxValues.GetY() - meanValues.GetY(),
+                          maxValues.GetZ() - meanValues.GetZ()});
     float scaler = 1.0;
     float scaledMaxValue = maxValue / scaler;
     // Get a rough scale quickly
@@ -41,32 +36,40 @@ float ClampPoints(vector<Point> &points, Point maxValues, Point minValues, float
         scaledMaxValue = maxValue / scaler;
     }
     // If the greatest value is smaller than the desiredMax value we can't make it any smaller
-    if (scaler == 1.0) return 1.0;
+    if (scaler == 1.0) return;
     // Dichotomic search for a more precise scaler.
     float leftScaler = scaler / 2;
     float rightScaler = scaler;
     scaler -= scaler / 4;
-    while (maxValue / scaler - desiredMax > desiredMax/10000)
+    while (abs(maxValue / scaler - desiredMax) > desiredMax/10000)
     {
         if (maxValue / scaler > desiredMax)
         {
-            rightScaler = scaler;
+            leftScaler= scaler;
         }
         else
         {
-            leftScaler = scaler;
+            rightScaler = scaler;
         }
-        scaler = leftScaler + rightScaler / 2;
+        scaler = (leftScaler + rightScaler) / 2;
     }
 
     for (unsigned int i = 0; i < points.size(); ++i)
     {
-        points[i] = Point((points.at(i).GetX() - meanValues.GetX()) / scaler,
-                          (points.at(i).GetY() - meanValues.GetY()) / scaler,
-                          (points.at(i).GetZ() - meanValues.GetZ()) / scaler);
+        points[i] = Point((points[i].GetX() - meanValues.GetX()) / scaler,
+                          (points[i].GetY() - meanValues.GetY()) / scaler,
+                          (points[i].GetZ() - meanValues.GetZ()) / scaler);
     }
 
-    return scaler;
+    // Work out the new centered maximum and minimum points in the origin of coordinates.
+    maxValues = Point((maxValues.GetX() - meanValues.GetX()) / scaler,
+                      (maxValues.GetY() - meanValues.GetY()) / scaler,
+                      (maxValues.GetZ() - meanValues.GetZ()) / scaler);
+
+    minValues = Point((minValues.GetX() - meanValues.GetX()) / scaler,
+                      (minValues.GetY() - meanValues.GetY()) / scaler,
+                      (minValues.GetZ() - meanValues.GetZ()) / scaler);
+
 }
 
 Mesh::Mesh(const string &filename, bool clampValues)
@@ -107,15 +110,12 @@ Mesh::Mesh(const string &filename, bool clampValues)
         } else continue;
     }
 
+    Point maxValues(maxX, maxY, maxZ);
+    Point minValues(minX, minY, minZ);
+
     if (clampValues)
     {
-        float scaleReducedBy = ClampPoints(positions, Point(maxX, maxY, maxZ), Point(minX, minY, minZ), 1.0f);
-        minX /= scaleReducedBy;
-        minY /= scaleReducedBy;
-        minZ /= scaleReducedBy;
-        maxX /= scaleReducedBy;
-        maxY /= scaleReducedBy;
-        maxZ /= scaleReducedBy;
+        ClampPoints(positions, maxValues, minValues, 0.35f);
     }
 
     if (normals.size() == 0)
@@ -149,9 +149,9 @@ Mesh::Mesh(const string &filename, bool clampValues)
                                                            normals.at(get<2>(faces.at(i))))));
         }
     }
-    boundingShape = shared_ptr<Shape>(new Box(Rectangle(Vect(0,1,0), Point(minX, minY, minZ), Point(maxX, minY, maxZ)), maxY - minY));
-    cout << minX << ' ' << minY << ' ' << minZ << '\n';
-    cout << maxX << ' ' << maxY << ' ' << maxZ << '\n';
+    boundingShape = shared_ptr<Shape>(new Box(Rectangle(Vect(0,1,0), minValues, Point(maxValues.GetX(), minValues.GetY(), maxValues.GetZ())), maxValues.GetY() - minValues.GetY()));
+    cout << maxValues << '\n';
+    cout << minValues << '\n';
 }
 
 void Mesh::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
