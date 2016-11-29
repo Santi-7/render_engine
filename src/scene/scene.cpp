@@ -80,6 +80,8 @@ unique_ptr<Image> Scene::RenderMultiThread(const unsigned int threadCount) const
         linesPerThread[i % threadCount]->push_back(i);
     }
 
+    // Start printing the progress bar at 0% completion
+    printProgressBar(0, 1);
     vector<thread> threads(threadCount);
     // Initialize and start threads. Each thread will render the lines in their corresponding vector.
     for (unsigned int i = 0; i < threadCount; ++i)
