@@ -260,10 +260,10 @@ Color Scene::DiffuseLight(const Point &point, const Vect &normal,
                   shape.GetMaterial()->PhongBRDF(in.GetDirection() * -1,
                                                  lightRay.GetDirection(),
                                                  normal, point) *
-                  // Cosine. We can avoid it and not divide again later.
-                  /* cos(inclination) * */
+                  // Cosine and sine. We can avoid it and not divide again later.
+                  /* cos(inclination) * sin(inclination) */
                   // 1 / PDF.
-                  (PI / (sin(inclination) /* * cos(inclination) */ ));
+                  (PI /* / (sin(inclination) * cos(inclination)) */ );
     }
     return retVal / DIFFUSE_RAYS;
 }
