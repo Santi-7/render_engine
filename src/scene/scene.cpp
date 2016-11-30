@@ -261,7 +261,7 @@ Color Scene::DiffuseLight(const Point &point, const Vect &normal,
                                                  lightRay.GetDirection(),
                                                  normal, point) *
                   // Cosine. We can avoid it and not divide again later.
-                  /* * cos(inclination) */
+                  /* cos(inclination) * */
                   // 1 / PDF.
                   (PI / (sin(inclination) /* * cos(inclination) */ ));
     }
