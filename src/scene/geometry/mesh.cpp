@@ -16,7 +16,7 @@
 
 typedef std::tuple<unsigned int, unsigned int, unsigned int> Face;
 
-void ClampPoints(vector<Point> &points, Point &maxValues, Point &minValues, float desiredMax)
+void ClampPoints(vector<Point> &points, Point &maxValues, Point &minValues, float desiredMax, const Vect desiredCenter)
 {
     Point meanValues((minValues.GetX() + maxValues.GetX()) / 2,
                      (minValues.GetY() + maxValues.GetY()) / 2,
@@ -58,21 +58,21 @@ void ClampPoints(vector<Point> &points, Point &maxValues, Point &minValues, floa
     {
         points[i] = Point((points[i].GetX() - meanValues.GetX()) / scaler,
                           (points[i].GetY() - meanValues.GetY()) / scaler,
-                          (points[i].GetZ() - meanValues.GetZ()) / scaler);
+                          (points[i].GetZ() - meanValues.GetZ()) / scaler) + desiredCenter;
     }
 
     // Work out the new centered maximum and minimum points in the origin of coordinates.
     maxValues = Point((maxValues.GetX() - meanValues.GetX()) / scaler,
                       (maxValues.GetY() - meanValues.GetY()) / scaler,
-                      (maxValues.GetZ() - meanValues.GetZ()) / scaler);
+                      (maxValues.GetZ() - meanValues.GetZ()) / scaler) + desiredCenter;
 
     minValues = Point((minValues.GetX() - meanValues.GetX()) / scaler,
                       (minValues.GetY() - meanValues.GetY()) / scaler,
-                      (minValues.GetZ() - meanValues.GetZ()) / scaler);
+                      (minValues.GetZ() - meanValues.GetZ()) / scaler) + desiredCenter;
 
 }
 
-Mesh::Mesh(const string &filename, float maxDistFromOrigin)
+Mesh::Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift)
 {
     vector<Point> positions;
     vector<Vect> normals;
@@ -91,7 +91,7 @@ Mesh::Mesh(const string &filename, float maxDistFromOrigin)
         if (lineBuf.size() == 0) continue;
         lineStream = istringstream(lineBuf);
         lineStream >> lineType;
-        if (lineType == "v")    // New vertex position
+        if (lineType == "v")    // New vertex shift
         {
             lineStream >> x >> y >> z;
             if (x < minX) minX = x;
@@ -115,7 +115,7 @@ Mesh::Mesh(const string &filename, float maxDistFromOrigin)
 
     if (maxDistFromOrigin != 0.0f)
     {
-        ClampPoints(positions, maxValues, minValues, maxDistFromOrigin);
+        ClampPoints(positions, maxValues, minValues, maxDistFromOrigin, shift);
     }
 
     if (normals.size() == 0)

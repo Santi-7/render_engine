@@ -27,7 +27,7 @@ public:
      * @param filename Path to the obj file containing a mesh.
      * @return Mesh object.
      */
-    Mesh(const string &filename, float maxDistFromOrigin);
+    Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift);
 
     float Intersect(const LightRay &lightRay) const;
 

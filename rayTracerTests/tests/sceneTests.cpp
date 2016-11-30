@@ -273,7 +273,7 @@ TEST(Mesh, Tetrahedron)
 {
     Scene scene;
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0.25f,0.25f,0), (float)3.14159/2, 1.0, 255, 255));
-    Mesh tetrahedron(string(PROJECT_DIR) + "/resources/tetrahedron.obj", 0.0f);
+    Mesh tetrahedron(string(PROJECT_DIR) + "/resources/tetrahedron.obj", 0.0f, Vect(0,0,0));
     scene.AddShape(tetrahedron);
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
     scene.AddLightSource(PointLight(Point(-1,5,0), 30, WHITE));
@@ -288,7 +288,7 @@ TEST(Mesh, Teapot)
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592/2);
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0.2,-0.55f), (float)3.14159/2, 1.0, 600, 600));
-    Mesh teapot(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.35f);
+    Mesh teapot(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.35f, Vect(0,0,0));
     scene.AddShape(teapot);
 
     scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.
@@ -308,7 +308,7 @@ TEST(Mesh, Woman)
     scene.SetCamera(Pinhole(Vect(0,0,1), Vect(1,0,0), Vect(0,1,0), Point (0,-0.6f,0), (float)3.14159/2, 1.0, 300, 300));
     scene.AddLightSource(PointLight(Point(0,-0.5f,0), 1, WHITE));
 
-    Mesh woman (string(PROJECT_DIR) + "/resources/woman.obj", 0.35f);
+    Mesh woman (string(PROJECT_DIR) + "/resources/woman.obj", 0.35f, Vect(0,0,0));
     scene.AddShape(woman);
 
     scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.
@@ -325,7 +325,7 @@ TEST(Mesh, IronGiant)
     TransformationMatrix tm;
     tm.SetYRotation((float) 3.141592);
     scene.SetCamera(Pinhole(Vect(0, 1, 0), Vect(1, 0, 0), Vect(0, 0, -1), Point(0, 0.35f, 0.95f), (float) 3.14159 / 2, 1.0, 50, 50));
-    Mesh ironGiant(string(PROJECT_DIR) + "/resources/iron_giant.obj", 0.35f);
+    Mesh ironGiant(string(PROJECT_DIR) + "/resources/iron_giant.obj", 0.35f, Vect(0,0,0));
     scene.AddShape(ironGiant);
 
     scene.AddShape(Plane(Point(-1, 0, 0), Vect(1, 0, 0))); // Left wall.
@@ -347,7 +347,7 @@ TEST(Mesh, Falcon)
     TransformationMatrix tm;
     tm.SetXRotation(-PI/9);
 
-    Mesh falcon(string(PROJECT_DIR) + "/resources/falcon2.obj", 0.35f);
+    Mesh falcon(string(PROJECT_DIR) + "/resources/falcon2.obj", 0.35f, Vect(0,0,0));
     falcon.SetMaterial(make_shared<Material>(Material(RED / 2, BLACK, 0, BLACK, BLACK)));
     scene.AddShape(falcon);
     //scene.SetCamera(Pinhole(Vect(0,0,1), tm*Vect(1,0,0), tm*Vect(0, 1, 0), tm*Point (0, -2, 0), (float)3.14159/2, 1.0, 50, 40));
