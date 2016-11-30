@@ -148,7 +148,7 @@ TEST(SimpleLight, Box)
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (1,1,-5), PI/3, 1.0, 960, 540));
 
     scene.AddLightSource(PointLight(Point(1.5f,1.5f,-1.5f), 20, WHITE));
-    Box redBox(Rectangle(Vect(0,0,1), Point(-0.4999f, 0, 0), Point(0.5f, -1, 0)), 1);
+    Box redBox(Rectangle(Vect(0,0,1), Point(-0.4999f, 0.0001, 0.0001), Point(0.5f, -1, 0.0001)), 0.99999);
     redBox.SetMaterial(CheckerBoard(0.24999f, Color(0.85f, 0.22f, 0.04f), Color(0.15f, 0.12f, 0.9f)));
     scene.AddShape(redBox);
 
@@ -158,6 +158,26 @@ TEST(SimpleLight, Box)
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
     auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("box.ppm");
+}
+
+TEST(SimpleLight, BoxTop)
+{ // A plane as seen from the .
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation(PI/2);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (1,4,-0.1f), PI/3, 1.0, 960, 540));
+
+    scene.AddLightSource(PointLight(Point(1.5f,1.5f,-1.5f), 20, WHITE));
+    Box redBox(Rectangle(Vect(0,0,1), Point(-0.4999f, 0.00001f, 0.0001), Point(0.5f, -0.9999f, 0.0001)), 1);
+    redBox.SetMaterial(CheckerBoard(0.24999f, Color(0.85f, 0.22f, 0.04f), Color(0.15f, 0.12f, 0.9f)));
+    scene.AddShape(redBox);
+
+    Plane wall(Point(0, 0, 1.75f), Vect(0,0,-1));
+    wall.SetMaterial(make_shared<Material>(Material(GREEN, BLACK, 0.0f, BLACK, BLACK)));
+    scene.AddShape(wall);
+    scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
+    auto renderedImage = scene.RenderMultiThread(THREADS);
+    renderedImage->Save("boxTop.ppm");
 }
 
 TEST(Render, XBoxes)
