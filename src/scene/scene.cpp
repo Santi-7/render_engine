@@ -159,8 +159,8 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay,
                          *nearestShape, specularSteps, diffuseSteps) +
-           DiffuseLight(intersection, normal, *nearestShape,
-                        specularSteps, diffuseSteps);
+           DiffuseLight(intersection, normal, lightRay,
+                        *nearestShape, specularSteps, diffuseSteps);
 }
 
 Color Scene::DirectLight(const Point &point, Vect &normal,
@@ -187,12 +187,13 @@ Color Scene::DirectLight(const Point &point, Vect &normal,
                 /* Add the radiance from the current light if it
                    illuminates the [point] from the visible semi-sphere. */
                 retVal += // Li.
-                        mLightSources[i]->GetColor(point) *
-                        // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
-                        shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
-                                                       lightRay.GetDirection(), normal, point) *
-                        // Cosine.
-                        max(multiplier, 0.0f);
+                          mLightSources[i]->GetColor(point) *
+                          // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
+                          shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
+                                                         lightRay.GetDirection(),
+                                                         normal, point) *
+                          // Cosine.
+                          max(multiplier, 0.0f);
             }
         }
     }
@@ -231,8 +232,8 @@ inline static tuple<float, float> UniformCosineSampling()
 }
 
 Color Scene::DiffuseLight(const Point &point, const Vect &normal,
-                          const Shape &shape, const int specularSteps,
-                          const int diffuseSteps) const
+                          const LightRay &in, const Shape &shape,
+                          const int specularSteps, const int diffuseSteps) const
 {
     if (diffuseSteps <= 0) return BLACK;
 
@@ -253,10 +254,18 @@ Color Scene::DiffuseLight(const Point &point, const Vect &normal,
                       cos(inclination));
         // Transform the ray of light to global coordinates.
         LightRay lightRay(point, fromLocalToGlobal * localRay);
-        retVal += GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1) *
-                  (PI / (sin(inclination) * cos(inclination))); // 1 / PDF.
+        retVal += // Li.
+                  GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1) *
+                  // Phong BRDF. Wo = in * -1, Wi = lightRay.
+                  shape.GetMaterial()->PhongBRDF(in.GetDirection() * -1,
+                                                 lightRay.GetDirection(),
+                                                 normal, point) *
+                  // Cosine. We can avoid it and not divide again later.
+                  /* * cos(inclination) */
+                  // 1 / PDF.
+                  (PI / (sin(inclination) /* * cos(inclination) */ ));
     }
-    return retVal * (shape.GetMaterial()->GetDiffuse(point) / DIFFUSE_RAYS);
+    return retVal / DIFFUSE_RAYS;
 }
 
 bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
