@@ -152,7 +152,9 @@ TEST(SimpleLight, Box)
     redBox.SetMaterial(CheckerBoard(0.24999f, Color(0.85f, 0.22f, 0.04f), Color(0.15f, 0.12f, 0.9f)));
     scene.AddShape(redBox);
 
-    scene.AddShape(Plane(Point(0, 0, 1.75f), Vect(0,0,-1)));
+    Plane wall(Point(0, 0, 1.75f), Vect(0,0,-1));
+    wall.SetMaterial(make_shared<Material>(Material(GREEN, BLACK, 0.0f, BLACK, BLACK)));
+    scene.AddShape(wall);
     scene.AddShape(Plane(Point(0,-1,0), Vect(0,1,0)));
     auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("box.ppm");

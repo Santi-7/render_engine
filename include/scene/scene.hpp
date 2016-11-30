@@ -140,14 +140,15 @@ private:
      *
      * @param point .
      * @param normal .
+     * @param in.
      * @param shape .
      * @param specularSteps .
      * @param diffuseSteps .
      * @return .
      */
     Color DiffuseLight(const Point &point, const Vect &normal,
-                       const Shape &shape, const int specularSteps,
-                       const int diffuseSteps) const;
+                       const LightRay &in, const Shape &shape,
+                       const int specularSteps, const int diffuseSteps) const;
 
     // TODO: Add doc.
     /**
