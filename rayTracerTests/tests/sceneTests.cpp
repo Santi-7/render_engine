@@ -482,6 +482,37 @@ TEST(Materials, SpeckledLambiertianSpheres)
     image->Save("speckledLambertianSpheres.ppm");
 }
 
+TEST(Materials, SphereInSphere)
+{
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation(PI/10);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,-0.1f,-1), PI/3, 1.0, 500, 500));
+    scene.AddLightSource(PointLight(Point(0,4.35f,0.1f), 150, WHITE));
+
+    Plane board(Plane(Point(0,-1,0), Vect(0,1,0)));
+    auto chessMat = CheckerBoard(0.24999f, (RED + GREEN) / 2, BLACK);
+    board.SetMaterial(chessMat);
+    scene.AddShape(board);
+    Plane redWall(Plane(Point(0,0,1), Vect(0,0,-1)));
+    redWall.SetMaterial(make_shared<Material>(Material(RED/2, BLACK, 0.0f, BLACK, BLACK)));
+    scene.AddShape(redWall);
+
+    scene.AddShape(Plane(Point(1,0,0), Vect(-1,0,0)));
+    scene.AddShape(Plane(Point(-1,0,0), Vect(1,0,0)));
+
+    Sphere oSphere(Point(0,-0.25f,0), 0.25f);
+    oSphere.SetMaterial(GLASS); oSphere.SetRefractiveIndex(GLASS_RI);
+    scene.AddShape(oSphere);
+
+    Sphere mSphere(Point(0,-0.25f,0), 0.05f);
+    mSphere.SetMaterial(GLASS); mSphere.SetRefractiveIndex(WATER_RI);
+    scene.AddShape(mSphere);
+
+    auto image = scene.RenderMultiThread(THREADS);
+    image->Save("sphereception.ppm");
+}
+
 TEST(Materials, Chess)
 {
     Scene scene;
