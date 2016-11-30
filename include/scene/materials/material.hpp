@@ -94,6 +94,6 @@ private:
 static const shared_ptr<Material> MIRROR = make_shared<Material>(Material(BLACK, BLACK, 0, WHITE, BLACK));
 static const shared_ptr<Material> LAMBERTIAN = make_shared<Material>(Material(GRAY, BLACK, 0, BLACK, BLACK));
 static const shared_ptr<Material> SPECKLED_LAMBERTIAN = make_shared<Material>(Material(GRAY, GRAY, 20, BLACK, BLACK));
-static const shared_ptr<Material> GLASS = make_shared<Material>(Material(BLACK,BLACK,0,BLACK,GRAY));
+static const shared_ptr<Material> GLASS = make_shared<Material>(Material(BLACK,BLACK,0,BLACK,WHITE));
 
 #endif // RAY_TRACER_MATERIAL_HPP
