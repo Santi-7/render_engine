@@ -180,6 +180,7 @@ static constexpr Color RED      (1.0f, 0.0f, 0.0f);
 static constexpr Color GREEN    (0.0f, 1.0f, 0.0f);
 static constexpr Color BLUE     (0.0f, 0.0f, 1.0f);
 static constexpr Color YELLOW   (1.0f, 1.0f, 0.0f);
-static constexpr Color PURPLE   (0.0f, 1.0f, 1.0f);
+static constexpr Color PURPLE   (1.0f, 0.0f, 1.0f);
+static constexpr Color SKY_BLUE (0.0f, 1.0f, 1.0f);
 
 #endif // RAY_TRACER_COLOR_HPP
