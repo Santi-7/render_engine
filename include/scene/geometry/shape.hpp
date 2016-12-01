@@ -139,6 +139,26 @@ public:
         mN = refractiveIndex;
     }
 
+    bool IsLightSource()
+    {
+        return mIsLightSource;
+    }
+
+    Color GetEmmitedLight()
+    {
+        return mEmitted;
+    }
+
+    /**
+     * Sets the emmited color value and marks this shape as a light source
+     * @param emmited
+     */
+    void SetEmittedLight(const Color &emmited)
+    {
+        mEmitted = emmited;
+        mIsLightSource = true;
+    }
+
 private:
 
     // TODO: Add doc.
@@ -148,6 +168,10 @@ private:
     // TODO: Add doc.
     /* . */
     refractiveIndex mN = AIR_RI;
+
+    Color mEmitted = Color(0.0f,0.0f,0.0f);
+
+    bool mIsLightSource = false;
 };
 
 #endif // RAY_TRACER_SHAPE_HPP
