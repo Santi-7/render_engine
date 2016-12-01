@@ -555,3 +555,55 @@ TEST(Materials, Chess)
     auto image = scene.RenderMultiThread(THREADS);
     image->Save("chess.ppm");
 }
+
+TEST(LightShape, Desert)
+{
+    Scene scene;
+
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point(0, 0.0005f, -0.09f), PI/3, 1.0, 960, 540));
+
+    Plane ground(Point(0,0,0), Vect(0,1,0));
+    ground.SetMaterial(make_shared<Material>(Material(Color((YELLOW + RED / 10) / 3), BLACK, 0.0f, BLACK, BLACK)));
+    scene.AddShape(ground);
+
+    Sphere littleSphere(Point(0, 0.0004f, 0.05f), 0.0003f);
+    littleSphere.SetMaterial(MIRROR);
+    scene.AddShape(littleSphere);
+
+    Sphere sky(Point(0,0,0), 400.0f);
+    sky.SetMaterial(make_shared<Material>(Material(Color(0, 0.5f, 0.99f), BLACK, 0.0f, BLACK, WHITE * 0.9f)));
+    sky.SetEmittedLight(Color(0, 0.5f, 0.99f));
+    scene.AddShape(sky);
+
+    scene.AddLightSource(PointLight(Point(-20, 29, 30), 100, WHITE ));
+    Sphere sun(Point(-20, 50, 30), 20.0f);
+    sun.SetMaterial(make_shared<Material>(Material(WHITE + RED/1.5f + YELLOW /5, WHITE, 0.2f, WHITE, WHITE)));
+    sun.SetEmittedLight(WHITE * 0.95f);
+    scene.AddShape(sun);
+
+    auto image = scene.RenderMultiThread(THREADS);
+
+    image->Save("desert.ppm");
+}
+
+TEST(NewIndirect, Planes)
+{
+    Scene scene;
+
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point(0, 0.0005f, -0.09f), PI/3, 1.0, 960, 540));
+
+    scene.AddLightSource(PointLight(Point(0, 0.5, 0.3f), 1, WHITE));
+
+    Plane ground(Point(0,-0.75f,0), Vect(0,1,0));
+    ground.SetMaterial(make_shared<Material>(Material(YELLOW, BLACK, 0.0f, BLACK, BLACK)));
+    ground.SetEmittedLight(ground.GetMaterial()->GetDiffuse() / 2);
+    scene.AddShape(ground);
+
+    Plane ceiling(Point(0,0.75f,0), Vect(0,-1, 0));
+    ceiling.SetMaterial(make_shared<Material>(Material(PURPLE, BLACK, 0.0f, BLACK, BLACK)));
+    scene.AddShape(ceiling);
+
+    auto image = scene.RenderMultiThread(THREADS);
+
+    image->Save("indirectP.ppm");
+}
