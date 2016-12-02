@@ -91,7 +91,7 @@ Mesh::Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift)
         if (lineBuf.size() == 0) continue;
         lineStream = istringstream(lineBuf);
         lineStream >> lineType;
-        if (lineType == "v")    // New vertex shift
+        if (lineType == "v")    // New vertex
         {
             lineStream >> x >> y >> z;
             if (x < minX) minX = x;
