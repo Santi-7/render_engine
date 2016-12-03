@@ -146,7 +146,7 @@ TEST(SimpleLight, PlaneTop)
 TEST(SimpleLight, Box)
 { // A plane as seen from the .
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (1,1,-5), PI/3, 1.0, 960, 540));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (1,1,-5), PI/3, 1.0, 250, 250));
 
     scene.AddLightSource(PointLight(Point(1.5f,1.5f,-1.5f), 20, WHITE));
     Box redBox(Rectangle(Vect(0,0,1), Point(-0.4999f, 0.0001, 0.0001), Point(0.5f, -1, 0.0001)), 0.99999);
@@ -166,7 +166,7 @@ TEST(SimpleLight, BoxTop)
     Scene scene;
     TransformationMatrix tm;
     tm.SetXRotation(PI/2);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (1,4,-0.1f), PI/3, 1.0, 960, 540));
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (1,4,-0.1f), PI/3, 1.0, 250, 250));
 
     scene.AddLightSource(PointLight(Point(1.5f,1.5f,-1.5f), 20, WHITE));
     Box redBox(Rectangle(Vect(0,0,1), Point(-0.4999f, 0.00001f, 0.0001), Point(0.5f, -0.9999f, 0.0001)), 1);
@@ -541,7 +541,7 @@ TEST(Materials, Chess)
     Scene scene;
     TransformationMatrix tm;
     tm.SetXRotation(PI/6);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,-0.3f,-1), PI/3, 1.0, 1920, 1080));
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,-0.3f,-1), PI/3, 1.0, 250, 250));
     scene.AddLightSource(PointLight(Point(0,1,-0.4f), 3, WHITE));
 
     Plane board(Plane(Point(0,-1,0), Vect(0,1,0)));
@@ -561,7 +561,7 @@ TEST(Materials, Chess)
 TEST(Materials, Wrinkled)
 {
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,-0.5f,-6.3f), PI/3, 1.0, 1920, 1080));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,-0.5f,-6.3f), PI/3, 1.0, 250, 250));
     scene.AddLightSource(PointLight(Point(-1, 3, 0), 3, WHITE));
     scene.AddLightSource(PointLight(Point(1, 3, 0), 3, WHITE));
 
@@ -588,7 +588,7 @@ TEST(LightShape, Desert)
 {
     Scene scene;
 
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point(0, 0.0005f, -0.09f), PI/3, 1.0, 960, 540));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point(0, 0.0005f, -0.09f), PI/3, 1.0, 250, 250));
 
     Plane ground(Point(0,0,0), Vect(0,1,0));
     ground.SetMaterial(make_shared<Material>(Material(Color((YELLOW + RED / 10) / 3), BLACK, 0.0f, BLACK, BLACK)));
@@ -618,7 +618,7 @@ TEST(NewIndirect, Planes)
 {
     Scene scene;
 
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point(0, 0.0005f, -0.09f), PI/3, 1.0, 960, 540));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point(0, 0.0005f, -0.09f), PI/3, 1.0, 250, 250));
 
     scene.AddLightSource(PointLight(Point(0, 0.5, 0.3f), 4, WHITE));
 
@@ -641,7 +641,7 @@ TEST(Complex, TeaTime)
     Scene scene;
     TransformationMatrix tm;
     tm.SetXRotation(PI/10);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point(0, -0.35f, -0.99f), PI/3, 1.0, 960, 540));
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point(0, -0.35f, -0.9f), PI/3, 1.0, 250, 250));
     scene.AddLightSource(PointLight(Point(0.3,0.3, 0), 1.3f, WHITE));
 
     Box table(Rectangle(Vect(0,1,0), Point(-0.5f, -1, -0.3f), Point(0.5f, -1, 0.7f)), 0.35f);
@@ -649,11 +649,11 @@ TEST(Complex, TeaTime)
     table.SetNormalModifier(make_shared<CrossHatchModifier>(CrossHatchModifier(1000,1000,1000)));
     scene.AddShape(table);
 
-    Mesh teapot(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.25f, Vect(0,-0.5f,0));
+    /*Mesh teapot(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.25f, Vect(0,-0.5f,0));
     teapot.SetMaterial(MIRROR);
-    scene.AddShape(teapot);
+    scene.AddShape(teapot);*/
 
-    Box room(Rectangle(Vect(0,1,0), Point(-1, -1, -1), Point(1, -1, 1)), 1);
+    Box room(Rectangle(Vect(0,-1,0), Point(-1, -1, -1), Point(1, -1, 1)), 1);
     room.SetMaterial(CheckerBoard(0.499f, WHITE, BLACK));
     scene.AddShape(room);
     auto image = scene.RenderMultiThread(THREADS);
