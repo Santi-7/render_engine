@@ -21,6 +21,7 @@
 #include <geometry/box.hpp>
 #include <materials/checkerBoard.hpp>
 #include <thread>
+#include <materials/crossHatchModifier.hpp>
 
 static const unsigned int THREADS = std::thread::hardware_concurrency();
 
@@ -556,6 +557,33 @@ TEST(Materials, Chess)
     image->Save("chess.ppm");
 }
 
+
+TEST(Materials, Wrinkled)
+{
+    Scene scene;
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,-0.5f,-6.3f), PI/3, 1.0, 1920, 1080));
+    scene.AddLightSource(PointLight(Point(-1, 3, 0), 3, WHITE));
+    scene.AddLightSource(PointLight(Point(1, 3, 0), 3, WHITE));
+
+    Plane board(Plane(Point(0,-1.5f,0), Vect(0,1,0)));
+    //auto chessMat = CheckerBoard(0.49f, WHITE, BLACK);
+    //board.SetMaterial(chessMat);
+    scene.AddShape(board);
+
+    Plane wall(Point(0,0,1.5f), Vect(0,0,-1));
+    wall.SetNormalModifier(make_shared<CrossHatchModifier>(CrossHatchModifier(100,100,100)));
+    scene.AddShape(wall);
+
+    //CrossHatch oSphere(make_shared<Sphere>(Sphere(Point(0,-0.75f,0.2f), 0.55f)), 1.0f, 0.0f, 0.0f);
+    Sphere oSphere(Point(0,-0.75f,0.2f), 0.55f);
+
+    scene.AddShape(oSphere);
+
+    auto image = scene.RenderMultiThread(THREADS);
+    image->Save("wrinkled.ppm");
+}
+
+
 TEST(LightShape, Desert)
 {
     Scene scene;
@@ -592,7 +620,7 @@ TEST(NewIndirect, Planes)
 
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point(0, 0.0005f, -0.09f), PI/3, 1.0, 960, 540));
 
-    scene.AddLightSource(PointLight(Point(0, 0.5, 0.3f), 1, WHITE));
+    scene.AddLightSource(PointLight(Point(0, 0.5, 0.3f), 4, WHITE));
 
     Plane ground(Point(0,-0.75f,0), Vect(0,1,0));
     ground.SetMaterial(make_shared<Material>(Material(YELLOW, BLACK, 0.0f, BLACK, BLACK)));
@@ -606,4 +634,30 @@ TEST(NewIndirect, Planes)
     auto image = scene.RenderMultiThread(THREADS);
 
     image->Save("indirectP.ppm");
+}
+
+TEST(Complex, TeaTime)
+{
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetXRotation(PI/10);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point(0, -0.35f, -0.99f), PI/3, 1.0, 960, 540));
+    scene.AddLightSource(PointLight(Point(0.3,0.3, 0), 1.3f, WHITE));
+
+    Box table(Rectangle(Vect(0,1,0), Point(-0.5f, -1, -0.3f), Point(0.5f, -1, 0.7f)), 0.35f);
+    table.SetMaterial(CheckerBoard(0.2499f, RED / 2 , BLUE / 2));
+    table.SetNormalModifier(make_shared<CrossHatchModifier>(CrossHatchModifier(1000,1000,1000)));
+    scene.AddShape(table);
+
+    Mesh teapot(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.25f, Vect(0,-0.5f,0));
+    teapot.SetMaterial(MIRROR);
+    scene.AddShape(teapot);
+
+    Box room(Rectangle(Vect(0,1,0), Point(-1, -1, -1), Point(1, -1, 1)), 1);
+    room.SetMaterial(CheckerBoard(0.499f, WHITE, BLACK));
+    scene.AddShape(room);
+    auto image = scene.RenderMultiThread(THREADS);
+
+    image->Save("teaTime.ppm");
+
 }

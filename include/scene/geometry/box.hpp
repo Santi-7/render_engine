@@ -62,6 +62,8 @@ public:
         }
     }
 
+    void SetNormalModifier(shared_ptr<VectorModifier> vmod );
+
 protected:
 
     // TODO: Add doc.

@@ -1,8 +1,10 @@
 set(SOURCE_FILES
-        material.cpp checkerBoard.cpp)
+        material.cpp checkerBoard.cpp crossHatchModifier.cpp)
 
 set(HEADER_FILES
-        ${PROJECT_SOURCE_DIR}/include/scene/materials/material.hpp ../../../include/scene/materials/checkerBoard.hpp)
+        ${PROJECT_SOURCE_DIR}/include/scene/materials/material.hpp
+        ${PROJECT_SOURCE_DIR}/include/scene/materials/checkerBoard.hpp
+        ${PROJECT_SOURCE_DIR}/include/scene/materials/crossHatchModifier.hpp)
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/utils

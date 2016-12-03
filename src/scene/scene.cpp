@@ -268,7 +268,7 @@ Color Scene::DiffuseLight(const Point &point, const Vect &normal,
                   // 1 / PDF.
                   (PI /* / (sin(inclination) * cos(inclination)) */ );
     }
-    return retVal / DIFFUSE_RAYS;
+    return retVal * shape.GetMaterial()->GetDiffuse(point)/ DIFFUSE_RAYS;
 }
 
 bool Scene::InShadow(const LightRay &lightRay, const Point &light) const

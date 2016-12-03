@@ -5,7 +5,8 @@ set(SOURCE_FILES
         plane.cpp
         rectangle.cpp
         sphere.cpp
-        triangle.cpp)
+        triangle.cpp
+        )
 
 set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/box.hpp
@@ -15,7 +16,8 @@ set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/rectangle.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/shape.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/sphere.hpp
-        ${PROJECT_SOURCE_DIR}/include/scene/geometry/triangle.hpp)
+        ${PROJECT_SOURCE_DIR}/include/scene/geometry/triangle.hpp
+        )
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/containers

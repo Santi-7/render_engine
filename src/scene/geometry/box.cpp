@@ -36,10 +36,7 @@ float Box::Intersect(const LightRay &lightRay) const
     // Check if the ray of light intersects with any of the box's face.
     for (const shared_ptr<Rectangle> &face : mFaces)
     {
-        // TODO: REMOVE THIS DEBUG VARIABLE
-        Rectangle dbg = *face;
         float t = face->Intersect(lightRay);
-        dbg.Intersect(lightRay);
         if (t < tMin) tMin = t;
     }
     // The ray of light intersects with the current face.
@@ -65,5 +62,13 @@ void Box::SetMaterial(shared_ptr<Material> material)
     for (const shared_ptr<Rectangle> &face : mFaces)
     {
         face->SetMaterial(material);
+    }
+}
+
+void Box::SetNormalModifier(shared_ptr<VectorModifier> vmod)
+{
+    for (const shared_ptr<Rectangle> &face : mFaces)
+    {
+        face->SetNormalModifier(vmod);
     }
 }

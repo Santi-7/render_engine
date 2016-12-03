@@ -15,6 +15,7 @@
 #include <memory>
 #include <mathConstants.hpp>
 #include <visibleNormal.hpp>
+#include <materials/vectorModifier.hpp>
 
 using namespace std;
 
@@ -97,7 +98,10 @@ public:
      */
     Vect GetVisibleNormal(const Point &point, const LightRay &seenFrom)
     {
-        return VisibleNormal(GetNormal(point), seenFrom.GetDirection());
+        if (mNormalModifier != nullptr)
+            return mNormalModifier->Modify(VisibleNormal(GetNormal(point), seenFrom.GetDirection()), point);
+        else
+            return VisibleNormal(GetNormal(point), seenFrom.GetDirection());
     }
 
     // TODO: Add doc.
@@ -159,6 +163,11 @@ public:
         mIsLightSource = true;
     }
 
+    virtual void SetNormalModifier(shared_ptr<VectorModifier> vmod)
+    {
+        mNormalModifier = vmod;
+    }
+
 private:
 
     // TODO: Add doc.
@@ -168,6 +177,8 @@ private:
     // TODO: Add doc.
     /* . */
     refractiveIndex mN = AIR_RI;
+
+    shared_ptr<VectorModifier> mNormalModifier = nullptr;
 
     Color mEmitted = Color(0.0f,0.0f,0.0f);
 
