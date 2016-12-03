@@ -8,7 +8,6 @@
 
 #include <box.hpp>
 #include <cfloat>
-#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <mesh.hpp>
@@ -72,6 +71,175 @@ void ClampPoints(vector<Point> &points, Point &maxValues, Point &minValues, floa
 
 }
 
+
+Mesh Mesh::LoadObjFile(const string& filename, float maxDistFromOrigin, const Vect& shift)
+{
+    vector<shared_ptr<Triangle>> triangles;
+
+    vector<Point> positions;
+    vector<Vect> normals;
+    vector<Face> faces;
+    ifstream objFile(filename);
+    string lineBuf;
+    string lineType;
+    istringstream lineStream;
+
+    float x, y, z;
+    unsigned int a, b, c;
+    float minX = FLT_MAX, minY = FLT_MAX, minZ = FLT_MAX;
+    float maxX = -FLT_MAX, maxY = -FLT_MAX, maxZ = -FLT_MAX;
+    while (objFile.good()) {
+        getline(objFile, lineBuf);
+        if (lineBuf.size() == 0) continue;
+        lineStream = istringstream(lineBuf);
+        lineStream >> lineType;
+        if (lineType == "v")    // New vertex
+        {
+            lineStream >> x >> y >> z;
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+            if (z < minZ) minZ = z;
+            if (z > maxZ) maxZ = z;
+            positions.push_back(Point(x, y, z));
+        } else if (lineType == "vn") {   // New vertex normal
+            lineStream >> x >> y >> z;
+            normals.push_back(Vect(x, y, z));
+        } else if (lineType == "f") {   // New face
+            lineStream >> a >> b >> c;
+            faces.push_back(Face(a - 1, b - 1, c - 1));
+        } else continue;
+    }
+
+    Point maxValues(maxX, maxY, maxZ);
+    Point minValues(minX, minY, minZ);
+
+    if (maxDistFromOrigin != 0.0f)
+    {
+        ClampPoints(positions, maxValues, minValues, maxDistFromOrigin, shift);
+    }
+
+    if (normals.size() == 0)
+    {
+        for (unsigned int i = 0; i < faces.size(); ++i)
+        {
+            Triangle tmp(positions.at(get<0>(faces.at(i))),
+                    positions.at(get<1>(faces.at(i))),
+                    positions.at(get<2>(faces.at(i))));
+
+            triangles.push_back(make_shared<Triangle>(tmp));
+        }
+    }
+    else
+    {
+
+        if (positions.size() != normals.size())
+        {
+            cerr << "Error: the obj file doesn't define the same amount of vertices and normals\n";
+            throw 1; // Stop execution
+        }
+
+        for (unsigned int i = 0; i < faces.size(); ++i)
+        {
+            triangles.push_back(
+                    make_shared<MeshTriangle>(MeshTriangle(positions.at(get<0>(faces.at(i))),
+                            positions.at(get<1>(faces.at(i))),
+                            positions.at(get<2>(faces.at(i))),
+                            normals.at(get<0>(faces.at(i))),
+                            normals.at(get<1>(faces.at(i))),
+                            normals.at(get<2>(faces.at(i))))));
+        }
+    }
+    return Mesh(triangles);
+}
+
+Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
+{
+    cout << "Creating node with: " << triangles.size() << " triangles" << '\n';
+    float minX = FLT_MAX, minY = FLT_MAX, minZ = FLT_MAX;
+    float maxX = -FLT_MAX, maxY = -FLT_MAX, maxZ = -FLT_MAX;
+
+    // Find the maximum and minimum values for the three coordinates.
+    // This will let us create the bounding box and divide the triangles into two.
+    for (const shared_ptr<Triangle> &t : triangles)
+    {
+        // Check Point A
+        if (t->mA.GetX() < minX) minX = t->mA.GetX();
+        if (t->mA.GetX() > maxX) maxX = t->mA.GetX();
+        if (t->mA.GetY() < minY) minY = t->mA.GetY();
+        if (t->mA.GetY() > maxY) maxY = t->mA.GetY();
+        if (t->mA.GetZ() < minZ) minZ = t->mA.GetZ();
+        if (t->mA.GetZ() > maxZ) maxZ = t->mA.GetZ();
+
+        // Check Point B
+        if (t->mB.GetX() < minX) minX = t->mB.GetX();
+        if (t->mB.GetX() > maxX) maxX = t->mB.GetX();
+        if (t->mB.GetY() < minY) minY = t->mB.GetY();
+        if (t->mB.GetY() > maxY) maxY = t->mB.GetY();
+        if (t->mB.GetZ() < minZ) minZ = t->mB.GetZ();
+        if (t->mB.GetZ() > maxZ) maxZ = t->mB.GetZ();
+
+        // Check Point C
+        if (t->mC.GetX() < minX) minX = t->mC.GetX();
+        if (t->mC.GetX() > maxX) maxX = t->mC.GetX();
+        if (t->mC.GetY() < minY) minY = t->mC.GetY();
+        if (t->mC.GetY() > maxY) maxY = t->mC.GetY();
+        if (t->mC.GetZ() < minZ) minZ = t->mC.GetZ();
+        if (t->mC.GetZ() > maxZ) maxZ = t->mC.GetZ();
+    }
+    // Get the bounding shape
+    mBoundingShape = shared_ptr<Shape>(
+            new Box(Rectangle(Vect(0, 1, 0), Point(minX, minY, minZ), Point(maxX, minY, maxZ)), maxY-minY));
+
+    // If there are less than 32 triangles make this Mesh a leaf
+    if (triangles.size() < 32)
+    {
+        mIsLeaf = true;
+        mTriangles = triangles;
+    }
+    else
+    {
+        // Find the axis with the greatest 'size'
+        float xSize = maxX - minX;
+        float ySize = maxY - minY;
+        float zSize = maxZ - minZ;
+        float maxSize = max({xSize, ySize, zSize});
+
+        // Sort the triangle vector by the greatest axis
+        if (maxSize == xSize)
+        {
+            sort(triangles.begin(), triangles.end(), [](shared_ptr<Triangle> &t1, shared_ptr<Triangle> &t2)
+            {
+                return t1->GetCenter().GetX() > t2->GetCenter().GetX();
+            });
+        }
+        else if (maxSize == ySize)
+        {
+            sort(triangles.begin(), triangles.end(), [](shared_ptr<Triangle> &t1, shared_ptr<Triangle> &t2)
+            {
+                return t1->GetCenter().GetY() > t2->GetCenter().GetY();
+            });
+        }
+        else
+        {
+            sort(triangles.begin(), triangles.end(), [](shared_ptr<Triangle> &t1, shared_ptr<Triangle> &t2)
+            {
+                return t1->GetCenter().GetX() > t2->GetCenter().GetX();
+            });
+        }
+
+        // Split the triangle vector into two halves
+        std::vector<shared_ptr<Triangle>> triangles2(
+                std::make_move_iterator(triangles.begin() + triangles.size()/2),
+                std::make_move_iterator(triangles.end()));
+        triangles.erase(triangles.begin() + triangles.size()/2, triangles.end());
+
+        mLeft = make_shared<Mesh>(Mesh(triangles));
+        mRight = make_shared<Mesh>(Mesh(triangles2));
+    }
+}
+
 Mesh::Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift)
 {
     vector<Point> positions;
@@ -126,7 +294,7 @@ Mesh::Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift)
                          positions.at(get<1>(faces.at(i))),
                          positions.at(get<2>(faces.at(i))));
 
-            triangles.push_back(make_shared<Triangle>(tmp));
+            mTriangles.push_back(make_shared<Triangle>(tmp));
         }
     }
     else
@@ -140,7 +308,7 @@ Mesh::Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift)
 
         for (unsigned int i = 0; i < faces.size(); ++i)
         {
-            triangles.push_back(
+            mTriangles.push_back(
                     make_shared<MeshTriangle>(MeshTriangle(positions.at(get<0>(faces.at(i))),
                                                            positions.at(get<1>(faces.at(i))),
                                                            positions.at(get<2>(faces.at(i))),
@@ -149,18 +317,18 @@ Mesh::Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift)
                                                            normals.at(get<2>(faces.at(i))))));
         }
     }
-    boundingShape = shared_ptr<Shape>(new Box(Rectangle(Vect(0,1,0), minValues, Point(maxValues.GetX(), minValues.GetY(), maxValues.GetZ())), maxValues.GetY() - minValues.GetY()));
+    mBoundingShape = shared_ptr<Shape>(new Box(Rectangle(Vect(0,1,0), minValues, Point(maxValues.GetX(), minValues.GetY(), maxValues.GetZ())), maxValues.GetY() - minValues.GetY()));
     cout << maxValues << '\n';
     cout << minValues << '\n';
 }
 
 void Mesh::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
 {
-    if (boundingShape->Intersect(lightRay) != FLT_MAX)
+    if (mBoundingShape->Intersect(lightRay) != FLT_MAX)
     {
-        for (unsigned int i = 0; i < triangles.size(); ++i)
+        for (unsigned int i = 0; i < mTriangles.size(); ++i)
         {
-            triangles.at(i)->Intersect(lightRay, minT, nearestShape, triangles.at(i));
+            mTriangles.at(i)->Intersect(lightRay, minT, nearestShape, mTriangles.at(i));
         }
     }
 }
@@ -172,11 +340,11 @@ Vect Mesh::GetNormal(const Point &point) const
 
 float Mesh::Intersect(const LightRay &lightRay) const
 {
-    if (boundingShape->Intersect(lightRay) != FLT_MAX)
+    if (mBoundingShape->Intersect(lightRay) != FLT_MAX)
     {
-        for (unsigned int i = 0; i < triangles.size(); ++i)
+        for (unsigned int i = 0; i < mTriangles.size(); ++i)
         {
-            float tmp = triangles.at(i)->Intersect(lightRay);
+            float tmp = mTriangles.at(i)->Intersect(lightRay);
             if (tmp != FLT_MAX) return tmp;
         }
     }
@@ -185,7 +353,7 @@ float Mesh::Intersect(const LightRay &lightRay) const
 
 void Mesh::SetMaterial(shared_ptr<Material> material)
 {
-    for (unsigned int i = 0; i < triangles.size(); ++i) {
-        triangles.at(i)->SetMaterial(material);
+    for (unsigned int i = 0; i < mTriangles.size(); ++i) {
+        mTriangles.at(i)->SetMaterial(material);
     }
 }

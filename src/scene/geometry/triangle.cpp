@@ -52,3 +52,9 @@ void Triangle::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape
         nearestShape = thisShape;
     }
 }
+
+Point Triangle::GetCenter() const
+{
+    return Point((mA.GetX()+mB.GetX()+mC.GetX())/3, (mA.GetY()+mB.GetY()+mC.GetY())/3,
+            (mA.GetZ()+mB.GetZ()+mC.GetZ())/3);
+}

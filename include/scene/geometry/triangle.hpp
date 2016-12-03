@@ -46,7 +46,13 @@ public:
      */
     void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
 
-protected:
+    /**
+     * Returns the three points that form this triangle in a single tuple
+     * @return
+     */
+    Point GetCenter() const;
+
+//protected:
 
     // TODO: Add doc.
     /* . */

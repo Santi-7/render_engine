@@ -386,6 +386,13 @@ TEST(Mesh, Falcon)
     renderedImage->Save("falcon.ppm");
 }
 
+
+TEST(Mesh, BoundingVolumes)
+{
+    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/iron_giant.obj", 0.35, Vect(0,0,0));
+    cout << "FINISHED!" << '\n';
+}
+
 TEST(Materials, FacingMirrors)
 {
     Scene scene;

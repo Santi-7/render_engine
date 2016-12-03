@@ -16,6 +16,7 @@
 using namespace std;
 
 class Mesh : public Shape {
+friend class Triangle;
 
 public:
     /**
@@ -28,6 +29,10 @@ public:
      * @return Mesh object.
      */
     Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift);
+
+    Mesh(vector<shared_ptr<Triangle>> triangles);
+
+    static Mesh LoadObjFile(const string &filename, float maxDistFromOrigin, const Vect &shift);
 
     float Intersect(const LightRay &lightRay) const;
 
@@ -52,8 +57,11 @@ public:
     void SetMaterial(shared_ptr<Material> material);
 
 private:
-    vector<shared_ptr<Triangle>> triangles;
-    shared_ptr<Shape> boundingShape;
+    bool mIsLeaf;
+    shared_ptr<Mesh> mLeft;
+    shared_ptr<Mesh> mRight;
+    shared_ptr<Shape> mBoundingShape;
+    vector<shared_ptr<Triangle>> mTriangles;
 };
 
 #endif //RAY_TRACER_MESH_HPP
