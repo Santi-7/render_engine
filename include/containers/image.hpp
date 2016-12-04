@@ -1,6 +1,8 @@
-/* ---------------------------------------------------------------------------
+/** ---------------------------------------------------------------------------
  ** image.hpp
- ** TODO: Add doc.
+ ** Container for an images grid of pixels. Each pixel is an RGB color. Contains
+ ** an empty image constructor with width and height and a file input constructor.
+ ** It can only load ppm image files.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482
@@ -15,65 +17,56 @@
 
 using namespace std;
 
+
 class Image
 {
 
 public:
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param width .
-     * @param height .
-     * @return .
+     * @param width Desired width for this image.
+     * @param height Desired height for this image.
+     * @return New blank (black) Image with the desired with and height.
      */
     Image(const unsigned int width, const unsigned int height);
 
-
     /**
-     * Parses a ppm image as an image
+     * Loads a ppm image file as an image
      * @param filename Path to the file containing a ppm image.
+     * @return New image containing the RGB values of the input file.
      */
     Image(const string & filename);
 
-    // TODO: Add doc.
     /**
-     * Saves the image as a ppm file with the given filename.
+     * Saves this image as a ppm file with the given filename.
      *
-     * @param filename .
+     * @param filename Name for the file that will be created. Use with caution
+     * since this won't check for the file's existance and will destroy it without
+     * consideration.
      */
     void Save(const string filename) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return This image's width.
      */
     unsigned int GetWidth() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return This image's height.
      */
     unsigned int GetHeight() const;
 
-    // TODO: Add doc.
     /**
      * Overloads the subscript operator to read and write colors easily.
      *
-     * @param i .
-     * @return .
+     * @param i Index of the line that will be returned.
+     * @return i'th Line from the image matrix.
      */
     vector<Color>& operator[](const unsigned int i);
 
 private:
 
-    // TODO: Add doc.
-    /* . */
+    /** Pixel matrix . */
     vector<vector<Color>> mImage;
 };
 

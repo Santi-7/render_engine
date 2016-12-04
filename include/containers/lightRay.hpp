@@ -1,6 +1,7 @@
-/* ---------------------------------------------------------------------------
+/** ---------------------------------------------------------------------------
  ** lightRay.hpp
- ** TODO: Add doc.
+ ** This class will cause the intersections with shapes that ultimately render
+ ** the image. A light ray is basically an origin point and a direction.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482
@@ -16,59 +17,42 @@ class LightRay
 
 public:
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param source .
-     * @param destination .
-     * @return .
+     * @param source The new light ray's origin.
+     * @param destination Point towards which the new light ray will travel.
+     * @return New LightRay.
      */
     LightRay(const Point &source, const Point &destination);
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param source .
-     * @param direction .
-     * @return .
+     * @param source The new light ray's origin.
+     * @param direction Direction in which the new light ray will travel.
+     * @return New LightRay.
      */
     LightRay(const Point &source, const Vect &direction);
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param t .
-     * @return .
+     * @param t Distance from the origin.
+     * @return New point at distance t from this lightRay's origin in its direction.
      */
     Point GetPoint(const float t) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return This lightRay's origin point.
      */
     Point GetSource() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return This lightRay's direction.
      */
     Vect GetDirection() const;
 
 private:
 
-    // TODO: Add doc.
-    /* . */
+    /** LightRay's origin. */
     Point mSource;
 
-    // TODO: Add doc.
-    /* . */
+    /** LightRay's direction. */
     Vect mDirection;
 };
 

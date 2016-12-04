@@ -1,6 +1,8 @@
-/* ---------------------------------------------------------------------------
+/** ---------------------------------------------------------------------------
  ** point.hpp
- ** TODO: Add doc.
+ ** Contains a 3D point and defines operations with vectors. Every 3D shape needs
+ ** a point in one way or another making this class a vital component of the ray
+ ** tracer.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482
@@ -16,187 +18,124 @@ class Point
 
 public:
 
-    // TODO: Add doc.
-    /* */
+    /** Value that defines a container of three floats as a point.*/
     static constexpr float H = 1;
 
-    /* When comparing float values we want to consider that
+    /** When comparing float values we want to consider that
      * two values that differ by this threshold are equal. */
+    // TODO: Check what this value is for. We might have solved whatever problem this used to solve in some other way.
     static constexpr float TH = 0.00025;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return New point at [0, 0, 0].
      */
     Point();
 
-    // TODO: Add doc.
     /**
-     * Constructs a Point.
-     *
-     * @param x .
-     * @param y .
-     * @param z .
-     * @return .
+     * @param x Value for x.
+     * @param y Value for y.
+     * @param z Value for z.
+     * @return New point at [x, y, z].
      */
     Point(const float x, const float y, const float z);
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param to .
-     * @return .
+     * @param to Point which distance with respect to this one will be returned.
+     * @return Absolute distance from this point to the point to.
      */
     float Distance(const Point &to) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return Value for x.
      */
     float GetX() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return Value for y.
      */
     float GetY() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return Value for z.
      */
     float GetZ() const;
 
-    // TODO: Add doc.
     /**
-     * Overloads + operator to return a Point result
-     * of adding two Point objects together.
-     *
-     * @param p .
-     * @return .
+     * @param p Point which values will be added to this one's.
+     * @return New point sum of this and p.
      */
     Point operator+(const Point& p) const;
 
-    // TODO: Add doc.
     /**
-     * Overloads - operator to return a Vect result
-     * of subtracting two Point objects together.
-     *
-     * @param p .
-     * @return .
+     * @param p Point which values will be subtracted to this one's.
+     * @return New point from this minus p.
      */
     Vect operator-(const Point& p) const;
 
-    // TODO: Add doc.
     /**
-     * Overloads * operator to return .
-     *
-     * @param p .
-     * @return .
+     * @param p Point by which this Point will be multiplied.
+     * @return Product of this point and p.
      */
     float operator*(const Point& p) const;
 
-    // TODO: Add doc.
     /**
-     * Overloads + operator to return a Point result
-     * of adding .
-     *
-     * @param v .
-     * @return .
+     * @param v Vector by which this point will be moved.
+     * @return New point result of moving this one in the direction and magnitude v.
      */
     Point operator+(const Vect& v) const;
 
-    // TODO: Add doc.
     /**
-     * Overloads += operator to move this point in
-     * the direction of vector v.
-     *
-     * @param v .
-     * @return .
+     * @param v Vector by which this point will be moved.
      */
     void operator+=(const Vect& v);
 
-    // TODO: Add doc.
     /**
-     * Overloads - operator to return a Point result
-     * of .
-     *
-     * @param v .
-     * @return .
+     * @param v Vector by which this point will be moved.
+     * @return New point result of moving this one in the opposite direction of v and magnitude v.
      */
     Point operator-(const Vect& v) const;
 
-    // TODO: Add doc.
     /**
-     * Overloads -= operator to move this point in
-     * the direction opposite to vector v.
-     *
-     * @param v .
-     * @return .
+     * @param v Vector opposite to that by which this point will be moved.
      */
     void operator-=(const Vect& v);
 
-    // TODO: Add doc.
     /**
-     * Overloads == operator to return true if both points are equal.
-     *
-     * @param v .
-     * @return .
+     * @param p Point to compare with this one.
+     * @return True if this Point is the same as p.
      */
     bool operator==(const Point& p) const;
 
-    // TODO: Add doc.
     /**
-     * Overloads != operator to return true if the points are not equal.
-     *
-     * @param p .
-     * @return .
+     * @param p Point to compare with this one.
+     * @return True if this POint is different from p.
      */
     bool operator!=(const Point& p) const;
 
-    // TODO: Add doc.
     /**
-     * Overloads <= operator to return true if all the values in this
-     * point are smaller or equal to those in p.
-     *
-     * @param p .
-     * @return .
+     * @param p Point to compare with this one.
+     * @return True if all the values in p are greater or equal to the values in this Point.
      */
     bool operator<=(const Point& p) const;
 
-    // TODO: Add doc.
     /**
-     * Overloads >= operator to return true if all the values in this
-     * point are greater or equal to those in p.
-     *
-     * @param p .
-     * @return .
+     * @param p Point to compare with this one.
+     * @return True if all the values in p are smaller or equal to the values in this Point.
      */
     bool operator>=(const Point& p) const;
 
-    // TODO: Add doc.
     /**
-     * .
+     * Pretty print.
      *
-     * @param out .
-     * @param p .
-     * @return .
+     * @param out Stream that will receive the point p as a string.
+     * @param p Point to send to the stream as a string.
+     * @return Stream with the string p.
      */
     friend std::ostream& operator<<(std::ostream &out, const Point &p);
 
 protected:
 
-    // TODO: Add doc.
-    /* . */
+    /** Values in this Point . */
     float mX, mY, mZ;
 };
 
