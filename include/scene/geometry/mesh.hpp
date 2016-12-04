@@ -37,9 +37,9 @@ public:
     float Intersect(const LightRay &lightRay) const;
 
     /**
-     * If the triangle that is closest to the lightRay origin (if any triangle intersects it) is
-     * at a smaller distance from that point than t then:
-     *  t is updated to that distance
+     * If the triangle that is closest to the lightRay origin (if any triangle is intersected) is
+     * at a distance smaller than minT then:
+     *  minT is updated to that distance
      *  nearestShape is updated to the triangle closest to the lightray's origin.
      *
      * @param minT Distance from the lightray's origin to nearestShape.
@@ -47,6 +47,23 @@ public:
      * @param lightRay The LightRay we are checking for intersections.
      */
     void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
+
+    /**
+     * Special intersect function for searching the Mesh 'tree'.
+     * @param lightRay Origin and direction to check for intersections with this Mesh.
+     * @param minT Minimum distance so far to the lightray. Will be updated if this Mesh gets a intersection at a smaller distance.
+     * @param maxT Maximum distance to consider checking a bounding volume (allows us to stop checking branches).
+     * @param nearestShape Nearest shape intersected by the lightray so far. Updated together with minT.
+     */
+    void MeshIntersect(const LightRay& lightRay, float& minT, float maxT, shared_ptr<Shape>& nearestShape) const;
+
+    /**
+     * Returns the distance from the lightray's origin to the this mesh's bounding shape.
+     * If the bounding shape is not intersected by the lightray it returns FLT_MAX.
+     * @param lightRay
+     * @return Distance from the lightray's origin to the this mesh's bounding shape.
+     */
+    float IntersectBound(const LightRay& lightRay) const;
 
     /**
      * This method is not usable for this shape.

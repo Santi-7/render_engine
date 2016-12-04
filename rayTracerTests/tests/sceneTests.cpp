@@ -389,8 +389,23 @@ TEST(Mesh, Falcon)
 
 TEST(Mesh, BoundingVolumes)
 {
-    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/iron_giant.obj", 0.35, Vect(0,0,0));
-    cout << "FINISHED!" << '\n';
+    Scene scene;
+    TransformationMatrix tm;
+    tm.SetYRotation((float)3.141592/2);
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0.2,-0.55f), (float)3.14159/2, 1.0, 600, 600));
+    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.35, Vect(0,0,0));
+    scene.AddShape(teapot);
+
+    scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.
+    scene.AddShape(Plane(Point(1.5f, 0, 0), Vect(-1,0,0))); // Right wall.
+    Plane backWall(Point(0, 0, 3), Vect(0,-1,-1));
+    backWall.SetMaterial(MIRROR);
+    scene.AddShape(backWall); // Back wall
+
+    scene.AddLightSource(PointLight(Point(0,2.5f, 0), 15, WHITE));
+    scene.AddShape(Plane(Point(0,-1.5f, 0), Vect(0,1,0)));
+    auto renderedImage = scene.RenderMultiThread(THREADS);
+    renderedImage->Save("bounding.ppm");
 }
 
 TEST(Materials, FacingMirrors)

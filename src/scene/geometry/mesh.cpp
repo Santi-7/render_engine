@@ -124,9 +124,9 @@ Mesh Mesh::LoadObjFile(const string& filename, float maxDistFromOrigin, const Ve
     {
         for (unsigned int i = 0; i < faces.size(); ++i)
         {
-            Triangle tmp(positions.at(get<0>(faces.at(i))),
-                    positions.at(get<1>(faces.at(i))),
-                    positions.at(get<2>(faces.at(i))));
+            Triangle tmp(positions.at(get<0>(faces[i])),
+                    positions.at(get<1>(faces[i])),
+                    positions.at(get<2>(faces[i])));
 
             triangles.push_back(make_shared<Triangle>(tmp));
         }
@@ -143,12 +143,12 @@ Mesh Mesh::LoadObjFile(const string& filename, float maxDistFromOrigin, const Ve
         for (unsigned int i = 0; i < faces.size(); ++i)
         {
             triangles.push_back(
-                    make_shared<MeshTriangle>(MeshTriangle(positions.at(get<0>(faces.at(i))),
-                            positions.at(get<1>(faces.at(i))),
-                            positions.at(get<2>(faces.at(i))),
-                            normals.at(get<0>(faces.at(i))),
-                            normals.at(get<1>(faces.at(i))),
-                            normals.at(get<2>(faces.at(i))))));
+                    make_shared<MeshTriangle>(MeshTriangle(positions.at(get<0>(faces[i])),
+                            positions.at(get<1>(faces[i])),
+                            positions.at(get<2>(faces[i])),
+                            normals.at(get<0>(faces[i])),
+                            normals.at(get<1>(faces[i])),
+                            normals.at(get<2>(faces[i])))));
         }
     }
     return Mesh(triangles);
@@ -193,7 +193,7 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
             new Box(Rectangle(Vect(0, 1, 0), Point(minX, minY, minZ), Point(maxX, minY, maxZ)), maxY-minY));
 
     // If there are less than 32 triangles make this Mesh a leaf
-    if (triangles.size() < 32)
+    if (triangles.size() <= 512)
     {
         mIsLeaf = true;
         mTriangles = triangles;
@@ -242,6 +242,7 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
 
 Mesh::Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift)
 {
+    mIsLeaf = true;
     vector<Point> positions;
     vector<Vect> normals;
     vector<Face> faces;
@@ -290,9 +291,9 @@ Mesh::Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift)
     {
         for (unsigned int i = 0; i < faces.size(); ++i)
         {
-            Triangle tmp(positions.at(get<0>(faces.at(i))),
-                         positions.at(get<1>(faces.at(i))),
-                         positions.at(get<2>(faces.at(i))));
+            Triangle tmp(positions.at(get<0>(faces[i])),
+                         positions.at(get<1>(faces[i])),
+                         positions.at(get<2>(faces[i])));
 
             mTriangles.push_back(make_shared<Triangle>(tmp));
         }
@@ -309,12 +310,12 @@ Mesh::Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift)
         for (unsigned int i = 0; i < faces.size(); ++i)
         {
             mTriangles.push_back(
-                    make_shared<MeshTriangle>(MeshTriangle(positions.at(get<0>(faces.at(i))),
-                                                           positions.at(get<1>(faces.at(i))),
-                                                           positions.at(get<2>(faces.at(i))),
-                                                           normals.at(get<0>(faces.at(i))),
-                                                           normals.at(get<1>(faces.at(i))),
-                                                           normals.at(get<2>(faces.at(i))))));
+                    make_shared<MeshTriangle>(MeshTriangle(positions.at(get<0>(faces[i])),
+                                                           positions.at(get<1>(faces[i])),
+                                                           positions.at(get<2>(faces[i])),
+                                                           normals.at(get<0>(faces[i])),
+                                                           normals.at(get<1>(faces[i])),
+                                                           normals.at(get<2>(faces[i])))));
         }
     }
     mBoundingShape = shared_ptr<Shape>(new Box(Rectangle(Vect(0,1,0), minValues, Point(maxValues.GetX(), minValues.GetY(), maxValues.GetZ())), maxValues.GetY() - minValues.GetY()));
@@ -324,13 +325,86 @@ Mesh::Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift)
 
 void Mesh::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
 {
-    if (mBoundingShape->Intersect(lightRay) != FLT_MAX)
+    if (mIsLeaf)
     {
-        for (unsigned int i = 0; i < mTriangles.size(); ++i)
+        if (mBoundingShape->Intersect(lightRay) != FLT_MAX)
         {
-            mTriangles.at(i)->Intersect(lightRay, minT, nearestShape, mTriangles.at(i));
+            for (unsigned int i = 0; i < mTriangles.size(); ++i)
+            {
+                mTriangles[i]->Intersect(lightRay, minT, nearestShape, mTriangles[i]);
+            }
         }
     }
+    else if (IntersectBound(lightRay) != FLT_MAX)
+    {
+        MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
+    }
+}
+
+float Mesh::Intersect(const LightRay &lightRay) const
+{
+    if (mIsLeaf)
+    {
+        if (mBoundingShape->Intersect(lightRay) != FLT_MAX)
+        {
+            for (unsigned int i = 0; i < mTriangles.size(); ++i)
+            {
+                float tmp = mTriangles[i]->Intersect(lightRay);
+                if (tmp != FLT_MAX) return tmp;
+            }
+        }
+        return FLT_MAX;
+    }
+    else if (IntersectBound(lightRay) != FLT_MAX)
+    {
+        float t = FLT_MAX;
+        shared_ptr<Shape> stubPtr;
+        MeshIntersect(lightRay, t, FLT_MAX, stubPtr);
+        return t;
+    }
+    else
+    {
+        return FLT_MAX;
+    }
+}
+
+void Mesh::MeshIntersect(const LightRay& lightRay, float& minT, float maxT, shared_ptr<Shape>& nearestShape) const
+{
+    if (mIsLeaf)
+    {
+        Intersect(lightRay, minT, nearestShape, nullptr);
+        return;
+    }
+    // else
+    float leftT = mLeft->IntersectBound(lightRay);
+    float rightT = mRight->IntersectBound(lightRay);
+
+    if ((leftT == FLT_MAX) & (rightT == FLT_MAX)) return;
+
+    if (leftT < maxT && leftT < rightT)
+    {
+        mLeft->MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
+
+        if (rightT < FLT_MAX)
+        {
+            mRight->MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
+        }
+    }
+    else if (rightT < maxT && rightT < leftT)
+    {
+        mRight->MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
+
+        if (leftT < FLT_MAX)
+        {
+            mLeft->MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
+        }
+    }
+
+}
+
+float Mesh::IntersectBound(const LightRay& lightRay) const
+{
+    return mBoundingShape->Intersect(lightRay);
 }
 
 Vect Mesh::GetNormal(const Point &point) const
@@ -338,22 +412,11 @@ Vect Mesh::GetNormal(const Point &point) const
     throw 1;
 }
 
-float Mesh::Intersect(const LightRay &lightRay) const
-{
-    if (mBoundingShape->Intersect(lightRay) != FLT_MAX)
-    {
-        for (unsigned int i = 0; i < mTriangles.size(); ++i)
-        {
-            float tmp = mTriangles.at(i)->Intersect(lightRay);
-            if (tmp != FLT_MAX) return tmp;
-        }
-    }
-    return FLT_MAX;
-}
 
 void Mesh::SetMaterial(shared_ptr<Material> material)
 {
     for (unsigned int i = 0; i < mTriangles.size(); ++i) {
-        mTriangles.at(i)->SetMaterial(material);
+        mTriangles[i]->SetMaterial(material);
     }
 }
+
