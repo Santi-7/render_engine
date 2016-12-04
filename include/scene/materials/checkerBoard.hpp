@@ -18,7 +18,10 @@ public:
 
     //TODO: Add doc
     /**
-     *
+     * Creates a checkerboard pattern with the given squareSize. Keep in mind that
+     * this texture is prone to causing noise due to floating point errors. Make sure
+     * that a surface that uses this texture doesn't begin or end at the same time
+     * as the pattern or some strange patterns will appear.
      *
      * @param squareSize
      * @param color
