@@ -153,10 +153,10 @@ Mesh Mesh::LoadObjFile(const string& filename, float maxDistFromOrigin, const Ve
     }
     return Mesh(triangles);
 }
-
+static int depth = 0;
+bool isLeft = true;
 Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
 {
-    cout << "Creating node with: " << triangles.size() << " triangles" << '\n';
     float minX = FLT_MAX, minY = FLT_MAX, minZ = FLT_MAX;
     float maxX = -FLT_MAX, maxY = -FLT_MAX, maxZ = -FLT_MAX;
 
@@ -188,13 +188,16 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
         if (t->mC.GetZ() < minZ) minZ = t->mC.GetZ();
         if (t->mC.GetZ() > maxZ) maxZ = t->mC.GetZ();
     }
+
     // Get the bounding shape
     mBoundingShape = shared_ptr<Shape>(
-            new Box(Rectangle(Vect(0, 1, 0), Point(minX, minY, minZ), Point(maxX, minY, maxZ)), maxY-minY));
-
+            new Box(Rectangle(Vect(0, 1, 0), Point(minX, minY, minZ), Point(maxX, minY, maxZ)), maxY - minY));
     // If there are less than 32 triangles make this Mesh a leaf
     if (triangles.size() <= 32)
     {
+        cout << "Creating node with: " << triangles.size() << " triangles at depth: " << depth << " on a "
+             << (isLeft ? "left" : "right") << " child\n";
+        isLeft = !isLeft;
         mIsLeaf = true;
         mTriangles = triangles;
     }
@@ -209,6 +212,7 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
         // Sort the triangle vector by the greatest axis
         if (maxSize == xSize)
         {
+            cout << "Splitting by X";
             sort(triangles.begin(), triangles.end(), [](shared_ptr<Triangle> &t1, shared_ptr<Triangle> &t2)
             {
                 return t1->GetCenter().GetX() > t2->GetCenter().GetX();
@@ -216,18 +220,23 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
         }
         else if (maxSize == ySize)
         {
+            cout << "Splitting by Y";
             sort(triangles.begin(), triangles.end(), [](shared_ptr<Triangle> &t1, shared_ptr<Triangle> &t2)
             {
                 return t1->GetCenter().GetY() > t2->GetCenter().GetY();
             });
+
         }
         else
         {
+            cout << "Splitting by Z";
             sort(triangles.begin(), triangles.end(), [](shared_ptr<Triangle> &t1, shared_ptr<Triangle> &t2)
             {
                 return t1->GetCenter().GetZ() > t2->GetCenter().GetZ();
             });
         }
+
+        cout << " at depth: " << depth++ << '\n';
 
         // Split the triangle vector into two halves
         std::vector<shared_ptr<Triangle>> triangles2(
@@ -237,6 +246,7 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
 
         mRight = make_shared<Mesh>(Mesh(triangles));
         mLeft = make_shared<Mesh>(Mesh(triangles2));
+        depth--;
     }
 }
 
