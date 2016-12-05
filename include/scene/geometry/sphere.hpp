@@ -1,10 +1,10 @@
-/* ---------------------------------------------------------------------------
-** sphere.hpp
-** TODO: Add doc.
-**
-** Author: Miguel Jorge Galindo Ramos, NIA: 679954
-**         Santiago Gil Begué, NIA: 683482
-** -------------------------------------------------------------------------*/
+/** ---------------------------------------------------------------------------
+ ** sphere.hpp
+ ** Sphere Shape in the 3D space.
+ **
+ ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
+ **         Santiago Gil Begué, NIA: 683482
+ ** -------------------------------------------------------------------------*/
 
 #ifndef RAY_TRACER_SPHERE_HPP
 #define RAY_TRACER_SPHERE_HPP
@@ -16,57 +16,46 @@ class Sphere : public Shape
 
 public:
 
-    // TODO: Add doc.
     /**
-     * Constructs a Sphere.
-     *
-     * @param center .
-     * @param radius .
-     * @return .
+     * @param center Center Point of the new Sphere.
+     * @param radius Radius of the new Sphere.
+     * @return New Sphere with the given center and radius.
      */
     Sphere(const Point &center, const float radius);
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param lightRay .
-     * @return .
+     * @param lightRay Contains the point from which an intersection with this shape will measured.
+     * @return The distance closest from the lightRay's origin to this Sphere. If the direction in the
+     * lightRay is such that no intersection happens then returns FLT_MAX.
      */
     float Intersect(const LightRay &lightRay) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     * @param lightRay .
-     * @param minT .
-     * @param nearestShape .
+     * @param lightRay The LightRay we are checking for intersections.
+     * @param minT Distance from the lightRay's origin to nearestShape. Updated to this this Sphere's distance from
+     *  the lightRay's origin if that is smaller than minT.
+     * @param nearestShape Shape that is at distance t from the lightRay's origin. Updated to thisShape if this Sphere
+     *  is closer from the lightRay's origin than minT.
      */
     void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param point .
-     * @return .
+     * @param point Point at which the normal will be calculated.
+     * @return Vector normal to this Sphere at point.
      */
     virtual Vect GetNormal(const Point &point) const;
 
 private:
 
-    // TODO: Add doc.
-    /* . */
+    /** Center point of this Sphere. */
     Point mCenter;
 
-    // TODO: Add doc.
-    /* . */
+    /** Radius of this Sphere. */
     float mRadius;
 
     /* Cached values. */
 
-    // TODO: Add doc.
-    /* . */
+    /** Square of this Sphere's radius. */
     float mRadius2;
 };
 

@@ -1,10 +1,14 @@
-/* ---------------------------------------------------------------------------
-** camera.hpp
-** TODO: Add doc.
-**
-** Author: Miguel Jorge Galindo Ramos, NIA: 679954
-**         Santiago Gil Begué, NIA: 683482
-** -------------------------------------------------------------------------*/
+/** ---------------------------------------------------------------------------
+ ** camera.hpp
+ ** Abstract Camera for ray tracing. Must be defined for a scene to produce an image.
+ ** The resulting image size is defined in the camera to allow traversing
+ ** all the pixels that need tracing.
+ ** From this camera we create a pinhole camera but we could extend it to be a
+ ** fish eye camera or something else.
+ ** //TODO: NOT REALLY! What we can change is not enough to make a fish eye (the image is traversed in scene!!!), this should just be a pinhole camera.
+ ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
+ **         Santiago Gil Begué, NIA: 683482
+ ** -------------------------------------------------------------------------*/
 
 #ifndef RAY_TRACER_CAMERA_HPP
 #define RAY_TRACER_CAMERA_HPP
@@ -17,130 +21,83 @@ class Camera {
 
 public:
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return New Camera with default values. Just don't use it.
      */
     Camera();
 
-    // TODO: Add doc.
-    /**
-     * .
-     *
-     * @param up .
-     * @param right .
-     * @param towards .
-     * @param focalPoint .
-     * @param fieldOfVision .
-     * @param viewPlaneDistance .
-     * @param width .
-     * @param height .
-     * @return .
-     */
+
     Camera(const Vect &up, const Vect &right,
            const Vect &towards, const Point &focalPoint,
            const float fieldOfVision, const float viewPlaneDistance,
            const unsigned int width, const unsigned int height);
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return Middle Point of the upper-left most pixel in the image plane.
      */
     virtual Point GetFirstPixel() const = 0;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return Up vector.
      */
     Vect GetUp() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return Right vector.
      */
     Vect GetRight() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return Towards vector.
      */
     Vect GetTowards() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return Focal point, this Camera's position.
      */
     Point GetFocalPoint() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return This Camera's image plane width in pixels.
      */
     unsigned int GetWidth() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return This Camera's image plane height in pixels.
      */
     unsigned int GetHeight() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return Pixel dimensions. Since they're squares both width and height are the same.
      */
     float GetPixelSize() const;
 
 protected:
 
-    // TODO: Add doc.
-    /* . */
+    /** This camera's vectors . */
     Vect mUp, mRight, mTowards;
 
-    // TODO: Add doc.
-    /* . */
+    /** This camera's position. . */
     Point mFocalPoint;
 
-    // TODO: Add doc.
-    /* . */
+    /** Field of view . */
     float mFoV;
 
-    // TODO: Add doc.
-    /* . */
+    /** Distance from this Camera's position to the image plane. */
     float mViewPlaneDistance;
 
-    // TODO: Add doc.
-    /* . */
+    /** Width and height in pixels for the image plane. */
     unsigned int mWidth, mHeight;
 
     /* Cached values. */
 
-    // TODO: Add doc.
-    /* . */
+    /** Size of the pixels in the image plane . */
     float mPixelSize;
 
 private:
 
-    // TODO: Add doc.
     /**
-     * .
+     * Fills the field mPixelSize calculating the pixel size from the other parameters.
      */
     void CalculatePixelSize();
 };

@@ -1,10 +1,10 @@
-/* ---------------------------------------------------------------------------
-** lightSource.hpp
-** TODO: Add doc.
-**
-** Author: Miguel Jorge Galindo Ramos, NIA: 679954
-**         Santiago Gil Begué, NIA: 683482
-** -------------------------------------------------------------------------*/
+/** ---------------------------------------------------------------------------
+ ** lightSource.hpp
+ ** Defines common values contained within Light Sources.
+ **
+ ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
+ **         Santiago Gil Begué, NIA: 683482
+ ** -------------------------------------------------------------------------*/
 
 #ifndef RAY_TRACER_LIGHT_SOURCE_HPP
 #define RAY_TRACER_LIGHT_SOURCE_HPP
@@ -20,50 +20,36 @@ class LightSource
 
 public:
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param point .
-     * @return .
+     * @param point Point at which the light intensity will be calculated.
+     * @return Color with the intensity of this light at point (the farther the point the smaller the intensity).
      */
     virtual Color GetColor(const Point &point) const = 0;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return List of the lights contained within this lightSource (in case a multi-point lightSource is created).
      */
     virtual vector<Point> GetLights() const = 0;
 
 protected:
 
-    // TODO: Add doc.
-    /* . */
+    /** This lightSource's power. */
     float mPower;
 
-    // TODO: Add doc.
-    /* . */
+    /** This light's color. */
     Color mBaseColor;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return New white lightSource with power 2.0f.
      */
     LightSource()
-    : mPower(500.0), mBaseColor(WHITE)
+    : mPower(2.0f), mBaseColor(WHITE)
     {}
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param power .
-     * @param baseColor .
-     * @return
+     * @param power The new light's power.
+     * @param baseColor The new light's Color.
+     * @return New LightSource with the given power and color.
      */
     LightSource(const float power, const Color &baseColor)
     : mPower(power), mBaseColor(baseColor)

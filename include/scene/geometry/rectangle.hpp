@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
-** finitePlane.hpp
-** TODO: Add doc.
+** rectangle.hpp
+** Finite 2D plane in a 3D space.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
@@ -16,51 +16,42 @@ class Rectangle : public Plane
 
 public:
 
-    // TODO: Add doc.
     /**
-     * Constructor for a Rectangle only giving two corners and its normal.
-     *
-     * @param normal .
-     * @param cornerA .
-     * @param cornerB .
-     * @return .
+     * @param normal Normal to the plane in which this Rectangle lies.
+     * @param cornerA Corner of the new Rectangle.
+     * @param cornerB Corner of the new Rectangle.
+     * @return New Rectangle with the given normal and corners. Both corners will be considered diagonally
+     * opposite as in they are not connected by any of the Rectangle's edges.
      */
     Rectangle(const Vect &normal, const Point &cornerA, const Point &cornerB);
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param lightRay .
-     * @return .
+     * @param lightRay Contains the point from which an intersection with this shape will measured.
+     * @return The distance closest from the lightRay's origin to this Rectangle. If the direction in the
+     * lightRay is such that no intersection happens then returns FLT_MAX.
      */
     float Intersect(const LightRay &lightRay) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     * @param lightRay
-     * @param minT
-     * @param nearestShape
+     * @param lightRay The LightRay we are checking for intersections.
+     * @param minT Distance from the lightRay's origin to nearestShape. Updated to this this Rectangle's distance from
+     *  the lightRay's origin if that is smaller than minT.
+     * @param nearestShape Shape that is at distance t from the lightRay's origin. Updated to thisShape if this Rectangle
+     *  is closer from the lightRay's origin than minT.
      */
     void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return The four corner points of this rectangle.
      */
     tuple<Point, Point, Point, Point> GetLimits() const;
 
 private:
 
-    // Todo: Add doc.
-    /* . */
+    /** Two diagonally opposite corners of this rectangle. */
     Point mCornerA, mCornerB;
 
-    // Todo: Add doc.
-    /* . */
+    /** Minimum and maximum values for any coordinate in this rectangle. A combination of mCornerA and mCornerB.*/
     Point mMinimums, mMaximums;
 };
 

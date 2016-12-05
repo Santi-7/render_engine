@@ -129,7 +129,7 @@ public:
      *
      * @param out Stream that will receive the point p as a string.
      * @param p Point to send to the stream as a string.
-     * @return Stream with the string p.
+     * @return Stream with a string version of p.
      */
     friend std::ostream& operator<<(std::ostream &out, const Point &p);
 

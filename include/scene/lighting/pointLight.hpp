@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** pointLight.hpp
-** TODO: Add doc.
+** Single point lightSource.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
@@ -17,55 +17,42 @@ class PointLight : public LightSource
 
 public:
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return New white PointLight at [0,0,0] with power 2.0f.
      */
     PointLight();
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param position .
-     * @return .
+     * @param position Position for the new PointLight.
+     * @return New PointLight at position.
      */
     PointLight(const Point &position);
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param position .
-     * @param power .
-     * @param baseColor .
-     * @return .
+     * @param position Position for the new PointLight.
+     * @param power Power for the new PointLight.
+     * @param baseColor Color for the new PointLight.
+     * @return New PointLight with the given position, power and color.
      */
     PointLight(const Point &position, const float power, const Color &baseColor);
 
-    // TODO: Add doc. Restriction: the point light must not be in a point of a shape.
     /**
-     * .
+     * If the point is too close to the PointLight the color returned will be too high. Make sure all shapes are
+     * at a certain distance to all PointLights.
      *
-     * @param point .
-     * @return .
+     * @param point Point at which the light intensity will be calculated.
+     * @return Color with the intensity of this light at point (the farther the point the smaller the intensity).
      */
     Color GetColor(const Point &point) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return This PointLights position.
      */
     vector<Point> GetLights() const;
 
 private:
 
-    // TODO: Add doc.
-    /* . */
+    /** This PointLight's position. */
     Point mPosition;
 };
 

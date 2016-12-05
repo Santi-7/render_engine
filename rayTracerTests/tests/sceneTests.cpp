@@ -150,6 +150,7 @@ TEST(SimpleLight, Box)
 
     scene.AddLightSource(PointLight(Point(1.5f,1.5f,-1.5f), 20, WHITE));
     Box redBox(Rectangle(Vect(0,0,1), Point(-0.4999f, 0.0001, 0.0001), Point(0.5f, -1, 0.0001)), 0.99999);
+
     redBox.SetMaterial(CheckerBoard(0.24999f, Color(0.85f, 0.22f, 0.04f), Color(0.15f, 0.12f, 0.9f)));
     scene.AddShape(redBox);
 

@@ -156,7 +156,7 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     // Normal to the shape in the intersection point.
     Vect normal = nearestShape->GetVisibleNormal(intersection, lightRay);
 
-    Color emmitedFromShape = nearestShape->IsLightSource() ? nearestShape->GetEmmitedLight() : BLACK;
+    Color emmitedFromShape = nearestShape->IsLightSource() ? nearestShape->GetEmitedLight() : BLACK;
 
     return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay,

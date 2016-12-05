@@ -1,10 +1,12 @@
-/* ---------------------------------------------------------------------------
-** vect.hpp
-** TODO: Add doc.
-**
-** Author: Miguel Jorge Galindo Ramos, NIA: 679954
-**         Santiago Gil Begué, NIA: 683482
-** -------------------------------------------------------------------------*/
+/** ---------------------------------------------------------------------------
+ ** vect.hpp
+ ** Contains a 3D vector. Represents unbound directionality an magnitude. Also
+ ** contains methods to normalise a vector and calculate dot and cross products
+ ** with other vectors.
+ **
+ ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
+ **         Santiago Gil Begué, NIA: 683482
+ ** -------------------------------------------------------------------------*/
 
 #ifndef RAY_TRACER_VECT_HPP
 #define RAY_TRACER_VECT_HPP
@@ -15,158 +17,107 @@ class Vect {
 
 public:
 
-    // TODO: Add doc.
-    /* */
+    /** Value that defines a container of three floats as a vector.*/
     static constexpr float H = 0;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return New empty vector with values [0, 0, 0].
      */
     Vect();
 
-    // TODO: Add doc.
     /**
-     * Constructs a Vect.
-     *
-     * @param x .
-     * @param y .
-     * @param z .
-     * @return .
+     * @param x Value for x.
+     * @param y Value for y.
+     * @param z Value for z.
+     * @return New vector with values [x, y, z].
      */
     Vect(const float x, const float y, const float z);
 
     /**
-     * .
-     *
-     * @return .
+     * @return Value for x.
      */
     float GetX() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return Value for y.
      */
     float GetY() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return Value for z.
      */
     float GetZ() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return The size (magnitude) of this vector.
      */
     float Abs() const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @return .
+     * @return New vector result of normalising this vector (dividing each value by the vector's magnitude).
      */
     Vect Normalise() const;
 
-    // TODO: Add doc.
     /**
-     * Overloads * operator to return a Vect result
-     * of .
-     *
-     * @param k .
-     * @return .
+     * @param k Value by which this vector will be multiplied.
+     * @return New vector product of this one and k.
      */
     Vect operator*(const float k) const;
 
-    // TODO: Add doc.
     /**
-     * Overloads / operator to return a Vect result
-     * of .
-     *
-     * @param k .
-     * @return .
+     * @param k Value by which this vector will be divided.
+     * @return New vector result of dividing this vector by k.
      */
     Vect operator/(const float k) const;
 
-    // TODO: Add doc.
     /**
-     * Overloads + operator to return a Vect result
-     * of adding two Vect objects together.
-     *
-     * @param v .
-     * @return .
+     * @param v Vector to add to this one.
+     * @return New vector result of adding v to this vector.
      */
     Vect operator+(const Vect &v) const;
 
-    // TODO: Add doc.
     /**
-     * Overloads - operator to return a Vect result
-     * of subtracting two Vect objects together.
-     *
-     * @param v .
-     * @return .
+     * @param v Vector to subtract to this one.
+     * @return New vector result of subtracting v from this vector.
      */
     Vect operator-(const Vect &v) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param v .
-     * @return .
+     * @param v Vector by which this one will be multiplied.
+     * @return Value result of multiplying this vector by v.
      */
     float DotProduct(const Vect &v) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param v .
-     * @return .
+     * @param v Vector by which this one will be multiplied.
+     * @return New vector result of multiplying this vector by v. A vector perpendicular to this and v.
      */
     Vect CrossProduct(const Vect &v) const;
 
     /**
-     * Overloads == operator returning true if both vectors are equal
-     * of .
-     *
-     * @param m .
-     * @return .
+     * @param m Vector to compare this one to.
+     * @return True if this vector and v are the same.
      */
     bool operator==(const Vect &v) const;
 
     /**
-     * Overloads != operator returning true if the vectors are not equal
-     * of .
-     *
-     * @param m .
-     * @return .
+     * @param m Vector to compare this one to.
+     * @return True if this vector and v are different.
      */
     bool operator!=(const Vect &v) const;
 
-    // TODO: Add doc.
     /**
-     * .
+     * Pretty print.
      *
-     * @param out .
-     * @param v .
-     * @return .
+     * @param out Stream that will receive the vector v as a string.
+     * @param v vector to send to the stream as a string.
+     * @return Stream with a string version of v.
      */
     friend std::ostream& operator<<(std::ostream &out, const Vect &v);
 
 private:
 
-    // TODO: Add doc.
-    /* . */
+    /** Values in this vector. */
     float mX, mY, mZ;
 };
 
