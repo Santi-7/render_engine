@@ -151,6 +151,9 @@ Mesh Mesh::LoadObjFile(const string& filename, float maxDistFromOrigin, const Ve
                             normals.at(get<2>(faces[i])))));
         }
     }
+
+    cout << maxValues << '\n';
+    cout << minValues << '\n';
     return Mesh(triangles);
 }
 static int depth = 0;
@@ -239,13 +242,11 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
         cout << " at depth: " << depth++ << '\n';
 
         // Split the triangle vector into two halves
-        std::vector<shared_ptr<Triangle>> triangles2(
-                std::make_move_iterator(triangles.begin() + triangles.size()/2),
-                std::make_move_iterator(triangles.end()));
-        triangles.erase(triangles.begin() + triangles.size()/2, triangles.end());
+        vector<shared_ptr<Triangle>> firstHalf(triangles.begin(), triangles.begin() + triangles.size()/2);
+        vector<shared_ptr<Triangle>> secondHalf(triangles.begin() + triangles.size()/2, triangles.end());
 
-        mRight = make_shared<Mesh>(Mesh(triangles));
-        mLeft = make_shared<Mesh>(Mesh(triangles2));
+        mLeft = make_shared<Mesh>(Mesh(firstHalf));
+        mRight = make_shared<Mesh>(Mesh(firstHalf));
         depth--;
     }
 }
@@ -345,9 +346,13 @@ void Mesh::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &n
             }
         }
     }
-    else if (IntersectBound(lightRay) != FLT_MAX)
+    else
     {
-        MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
+        float boundT = IntersectBound(lightRay);
+        if (boundT != FLT_MAX)
+        {
+            MeshIntersect(lightRay, minT, boundT, nearestShape);
+        }
     }
 }
 
@@ -382,6 +387,8 @@ void Mesh::MeshIntersect(const LightRay& lightRay, float& minT, float maxT, shar
 {
     if (mIsLeaf)
     {
+        static int finalCalls = 0;
+        cout << ++finalCalls << '\n';
         Intersect(lightRay, minT, nearestShape, nullptr);
         return;
     }
@@ -389,12 +396,19 @@ void Mesh::MeshIntersect(const LightRay& lightRay, float& minT, float maxT, shar
     float leftT = mLeft->IntersectBound(lightRay);
     float rightT = mRight->IntersectBound(lightRay);
 
-    if ((rightT >= maxT) & (leftT >= maxT))
+    if(leftT != FLT_MAX)
+        mLeft->MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
+
+    if(rightT != FLT_MAX)
+        mRight->MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
+
+    /*
+    if ((rightT >= FLT_MAX) & (leftT >= FLT_MAX))
     {
         return;
     }
 
-    if (leftT < maxT && leftT < rightT)
+    if (leftT < rightT)
     {
         mLeft->MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
 
@@ -411,7 +425,7 @@ void Mesh::MeshIntersect(const LightRay& lightRay, float& minT, float maxT, shar
         {
             mLeft->MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
         }
-    }
+    }*/
 }
 
 float Mesh::IntersectBound(const LightRay& lightRay) const
