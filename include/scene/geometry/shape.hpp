@@ -69,9 +69,9 @@ public:
         // Calculate the refracted ray of light.
         float cosI = -visibleNormal.DotProduct(in.GetDirection());
         float sinT2 = n * n * (1 - cosI * cosI);
+        // Critic angle: this is the angle at which the refracted lightRay goes back inside the shape.
         if (sinT2 > 1)
-            // Error this is the angle at which the refracted lightRay goes back inside the shape.
-            // TODO: Check what to do here.
+            // TODO: Reflect the ray.
             ;
         float cosT = sqrt(1 - sinT2);
         Vect reflected = in.GetDirection() * n + visibleNormal * (n * cosI - cosT);
