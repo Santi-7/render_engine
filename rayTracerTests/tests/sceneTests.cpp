@@ -394,7 +394,7 @@ TEST(Mesh, BoundingVolumes)
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592/2);
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0.2,-0.55f), (float)3.14159/2, 1.0, 600, 600));
-    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/iron_giant.obj", 0.35, Vect(0,0,0));
+    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.35, Vect(0,0,0));
     scene.AddShape(teapot);
 
     scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.

@@ -88,6 +88,13 @@ Mesh Mesh::LoadObjFile(const string& filename, float maxDistFromOrigin, const Ve
     unsigned int a, b, c;
     float minX = FLT_MAX, minY = FLT_MAX, minZ = FLT_MAX;
     float maxX = -FLT_MAX, maxY = -FLT_MAX, maxZ = -FLT_MAX;
+
+    if (!objFile.good())
+    {
+        cout << "The file doesn't exist or can't be read for some reason.\n";
+        throw 1;
+    }
+
     while (objFile.good()) {
         getline(objFile, lineBuf);
         if (lineBuf.size() == 0) continue;
@@ -246,7 +253,7 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
         vector<shared_ptr<Triangle>> secondHalf(triangles.begin() + triangles.size()/2, triangles.end());
 
         mLeft = make_shared<Mesh>(Mesh(firstHalf));
-        mRight = make_shared<Mesh>(Mesh(firstHalf));
+        mRight = make_shared<Mesh>(Mesh(secondHalf));
         depth--;
     }
 }
@@ -387,8 +394,6 @@ void Mesh::MeshIntersect(const LightRay& lightRay, float& minT, float maxT, shar
 {
     if (mIsLeaf)
     {
-        static int finalCalls = 0;
-        cout << ++finalCalls << '\n';
         Intersect(lightRay, minT, nearestShape, nullptr);
         return;
     }
@@ -437,7 +442,6 @@ Vect Mesh::GetNormal(const Point &point) const
 {
     throw 1;
 }
-
 
 void Mesh::SetMaterial(shared_ptr<Material> material)
 {
