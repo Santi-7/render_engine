@@ -394,7 +394,7 @@ TEST(Mesh, BoundingVolumes)
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592/2);
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0.2,-0.55f), (float)3.14159/2, 1.0, 600, 600));
-    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.35, Vect(0,0,0));
+    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/jade_blender.obj", 0.35, Vect(0,0,0));
     scene.AddShape(teapot);
 
     scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.
@@ -655,23 +655,27 @@ TEST(Complex, TeaTime)
 {
     Scene scene;
     TransformationMatrix tm;
-    tm.SetXRotation(PI/10);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point(0, -0.35f, -0.9f), PI/3, 1.0, 250, 250));
-    scene.AddLightSource(PointLight(Point(0.3,0.3, 0), 1.3f, WHITE));
+    tm.SetXRotation(PI/8);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point(0, -0.15f, -0.6f), PI/3, 1.0, 700, 700));
+    scene.AddLightSource(PointLight(Point(0.3,0.3, 0), 2.3f, WHITE));
 
-    Box table(Rectangle(Vect(0,1,0), Point(-0.5f, -1, -0.3f), Point(0.5f, -1, 0.7f)), 0.35f);
-    table.SetMaterial(CheckerBoard(0.2499f, RED / 2 , BLUE / 2));
-    table.SetNormalModifier(make_shared<CrossHatchModifier>(CrossHatchModifier(1000,1000,1000)));
+    Box table(Rectangle(Vect(0,1,0), Point(-0.25f, -0.8f, -0.2f), Point(0.25f, -0.8f, 0.4f)), 0.35f);
+    //table.SetMaterial(CheckerBoard(0.0499f, RED / 2 , BLUE / 2));
+    // TODO: Find out if this can be used at all...
+    table.SetNormalModifier(make_shared<CrossHatchModifier>(CrossHatchModifier(4000,4000,4000)));
     scene.AddShape(table);
 
-    /*Mesh teapot(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.25f, Vect(0,-0.5f,0));
+    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.25f, Vect(0,0,-1));
     teapot.SetMaterial(MIRROR);
-    scene.AddShape(teapot);*/
+    scene.AddShape(teapot);
 
-    Box room(Rectangle(Vect(0,-1,0), Point(-1, -1, -1), Point(1, -1, 1)), 1);
-    room.SetMaterial(CheckerBoard(0.499f, WHITE, BLACK));
-    scene.AddShape(room);
+    Sphere environment(Point(0,0,0), 2);
+    scene.AddShape(environment);
+
+    /*Box room(Rectangle(Vect(0,1,0), Point(-1, 1, -3), Point(1, 1, 1)), 1);
+    //room.SetMaterial(CheckerBoard(0.499f, WHITE, BLACK));
+    scene.AddShape(room);*/
+
     auto image = scene.RenderMultiThread(THREADS);
-
     image->Save("teaTime.ppm");
 }
