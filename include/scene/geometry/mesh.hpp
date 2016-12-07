@@ -15,6 +15,7 @@
 #include <vector>
 #include <memory>
 #include <meshTriangle.hpp>
+#include <transformationMatrix.hpp>
 
 using namespace std;
 
@@ -57,7 +58,7 @@ public:
      * @param shift Vector by which the relative origin of coordinates for this mesh will be moved.
      * @return
      */
-    static Mesh LoadObjFile(const string &filename, float maxDistFromOrigin, const Vect &shift);
+    static Mesh LoadObjFile(const string &filename, float maxDistFromOrigin, const Vect &shift, TransformationMatrix tm = TransformationMatrix());
 
     /**
      * @param lightRay Contains the point from which an intersection with this shape will measured.

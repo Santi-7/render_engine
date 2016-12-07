@@ -72,7 +72,7 @@ void ClampPoints(vector<Point> &points, Point &maxValues, Point &minValues, floa
 }
 
 
-Mesh Mesh::LoadObjFile(const string& filename, float maxDistFromOrigin, const Vect& shift)
+Mesh Mesh::LoadObjFile(const string& filename, float maxDistFromOrigin, const Vect& shift, TransformationMatrix tm)
 {
     vector<shared_ptr<Triangle>> triangles;
 
@@ -109,10 +109,10 @@ Mesh Mesh::LoadObjFile(const string& filename, float maxDistFromOrigin, const Ve
             if (y > maxY) maxY = y;
             if (z < minZ) minZ = z;
             if (z > maxZ) maxZ = z;
-            positions.push_back(Point(x, y, z));
+            positions.push_back(tm * Point(x, y, z));
         } else if (lineType == "vn") {   // New vertex normal
             lineStream >> x >> y >> z;
-            normals.push_back(Vect(x, y, z));
+            normals.push_back(tm * Vect(x, y, z));
         } else if (lineType == "f") {   // New face
             lineStream >> a >> b >> c;
             faces.push_back(Face(a - 1, b - 1, c - 1));
