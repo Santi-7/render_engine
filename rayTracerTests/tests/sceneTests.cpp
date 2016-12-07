@@ -394,7 +394,7 @@ TEST(Mesh, BoundingVolumes)
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592/2);
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0.2,-0.55f), (float)3.14159/2, 1.0, 600, 600));
-    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/jade_blender.obj", 0.35, Vect(0,0,0));
+    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/buddha.obj", 0.35, Vect(0,0,0));
     scene.AddShape(teapot);
 
     scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.
@@ -678,4 +678,146 @@ TEST(Complex, TeaTime)
 
     auto image = scene.RenderMultiThread(THREADS);
     image->Save("teaTime.ppm");
+}
+
+TEST(Box, Table)
+{
+    Scene scene;
+
+    // Real View
+    scene.SetCamera(
+            Pinhole(Vect(0, 1, 0), Vect(1, 0, 0), Vect(0, 0, 1), Point(0, 0.1f, -1.9f),
+                    PI/3, 1.0, 1500, 1000));
+    // Top View (To adjust stuff)
+    /*scene.SetCamera(
+            Pinhole(Vect(0, 0, 1), Vect(1, 0, 0), Vect(0, -1, 0), Point(0.1f, 3.9f, -0.1f),
+                    PI/4, 1.0, 500, 500));*/
+
+    //////////////////////////////
+    //// Making the room /////////
+    //////////////////////////////
+
+    Rectangle floor(Vect(0,1,0), Point(-1, -0.55f, -1), Point(1, -0.55f, 1));
+    scene.AddShape(floor);
+
+    Rectangle ceiling(Vect(0,-1,0), Point(-1, 1.05f, -1), Point(1, 1.05f, 1));
+    scene.AddShape(ceiling);
+
+    Rectangle leftWall(Vect(1,0,0), Point(-1, -0.55f, -1), Point(-1, 1.05f, 1));
+    scene.AddShape(leftWall);
+
+    Rectangle rightWall(Vect(-1,0,0), Point(1, -0.55f, -1), Point(1, 1.05f, 1));
+    scene.AddShape(rightWall);
+
+    Rectangle backWall(Vect(0,0,-1), Point(-1, -0.55f, 1), Point(1, 1.05f, 1));
+    scene.AddShape(backWall);
+    // Room end
+
+    //////////////////////////////
+    //// LightBuld       /////////
+    //////////////////////////////
+
+    scene.AddLightSource(PointLight(Point(0, 0.6f, 0), 5.3f, WHITE));
+
+    /* This could have looked pretty... on hold
+     * Sphere lightBulb(Point(0,1,0), 0.15f);
+    lightBulb.SetEmittedLight(Color(1.0f, 0.8f, 0.6));
+    scene.AddShape(lightBulb);*/
+
+    //////////////////////////////
+    //// Making a table //////////
+    //////////////////////////////
+    // To 'easily' build the table in the origin of coordinates and then move it
+    Vect tableShift(-0.5f, 0, 0.5f);
+    float pos = 0.2f;
+    float legDim = 0.025f;
+    float legDepth = 0.3f;
+    float legBaseY = -0.5f;
+
+    shared_ptr<Material> woodOrSomething = make_shared<Material>(Material(Color(0.6f, 0.3f, 0.0f), BLACK, 0.0f, BLACK, BLACK));
+
+    Box leg1(Rectangle(Vect(0,1,0), Point(-pos, legBaseY, -pos) + tableShift, Point(-pos+legDim, legBaseY, -pos+legDim) + tableShift), legDepth);
+    Box leg2(Rectangle(Vect(0,1,0), Point(pos, legBaseY, -pos) + tableShift, Point(pos+legDim, legBaseY, -pos+legDim) + tableShift), legDepth);
+
+    float zShift = 0.5f;
+
+    Box leg3(Rectangle(Vect(0,1,0), Point(-pos, legBaseY, pos - zShift) + tableShift, Point(-pos+legDim, legBaseY, pos - zShift + legDim) + tableShift), legDepth);
+    Box leg4(Rectangle(Vect(0,1,0), Point(pos, legBaseY, pos - zShift) + tableShift, Point(pos+legDim, legBaseY, pos - zShift + legDim) + tableShift), legDepth);
+
+    float extraTopLength = 0.05f;
+    float tableTopDepth = 0.04f;
+    float offsetWithLegs = 0.005f;
+
+    Box tableTop(
+            Rectangle(
+                    Vect(0,1,0),
+                    Point(-pos - extraTopLength, legBaseY + legDepth - offsetWithLegs, -pos - extraTopLength - zShift) + tableShift,
+                    Point( pos + extraTopLength, legBaseY + legDepth - offsetWithLegs,  pos + extraTopLength) + tableShift), tableTopDepth
+    );
+
+    leg1.SetMaterial(woodOrSomething);
+    leg2.SetMaterial(woodOrSomething);
+    leg3.SetMaterial(woodOrSomething);
+    leg4.SetMaterial(woodOrSomething);
+    tableTop.SetMaterial(woodOrSomething);
+
+    scene.AddShape(leg1);
+    scene.AddShape(leg2);
+    scene.AddShape(leg3);
+    scene.AddShape(leg4);
+    scene.AddShape(tableTop);
+
+    // Table end
+
+    //////////////////////////////
+    //// Making a chessBoard /////
+    //////////////////////////////
+
+    float squareSize = 0.055f;
+    float boardZOffset = 0.25f;
+    CheckerBoard pattern(squareSize, BLACK, WHITE, GRAY/2);
+
+    Rectangle board(Vect(0,1,0),
+            Point(-squareSize * 4, legBaseY + legDepth + tableTopDepth, -squareSize * 4 - boardZOffset) + tableShift,
+            Point( squareSize * 4, legBaseY + legDepth + tableTopDepth,  squareSize * 4 - boardZOffset) + tableShift);
+    board.SetMaterial(pattern);
+    scene.AddShape(board);
+
+    // ChessBoard end
+
+    //////////////////////////////
+    //// TEAPOT!!            /////
+    //////////////////////////////
+
+    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.15f, Vect(-0.5f,-0.1f,0.4f));
+    teapot.SetMaterial(MIRROR); // TODO: Not implemented in a Mesh tree
+    scene.AddShape(teapot);
+
+    // Teapot end
+
+    //////////////////////////////
+    //// FATHER!!            /////
+    //////////////////////////////
+
+    Mesh vader = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/darth_head.obj", 0.15f, Vect(0.5f,-0.1f,0.4f));
+    vader.SetMaterial(make_shared<Material>(Material(BLACK, GRAY, 1.0f, BLACK, BLACK)));
+    scene.AddShape(vader);
+
+    // Teapot end
+
+    //////////////////////////////
+    //// ShowCase            /////
+    //////////////////////////////
+
+
+
+
+    // ShowCase end
+
+    Sphere environment(Point(0,0,0), 0.1);
+    //environment.SetEmittedLight(SKY_BLUE);
+    //scene.AddShape(environment);
+
+    auto image = scene.RenderMultiThread(THREADS);
+    image->Save("table.ppm");
 }
