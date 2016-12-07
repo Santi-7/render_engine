@@ -139,6 +139,9 @@ void Image::Save(const string filename) const
         }
     }
 
+    largest = largest < 1.0f ? 1.0f : largest;
+
+
     // Write the image's 2-dimensional array.
     for (unsigned int i = 0; i < mImage.size(); ++i)
     {
