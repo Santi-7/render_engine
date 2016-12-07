@@ -394,7 +394,7 @@ TEST(Mesh, BoundingVolumes)
     TransformationMatrix tm;
     tm.SetYRotation((float)3.141592/2);
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0.2,-0.55f), (float)3.14159/2, 1.0, 600, 600));
-    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/buddha.obj", 0.35, Vect(0,0,0));
+    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/darth_head.obj", 0.35, Vect(0,0,0));
     scene.AddShape(teapot);
 
     scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.
@@ -686,7 +686,7 @@ TEST(Award, Room)
 
     // Real View
     scene.SetCamera(
-            Pinhole(Vect(0, 1, 0), Vect(1, 0, 0), Vect(0, 0, 1), Point(0, 0.1f, -1.9f),
+            Pinhole(Vect(0, 1, 0), Vect(1, 0, 0), Vect(0, 0, 1), Point(0, 0.1f, -1),
                     PI/3, 1.0, 1500, 1000));
     // Top View (To adjust stuff)
     /*scene.SetCamera(
@@ -697,24 +697,29 @@ TEST(Award, Room)
     //// Making the room /////////
     //////////////////////////////
 
+    CheckerBoard tiles(0.25f, WHITE, RED);
     Rectangle floor(Vect(0,1,0), Point(-1, -0.55f, -1), Point(1, -0.55f, 1));
+    floor.SetMaterial(tiles);
     scene.AddShape(floor);
 
     Rectangle ceiling(Vect(0,-1,0), Point(-1, 1.05f, -1), Point(1, 1.05f, 1));
     scene.AddShape(ceiling);
 
     Rectangle leftWall(Vect(1,0,0), Point(-1, -0.55f, -1), Point(-1, 1.05f, 1));
+    leftWall.SetMaterial(make_shared<Material>(Material(RED, BLACK, 0.0f, BLACK, BLACK)));
     scene.AddShape(leftWall);
 
     Rectangle rightWall(Vect(-1,0,0), Point(1, -0.55f, -1), Point(1, 1.05f, 1));
+    rightWall.SetMaterial(make_shared<Material>(Material(BLUE, BLACK, 0.0f, BLACK, BLACK)));
     scene.AddShape(rightWall);
 
     Rectangle backWall(Vect(0,0,-1), Point(-1, -0.55f, 1), Point(1, 1.05f, 1));
+    backWall.SetMaterial(make_shared<Material>(Material(PURPLE, BLACK, 0.0f, BLACK, BLACK)));
     scene.AddShape(backWall);
     // Room end
 
     //////////////////////////////
-    //// LightBuld       /////////
+    //// LightBulb       /////////
     //////////////////////////////
 
     scene.AddLightSource(PointLight(Point(0, 0.6f, 0), 5.3f, WHITE));
@@ -743,7 +748,7 @@ TEST(Award, Room)
     float zShift = 0.5f;
 
     Box leg3(Rectangle(Vect(0,1,0), Point(-pos, legBaseY, pos - zShift) + tableShift, Point(-pos+legDim, legBaseY, pos - zShift + legDim) + tableShift), legDepth);
-    Box leg4(Rectangle(Vect(0,1,0), Point(pos, legBaseY, pos - zShift) + tableShift, Point(pos+legDim, legBaseY, pos - zShift + legDim) + tableShift), legDepth);
+    Box leg4(Rectangle(Vect(0,1,0), Point( pos, legBaseY, pos - zShift) + tableShift, Point( pos+legDim, legBaseY, pos - zShift + legDim) + tableShift), legDepth);
 
     float extraTopLength = 0.05f;
     float tableTopDepth = 0.04f;
@@ -787,9 +792,9 @@ TEST(Award, Room)
     //// TEAPOT!!            /////
     //////////////////////////////
 
-    /*Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.15f, Vect(-0.5f,-0.1f,0.4f));
+    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.15f, Vect(-0.5f,-0.1f,0.4f));
     teapot.SetMaterial(MIRROR);
-    scene.AddShape(teapot);*/
+    scene.AddShape(teapot);
 
     //////////////////////////////
     //// FATHER!!            /////
@@ -877,13 +882,26 @@ TEST(Award, Room)
     //// WINDOW              /////
     //////////////////////////////
 
-    Rectangle window(Vect(0,0,1), Point(-0.7f, 0.7f, 0.9999f), Point(-0.3f, 0.3f, 0.9999f));
+    Rectangle window(Vect(0,0,1), Point(-0.8f, 0.7f, 0.9999f), Point(-0.1f, 0, 0.9999f));
     window.SetMaterial(GLASS);
     scene.AddShape(window);
+
+    Box windowFrameTop(Rectangle(Vect(0,0,-1), Point(-0.85f, 0.7f, 0.9999f), Point(-0.05f, 0.75f, 0.9999f)), 0.01f);
+    Box windowFrameBottom(Rectangle(Vect(0,0,-1), Point(-0.85f, 0.0f, 0.9999f), Point(-0.05f, 0.05f, 0.9999f)), 0.01f);
+    Box windowFrameLeft(Rectangle(Vect(0,0,-1), Point(-0.85f, 0.0f, 0.9999f), Point(-0.8f, 0.75f, 0.9999f)), 0.01f);
+    Box windowFrameRight(Rectangle(Vect(0,0,-1), Point(-0.1f, 0.0f, 0.9999f), Point(-0.05f, 0.75f, 0.9999f)), 0.01f);
+
+    scene.AddShape(windowFrameTop);
+    scene.AddShape(windowFrameBottom);
+    scene.AddShape(windowFrameLeft);
+    scene.AddShape(windowFrameRight);
+
 
     //////////////////////////////
     //// ENVIRONMENT         /////
     //////////////////////////////
+
+    scene.AddLightSource(PointLight(Point(-0.45f, 1.0f, 1.5f), 2.0f, WHITE));
 
     Sphere environment(Point(0,0,0), 2);
     environment.SetEmittedLight(SKY_BLUE);
