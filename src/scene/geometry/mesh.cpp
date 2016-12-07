@@ -163,8 +163,7 @@ Mesh Mesh::LoadObjFile(const string& filename, float maxDistFromOrigin, const Ve
     cout << minValues << '\n';
     return Mesh(triangles);
 }
-static int depth = 0;
-bool isLeft = true;
+
 Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
 {
     float minX = FLT_MAX, minY = FLT_MAX, minZ = FLT_MAX;
@@ -205,9 +204,6 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
     // If there are less than 32 triangles make this Mesh a leaf
     if (triangles.size() <= 32)
     {
-        cout << "Creating node with: " << triangles.size() << " triangles at depth: " << depth << " on a "
-             << (isLeft ? "left" : "right") << " child\n";
-        isLeft = !isLeft;
         mIsLeaf = true;
         mTriangles = triangles;
     }
@@ -222,7 +218,6 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
         // Sort the triangle vector by the greatest axis
         if (maxSize == xSize)
         {
-            cout << "Splitting by X";
             sort(triangles.begin(), triangles.end(), [](shared_ptr<Triangle> &t1, shared_ptr<Triangle> &t2)
             {
                 return t1->GetCenter().GetX() > t2->GetCenter().GetX();
@@ -230,7 +225,6 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
         }
         else if (maxSize == ySize)
         {
-            cout << "Splitting by Y";
             sort(triangles.begin(), triangles.end(), [](shared_ptr<Triangle> &t1, shared_ptr<Triangle> &t2)
             {
                 return t1->GetCenter().GetY() > t2->GetCenter().GetY();
@@ -239,14 +233,12 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
         }
         else
         {
-            cout << "Splitting by Z";
             sort(triangles.begin(), triangles.end(), [](shared_ptr<Triangle> &t1, shared_ptr<Triangle> &t2)
             {
                 return t1->GetCenter().GetZ() > t2->GetCenter().GetZ();
             });
         }
 
-        cout << " at depth: " << depth++ << '\n';
 
         // Split the triangle vector into two halves
         vector<shared_ptr<Triangle>> firstHalf(triangles.begin(), triangles.begin() + triangles.size()/2);
@@ -254,7 +246,6 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
 
         mLeft = make_shared<Mesh>(Mesh(firstHalf));
         mRight = make_shared<Mesh>(Mesh(secondHalf));
-        depth--;
     }
 }
 
@@ -401,13 +392,6 @@ void Mesh::MeshIntersect(const LightRay& lightRay, float& minT, float maxT, shar
     float leftT = mLeft->IntersectBound(lightRay);
     float rightT = mRight->IntersectBound(lightRay);
 
-    if(leftT != FLT_MAX)
-        mLeft->MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
-
-    if(rightT != FLT_MAX)
-        mRight->MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
-
-    /*
     if ((rightT >= FLT_MAX) & (leftT >= FLT_MAX))
     {
         return;
@@ -419,7 +403,7 @@ void Mesh::MeshIntersect(const LightRay& lightRay, float& minT, float maxT, shar
 
         if (rightT < minT)
         {
-            mRight->MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
+            mRight->MeshIntersect(lightRay, minT, minT, nearestShape);
         }
     }
     else
@@ -428,9 +412,9 @@ void Mesh::MeshIntersect(const LightRay& lightRay, float& minT, float maxT, shar
 
         if (leftT < minT)
         {
-            mLeft->MeshIntersect(lightRay, minT, FLT_MAX, nearestShape);
+            mLeft->MeshIntersect(lightRay, minT, minT, nearestShape);
         }
-    }*/
+    }
 }
 
 float Mesh::IntersectBound(const LightRay& lightRay) const
