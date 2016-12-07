@@ -110,7 +110,7 @@ public:
 
 private:
     /** True if this Mesh has no children Meshes. */
-    bool mIsLeaf;
+    bool mIsLeaf = false;
 
     /** Left child Mesh.*/
     shared_ptr<Mesh> mLeft;
