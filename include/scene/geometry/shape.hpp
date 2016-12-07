@@ -185,7 +185,7 @@ private:
     shared_ptr<VectorModifier> mNormalModifier = nullptr;
 
     /** Color emitted by this shape. */
-    Color mEmitted = Color(0.0f,0.0f,0.0f);
+    Color mEmitted = BLACK;
 
     /** Set to true when the emitted color is set to anything. */
     bool mIsLightSource = false;
