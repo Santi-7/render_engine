@@ -43,7 +43,8 @@ float Triangle::Intersect(const LightRay &lightRay) const
     return (alpha >= 0) & (beta >= 0) & (alpha + beta < 1) ? t : FLT_MAX;
 }
 
-void Triangle::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
+void Triangle::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                         shared_ptr<Shape> thisShape) const
 {
     float tmpT = Intersect(lightRay);
     if (tmpT < minT)
@@ -55,6 +56,7 @@ void Triangle::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape
 
 Point Triangle::GetCenter() const
 {
-    return Point((mA.GetX()+mB.GetX()+mC.GetX())/3, (mA.GetY()+mB.GetY()+mC.GetY())/3,
-            (mA.GetZ()+mB.GetZ()+mC.GetZ())/3);
+    return Point((mA.GetX() + mB.GetX() + mC.GetX()) / 3,
+                 (mA.GetY() + mB.GetY() + mC.GetY()) / 3,
+                 (mA.GetZ() + mB.GetZ() + mC.GetZ()) / 3);
 }
