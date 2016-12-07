@@ -163,7 +163,7 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
                          *nearestShape, specularSteps, diffuseSteps) +
            DiffuseLight(intersection, normal, lightRay,
                         *nearestShape, specularSteps, diffuseSteps) +
-                        emmitedFromShape;
+           emmitedFromShape;
 }
 
 Color Scene::DirectLight(const Point &point, Vect &normal,
