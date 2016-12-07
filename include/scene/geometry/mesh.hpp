@@ -86,7 +86,7 @@ public:
      * @param maxT Maximum distance to consider checking a bounding volume (allows us to stop checking branches).
      * @param nearestShape Nearest shape intersected by the lightray so far. Updated together with minT.
      */
-    void MeshIntersect(const LightRay& lightRay, float& minT, float maxT, shared_ptr<Shape>& nearestShape) const;
+    void MeshIntersect(const LightRay &lightRay, float &minT, float maxT, shared_ptr<Shape> &nearestShape) const;
 
     /**
      * Returns the distance from the lightray's origin to the this mesh's bounding shape.
@@ -94,7 +94,7 @@ public:
      * @param lightRay
      * @return Distance from the lightray's origin to the this mesh's bounding shape.
      */
-    float IntersectBound(const LightRay& lightRay) const;
+    float IntersectBound(const LightRay &lightRay) const;
 
     /**
      * This method is not usable for this shape. Calling it will result in an exception. This is because a Mesh's normal
@@ -109,6 +109,7 @@ public:
     void SetMaterial(shared_ptr<Material> material);
 
 private:
+
     /** True if this Mesh has no children Meshes. */
     bool mIsLeaf = false;
 
@@ -122,4 +123,4 @@ private:
     vector<shared_ptr<Triangle>> mTriangles;
 };
 
-#endif //RAY_TRACER_MESH_HPP
+#endif // RAY_TRACER_MESH_HPP
