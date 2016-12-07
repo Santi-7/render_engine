@@ -429,8 +429,17 @@ Vect Mesh::GetNormal(const Point &point) const
 
 void Mesh::SetMaterial(shared_ptr<Material> material)
 {
-    for (unsigned int i = 0; i < mTriangles.size(); ++i) {
-        mTriangles[i]->SetMaterial(material);
+    if (mIsLeaf)
+    {
+        for (unsigned int i = 0; i < mTriangles.size(); ++i) {
+            mTriangles[i]->SetMaterial(material);
+        }
     }
+    else
+    {
+        mLeft->SetMaterial(material);
+        mRight->SetMaterial(material);
+    }
+
 }
 
