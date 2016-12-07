@@ -680,7 +680,7 @@ TEST(Complex, TeaTime)
     image->Save("teaTime.ppm");
 }
 
-TEST(Box, Table)
+TEST(Award, Room)
 {
     Scene scene;
 
@@ -727,6 +727,7 @@ TEST(Box, Table)
     //////////////////////////////
     //// Making a table //////////
     //////////////////////////////
+
     // To 'easily' build the table in the origin of coordinates and then move it
     Vect tableShift(-0.5f, 0, 0.5f);
     float pos = 0.2f;
@@ -752,7 +753,8 @@ TEST(Box, Table)
             Rectangle(
                     Vect(0,1,0),
                     Point(-pos - extraTopLength, legBaseY + legDepth - offsetWithLegs, -pos - extraTopLength - zShift) + tableShift,
-                    Point( pos + extraTopLength, legBaseY + legDepth - offsetWithLegs,  pos + extraTopLength) + tableShift), tableTopDepth
+                    Point( pos + extraTopLength, legBaseY + legDepth - offsetWithLegs,  pos + extraTopLength) + tableShift),
+            tableTopDepth
     );
 
     leg1.SetMaterial(woodOrSomething);
@@ -766,8 +768,6 @@ TEST(Box, Table)
     scene.AddShape(leg3);
     scene.AddShape(leg4);
     scene.AddShape(tableTop);
-
-    // Table end
 
     //////////////////////////////
     //// Making a chessBoard /////
@@ -783,41 +783,112 @@ TEST(Box, Table)
     board.SetMaterial(pattern);
     scene.AddShape(board);
 
-    // ChessBoard end
-
     //////////////////////////////
     //// TEAPOT!!            /////
     //////////////////////////////
 
-    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.15f, Vect(-0.5f,-0.1f,0.4f));
-    teapot.SetMaterial(MIRROR); // TODO: Not implemented in a Mesh tree
-    scene.AddShape(teapot);
-
-    // Teapot end
+    /*Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.15f, Vect(-0.5f,-0.1f,0.4f));
+    teapot.SetMaterial(MIRROR);
+    scene.AddShape(teapot);*/
 
     //////////////////////////////
     //// FATHER!!            /////
     //////////////////////////////
 
-    Mesh vader = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/darth_head.obj", 0.15f, Vect(0.5f,-0.1f,0.4f));
+    /*Mesh vader = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/darth_head.obj", 0.15f, Vect(0.5f,-0.1f,0.4f));
     vader.SetMaterial(make_shared<Material>(Material(BLACK, GRAY, 1.0f, BLACK, BLACK)));
-    scene.AddShape(vader);
-
-    // Teapot end
+    scene.AddShape(vader);*/
 
     //////////////////////////////
     //// ShowCase            /////
     //////////////////////////////
 
+    Box backShowCase(Rectangle(Vect(0,0,-1), Point(0.3f, -0.55f, 1), Point(0.95f, 0.7f, 1)), 0.2f);
+    backShowCase.SetMaterial(woodOrSomething);
+    scene.AddShape(backShowCase);
 
+    /* Shelf Top 0 */
 
+    Box shelf0(Rectangle(Vect(0,1,0), Point(0.3f, 0.65f, 0.8), Point(0.95f, 0.65f, 0.5)), 0.05f);
+    shelf0.SetMaterial(woodOrSomething);
+    scene.AddShape(shelf0);
 
-    // ShowCase end
+    /* Shelf 1 */
 
-    Sphere environment(Point(0,0,0), 0.1);
-    //environment.SetEmittedLight(SKY_BLUE);
-    //scene.AddShape(environment);
+    Box shelf1(Rectangle(Vect(0,1,0), Point(0.3f, 0.35f, 0.8), Point(0.95f, 0.35f, 0.5)), 0.05f);
+    shelf1.SetMaterial(woodOrSomething);
+    scene.AddShape(shelf1);
+
+    Sphere s1_1(Point(0.425f, 0.475f, 0.65f), 0.075f);
+    scene.AddShape(s1_1);
+
+    Sphere s1_2(Point(0.625f, 0.475f, 0.65f), 0.075f);
+    scene.AddShape(s1_2);
+
+    Sphere s1_3(Point(0.825f, 0.475f, 0.65f), 0.075f);
+    scene.AddShape(s1_3);
+
+    /* Shelf 2 */
+
+    Box shelf2(Rectangle(Vect(0,1,0), Point(0.3f, 0.05f, 0.8), Point(0.95f, 0.05f, 0.5)), 0.05f);
+    shelf2.SetMaterial(woodOrSomething);
+    scene.AddShape(shelf2);
+
+    Sphere s2_1(Point(0.425f, 0.175f, 0.65f), 0.075f);
+    scene.AddShape(s2_1);
+
+    Sphere s2_2(Point(0.625f, 0.175f, 0.65f), 0.075f);
+    scene.AddShape(s2_2);
+
+    Sphere s2_3(Point(0.825f, 0.175f, 0.65f), 0.075f);
+    scene.AddShape(s2_3);
+
+    /* Shelf 3 */
+
+    Box shelf3(Rectangle(Vect(0,1,0), Point(0.3f, -0.25f, 0.8), Point(0.95f, -0.25f, 0.5)), 0.05f);
+    shelf3.SetMaterial(woodOrSomething);
+    scene.AddShape(shelf3);
+
+    Sphere s3_1(Point(0.425f, -0.125f, 0.65f), 0.075f);
+    scene.AddShape(s3_1);
+
+    Sphere s3_2(Point(0.625f, -0.125f, 0.65f), 0.075f);
+    scene.AddShape(s3_2);
+
+    Sphere s3_3(Point(0.825f, -0.125f, 0.65f), 0.075f);
+    scene.AddShape(s3_3);
+
+    /* Shelf 4 */
+
+    Box shelf4(Rectangle(Vect(0,1,0), Point(0.3f, -0.55f, 0.8), Point(0.95f, -0.55f, 0.5)), 0.05f);
+    shelf4.SetMaterial(woodOrSomething);
+    scene.AddShape(shelf4);
+
+    Sphere s4_1(Point(0.425f, -0.425f, 0.65f), 0.075f);
+    scene.AddShape(s4_1);
+
+    Sphere s4_2(Point(0.625f, -0.425f, 0.65f), 0.075f);
+    scene.AddShape(s4_2);
+
+    Sphere s4_3(Point(0.825f, -0.425f, 0.65f), 0.075f);
+    scene.AddShape(s4_3);
+
+    //////////////////////////////
+    //// WINDOW              /////
+    //////////////////////////////
+
+    Rectangle window(Vect(0,0,1), Point(-0.7f, 0.7f, 0.9999f), Point(-0.3f, 0.3f, 0.9999f));
+    window.SetMaterial(GLASS);
+    scene.AddShape(window);
+
+    //////////////////////////////
+    //// ENVIRONMENT         /////
+    //////////////////////////////
+
+    Sphere environment(Point(0,0,0), 2);
+    environment.SetEmittedLight(SKY_BLUE);
+    scene.AddShape(environment);
 
     auto image = scene.RenderMultiThread(THREADS);
-    image->Save("table.ppm");
+    image->Save("award.ppm");
 }
