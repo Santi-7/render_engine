@@ -22,6 +22,7 @@
 #include <materials/checkerBoard.hpp>
 #include <thread>
 #include <materials/crossHatchModifier.hpp>
+#include <geometry/compositeShape.hpp>
 
 static const unsigned int THREADS = std::thread::hardware_concurrency();
 
@@ -768,15 +769,14 @@ TEST(Award, Room)
     leg4.SetMaterial(woodOrSomething);
     tableTop.SetMaterial(woodOrSomething);
 
-    scene.AddShape(leg1);
-    scene.AddShape(leg2);
-    scene.AddShape(leg3);
-    scene.AddShape(leg4);
-    scene.AddShape(tableTop);
+    CompositeShape wholeTable;
+    wholeTable.AddShape(leg1);
+    wholeTable.AddShape(leg2);
+    wholeTable.AddShape(leg3);
+    wholeTable.AddShape(leg4);
+    wholeTable.AddShape(tableTop);
 
-    //////////////////////////////
-    //// Making a chessBoard /////
-    //////////////////////////////
+    // Making a chessBoard on the table
 
     float squareSize = 0.055f;
     float boardZOffset = 0.25f;
@@ -786,7 +786,10 @@ TEST(Award, Room)
             Point(-squareSize * 4, legBaseY + legDepth + tableTopDepth, -squareSize * 4 - boardZOffset) + tableShift,
             Point( squareSize * 4, legBaseY + legDepth + tableTopDepth,  squareSize * 4 - boardZOffset) + tableShift);
     board.SetMaterial(pattern);
-    scene.AddShape(board);
+    wholeTable.AddShape(board);
+
+    wholeTable.SetBoundingShape(Box(Rectangle(Vect(0,1,0), Point(-pos - extraTopLength, -0.5f, -pos - extraTopLength - zShift) + tableShift, Point(pos + extraTopLength, -0.5f,  pos + extraTopLength) + tableShift), legDepth + tableTopDepth + 0.1f));
+    scene.AddShape(wholeTable);
 
     //////////////////////////////
     //// TEAPOT!!            /////
@@ -808,95 +811,102 @@ TEST(Award, Room)
     //// ShowCase            /////
     //////////////////////////////
 
+    CompositeShape wholeShowcase;
+
     Box backShowCase(Rectangle(Vect(0,0,-1), Point(0.3f, -0.55f, 1), Point(0.95f, 0.7f, 1)), 0.2f);
     backShowCase.SetMaterial(woodOrSomething);
-    scene.AddShape(backShowCase);
+    wholeShowcase.AddShape(backShowCase);
 
     /* Shelf Top 0 */
 
     Box shelf0(Rectangle(Vect(0,1,0), Point(0.3f, 0.65f, 0.8), Point(0.95f, 0.65f, 0.5)), 0.05f);
     shelf0.SetMaterial(woodOrSomething);
-    scene.AddShape(shelf0);
+    wholeShowcase.AddShape(shelf0);
 
     /* Shelf 1 */
 
     Box shelf1(Rectangle(Vect(0,1,0), Point(0.3f, 0.35f, 0.8), Point(0.95f, 0.35f, 0.5)), 0.05f);
     shelf1.SetMaterial(woodOrSomething);
-    scene.AddShape(shelf1);
+    wholeShowcase.AddShape(shelf1);
 
     Sphere s1_1(Point(0.425f, 0.475f, 0.65f), 0.075f);
-    scene.AddShape(s1_1);
+    wholeShowcase.AddShape(s1_1);
 
     Sphere s1_2(Point(0.625f, 0.475f, 0.65f), 0.075f);
-    scene.AddShape(s1_2);
+    wholeShowcase.AddShape(s1_2);
 
     Sphere s1_3(Point(0.825f, 0.475f, 0.65f), 0.075f);
-    scene.AddShape(s1_3);
+    wholeShowcase.AddShape(s1_3);
 
     /* Shelf 2 */
 
     Box shelf2(Rectangle(Vect(0,1,0), Point(0.3f, 0.05f, 0.8), Point(0.95f, 0.05f, 0.5)), 0.05f);
     shelf2.SetMaterial(woodOrSomething);
-    scene.AddShape(shelf2);
+    wholeShowcase.AddShape(shelf2);
 
     Sphere s2_1(Point(0.425f, 0.175f, 0.65f), 0.075f);
-    scene.AddShape(s2_1);
+    wholeShowcase.AddShape(s2_1);
 
     Sphere s2_2(Point(0.625f, 0.175f, 0.65f), 0.075f);
-    scene.AddShape(s2_2);
+    wholeShowcase.AddShape(s2_2);
 
     Sphere s2_3(Point(0.825f, 0.175f, 0.65f), 0.075f);
-    scene.AddShape(s2_3);
+    wholeShowcase.AddShape(s2_3);
 
     /* Shelf 3 */
 
     Box shelf3(Rectangle(Vect(0,1,0), Point(0.3f, -0.25f, 0.8), Point(0.95f, -0.25f, 0.5)), 0.05f);
     shelf3.SetMaterial(woodOrSomething);
-    scene.AddShape(shelf3);
+    wholeShowcase.AddShape(shelf3);
 
     Sphere s3_1(Point(0.425f, -0.125f, 0.65f), 0.075f);
-    scene.AddShape(s3_1);
+    wholeShowcase.AddShape(s3_1);
 
     Sphere s3_2(Point(0.625f, -0.125f, 0.65f), 0.075f);
-    scene.AddShape(s3_2);
+    wholeShowcase.AddShape(s3_2);
 
     Sphere s3_3(Point(0.825f, -0.125f, 0.65f), 0.075f);
-    scene.AddShape(s3_3);
+    wholeShowcase.AddShape(s3_3);
 
     /* Shelf 4 */
 
     Box shelf4(Rectangle(Vect(0,1,0), Point(0.3f, -0.55f, 0.8), Point(0.95f, -0.55f, 0.5)), 0.05f);
     shelf4.SetMaterial(woodOrSomething);
-    scene.AddShape(shelf4);
+    wholeShowcase.AddShape(shelf4);
 
     Sphere s4_1(Point(0.425f, -0.425f, 0.65f), 0.075f);
-    scene.AddShape(s4_1);
+    wholeShowcase.AddShape(s4_1);
 
     Sphere s4_2(Point(0.625f, -0.425f, 0.65f), 0.075f);
-    scene.AddShape(s4_2);
+    wholeShowcase.AddShape(s4_2);
 
     Sphere s4_3(Point(0.825f, -0.425f, 0.65f), 0.075f);
-    scene.AddShape(s4_3);
+    wholeShowcase.AddShape(s4_3);
 
+    wholeShowcase.SetBoundingShape(Box(Rectangle(Vect(0,1,0), Point(0.3f, -0.55f, 0.5f), Point(0.95f, -0.55f, 1.0f)), 1.55f ));
+    scene.AddShape(wholeShowcase);
     //////////////////////////////
     //// WINDOW              /////
     //////////////////////////////
+    CompositeShape wholeWindow;
 
     Rectangle window(Vect(0,0,1), Point(-0.8f, 0.7f, 0.9999f), Point(-0.1f, 0, 0.9999f));
     window.SetMaterial(GLASS);
-    scene.AddShape(window);
+    wholeWindow.AddShape(window);
 
     Box windowFrameTop(Rectangle(Vect(0,0,-1), Point(-0.85f, 0.7f, 0.9999f), Point(-0.05f, 0.75f, 0.9999f)), 0.01f);
     Box windowFrameBottom(Rectangle(Vect(0,0,-1), Point(-0.85f, 0.0f, 0.9999f), Point(-0.05f, 0.05f, 0.9999f)), 0.01f);
     Box windowFrameLeft(Rectangle(Vect(0,0,-1), Point(-0.85f, 0.0f, 0.9999f), Point(-0.8f, 0.75f, 0.9999f)), 0.01f);
     Box windowFrameRight(Rectangle(Vect(0,0,-1), Point(-0.1f, 0.0f, 0.9999f), Point(-0.05f, 0.75f, 0.9999f)), 0.01f);
 
-    scene.AddShape(windowFrameTop);
-    scene.AddShape(windowFrameBottom);
-    scene.AddShape(windowFrameLeft);
-    scene.AddShape(windowFrameRight);
+    wholeWindow.AddShape(windowFrameTop);
+    wholeWindow.AddShape(windowFrameBottom);
+    wholeWindow.AddShape(windowFrameLeft);
+    wholeWindow.AddShape(windowFrameRight);
 
+    wholeWindow.SetBoundingShape(Box(Rectangle(Vect(0,0,-1), Point(-0.85f, 0.0f, 1.01f), Point(-0.05f, 0.75f, 1.01f)), 0.06f));
 
+    scene.AddShape(wholeWindow);
     //////////////////////////////
     //// ENVIRONMENT         /////
     //////////////////////////////
