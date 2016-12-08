@@ -139,29 +139,22 @@ public:
     }
 
     /**
-     * @return True if this shape emits light.
-     */
-    bool IsLightSource()
-    {
-        return mIsLightSource;
-    }
-
-    /**
      * @return Emitted light as a color
      */
     Color GetEmitedLight()
     {
-        return mEmitted;
+        return mEmitted * mPowerEmmited;
     }
 
     /**
      * Sets the emitted color value and marks this shape as a light source
-     * @param emitted
+     * @param emitted .
+     * @param power .
      */
-    void SetEmittedLight(const Color &emitted)
+    void SetEmittedLight(const Color &emitted, const float power)
     {
         mEmitted = emitted;
-        mIsLightSource = true;
+        mPowerEmmited = power;
     }
 
     /**
@@ -187,8 +180,8 @@ private:
     /** Color emitted by this shape. */
     Color mEmitted = BLACK;
 
-    /** Set to true when the emitted color is set to anything. */
-    bool mIsLightSource = false;
+    /** Power of the color emmited. */
+    float mPowerEmmited = 0.0f;
 };
 
 #endif // RAY_TRACER_SHAPE_HPP

@@ -23,7 +23,7 @@ PointLight::PointLight(const Point &position, const float power, const Color &ba
 Color PointLight::GetColor(const Point &point) const
 {
     // Distance from the given point to the source light.
-    float distance = (point - mPosition).Abs();
+    float distance = point.Distance(mPosition);
     // Radiance decreases proportionally with the square of the distance.
     return mBaseColor * (mPower / (distance * distance));
 }
