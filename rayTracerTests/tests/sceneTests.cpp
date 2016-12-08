@@ -788,24 +788,37 @@ TEST(Award, Room)
     board.SetMaterial(pattern);
     wholeTable.AddShape(board);
 
-    wholeTable.SetBoundingShape(Box(Rectangle(Vect(0,1,0), Point(-pos - extraTopLength, -0.5f, -pos - extraTopLength - zShift) + tableShift, Point(pos + extraTopLength, -0.5f,  pos + extraTopLength) + tableShift), legDepth + tableTopDepth + 0.1f));
+    { // Add Meshes on top of the table and include them in the bounding box for the composite shape
+        //////////////////////////////
+        //// FATHER!!            /////
+        //////////////////////////////
+        TransformationMatrix vaderTM;
+        vaderTM.SetYRotation(PI);
+        Mesh vader = Mesh::LoadObjFile(string(PROJECT_DIR)+"/resources/darth_head.obj", 0.1f,
+                Vect(-0.45f, legDepth+tableTopDepth+0.1f-0.48f, 0.35f), vaderTM);
+        vader.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, GRAY/2, BLACK)));
+        wholeTable.AddShape(vader);
+
+        /// vs...
+
+        //////////////////////////////
+        //// Buddha!?            /////
+        //////////////////////////////
+        Mesh buddha = Mesh::LoadObjFile(string(PROJECT_DIR)+"/resources/buddha.obj", 0.1f,
+                Vect(-0.45f, legDepth+tableTopDepth+0.1f-0.48f, -0.1f));
+        buddha.SetMaterial(make_shared<Material>(Material(GREEN, BLACK, 0.0f, GRAY/3.5f, BLACK)));
+        wholeTable.AddShape(buddha);
+    }
+    wholeTable.SetBoundingShape(Box(Rectangle(Vect(0,1,0), Point(-pos - extraTopLength, -0.5f, -pos - extraTopLength - zShift) + tableShift, Point(pos + extraTopLength, -0.5f,  pos + extraTopLength) + tableShift), legDepth + tableTopDepth + 0.25f));
     scene.AddShape(wholeTable);
 
     //////////////////////////////
     //// TEAPOT!!            /////
     //////////////////////////////
 
-    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.15f, Vect(-0.5f,-0.1f,0.4f));
+    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.0f, Vect(0.5f,0.85f,0.85f));
     teapot.SetMaterial(MIRROR);
     scene.AddShape(teapot);
-
-    //////////////////////////////
-    //// FATHER!!            /////
-    //////////////////////////////
-
-    /*Mesh vader = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/darth_head.obj", 0.15f, Vect(0.5f,-0.1f,0.4f));
-    vader.SetMaterial(make_shared<Material>(Material(BLACK, GRAY, 1.0f, BLACK, BLACK)));
-    scene.AddShape(vader);*/
 
     //////////////////////////////
     //// ShowCase            /////
@@ -830,12 +843,15 @@ TEST(Award, Room)
     wholeShowcase.AddShape(shelf1);
 
     Sphere s1_1(Point(0.425f, 0.475f, 0.65f), 0.075f);
+    s1_1.SetMaterial(make_shared<Material>(Material(WHITE, GRAY, 1.0f, BLACK, BLACK)));
     wholeShowcase.AddShape(s1_1);
 
     Sphere s1_2(Point(0.625f, 0.475f, 0.65f), 0.075f);
+    s1_2.SetMaterial(make_shared<Material>(Material(GRAY, BLACK, 0.0f, GRAY, BLACK)));
     wholeShowcase.AddShape(s1_2);
 
     Sphere s1_3(Point(0.825f, 0.475f, 0.65f), 0.075f);
+    s1_3.SetMaterial(make_shared<Material>(Material(GRAY, GRAY, 0.0f, BLACK, GRAY)));
     wholeShowcase.AddShape(s1_3);
 
     /* Shelf 2 */
@@ -845,12 +861,19 @@ TEST(Award, Room)
     wholeShowcase.AddShape(shelf2);
 
     Sphere s2_1(Point(0.425f, 0.175f, 0.65f), 0.075f);
+    s2_1.SetMaterial(GLASS);
+    s2_1.SetRefractiveIndex(GLASS_RI);
     wholeShowcase.AddShape(s2_1);
 
     Sphere s2_2(Point(0.625f, 0.175f, 0.65f), 0.075f);
+    s2_2.SetMaterial(GLASS);
+    s2_2.SetRefractiveIndex(WATER_RI);
     wholeShowcase.AddShape(s2_2);
 
     Sphere s2_3(Point(0.825f, 0.175f, 0.65f), 0.075f);
+    s2_3.SetMaterial(GLASS);
+    s2_3.SetRefractiveIndex(WATER_RI);
+    s2_3.SetNormalModifier(make_shared<VectorModifier>(CrossHatchModifier(1000, 1000, 1000)));
     wholeShowcase.AddShape(s2_3);
 
     /* Shelf 3 */
@@ -913,9 +936,19 @@ TEST(Award, Room)
 
     scene.AddLightSource(PointLight(Point(-0.45f, 1.0f, 1.5f), 2.0f, WHITE));
 
-    Sphere environment(Point(0,0,0), 2);
+    Sphere environment(Point(0,0,0), 6);
     environment.SetEmittedLight(SKY_BLUE);
     scene.AddShape(environment);
+
+    //////////////////////////////
+    //// FALCON!             /////
+    //////////////////////////////
+
+    //TransformationMatrix falconTM;
+    //falconTM.SetXRotation(PI);
+    //falconTM.SetYRotation(PI/4);
+    //Mesh falcon = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/falcon.obj", 0.2f, Vect(-0.45f, 1.0f, 1.4f), falconTM);
+    //scene.AddShape(falcon);
 
     auto image = scene.RenderMultiThread(THREADS);
     image->Save("award.ppm");
