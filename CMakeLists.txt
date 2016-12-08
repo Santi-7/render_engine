@@ -12,10 +12,23 @@ add_executable(Ray_Tracer_run
         main.cpp)
 
 include_directories(
-        include/containers)
+        ${PROJECT_SOURCE_DIR}/include/containers
+        ${PROJECT_SOURCE_DIR}/include/scene
+        ${PROJECT_SOURCE_DIR}/include/scene/geometry
+        ${PROJECT_SOURCE_DIR}/include/scene/lighting
+        ${PROJECT_SOURCE_DIR}/include/scene/sensors
+        ${PROJECT_SOURCE_DIR}/include/utils)
 
 add_subdirectory(lib)
 add_subdirectory(rayTracerTests)
 add_subdirectory(src)
 
-target_link_libraries(Ray_Tracer_run container pthread)
+target_link_libraries(Ray_Tracer_run
+                      container
+                      geometry
+                      gtest
+                      gtest_main
+                      lighting
+                      scene
+                      sensors
+                      utils)
