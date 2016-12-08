@@ -993,22 +993,31 @@ TEST(MaterialMesh, Dragon)
     dragon.SetMaterial(make_shared<Material>(Material(GREEN/2.0f, BLACK, 0.0f, GRAY, BLACK)));
     scene.AddShape(dragon);
 
-    Sphere mirrorSphere(Point(0.0f, 0.01f, -0.05f), 0.09f);
-    mirrorSphere.SetMaterial(MIRROR);
-    scene.AddShape(mirrorSphere);
-
+    auto appleWhite(make_shared<Material>(Material(WHITE, BLACK, 0.0f, WHITE, BLACK)));
 
     Plane floor(Point(0,-0.2f,0), Vect(0,1,0));
-    floor.SetMaterial(make_shared<Material>(Material(GRAY/5, BLACK, 0.0f, BLACK, BLACK)));
-    floor.SetNormalModifier(make_shared<VectorModifier>(CrossHatchModifier(1000, 1000, 1000)));
+    floor.SetMaterial(appleWhite);
     scene.AddShape(floor);
-    scene.AddShape(Plane(Point(0,1,0), Vect(0,1,0)));
-    scene.AddShape(Plane(Point(1,0,0), Vect(-1,0,0)));
-    scene.AddShape(Plane(Point(-1,0,0), Vect(1,0,0)));
-    scene.AddShape(Plane(Point(0,0,1), Vect(0,0,-1)));
-    scene.AddShape(Plane(Point(0,0,-1), Vect(0,0,1)));
+    Plane ceiling(Point(0,1,0), Vect(0,1,0));
+    ceiling.SetMaterial(appleWhite);
 
-    auto image = scene.RenderMultiThread(THREADS);
+    Plane rightWall(Point(1,0,0), Vect(-1,0,0));
+    rightWall.SetMaterial(appleWhite);
+    scene.AddShape(rightWall);
+
+    Plane leftWall(Point(-1,0,0), Vect(1,0,0));
+    leftWall.SetMaterial(appleWhite);
+    scene.AddShape(leftWall);
+
+    Plane backWall(Point(0,0,1), Vect(0,0,-1));
+    backWall.SetMaterial(appleWhite);
+    scene.AddShape(backWall);
+
+    Plane frontWall(Point(0,0,-1), Vect(0,0,1));
+    frontWall.SetMaterial(appleWhite);
+    scene.AddShape(frontWall);
+
+    auto image = scene.RenderMultiThread(4);
     image->Save("dragon.ppm");
 }
 
