@@ -681,6 +681,28 @@ TEST(Complex, TeaTime)
     image->Save("teaTime.ppm");
 }
 
+
+TEST(Award, Exposition)
+{
+    Scene scene;
+
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point(0.0f, 0.1f, -0.9f), PI/3, 1.0, 500, 500));
+
+    scene.AddLightSource(PointLight(Point(0.0f, 0.0f, -0.9f), 1, WHITE));
+
+    auto appleWhite(make_shared<Material>(Material(WHITE, BLACK, 0.0f, BLACK, BLACK)));
+
+    CompositeShape cabinet1 = Cabinet(0.15f, 0.01f, Vect(0,0,0), appleWhite);
+    scene.AddShape(cabinet1);
+
+    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.05f, Vect(0,0,0));
+    scene.AddShape(teapot);
+
+    auto image = scene.RenderMultiThread(THREADS);
+    image->Save("exposition.ppm");
+}
+
+
 TEST(Award, Room)
 {
     Scene scene;
@@ -1020,6 +1042,3 @@ TEST(MaterialMesh, Dragon)
     auto image = scene.RenderMultiThread(4);
     image->Save("dragon.ppm");
 }
-
-
-

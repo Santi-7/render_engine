@@ -9,6 +9,8 @@
 #include <scene.hpp>
 #include <sphere.hpp>
 #include <mathConstants.hpp>
+#include <geometry/compositeShape.hpp>
+#include <geometry/box.hpp>
 
 // TODO: Add doc.
 /**
@@ -55,3 +57,85 @@ Scene CornellBox(bool useSpheresAsWalls)
 
     return cornellBox;
 }
+
+CompositeShape Cabinet(float cornerDistFromCenter, float panelWidth, Vect position, shared_ptr<Material> material)
+{
+    Box backPanel(
+            Rectangle(
+                    Vect(0, 0, -1),
+                    Point(-cornerDistFromCenter, -cornerDistFromCenter, cornerDistFromCenter) + position,
+                    Point(cornerDistFromCenter, cornerDistFromCenter, cornerDistFromCenter) + position),
+            panelWidth);
+
+    backPanel.SetMaterial(material);
+
+    Box leftPanel(
+            Rectangle(
+                    Vect(1, 0, 0),
+                    Point(-cornerDistFromCenter, -cornerDistFromCenter, -cornerDistFromCenter) + position,
+                    Point(-cornerDistFromCenter, cornerDistFromCenter, cornerDistFromCenter) + position),
+            panelWidth);
+
+    leftPanel.SetMaterial(material);
+
+    Box rightPanel(
+            Rectangle(
+                    Vect(-1, 0, 0),
+                    Point(cornerDistFromCenter, -cornerDistFromCenter, -cornerDistFromCenter) + position,
+                    Point(cornerDistFromCenter, cornerDistFromCenter, cornerDistFromCenter) + position),
+            panelWidth);
+
+    rightPanel.SetMaterial(material);
+
+    Box topPanel(
+            Rectangle(
+                    Vect(0, -1, 0),
+                    Point(-cornerDistFromCenter, cornerDistFromCenter, -cornerDistFromCenter) + position,
+                    Point(cornerDistFromCenter, cornerDistFromCenter, cornerDistFromCenter) + position),
+            panelWidth);
+
+    topPanel.SetMaterial(material);
+
+    Box bottomPanel(
+            Rectangle(
+                    Vect(0, 1, 0),
+                    Point(-cornerDistFromCenter, -cornerDistFromCenter, -cornerDistFromCenter) + position,
+                    Point(cornerDistFromCenter, -cornerDistFromCenter, cornerDistFromCenter) + position),
+            panelWidth);
+
+    bottomPanel.SetMaterial(material);
+
+    CompositeShape wholeCabinet;
+    wholeCabinet.AddShape(backPanel);
+    wholeCabinet.AddShape(leftPanel);
+    wholeCabinet.AddShape(rightPanel);
+    wholeCabinet.AddShape(topPanel);
+    wholeCabinet.AddShape(bottomPanel);
+
+    wholeCabinet.SetBoundingShape(
+            Box(
+                    Rectangle(
+                    Vect(0, 1, 0),
+                    Point(-cornerDistFromCenter, -cornerDistFromCenter, -cornerDistFromCenter) + position,
+                    Point(cornerDistFromCenter, -cornerDistFromCenter, cornerDistFromCenter) + position),
+                    (cornerDistFromCenter+panelWidth)*2));
+
+    return wholeCabinet;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
