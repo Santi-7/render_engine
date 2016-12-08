@@ -699,34 +699,42 @@ TEST(Award, Room)
     //// Making the room /////////
     //////////////////////////////
 
-    CheckerBoard tiles(0.25f, WHITE, RED);
+    //CheckerBoard tiles(0.25f, WHITE, RED);
     Rectangle floor(Vect(0,1,0), Point(-1, -0.55f, -1), Point(1, -0.55f, 1));
-    floor.SetMaterial(tiles);
+    floor.SetMaterial(make_shared<Material>(Material(Color(0.1f, 0.1f, 0.1f), GRAY, 10.0f, GRAY/3, BLACK)));
+    //floor.SetMaterial(tiles);
     scene.AddShape(floor);
 
     Rectangle ceiling(Vect(0,-1,0), Point(-1, 1.05f, -1), Point(1, 1.05f, 1));
+    ceiling.SetMaterial(make_shared<Material>(Material(WHITE, BLACK, 0.0f, BLACK, BLACK)));
     scene.AddShape(ceiling);
 
     Rectangle leftWall(Vect(1,0,0), Point(-1, -0.55f, -1), Point(-1, 1.05f, 1));
-    leftWall.SetMaterial(make_shared<Material>(Material(RED, BLACK, 0.0f, BLACK, BLACK)));
+    leftWall.SetMaterial(make_shared<Material>(Material(WHITE, BLACK, 0.0f, BLACK, BLACK)));
     scene.AddShape(leftWall);
 
     Rectangle rightWall(Vect(-1,0,0), Point(1, -0.55f, -1), Point(1, 1.05f, 1));
-    rightWall.SetMaterial(make_shared<Material>(Material(BLUE, BLACK, 0.0f, BLACK, BLACK)));
+    rightWall.SetMaterial(make_shared<Material>(Material(WHITE, BLACK, 0.0f, BLACK, BLACK)));
     scene.AddShape(rightWall);
 
     Rectangle backWall(Vect(0,0,-1), Point(-1, -0.55f, 1), Point(1, 1.05f, 1));
-    backWall.SetMaterial(make_shared<Material>(Material(PURPLE, BLACK, 0.0f, BLACK, BLACK)));
+    backWall.SetMaterial(make_shared<Material>(Material(WHITE, BLACK, 0.0f, BLACK, BLACK)));
     scene.AddShape(backWall);
 
     Rectangle hiddenWall(Vect(0,0,1), Point(-1, -0.55f, -1), Point(1, 1.05f, -1));
+    hiddenWall.SetMaterial(make_shared<Material>(Material(WHITE, BLACK, 0.0f, BLACK, BLACK)));
     scene.AddShape(hiddenWall);
 
     //////////////////////////////
     //// LightBulb       /////////
     //////////////////////////////
 
-    scene.AddLightSource(PointLight(Point(0, 0.6f, 0), 5.3f, WHITE));
+    scene.AddLightSource(PointLight(Point(-0.5f, 0.55f, -0.4f), 5, WHITE));
+    scene.AddLightSource(PointLight(Point(-0.5f, 0.55f,  0.4f), 5, WHITE));
+    scene.AddLightSource(PointLight(Point( 0.5f, 0.55f, -0.4f), 5, WHITE));
+    //scene.AddLightSource(PointLight(Point( 0.4f, 0.85f,  0.4f), 4, WHITE));
+
+    scene.AddLightSource(PointLight(Point(0.5f, 0, -0.4f), 5, WHITE));
 
     /* This could have looked pretty... on hold
      * Sphere lightBulb(Point(0,1,0), 0.15f);
@@ -791,7 +799,7 @@ TEST(Award, Room)
     board.SetMaterial(pattern);
     wholeTable.AddShape(board);
 
-    /*{ // Add Meshes on top of the table and include them in the bounding box for the composite shape
+    { // Add Meshes on top of the table and include them in the bounding box for the composite shape
 
         //////////////////////////////
         //// FATHER!!            /////
@@ -813,7 +821,7 @@ TEST(Award, Room)
                 Vect(-0.45f, legDepth+tableTopDepth+0.1f-0.48f, -0.1f));
         buddha.SetMaterial(make_shared<Material>(Material(GREEN, BLACK, 0.0f, GRAY/3.5f, BLACK)));
         wholeTable.AddShape(buddha);
-    }*/
+    }
 
     wholeTable.SetBoundingShape(Box(Rectangle(Vect(0,1,0), Point(-pos - extraTopLength, -0.5f, -pos - extraTopLength - zShift) + tableShift, Point(pos + extraTopLength, -0.5f,  pos + extraTopLength) + tableShift), legDepth + tableTopDepth + 0.25f));
     scene.AddShape(wholeTable);
@@ -926,9 +934,13 @@ TEST(Award, Room)
     wholeWindow.AddShape(window);
 
     Box windowFrameTop(Rectangle(Vect(0,0,-1), Point(-0.85f, 0.7f, 0.9999f), Point(-0.05f, 0.75f, 0.9999f)), 0.01f);
+    windowFrameTop.SetMaterial(make_shared<Material>(Material(GRAY, WHITE, 10.0f, GRAY/4, BLACK)));
     Box windowFrameBottom(Rectangle(Vect(0,0,-1), Point(-0.85f, 0.0f, 0.9999f), Point(-0.05f, 0.05f, 0.9999f)), 0.01f);
+    windowFrameBottom.SetMaterial(make_shared<Material>(Material(GRAY, WHITE, 10.0f, GRAY/4, BLACK)));
     Box windowFrameLeft(Rectangle(Vect(0,0,-1), Point(-0.85f, 0.0f, 0.9999f), Point(-0.8f, 0.75f, 0.9999f)), 0.01f);
+    windowFrameLeft.SetMaterial(make_shared<Material>(Material(GRAY, WHITE, 10.0f, GRAY/4, BLACK)));
     Box windowFrameRight(Rectangle(Vect(0,0,-1), Point(-0.1f, 0.0f, 0.9999f), Point(-0.05f, 0.75f, 0.9999f)), 0.01f);
+    windowFrameRight.SetMaterial(make_shared<Material>(Material(GRAY, WHITE, 10.0f, GRAY/4, BLACK)));
 
     wholeWindow.AddShape(windowFrameTop);
     wholeWindow.AddShape(windowFrameBottom);
@@ -944,7 +956,7 @@ TEST(Award, Room)
     //////////////////////////////
 
     Sphere environment(Point(0,0,0), 20);
-    environment.SetEmittedLight(SKY_BLUE, 5);
+    environment.SetEmittedLight(SKY_BLUE, 10);
     scene.AddShape(environment);
 
     //////////////////////////////
