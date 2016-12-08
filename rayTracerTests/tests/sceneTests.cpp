@@ -953,3 +953,39 @@ TEST(Award, Room)
     auto image = scene.RenderMultiThread(THREADS);
     image->Save("award.ppm");
 }
+
+TEST(MaterialMesh, Dragon)
+{
+    Scene scene;
+
+    // Real View
+    scene.SetCamera(
+            Pinhole(Vect(0, 1, 0), Vect(1, 0, 0), Vect(0, 0, 1), Point(0, 0.1f, -0.1f),
+                    PI/3, 1.0, 1280, 720));
+
+    scene.AddLightSource(PointLight(Point(0,0.8f, 0), 3, WHITE));
+    scene.AddLightSource(PointLight(Point(0,0.8f, 0.75f), 2, (RED + WHITE) / 2));
+
+    TransformationMatrix dragonTM;
+    dragonTM.SetYRotation(PI/1.2f);
+
+    Mesh dragon = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/dragonFlat.obj", 0.15f, Vect(0,0.05f, 0.2f), dragonTM);
+    //car.SetMaterial(make_shared<Material>(Material(WHITE/1.2f, BLACK, 0.0f, BLACK, WHITE)));
+    scene.AddShape(dragon);
+
+    Plane floor(Point(0,0,0), Vect(0,1,0));
+    floor.SetMaterial(make_shared<Material>(Material(GRAY/10, BLACK, 0.0f, BLACK, BLACK)));
+    floor.SetNormalModifier(make_shared<VectorModifier>(CrossHatchModifier(1000, 1000, 1000)));
+    scene.AddShape(floor);
+    scene.AddShape(Plane(Point(0,1,0), Vect(0,1,0)));
+    scene.AddShape(Plane(Point(1,0,0), Vect(-1,0,0)));
+    scene.AddShape(Plane(Point(-1,0,0), Vect(1,0,0)));
+    scene.AddShape(Plane(Point(0,0,1), Vect(0,0,-1)));
+    scene.AddShape(Plane(Point(0,0,-1), Vect(0,0,1)));
+
+    auto image = scene.RenderMultiThread(THREADS);
+    image->Save("dragon.ppm");
+}
+
+
+
