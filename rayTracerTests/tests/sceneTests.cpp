@@ -616,13 +616,13 @@ TEST(LightShape, Desert)
 
     Sphere sky(Point(0,0,0), 400.0f);
     sky.SetMaterial(make_shared<Material>(Material(Color(0, 0.5f, 0.99f), BLACK, 0.0f, BLACK, WHITE * 0.9f)));
-    sky.SetEmittedLight(Color(0, 0.5f, 0.99f));
+    sky.SetEmittedLight(Color(0, 0.5f, 0.99f), 1);
     scene.AddShape(sky);
 
     scene.AddLightSource(PointLight(Point(-20, 29, 30), 100, WHITE ));
     Sphere sun(Point(-20, 50, 30), 20.0f);
     sun.SetMaterial(make_shared<Material>(Material(WHITE + RED/1.5f + YELLOW /5, WHITE, 0.2f, WHITE, WHITE)));
-    sun.SetEmittedLight(WHITE * 0.95f);
+    sun.SetEmittedLight(WHITE, 0.95f);
     scene.AddShape(sun);
 
     auto image = scene.RenderMultiThread(THREADS);
@@ -640,7 +640,7 @@ TEST(NewIndirect, Planes)
 
     Plane ground(Point(0,-0.75f,0), Vect(0,1,0));
     ground.SetMaterial(make_shared<Material>(Material(YELLOW, BLACK, 0.0f, BLACK, BLACK)));
-    ground.SetEmittedLight(ground.GetMaterial()->GetDiffuse() / 2);
+    ground.SetEmittedLight(ground.GetMaterial()->GetDiffuse(), 0.5f);
     scene.AddShape(ground);
 
     Plane ceiling(Point(0,0.75f,0), Vect(0,-1, 0));
@@ -689,6 +689,7 @@ TEST(Award, Room)
     scene.SetCamera(
             Pinhole(Vect(0, 1, 0), Vect(1, 0, 0), Vect(0, 0, 1), Point(0, 0.1f, -1),
                     PI/3, 1.0, 1500, 1000));
+
     // Top View (To adjust stuff)
     /*scene.SetCamera(
             Pinhole(Vect(0, 0, 1), Vect(1, 0, 0), Vect(0, -1, 0), Point(0.1f, 3.9f, -0.1f),
@@ -717,7 +718,9 @@ TEST(Award, Room)
     Rectangle backWall(Vect(0,0,-1), Point(-1, -0.55f, 1), Point(1, 1.05f, 1));
     backWall.SetMaterial(make_shared<Material>(Material(PURPLE, BLACK, 0.0f, BLACK, BLACK)));
     scene.AddShape(backWall);
-    // Room end
+
+    Rectangle hiddenWall(Vect(0,0,1), Point(-1, -0.55f, -1), Point(1, 1.05f, -1));
+    scene.AddShape(hiddenWall);
 
     //////////////////////////////
     //// LightBulb       /////////
@@ -788,7 +791,8 @@ TEST(Award, Room)
     board.SetMaterial(pattern);
     wholeTable.AddShape(board);
 
-    { // Add Meshes on top of the table and include them in the bounding box for the composite shape
+    /*{ // Add Meshes on top of the table and include them in the bounding box for the composite shape
+
         //////////////////////////////
         //// FATHER!!            /////
         //////////////////////////////
@@ -804,11 +808,13 @@ TEST(Award, Room)
         //////////////////////////////
         //// Buddha!?            /////
         //////////////////////////////
+
         Mesh buddha = Mesh::LoadObjFile(string(PROJECT_DIR)+"/resources/buddha.obj", 0.1f,
                 Vect(-0.45f, legDepth+tableTopDepth+0.1f-0.48f, -0.1f));
         buddha.SetMaterial(make_shared<Material>(Material(GREEN, BLACK, 0.0f, GRAY/3.5f, BLACK)));
         wholeTable.AddShape(buddha);
-    }
+    }*/
+
     wholeTable.SetBoundingShape(Box(Rectangle(Vect(0,1,0), Point(-pos - extraTopLength, -0.5f, -pos - extraTopLength - zShift) + tableShift, Point(pos + extraTopLength, -0.5f,  pos + extraTopLength) + tableShift), legDepth + tableTopDepth + 0.25f));
     scene.AddShape(wholeTable);
 
@@ -816,9 +822,9 @@ TEST(Award, Room)
     //// TEAPOT!!            /////
     //////////////////////////////
 
-    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.0f, Vect(0.5f,0.85f,0.85f));
+    /*Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.0f, Vect(0.5f,0.85f,0.85f));
     teapot.SetMaterial(MIRROR);
-    scene.AddShape(teapot);
+    scene.AddShape(teapot);*/
 
     //////////////////////////////
     //// ShowCase            /////
@@ -908,9 +914,11 @@ TEST(Award, Room)
 
     wholeShowcase.SetBoundingShape(Box(Rectangle(Vect(0,1,0), Point(0.3f, -0.55f, 0.5f), Point(0.95f, -0.55f, 1.0f)), 1.55f ));
     scene.AddShape(wholeShowcase);
+
     //////////////////////////////
     //// WINDOW              /////
     //////////////////////////////
+
     CompositeShape wholeWindow;
 
     Rectangle window(Vect(0,0,1), Point(-0.8f, 0.7f, 0.9999f), Point(-0.1f, 0, 0.9999f));
@@ -930,14 +938,13 @@ TEST(Award, Room)
     wholeWindow.SetBoundingShape(Box(Rectangle(Vect(0,0,-1), Point(-0.85f, 0.0f, 1.01f), Point(-0.05f, 0.75f, 1.01f)), 0.06f));
 
     scene.AddShape(wholeWindow);
+
     //////////////////////////////
     //// ENVIRONMENT         /////
     //////////////////////////////
 
-    scene.AddLightSource(PointLight(Point(-0.45f, 1.0f, 1.5f), 2.0f, WHITE));
-
-    Sphere environment(Point(0,0,0), 6);
-    environment.SetEmittedLight(SKY_BLUE);
+    Sphere environment(Point(0,0,0), 20);
+    environment.SetEmittedLight(SKY_BLUE, 5);
     scene.AddShape(environment);
 
     //////////////////////////////
