@@ -347,8 +347,8 @@ TEST(Mesh, IronGiant)
     Scene scene;
     TransformationMatrix tm;
     tm.SetYRotation((float) 3.141592);
-    scene.SetCamera(Pinhole(Vect(0, 1, 0), Vect(1, 0, 0), Vect(0, 0, -1), Point(0, 0.35f, 0.95f), (float) 3.14159 / 2, 1.0, 50, 50));
-    Mesh ironGiant(string(PROJECT_DIR) + "/resources/iron_giant.obj", 0.35f, Vect(0,0,0));
+    scene.SetCamera(Pinhole(Vect(0, 1, 0), Vect(1, 0, 0), Vect(0, 0, -1), Point(0, 0.35f, 0.95f), (float) 3.14159 / 2, 1.0, 500, 500));
+    Mesh ironGiant = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/iron_giant.obj", 0.35f, Vect(0,0,0));
     scene.AddShape(ironGiant);
 
     scene.AddShape(Plane(Point(-1, 0, 0), Vect(1, 0, 0))); // Left wall.
@@ -686,17 +686,72 @@ TEST(Award, Exposition)
 {
     Scene scene;
 
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point(0.0f, 0.1f, -0.9f), PI/3, 1.0, 500, 500));
+    scene.SetCamera(
+            Pinhole(Vect(0, 1, 0), Vect(1, 0, 0), Vect(0, 0, 1), Point(0.0f, 0.3f, -0.55f), PI/3, 1.0, 100, 100));
 
-    scene.AddLightSource(PointLight(Point(0.0f, 0.0f, -0.9f), 1, WHITE));
+    scene.AddLightSource(PointLight(Point(0.0f, 0.4f, -0.9f), 3, WHITE));
 
-    auto appleWhite(make_shared<Material>(Material(WHITE, BLACK, 0.0f, BLACK, BLACK)));
+    auto reflWhite(make_shared<Material>(Material(WHITE, BLACK, 0.0f, BLACK, BLACK)));
 
-    CompositeShape cabinet1 = Cabinet(0.15f, 0.01f, Vect(0,0,0), appleWhite);
+    Plane backWall(Point(0, 0, 1), Vect(0, 0, -1));
+    backWall.SetMaterial(reflWhite);
+    scene.AddShape(backWall);
+
+    float shift = 0.35f;
+    float cabinetSize = 0.15f;
+    float currentX = -0.3f, currentY = 0.4f, currentZ = 0.8f;
+
+    TransformationMatrix turnAroundY;
+    turnAroundY.SetYRotation(PI);
+
+    TransformationMatrix halfTurnY;
+    halfTurnY.SetYRotation(PI/2);
+
+    TransformationMatrix falcon;
+    falcon.SetXRotation(PI/2);
+    falcon.SetYRotation(PI/4);
+
+    CompositeShape cabinet1 = Cabinet(cabinetSize, cabinetSize/10, Vect(currentX, currentY, currentZ), reflWhite);
+    Mesh item1 = Mesh::LoadObjFile(string(PROJECT_DIR)+"/resources/darth_head.obj", 0.1f, Vect(currentX, currentY, currentZ), turnAroundY);
+    item1.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, WHITE/2, BLACK)));
+    cabinet1.AddShape(item1);
+    currentX += shift;
+
+    CompositeShape cabinet2 = Cabinet(cabinetSize, cabinetSize/10, Vect(currentX, currentY, currentZ), reflWhite);
+    Mesh item2 = Mesh::LoadObjFile(string(PROJECT_DIR)+"/resources/utah_teapot.obj", 0.1f, Vect(currentX, currentY-0.04f, currentZ));
+    item2.SetMaterial(MIRROR);
+    cabinet2.AddShape(item2);
+    currentX += shift;
+
+    CompositeShape cabinet3 = Cabinet(cabinetSize, cabinetSize/10, Vect(currentX, currentY, currentZ), reflWhite);
+    Mesh item3 = Mesh::LoadObjFile(string(PROJECT_DIR)+"/resources/dragonFlat.obj", 0.1f, Vect(currentX, currentY, currentZ), halfTurnY);
+    item3.SetMaterial(make_shared<Material>(Material(RED, BLACK, 0.0f, WHITE/1.2f, BLACK)));
+    cabinet3.AddShape(item3);
+    currentX -= shift * 2;
+    currentY -= shift;
+
+    CompositeShape cabinet4 = Cabinet(cabinetSize, cabinetSize/10, Vect(currentX, currentY, currentZ), reflWhite);
+    Mesh item4 = Mesh::LoadObjFile(string(PROJECT_DIR)+"/resources/falcon.obj", 0.15f, Vect(currentX-0.1f, currentY+0.1f, currentZ), falcon);
+    cabinet4.AddShape(item4);
+    currentX += shift;
+
+    CompositeShape cabinet5 = Cabinet(cabinetSize, cabinetSize/10, Vect(currentX, currentY, currentZ), reflWhite);
+    Mesh item5 = Mesh::LoadObjFile(string(PROJECT_DIR)+"/resources/electric_rat.obj", 0.08f, Vect(currentX, currentY-0.01f, currentZ), turnAroundY);
+    item5.SetMaterial(make_shared<Material>(Material(YELLOW, BLACK, 0.0f, BLACK, BLACK)));
+    scene.AddShape(item5);
+    currentX += shift;
+
+    CompositeShape cabinet6 = Cabinet(cabinetSize, cabinetSize/10, Vect(currentX, currentY, currentZ), reflWhite);
+    Mesh item6 = Mesh::LoadObjFile(string(PROJECT_DIR)+"/resources/buddha.obj", 0.1f, Vect(currentX+0.05f, currentY, currentZ), turnAroundY);
+    item6.SetMaterial(make_shared<Material>(Material(GREEN, BLACK, 0.0f, WHITE/1.2f, BLACK)));
+    cabinet6.AddShape(item6);
+
     scene.AddShape(cabinet1);
-
-    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.05f, Vect(0,0,0));
-    scene.AddShape(teapot);
+    scene.AddShape(cabinet2);
+    scene.AddShape(cabinet3);
+    scene.AddShape(cabinet4);
+    scene.AddShape(cabinet5);
+    scene.AddShape(cabinet6);
 
     auto image = scene.RenderMultiThread(THREADS);
     image->Save("exposition.ppm");
