@@ -155,6 +155,7 @@ public:
     {
         mEmitted = emitted;
         mPowerEmmited = power;
+        SetMaterial(NONE);
     }
 
     /**

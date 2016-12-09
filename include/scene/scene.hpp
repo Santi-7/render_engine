@@ -81,10 +81,10 @@ private:
     static constexpr unsigned int SPECULAR_STEPS = 4;
 
     /** Limit to the diffuse interactions allowed. */
-    static constexpr unsigned int DIFFUSE_STEPS = 0;
+    static constexpr unsigned int DIFFUSE_STEPS = 1;
 
     /** Diffuse rays to throw in every diffuse interaction. */
-    static constexpr unsigned int DIFFUSE_RAYS = 8;
+    static constexpr unsigned int DIFFUSE_RAYS = 16;
 
     /** The scene's camera. */
     unique_ptr<Camera> mCamera;
@@ -103,7 +103,7 @@ private:
      *  contiguous we expect every thread to take a similar amount of time so it doesn't matter if the progress bar
      *  finishes before all other threads end. If all printed their own progress bar adding locks would make this slower.
      */
-    void RenderPixelRange(const shared_ptr<vector<unsigned int>>horizontalLines,
+    void RenderPixelRange(const shared_ptr<vector<unsigned int>> horizontalLines,
                           const shared_ptr<Image> image, const bool printProgress) const;
 
     /**
