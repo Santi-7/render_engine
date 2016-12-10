@@ -6,7 +6,8 @@ set(SOURCE_FILES
         rectangle.cpp
         sphere.cpp
         triangle.cpp
-        compositeShape.cpp)
+        compositeShape.cpp
+        mengerSponge.cpp)
 
 set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/box.hpp
@@ -17,7 +18,8 @@ set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/shape.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/sphere.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/geometry/triangle.hpp
-        ../../../include/scene/geometry/compositeShape.hpp)
+        ${PROJECT_SOURCE_DIR}/include/scene/geometry/compositeShape.hpp
+        ${PROJECT_SOURCE_DIR}/include/scene/geometry/mengerSponge.hpp)
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/containers
