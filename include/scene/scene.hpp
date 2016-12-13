@@ -81,10 +81,10 @@ private:
     static constexpr unsigned int SPECULAR_STEPS = 4;
 
     /** Limit to the diffuse interactions allowed. */
-    static constexpr unsigned int DIFFUSE_STEPS = 1;
+    static constexpr unsigned int DIFFUSE_STEPS = 0;
 
     /** Diffuse rays to throw in every diffuse interaction. */
-    static constexpr unsigned int DIFFUSE_RAYS = 16;
+    static constexpr unsigned int DIFFUSE_RAYS = 8;
 
     /** The scene's camera. */
     unique_ptr<Camera> mCamera;
