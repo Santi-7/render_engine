@@ -129,6 +129,24 @@ public:
         return Color(mR/k, mG/k, mB/k);
     }
 
+    /**
+     * @param color Value with which this color's RGB values will be compared.
+     * @return True if this Color is equal to color.
+     */
+    bool operator==(const Color &color) const
+    {
+        return (color.mR == mR) && (color.mG == mG) && (color.mB == mB);
+    }
+
+    /**
+     * @param color Value with which this color's RGB values will be compared.
+     * @return False if this Color is equal to color.
+     */
+    bool operator!=(const Color &color) const
+    {
+        return ! (*this == color);
+    }
+
 private:
 
     /** This color's RGB values. */
@@ -138,14 +156,14 @@ private:
 };
 
 /** Some color definitions to make life easier when making simple scenes. */
-static constexpr Color WHITE    (1.0f, 1.0f, 1.0f);
+static constexpr Color WHITE    (0.85f, 0.85f, 0.85f);
 static constexpr Color GRAY     (0.5f, 0.5f, 0.5f);
 static constexpr Color BLACK    (0.0f, 0.0f, 0.0f);
-static constexpr Color RED      (1.0f, 0.0f, 0.0f);
-static constexpr Color GREEN    (0.0f, 1.0f, 0.0f);
-static constexpr Color BLUE     (0.0f, 0.0f, 1.0f);
-static constexpr Color YELLOW   (1.0f, 1.0f, 0.0f);
-static constexpr Color PURPLE   (1.0f, 0.0f, 1.0f);
-static constexpr Color SKY_BLUE (0.0f, 1.0f, 1.0f);
+static constexpr Color RED      (0.85f, 0.0f, 0.0f);
+static constexpr Color GREEN    (0.0f, 0.85f, 0.0f);
+static constexpr Color BLUE     (0.0f, 0.0f, 0.85f);
+static constexpr Color YELLOW   (0.85f, 0.85f, 0.0f);
+static constexpr Color PURPLE   (0.85f, 0.0f, 0.85f);
+static constexpr Color SKY_BLUE (0.0f, 0.85f, 0.85f);
 
 #endif // RAY_TRACER_COLOR_HPP

@@ -117,6 +117,10 @@ void Scene::RenderPixelRange(const shared_ptr<vector<unsigned int>> horizontalLi
         currentPixel = firstPixel - advanceY * (*horizontalLines)[i];
         for (unsigned int j = 0; j < mCamera->GetWidth(); ++j)
         {
+            if (i == 317 and j == 57)
+            {
+                cout << "HEFAKLSFJG";
+            }
             // Next pixel.
             currentPixel += advanceX;
             // Get the color for the current pixel.
@@ -207,19 +211,31 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
                            const LightRay &in, const Shape &shape,
                            const int specularSteps, const int diffuseSteps) const
 {
-    if (specularSteps <= 0) return BLACK;
+    Color retVal = BLACK;
+
+    if (specularSteps<=0)
+        return retVal;
 
     // Ray of light reflected in the intersection point.
     // TODO: Change to global method.
-    Vect reflectedDir = in.GetDirection() - normal * in.GetDirection().DotProduct(normal) * 2;
-    LightRay reflectedRay = LightRay(point, reflectedDir);
-    // Ray of light refracted in the intersection point.
-    LightRay refractedRay = shape.Refract(in, point, normal);
+    if (shape.GetMaterial()->GetReflectance() != BLACK)
+    {
+        Vect reflectedDir = in.GetDirection() - normal * in.GetDirection().DotProduct(normal) * 2;
+        LightRay reflectedRay = LightRay(point, reflectedDir);
+        retVal += GetLightRayColor(reflectedRay, specularSteps-1, diffuseSteps-1) *
+                shape.GetMaterial()->GetReflectance();
+    }
 
-    return GetLightRayColor(reflectedRay, specularSteps-1, diffuseSteps-1) *
-           shape.GetMaterial()->GetReflectance() +
-           GetLightRayColor(refractedRay, specularSteps-1, diffuseSteps-1) *
-           shape.GetMaterial()->GetTransmittance();
+    if (shape.GetMaterial()->GetTransmittance() != BLACK)
+    {
+        // Ray of light refracted in the intersection point.
+        LightRay refractedRay = shape.Refract(in, point, normal);
+
+        retVal += GetLightRayColor(refractedRay, specularSteps-1, diffuseSteps-1) *
+                shape.GetMaterial()->GetTransmittance();
+    }
+
+    return retVal;
 }
 
 inline static tuple<float, float> UniformCosineSampling()
