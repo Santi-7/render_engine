@@ -23,6 +23,7 @@
 #include <thread>
 #include <materials/crossHatchModifier.hpp>
 #include <geometry/compositeShape.hpp>
+#include <geometry/mengerSponge.hpp>
 
 static const unsigned int THREADS = std::thread::hardware_concurrency();
 
@@ -1121,4 +1122,27 @@ TEST(MaterialMesh, Dragon)
 
     auto image = scene.RenderMultiThread(4);
     image->Save("dragon.ppm");
+}
+
+TEST(Weird, Menger)
+{
+    Scene scene;
+    TransformationMatrix camTM;
+    camTM.SetXRotation(PI/10);
+    camTM.SetYRotation(PI/10);
+
+    // Real View
+    scene.SetCamera(
+            Pinhole(camTM*Vect(0, 1, 0), camTM*Vect(1, 0, 0), camTM*Vect(0, 0, 1), Point(-0.3f, 0.25f, -0.6f),
+                    PI/4, 1.0, 1000, 1000));
+
+    scene.AddLightSource(PointLight(Point(-0.3f,0.8f, -0.6f), 4, WHITE));
+
+    auto material = make_shared<Material>(Material(YELLOW, BLACK, 0.0f, BLACK, BLACK));
+    MengerSponge menger(0.15f, 1, material, Vect(0,0,0.25f));
+
+    scene.AddShape(menger);
+
+    auto image = scene.RenderMultiThread(THREADS);
+    image->Save("menger.ppm");
 }
