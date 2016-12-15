@@ -109,23 +109,16 @@ TEST(SimpleLight, SphereOnAPlane)
     renderedImage->Save("soap.ppm");
 }
 
-TEST(CornellBox, BigSpheres)
-{ // Cornell's box. The sides of the box are spheres
-    Scene scene = CornellBox(true);
-    auto renderedImage = scene.RenderMultiThread(THREADS);
-    renderedImage->Save("cornellS.ppm");
-}
-
 TEST(CornellBox, Planes)
 { // Cornell's box. The sides of the box are planes.
-    Scene scene = CornellBox(false);
+    Scene scene = CornellBox();
     auto renderedImage = scene.RenderMultiThread(THREADS);
-    renderedImage->Save("cornellP.ppm");
+    renderedImage->Save("cornell.ppm");
 }
 
 TEST(CornellBox, Colors)
 { // Cornell's box. Lights of colors distinct of white.
-    Scene scene = CornellBox(false);
+    Scene scene = CornellBox();
     scene.AddLightSource(PointLight(Point(0, 0, -5), 500.0, BLUE));
     auto renderedImage = scene.RenderMultiThread(THREADS);
     renderedImage->Save("cornellColors.ppm");
