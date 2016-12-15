@@ -117,10 +117,6 @@ void Scene::RenderPixelRange(const shared_ptr<vector<unsigned int>> horizontalLi
         currentPixel = firstPixel - advanceY * (*horizontalLines)[i];
         for (unsigned int j = 0; j < mCamera->GetWidth(); ++j)
         {
-            if (i == 317 and j == 57)
-            {
-                cout << "HEFAKLSFJG";
-            }
             // Next pixel.
             currentPixel += advanceX;
             // Get the color for the current pixel.
@@ -191,6 +187,11 @@ Color Scene::DirectLight(const Point &point, Vect &normal,
             {
                 // Cosine of the ray of light with the visible normal.
                 float multiplier = lightRay.GetDirection().DotProduct(normal);
+                if (multiplier < 0.0f)
+                {
+                    normal = normal * -1;
+                    multiplier = lightRay.GetDirection().DotProduct(normal);
+                }
                 /* Add the radiance from the current light if it
                    illuminates the [point] from the visible semi-sphere. */
                 retVal += // Li.
