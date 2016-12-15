@@ -50,15 +50,15 @@ public:
                     const Vect &normal, const Point &point) const;
 
     /**
-     * @return kD value for this material.
-     */
-    Color GetDiffuse() const;
-
-    /**
      * @param point Point for which the diffuse value is returned.
      * @return kD value for this material at the given point.
      */
     virtual Color GetDiffuse(const Point &point) const;
+
+    /**
+     * @return ks value for this material.
+     */
+    Color GetSpecular() const;
 
     /**
      * @return kR value for this material.

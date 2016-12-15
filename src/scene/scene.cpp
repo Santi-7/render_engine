@@ -213,8 +213,7 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
 {
     Color retVal = BLACK;
 
-    if (specularSteps<=0)
-        return retVal;
+    if (specularSteps<=0) return retVal;
 
     // Ray of light reflected in the intersection point.
     // TODO: Change to global method.
@@ -223,7 +222,7 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
         Vect reflectedDir = in.GetDirection() - normal * in.GetDirection().DotProduct(normal) * 2;
         LightRay reflectedRay = LightRay(point, reflectedDir);
         retVal += GetLightRayColor(reflectedRay, specularSteps-1, diffuseSteps-1) *
-                shape.GetMaterial()->GetReflectance();
+                  shape.GetMaterial()->GetReflectance();
     }
 
     if (shape.GetMaterial()->GetTransmittance() != BLACK)
@@ -232,7 +231,7 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
         LightRay refractedRay = shape.Refract(in, point, normal);
 
         retVal += GetLightRayColor(refractedRay, specularSteps-1, diffuseSteps-1) *
-                shape.GetMaterial()->GetTransmittance();
+                  shape.GetMaterial()->GetTransmittance();
     }
 
     return retVal;
@@ -254,7 +253,9 @@ Color Scene::DiffuseLight(const Point &point, const Vect &normal,
                           const LightRay &in, const Shape &shape,
                           const int specularSteps, const int diffuseSteps) const
 {
-    if (diffuseSteps <= 0) return BLACK;
+    if ((diffuseSteps <= 0) | ((shape.GetMaterial()->GetDiffuse(point) == BLACK) &
+                               (shape.GetMaterial()->GetSpecular() == BLACK)))
+        return BLACK;
 
     /* Transformation matrix from the local coordinates with [point] as the
      * reference point, and [normal] as the z axis, to global coordinates. */

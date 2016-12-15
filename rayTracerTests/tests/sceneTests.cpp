@@ -633,8 +633,7 @@ TEST(NewIndirect, Planes)
     scene.AddLightSource(PointLight(Point(0, 0.5, 0.3f), 4, WHITE));
 
     Plane ground(Point(0,-0.75f,0), Vect(0,1,0));
-    ground.SetMaterial(make_shared<Material>(Material(YELLOW, BLACK, 0.0f, BLACK, BLACK)));
-    ground.SetEmittedLight(ground.GetMaterial()->GetDiffuse(), 0.5f);
+    ground.SetEmittedLight(YELLOW, 0.5f);
     scene.AddShape(ground);
 
     Plane ceiling(Point(0,0.75f,0), Vect(0,-1, 0));

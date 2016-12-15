@@ -26,14 +26,14 @@ Color Material::PhongBRDF(const Vect &seenFrom, const Vect &light,
     return (this->GetDiffuse(point) / PI) + mKs * (mShininess + 2) / (2 * PI) * pow(cosine, mShininess);
 }
 
-Color Material::GetDiffuse() const
+Color Material::GetDiffuse(const Point &point) const
 {
     return mKd;
 }
 
-Color Material::GetDiffuse(const Point &point) const
+Color Material::GetSpecular() const
 {
-    return mKd;
+    return mKs;
 }
 
 Color Material::GetReflectance() const

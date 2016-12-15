@@ -49,7 +49,8 @@ Scene CornellBox()
     return cornellBox;
 }
 
-CompositeShape Cabinet(float cornerDistFromCenter, float panelWidth, Vect position, shared_ptr<Material> material)
+CompositeShape Cabinet(const float cornerDistFromCenter, const float panelWidth,
+                       const Vect &position, const shared_ptr<Material> material)
 {
     Box backPanel(
             Rectangle(
@@ -113,20 +114,3 @@ CompositeShape Cabinet(float cornerDistFromCenter, float panelWidth, Vect positi
 
     return wholeCabinet;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
