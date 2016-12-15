@@ -21,9 +21,9 @@ Color Material::PhongBRDF(const Vect &seenFrom, const Vect &light,
                           const Vect &normal, const Point &point) const
 {
     // TODO: Change to global method.
-    Vect reflected = light- normal * light.DotProduct(normal) * 2;
+    Vect reflected = light - normal * light.DotProduct(normal) * 2;
     float cosine = seenFrom.DotProduct(reflected);
-    return (this->GetDiffuse(point) / PI) + mKs * (mShininess + 2) / (2 * PI) * pow(cosine, mShininess);
+    return (this->GetDiffuse(point) / PI) + mKs * ((mShininess + 2) / (2 * PI) * pow(cosine, mShininess));
 }
 
 Color Material::GetDiffuse(const Point &point) const

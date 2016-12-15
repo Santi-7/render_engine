@@ -187,21 +187,18 @@ Color Scene::DirectLight(const Point &point, Vect &normal,
             {
                 // Cosine of the ray of light with the visible normal.
                 float multiplier = lightRay.GetDirection().DotProduct(normal);
-                if (multiplier < 0.0f)
-                {
-                    normal = normal * -1;
-                    multiplier = lightRay.GetDirection().DotProduct(normal);
-                }
                 /* Add the radiance from the current light if it
                    illuminates the [point] from the visible semi-sphere. */
-                retVal += // Li.
-                          mLightSources[i]->GetColor(point) *
-                          // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
-                          shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
-                                                         lightRay.GetDirection(),
-                                                         normal, point) *
-                          // Cosine.
-                          max(multiplier, 0.0f);
+                if (multiplier > 0.0f) {
+                    retVal += // Li.
+                            mLightSources[i]->GetColor(point) *
+                            // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
+                            shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
+                                                           lightRay.GetDirection(),
+                                                           normal, point) *
+                            // Cosine.
+                            multiplier;
+                }
             }
         }
     }
