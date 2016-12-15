@@ -141,9 +141,9 @@ public:
     /**
      * @return Emitted light as a color
      */
-    Color GetEmitedLight()
+    Color GetEmittedLight()
     {
-        return mEmitted * mPowerEmmited;
+        return mEmitted * mPowerEmitted;
     }
 
     /**
@@ -154,7 +154,7 @@ public:
     void SetEmittedLight(const Color &emitted, const float power)
     {
         mEmitted = emitted;
-        mPowerEmmited = power;
+        mPowerEmitted = power;
         SetMaterial(NONE);
     }
 
@@ -182,7 +182,7 @@ private:
     Color mEmitted = BLACK;
 
     /** Power of the color emmited. */
-    float mPowerEmmited = 0.0f;
+    float mPowerEmitted = 0.0f;
 };
 
 #endif // RAY_TRACER_SHAPE_HPP
