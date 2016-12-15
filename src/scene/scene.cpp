@@ -189,7 +189,8 @@ Color Scene::DirectLight(const Point &point, Vect &normal,
                 float multiplier = lightRay.GetDirection().DotProduct(normal);
                 /* Add the radiance from the current light if it
                    illuminates the [point] from the visible semi-sphere. */
-                if (multiplier > 0.0f) {
+                if (multiplier > 0.0f)
+                {
                     retVal += // Li.
                             mLightSources[i]->GetColor(point) *
                             // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
@@ -283,7 +284,7 @@ Color Scene::DiffuseLight(const Point &point, const Vect &normal,
                   // 1 / PDF.
                   (PI /* / (sin(inclination) * cos(inclination)) */ );
     }
-    return retVal * shape.GetMaterial()->GetDiffuse(point)/ DIFFUSE_RAYS;
+    return retVal / DIFFUSE_RAYS;
 }
 
 bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
