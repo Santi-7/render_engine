@@ -192,13 +192,13 @@ Color Scene::DirectLight(const Point &point, Vect &normal,
                 if (multiplier > 0.0f)
                 {
                     retVal += // Li.
-                            mLightSources[i]->GetColor(point) *
-                            // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
-                            shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
-                                                           lightRay.GetDirection(),
-                                                           normal, point) *
-                            // Cosine.
-                            multiplier;
+                              mLightSources[i]->GetColor(point) *
+                              // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
+                              shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
+                                                             lightRay.GetDirection(),
+                                                             normal, point) *
+                              // Cosine.
+                              multiplier;
                 }
             }
         }
