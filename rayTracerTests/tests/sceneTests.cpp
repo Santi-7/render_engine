@@ -1120,18 +1120,18 @@ TEST(Weird, Menger)
 {
     Scene scene;
     TransformationMatrix camTM;
-    camTM.SetXRotation(PI/10);
-    camTM.SetYRotation(PI/10);
+    camTM.SetXRotation(PI/6);
+    camTM.SetYRotation(PI/6);
 
     // Real View
     scene.SetCamera(
-            Pinhole(camTM*Vect(0, 1, 0), camTM*Vect(1, 0, 0), camTM*Vect(0, 0, 1), Point(-0.3f, 0.25f, -0.6f),
-                    PI/4, 1.0, 1000, 1000));
+            Pinhole(camTM*Vect(0, 1, 0), camTM*Vect(1, 0, 0), camTM*Vect(0, 0, 1), Point(-3.9f, 3.5f, -7.0f),
+                    PI/4, 1.0, 2000, 2000));
 
-    scene.AddLightSource(PointLight(Point(-0.3f,0.8f, -0.6f), 4, WHITE));
+    scene.AddLightSource(PointLight(Point(-3.0f,8.0f, -6.0f), 1000, WHITE));
 
     auto material = make_shared<Material>(Material(YELLOW, BLACK, 0.0f, BLACK, BLACK));
-    MengerSponge menger(0.15f, 1, material, Vect(0,0,0.25f));
+    MengerSponge menger(1.5f, 1, material, Vect(0,0,0.0f));
 
     scene.AddShape(menger);
 
