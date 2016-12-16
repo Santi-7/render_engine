@@ -39,7 +39,7 @@ Scene CornellBox()
     // Two spheres inside the box.
     Sphere yellowSphere(Sphere(Point(-0.45f, 0.1, 0.4f), 0.25f));
     Sphere purpleSphere(Sphere(Point(0.45f, 0.1, 0.4f), 0.25f));
-    yellowSphere.SetMaterial(make_shared<Material>(Material(YELLOW, GRAY, 0.2f, BLACK, BLACK)));
+    yellowSphere.SetMaterial(make_shared<Material>(Material(YELLOW, GRAY, 1.5f, BLACK, BLACK)));
     purpleSphere.SetMaterial(make_shared<Material>(Material(PURPLE, BLACK, 0.0f, WHITE, BLACK)));
     cornellBox.AddShape(yellowSphere);
     cornellBox.AddShape(purpleSphere);

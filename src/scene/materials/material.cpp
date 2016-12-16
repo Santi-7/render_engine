@@ -23,6 +23,8 @@ Color Material::PhongBRDF(const Vect &seenFrom, const Vect &light,
 {
     Vect reflectedLight = Shape::Reflect(light * -1, normal);
     float cosine = seenFrom.DotProduct(reflectedLight);
+    if (cosine < 0) cosine = 0;
+
     return (this->GetDiffuse(point) / PI) + mKs * ((mShininess + 2) / (2 * PI) * pow(cosine, mShininess));
 }
 
