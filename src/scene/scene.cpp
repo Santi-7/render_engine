@@ -214,12 +214,12 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
 
     if (specularSteps<=0) return retVal;
 
-    // Ray of light reflected in the intersection point.
-    // TODO: Change to global method.
     if (shape.GetMaterial()->GetReflectance() != BLACK)
     {
-        Vect reflectedDir = in.GetDirection() - normal * in.GetDirection().DotProduct(normal) * 2;
+        // Ray of light reflected in the intersection point.
+        Vect reflectedDir = Shape::Reflect(in.GetDirection(), normal);
         LightRay reflectedRay = LightRay(point, reflectedDir);
+
         retVal += GetLightRayColor(reflectedRay, specularSteps-1, diffuseSteps-1) *
                   shape.GetMaterial()->GetReflectance();
     }

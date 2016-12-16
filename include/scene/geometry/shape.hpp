@@ -44,6 +44,17 @@ public:
      */
     virtual void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const = 0;
 
+    // TODO: Doc.
+    /**
+     * .
+     *
+     * @return
+     */
+    static Vect Reflect(const Vect &in, const Vect &normal)
+    {
+        return in- normal * in.DotProduct(normal) * 2;
+    }
+
     /**
      * Based on http://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf.
      *

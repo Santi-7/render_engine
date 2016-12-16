@@ -37,12 +37,12 @@ Scene CornellBox()
     cornellBox.AddShape(Plane(Point(0, 0, 1), Vect(0, 0, -1))); // Back wall
 
     // Two spheres inside the box.
-    Sphere redSphere(Sphere(Point(-0.45f, 0.1, 0.4f), 0.25f));
-    Sphere greenSphere(Sphere(Point(0.45f, 0.1, 0.4f), 0.25f));
-    redSphere.SetMaterial(make_shared<Material>(Material(YELLOW, WHITE, 1.5f, BLACK, BLACK)));
-    greenSphere.SetMaterial(make_shared<Material>(Material(PURPLE, BLACK, 0.0f, WHITE, BLACK)));
-    cornellBox.AddShape(redSphere);
-    cornellBox.AddShape(greenSphere);
+    Sphere yellowSphere(Sphere(Point(-0.45f, 0.1, 0.4f), 0.25f));
+    Sphere purpleSphere(Sphere(Point(0.45f, 0.1, 0.4f), 0.25f));
+    yellowSphere.SetMaterial(make_shared<Material>(Material(YELLOW, GRAY, 0.2f, BLACK, BLACK)));
+    purpleSphere.SetMaterial(make_shared<Material>(Material(PURPLE, BLACK, 0.0f, WHITE, BLACK)));
+    cornellBox.AddShape(yellowSphere);
+    cornellBox.AddShape(purpleSphere);
     // A point light illuminates the scene.
     cornellBox.AddLightSource(PointLight(Point(0, 0.6f, -0.1f), 2.0f, WHITE));
 
