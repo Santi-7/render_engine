@@ -51,9 +51,12 @@ vector<string> split(const string &input, char delim) {
     return retVal;
 }
 
+/**
+ * Prints some information about the usage of this program. Takes scene names from SCENE_NAMES which must
+ * be filled before calling this function.
+ */
 void PrintHelp()
 {
-    // TODO: Check what the default indirect ray count will be.
     cout << "Usage: [OPTION]*\n"
             "If no options are specified, a default Cornell box with 64 indirect rays will be rendered and saved as cornell.ppm.\n"
             "Available options:\n"
@@ -68,6 +71,9 @@ void PrintHelp()
         cout << '\t' << scenePair.first << '\n';
 }
 
+/**
+ *  Initializes the map of names and functions SCENE_NAMES .
+ */
 void InitializeSceneNames()
 {
     SCENE_NAMES["cornell"] = &CornellBox;
@@ -86,6 +92,10 @@ void InitializeSceneNames()
     SCENE_NAMES["menger_5"] = &Menger<5>;
 }
 
+/**
+ * Main function. Renders a handful of hardcoded scenes as a way to test what the ray tracer can do.
+ * @return 0 if everything worked fine, 1 otherwise.
+ */
 int main(int argc, char * argv[])
 {
     InitializeSceneNames();
@@ -94,9 +104,10 @@ int main(int argc, char * argv[])
     unsigned int threadCount = thread::hardware_concurrency(); // Use all available threads by default.
     string sceneName = "cornell";
 
-    // Put the arguments in a string vector to make more accessible.
+    // Put the arguments in a string vector to make them more accessible.
     vector<string> arguments(argv + 1, argv + argc);
     unsigned long argnum = arguments.size();
+    /** Parse all options modifying the necessary variables and returning 1 on error */
     for (unsigned int i = 0; i < arguments.size(); ++i)
     {
         if (arguments[i] == "-h")
@@ -154,7 +165,7 @@ int main(int argc, char * argv[])
             }
             else
             {
-                cerr << "You need to specify a scene. Use help to see all available scenes.\n";
+                cerr << "You need to specify a scene. Use the option \'-h\' to see all available scenes.\n";
                 return 1;
             }
             i++;
@@ -186,4 +197,5 @@ int main(int argc, char * argv[])
     image->Save(sceneName + ".ppm");
 
     cout << "\nSaved image " << sceneName << ".ppm\n";
+    return 0;
 }
