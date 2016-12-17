@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
  ** point.cpp
- ** TODO: Add doc.
+ ** Implementation for Point class.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482

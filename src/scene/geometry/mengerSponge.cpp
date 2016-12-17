@@ -1,6 +1,6 @@
 /** ---------------------------------------------------------------------------
  ** mergerSponge.cpp
- ** MergerSponge implementation.
+ ** Implementation for MengerSponge class.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482
@@ -10,12 +10,11 @@
 #include <cfloat>
 
 MengerSponge::MengerSponge(float distanceToEdgeFromOrigin, int recursion, shared_ptr<Material> material, Vect originShift)
-        :mBox(
-        Rectangle(
+        :mBox(Rectangle(
                 Vect(0, 1, 0),
                 Point(-distanceToEdgeFromOrigin, -distanceToEdgeFromOrigin, -distanceToEdgeFromOrigin) + originShift,
                 Point(distanceToEdgeFromOrigin, -distanceToEdgeFromOrigin, distanceToEdgeFromOrigin) + originShift),
-        2 * distanceToEdgeFromOrigin)
+              2 * distanceToEdgeFromOrigin)
 {
     // With recursion 5 this takes up to 6-7GB of memory. With 6 it could crash most computers.
     if (recursion > 5) recursion = 5;
@@ -69,8 +68,8 @@ float MengerSponge::Intersect(const LightRay& lightRay) const
     return FLT_MAX;
 }
 
-void MengerSponge::Intersect(const LightRay& lightRay, float& minT, shared_ptr<Shape>& nearestShape,
-        shared_ptr<Shape> thisShape) const
+void MengerSponge::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                             shared_ptr<Shape> thisShape) const
 {
     if (mIsACube) mBox.Intersect(lightRay, minT, nearestShape, thisShape);
     else

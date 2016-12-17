@@ -39,7 +39,8 @@ public:
      * @param nearestShape Shape that is at distance t from the lightRay's origin. Updated to thisShape if this Rectangle
      *  is closer from the lightRay's origin than minT.
      */
-    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
+    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                   shared_ptr<Shape> thisShape) const;
 
     /**
      * @return The four corner points of this rectangle.

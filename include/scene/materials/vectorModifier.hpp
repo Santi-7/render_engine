@@ -10,15 +10,17 @@
 #ifndef RAY_TRACER_NORMALMODIFIER_HPP
 #define RAY_TRACER_NORMALMODIFIER_HPP
 
-#include <vect.hpp>
-#include <point.hpp>
 #include <memory>
+#include <point.hpp>
+#include <vect.hpp>
 
-class VectorModifier {
+class VectorModifier
+{
+
 public:
 
     /**
-    * @param vect Vector to modify
+    * @param vect Vector to modify.
     * @param point Point at which the modification will be calculated.
     * @return The input vector, this class just defines the method, it does nothing.
     */
@@ -28,4 +30,4 @@ public:
     }
 };
 
-#endif //RAY_TRACER_NORMALMODIFIER_HPP
+#endif // RAY_TRACER_NORMALMODIFIER_HPP

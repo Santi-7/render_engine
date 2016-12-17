@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** triangle.cpp
-** TODO: Add doc.
+** Implementation for Triangle class.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
@@ -23,7 +23,6 @@ Triangle::Triangle(const Point &a, const Point &b, const Point &c)
   denominator(d00 * d11 - d01 * d01)
 {}
 
-// TODO: Check if t = threshold, this is, the lightray lies inside the plane.
 float Triangle::Intersect(const LightRay &lightRay) const
 {
     // Intersection of the ray of light with the plane.

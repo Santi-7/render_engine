@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** camera.cpp
-** TODO: Add doc.
+** Implementation for Camera class.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482

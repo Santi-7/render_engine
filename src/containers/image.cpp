@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
  ** image.cpp
- ** TODO: Add doc.
+ ** Implementation for Image class.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482
@@ -64,7 +64,7 @@ Image::Image(const string &filename) {
         }
     }
 
-    if (width == 0 || height == 0)
+    if ((width == 0) | (height == 0))
     {
         cout << "Didn't find correct width and height in the input file " << filename << '\n';
         throw 1;
@@ -73,7 +73,7 @@ Image::Image(const string &filename) {
     unsigned int maxColorValue = 0;
     while (true)
     {
-        if (inputFile.peek() == '#' || inputFile.peek() == '\n')
+        if ((inputFile.peek() == '#') | (inputFile.peek() == '\n'))
         {
             // Ignore the line as a comment
             getline(inputFile, buffer);
@@ -115,9 +115,7 @@ Image::Image(const string &filename) {
             mImage[i][j] = Color(r, g, b);
         }
     }
-
 }
-
 
 void Image::Save(const string filename, bool gammaCorrect) const
 {
@@ -163,7 +161,6 @@ void Image::Save(const string filename, bool gammaCorrect) const
         }
         outputFile << '\n';
     }
-
     outputFile.close();
 }
 

@@ -9,11 +9,13 @@
 #ifndef RAY_TRACER_MERGERSPONGE_HPP
 #define RAY_TRACER_MERGERSPONGE_HPP
 
+#include <box.hpp>
+#include <shape.hpp>
 #include <vector>
-#include "shape.hpp"
-#include "box.hpp"
 
-class MengerSponge : public Shape{
+class MengerSponge : public Shape
+{
+
 public:
 
     /**
@@ -21,7 +23,8 @@ public:
      * @param distanceToEdgeFromOrigin Distance from the origin to any of the edges of the biggest cube.
      * @param recursion Steps left. If 0 this MergerSponge will be just a Box.
      */
-    MengerSponge(float distanceToEdgeFromOrigin, int recursion, shared_ptr<Material> material = LAMBERTIAN, Vect originShift = Vect(0,0,0));
+    MengerSponge(float distanceToEdgeFromOrigin, int recursion,
+                 shared_ptr<Material> material = LAMBERTIAN, Vect originShift = Vect(0,0,0));
 
     /**
      * @param lightRay Contains the point from which an intersection with this shape will measured.
@@ -38,7 +41,8 @@ public:
      * in this box is closer then it will be updated to that rectangle's pointer.
      * @param thisShape Unused.
      */
-    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
+    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                   shared_ptr<Shape> thisShape) const;
 
     /**
      * This method is not usable for this shape since it makes no sense for it to have a normal.
@@ -46,6 +50,7 @@ public:
     Vect GetNormal(const Point &point) const {throw 1;}
 
 private:
+
     /** True if this sponge is just a cube*/
     bool mIsACube = false;
 
@@ -54,4 +59,4 @@ private:
     Box mBox;
 };
 
-#endif //RAY_TRACER_MERGERSPONGE_HPP
+#endif // RAY_TRACER_MERGERSPONGE_HPP

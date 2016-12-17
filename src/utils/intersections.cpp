@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** intersections.cpp
-** TODO: Add doc.
+** Implementation for Intersections class.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482

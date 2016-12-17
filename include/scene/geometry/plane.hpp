@@ -38,7 +38,8 @@ public:
      * @param nearestShape Shape that is at distance t from the lightRay's origin. Updated to thisShape if this Plane
      *  is closer from the lightRay's origin than minT.
      */
-    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
+    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                   shared_ptr<Shape> thisShape) const;
 
     /**
      * @return This Plane's normal.

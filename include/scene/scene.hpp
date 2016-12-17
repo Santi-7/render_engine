@@ -28,6 +28,7 @@ public:
 
     /**
      * Sets a camera for this scene.
+     *
      * @tparam C Class of the camera.
      * @param camera Camera for this scene.
      */
@@ -39,6 +40,7 @@ public:
 
     /**
      * Adds a lightSource to this scene.
+     *
      * @tparam LS Class of the light source.
      * @param lightSource LightSource to add to the scene.
      */
@@ -50,6 +52,7 @@ public:
 
     /**
      * Adds a shape to this scene.
+     *
      * @tparam S Class of the shape.
      * @param shape Shape to add to the scene.
      */
@@ -61,6 +64,7 @@ public:
 
     /**
      * Sets this Scene's image width and height.
+     *
      * @param width -
      * @param height -
      */
@@ -71,6 +75,7 @@ public:
 
     /**
      * Sets the number of specular steps to take when rendering the image.
+     *
      * @param steps
      */
     void SetSpecularSteps(unsigned int steps)
@@ -80,6 +85,7 @@ public:
 
     /**
      * Sets the number of indirect steps to take when rendering the image.
+     *
      * @param steps
      */
     void SetIndirectSteps(unsigned int steps)
@@ -89,6 +95,7 @@ public:
 
     /**
      * Sets the number of indirect rays to trace when rendering the image.
+     *
      * @param steps
      */
     void SetIndirectRays(unsigned int rays)
@@ -100,6 +107,7 @@ public:
      * The main ray tracing algorithm. Traces lightRays from the camera to all the pixels in the image plane, calculates
      * intersections (and all their complicated interactions), and saves the color of each pixel in an image object.
      * Since this takes a while, it prints a beautiful progress bar indicating the percent of lines completed.
+     *
      * @return Pointer to the rendered Image.
      */
     unique_ptr<Image> Render() const;

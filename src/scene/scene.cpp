@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** scene.cpp
-** TODO: Add doc.
+** Implementation for Scene class.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
@@ -8,10 +8,10 @@
 
 #include <cfloat>
 #include <image.hpp>
+#include <iostream>
 #include <poseTransformationMatrix.hpp>
 #include <random>
 #include <scene.hpp>
-#include <iostream>
 #include <thread>
 
 void printProgressBar(unsigned int pixel, unsigned int total)

@@ -13,7 +13,8 @@
 #include <image.hpp>
 #include <lightRay.hpp>
 
-class Pinhole : public Camera {
+class Pinhole : public Camera
+{
 
 public:
 
@@ -23,9 +24,9 @@ public:
     Pinhole();
 
     /**
-     * @param up Vector for the up direction. Usually [0,1,0]
-     * @param right Vector for the right direction. Usually [1, 0, 0]
-     * @param towards Vector for the towards direction. Usually [0, 0, 1]
+     * @param up Vector for the up direction. Usually [0,1,0].
+     * @param right Vector for the right direction. Usually [1, 0, 0].
+     * @param towards Vector for the towards direction. Usually [0, 0, 1].
      * @param focalPoint Camera position. All rays traced will originate here.
      * @param fieldOfVision How wide an angle can be seen from the Camera.
      * @param viewPlaneDistance Distance from the Camera's position to the image Plane.

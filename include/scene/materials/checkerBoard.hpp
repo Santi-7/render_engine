@@ -12,7 +12,7 @@
 #ifndef RAY_TRACER_CHECKBOARD_HPP
 #define RAY_TRACER_CHECKBOARD_HPP
 
-#include "material.hpp"
+#include <materials/material.hpp>
 
 class CheckerBoard : public Material
 {

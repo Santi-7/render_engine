@@ -38,7 +38,8 @@ public:
      * in this box is closer then it will be updated to that rectangle's pointer.
      * @param thisShape Unused.
      */
-    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
+    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                   shared_ptr<Shape> thisShape) const;
 
     /**
      * This method is not usable for this shape since it makes no sense for it to have a normal.
@@ -53,7 +54,7 @@ public:
 
     /**
      * Sets the material of all the faces in this box to material.
-     * @tparam M Any material type
+     * @tparam M Any material type.
      * @param material for every face in this box.
      */
     template <class M>

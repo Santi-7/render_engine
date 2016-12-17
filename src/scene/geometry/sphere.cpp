@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** sphere.cpp
-** TODO: Add doc.
+** Implementation for Sphere class.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
@@ -9,8 +9,6 @@
 #include <cfloat>
 #include <intersections.hpp>
 #include <sphere.hpp>
-#include <visibleNormal.hpp>
-#include <cmath>
 
 Sphere::Sphere(const Point &center, const float radius)
 : Shape(),
@@ -49,7 +47,8 @@ float Sphere::Intersect(const LightRay &lightRay) const
     }
 }
 
-void Sphere::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
+void Sphere::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                       shared_ptr<Shape> thisShape) const
 {
     float tmpT = Intersect(lightRay);
     if (tmpT < minT)

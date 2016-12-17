@@ -1,15 +1,15 @@
 /** ---------------------------------------------------------------------------
  ** compositeShape.cpp
- ** Implement compositeShape class.
+ ** Implementation for CompositeShape class.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482
  ** -------------------------------------------------------------------------*/
 
-#include <compositeShape.hpp>
 #include <cfloat>
+#include <compositeShape.hpp>
 
-float CompositeShape::Intersect(const LightRay& lightRay) const
+float CompositeShape::Intersect(const LightRay &lightRay) const
 {
     if (mBoundingShape->Intersect(lightRay) != FLT_MAX)
     {
@@ -23,8 +23,8 @@ float CompositeShape::Intersect(const LightRay& lightRay) const
     return FLT_MAX;
 }
 
-void CompositeShape::Intersect(const LightRay& lightRay, float& minT, shared_ptr <Shape>& nearestShape,
-        shared_ptr <Shape> thisShape) const
+void CompositeShape::Intersect(const LightRay& lightRay, float &minT, shared_ptr <Shape> &nearestShape,
+                               shared_ptr<Shape> thisShape) const
 {
     if (mBoundingShape->Intersect(lightRay) != FLT_MAX)
     {

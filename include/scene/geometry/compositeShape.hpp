@@ -10,16 +10,19 @@
 #ifndef RAY_TRACER_COMPOSITESHAPE_HPP
 #define RAY_TRACER_COMPOSITESHAPE_HPP
 
+#include <materials/material.hpp>
+#include <materials/vectorModifier.hpp>
+#include <shape.hpp>
 #include <vector>
-#include "shape.hpp"
-#include "../materials/material.hpp"
-#include "../materials/vectorModifier.hpp"
 
-class CompositeShape : public Shape{
+class CompositeShape : public Shape
+{
+
 public:
 
     /**
      * Adds a shape to this CompositeShape.
+     *
      * @tparam S Class of the shape.
      * @param shape Shape to add to this CompositeShape.
      */
@@ -31,6 +34,7 @@ public:
 
     /**
      * Sets the bounding shape for this composite. The user has to make sure it's correct.
+     *
      * @tparam S Class of the shape.
      * @param shape Shape to use as bounds for this composite.
      */
@@ -56,7 +60,8 @@ public:
      *  sub-shapes.
      * @param thisShape shared_ptr to this shape.
      */
-    virtual void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
+    virtual void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                           shared_ptr<Shape> thisShape) const;
 
     /**
      * Don't use this, call it for each individual shape in this container
@@ -83,8 +88,9 @@ public:
     }
 
 private:
+
     vector<shared_ptr<Shape>> mShapesWithin;
     shared_ptr<Shape> mBoundingShape;
 };
 
-#endif //RAY_TRACER_COMPOSITESHAPE_HPP
+#endif // RAY_TRACER_COMPOSITESHAPE_HPP

@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** mesh.cpp
-** TODO: Add doc.
+** Implementation for Mesh class.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
@@ -71,8 +71,7 @@ void ClampPoints(vector<Point> &points, Point &maxValues, Point &minValues, floa
 
 }
 
-
-Mesh Mesh::LoadObjFile(const string& filename, float maxDistFromOrigin, const Vect& shift, TransformationMatrix tm)
+Mesh Mesh::LoadObjFile(const string &filename, float maxDistFromOrigin, const Vect &shift, TransformationMatrix tm)
 {
     vector<shared_ptr<Triangle>> triangles;
 
@@ -158,7 +157,6 @@ Mesh Mesh::LoadObjFile(const string& filename, float maxDistFromOrigin, const Ve
                             normals.at(get<2>(faces[i])))));
         }
     }
-
     return Mesh(triangles);
 }
 
@@ -236,7 +234,6 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
                 return t1->GetCenter().GetZ() > t2->GetCenter().GetZ();
             });
         }
-
 
         // Split the triangle vector into two halves
         vector<shared_ptr<Triangle>> firstHalf(triangles.begin(), triangles.begin() + triangles.size()/2);
@@ -325,10 +322,14 @@ Mesh::Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift)
                                                            normals.at(get<2>(faces[i])))));
         }
     }
-    mBoundingShape = shared_ptr<Shape>(new Box(Rectangle(Vect(0,1,0), minValues, Point(maxValues.GetX(), minValues.GetY(), maxValues.GetZ())), maxValues.GetY() - minValues.GetY()));
+    mBoundingShape = shared_ptr<Shape>(new Box(Rectangle(Vect(0,1,0),
+                                                         minValues,
+                                                         Point(maxValues.GetX(), minValues.GetY(), maxValues.GetZ())),
+                                               maxValues.GetY() - minValues.GetY()));
 }
 
-void Mesh::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
+void Mesh::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                     shared_ptr<Shape> thisShape) const
 {
     if (mIsLeaf)
     {
@@ -377,6 +378,7 @@ float Mesh::Intersect(const LightRay &lightRay) const
     }
 }
 
+// TODO: See why maxT is not used.
 void Mesh::MeshIntersect(const LightRay& lightRay, float& minT, float maxT, shared_ptr<Shape>& nearestShape) const
 {
     if (mIsLeaf)
@@ -413,7 +415,7 @@ void Mesh::MeshIntersect(const LightRay& lightRay, float& minT, float maxT, shar
     }
 }
 
-float Mesh::IntersectBound(const LightRay& lightRay) const
+float Mesh::IntersectBound(const LightRay &lightRay) const
 {
     return mBoundingShape->Intersect(lightRay);
 }
@@ -427,7 +429,8 @@ void Mesh::SetMaterial(shared_ptr<Material> material)
 {
     if (mIsLeaf)
     {
-        for (unsigned int i = 0; i < mTriangles.size(); ++i) {
+        for (unsigned int i = 0; i < mTriangles.size(); ++i)
+        {
             mTriangles[i]->SetMaterial(material);
         }
     }
@@ -436,6 +439,4 @@ void Mesh::SetMaterial(shared_ptr<Material> material)
         mLeft->SetMaterial(material);
         mRight->SetMaterial(material);
     }
-
 }
-

@@ -37,7 +37,7 @@ public:
 
 private:
 
-    /** Normals . */
+    /** Normals. */
     Vect mNormalA, mNormalB, mNormalC;
 };
 

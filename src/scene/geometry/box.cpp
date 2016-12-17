@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** box.cpp
-** TODO: Add doc.
+** Implementation for Box class.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482

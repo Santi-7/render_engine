@@ -17,7 +17,6 @@
 
 using namespace std;
 
-
 class Image
 {
 
@@ -31,7 +30,8 @@ public:
     Image(const unsigned int width, const unsigned int height);
 
     /**
-     * Loads a ppm image file as an image
+     * Loads a ppm image file as an image.
+     *
      * @param filename Path to the file containing a ppm image.
      * @return New image containing the RGB values of the input file.
      */
@@ -66,7 +66,7 @@ public:
 
 private:
 
-    /** Pixel matrix . */
+    /** Pixel matrix. */
     vector<vector<Color>> mImage;
 };
 

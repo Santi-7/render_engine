@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** vect.cpp
-** TODO: Add doc.
+** Implementation for Vect class.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482

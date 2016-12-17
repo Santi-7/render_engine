@@ -1,6 +1,6 @@
 /** ---------------------------------------------------------------------------
  ** pinhole.cpp
- ** TODO: Add doc.
+ ** Implementation for Pinhole class.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482

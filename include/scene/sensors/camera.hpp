@@ -81,13 +81,13 @@ public:
 
 protected:
 
-    /** This camera's vectors . */
+    /** This camera's vectors. */
     Vect mUp, mRight, mTowards;
 
-    /** This camera's position. . */
+    /** This camera's position. */
     Point mFocalPoint;
 
-    /** Field of view . */
+    /** Field of view. */
     float mFoV;
 
     /** Distance from this Camera's position to the image plane. */
@@ -98,7 +98,7 @@ protected:
 
     /* Cached values. */
 
-    /** Size of the pixels in the image plane . */
+    /** Size of the pixels in the image plane. */
     float mPixelSize;
 
 private:

@@ -30,14 +30,13 @@ public:
     : mR(0), mG(0), mB(0)
     {}
 
-    // TODO: Add doc.
     /**
-     * .
+     * Constructor for the given RGB values.
      *
      * @param r value for red.
      * @param g value for green.
      * @param b value for blue.
-     * @return .
+     * @return a Color with the given RGB values.
      */
     constexpr Color(const float r, const float g, const float b)
     : mR(r), mG(g), mB(b)
@@ -148,21 +147,28 @@ public:
         return ! (*this == color);
     }
 
+    /**
+     * @return This color clamped between 0 and 1.
+     */
     Color Clamp() const
     {
-        return Color(
-                std::max(0.0f, std::min(mR, 1.0f)),
-                std::max(0.0f, std::min(mG, 1.0f)),
-                std::max(0.0f, std::min(mB, 1.0f)));
+        return Color(max(0.0f, min(mR, 1.0f)),
+                     max(0.0f, min(mG, 1.0f)),
+                     max(0.0f, min(mB, 1.0f)));
     }
 
+    /**
+     * @return This color with an applied gamma correction.
+     */
     Color GammaCorrect() const
     {
-        static const float gamma = 2.2f;
-        return Color(pow(mR, gamma), pow(mG, gamma), pow(mB, gamma));
+        return Color(pow(mR, GAMMA), pow(mG, GAMMA), pow(mB, GAMMA));
     }
 
 private:
+
+    /** Gamma const value corrector. */
+    static constexpr float GAMMA = 2.2f;
 
     /** This color's RGB values. */
     float mR;

@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** plane.cpp
-** TODO: Add doc.
+** Implementation for Plane class.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
@@ -9,7 +9,6 @@
 #include <cfloat>
 #include <intersections.hpp>
 #include <plane.hpp>
-#include <visibleNormal.hpp>
 
 Plane::Plane(const Point &point, const Vect &normal)
 : Shape(),
@@ -43,7 +42,8 @@ float Plane::Intersect(const LightRay &lightRay) const
     }
 }
 
-void Plane::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
+void Plane::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                      shared_ptr<Shape> thisShape) const
 {
     float tmpT = Intersect(lightRay);
     if (tmpT < minT)

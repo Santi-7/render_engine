@@ -10,9 +10,11 @@
 #ifndef RAY_TRACER_CROSSHATCHMODIFIER_HPP
 #define RAY_TRACER_CROSSHATCHMODIFIER_HPP
 
-#include "vectorModifier.hpp"
+#include <materials/vectorModifier.hpp>
 
-class CrossHatchModifier : public VectorModifier {
+class CrossHatchModifier : public VectorModifier
+{
+
 public:
 
     /**
@@ -24,7 +26,7 @@ public:
     CrossHatchModifier(float xDist, float yDist, float zDist);
 
     /**
-     * @param vect Vector to modify
+     * @param vect Vector to modify.
      * @param point Point at which the modification will be calculated.
      * @return New Vector result of modifying vect with the variations in this modifier.
      */
@@ -36,4 +38,4 @@ private:
     float mXDist, mYDist, mZDist;
 };
 
-#endif //RAY_TRACER_CROSSHATCHMODIFIER_HPP
+#endif // RAY_TRACER_CROSSHATCHMODIFIER_HPP

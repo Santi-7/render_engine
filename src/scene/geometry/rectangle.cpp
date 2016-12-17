@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
-** finitePlane.cpp
-** TODO: Add doc.
+** rectangle.cpp
+** Implementation for Rectangle class.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
@@ -62,10 +62,11 @@ float Rectangle::Intersect(const LightRay &lightRay) const
     }
 }
 
-void Rectangle::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
+void Rectangle::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                          shared_ptr<Shape> thisShape) const
 {
     float tmpT = Intersect(lightRay);
-    if(tmpT < minT)
+    if (tmpT < minT)
     {
         minT = tmpT;
         nearestShape = thisShape;

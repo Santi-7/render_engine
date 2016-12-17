@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
  ** transformationMatrix.cpp
- ** TODO: Add doc.
+ ** Implementation for TransformationMatrix class.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482
@@ -88,24 +88,24 @@ void TransformationMatrix::SetOriginSymmetry()
 
 void TransformationMatrix::SetXRotation(float angle)
 {
-    mF = (float) cos(angle);
-    mG = (float) -sin(angle);
-    mJ = (float) sin(angle);
-    mK = (float) cos(angle);
+    mF = cos(angle);
+    mG = -sin(angle);
+    mJ = sin(angle);
+    mK = cos(angle);
 }
 
 void TransformationMatrix::SetYRotation(float angle)
 {
-    mA = (float) cos(angle);
-    mC = (float) sin(angle);
-    mI = (float) -sin(angle);
-    mK = (float) cos(angle);
+    mA = cos(angle);
+    mC = sin(angle);
+    mI = -sin(angle);
+    mK = cos(angle);
 }
 
 void TransformationMatrix::SetZRotation(float angle)
 {
-    mA = (float) cos(angle);
-    mB = (float) -sin(angle);
-    mE = (float) sin(angle);
-    mF = (float) cos(angle);
+    mA = cos(angle);
+    mB = -sin(angle);
+    mE = sin(angle);
+    mF = cos(angle);
 }

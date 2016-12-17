@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** mathConstants.hpp
-** TODO: Add doc.
+** Contains some math and physics constants.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
@@ -11,10 +11,10 @@
 
 typedef float refractiveIndex;
 
+/** PI const value. */
 static constexpr float PI = 3.1415926535897932f;
 
-// TODO: Add doc.
-/* . */
+/** Some refractive indices definitions to make life easier when making simple scenes. */
 static constexpr refractiveIndex VACUUM_RI  = 1.0f;
 static constexpr refractiveIndex AIR_RI     = 1.0002926f;
 static constexpr refractiveIndex WATER_RI   = 1.333f;

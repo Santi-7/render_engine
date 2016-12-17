@@ -38,21 +38,22 @@ public:
      * @param nearestShape Shape that is at distance t from the lightRay's origin. Updated to thisShape if this Triangle
      *  is closer from the lightRay's origin than minT.
      */
-    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
+    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                   shared_ptr<Shape> thisShape) const;
 
     /**
      * @return This triangles barycenter.
      */
     Point GetCenter() const;
 
-//protected:
+//protected: // TODO: Why commented?
 
-    /** The three points that define this triangle . */
+    /** The three points that define this triangle. */
     Point mA, mB, mC;
 
     /* Cached values. */
 
-    /** Barycentric usefulous values . */ // TODO: Explain this better :P
+    /** Barycentric usefulous values. */ // TODO: Explain this better :P
     Vect v0, v1;
     float d00, d01, d11, denominator;
 };

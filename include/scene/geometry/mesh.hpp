@@ -12,17 +12,20 @@
 #ifndef RAY_TRACER_MESH_HPP
 #define RAY_TRACER_MESH_HPP
 
-#include <vector>
 #include <memory>
 #include <meshTriangle.hpp>
 #include <transformationMatrix.hpp>
+#include <vector>
 
 using namespace std;
 
-class Mesh : public Shape {
+class Mesh : public Shape
+{
+
 friend class Triangle;
 
 public:
+
     /**
      * Constructs a new Mesh from an obj file.
      *   Keep in mind that this constructor only reads a subset of everything an obj file
@@ -58,7 +61,8 @@ public:
      * @param shift Vector by which the relative origin of coordinates for this mesh will be moved.
      * @return
      */
-    static Mesh LoadObjFile(const string &filename, float maxDistFromOrigin, const Vect &shift, TransformationMatrix tm = TransformationMatrix());
+    static Mesh LoadObjFile(const string &filename, float maxDistFromOrigin, const Vect &shift,
+                            TransformationMatrix tm = TransformationMatrix());
 
     /**
      * @param lightRay Contains the point from which an intersection with this shape will measured.
@@ -78,7 +82,8 @@ public:
      * @param nearestShape Shape that is at distance t from the lightray's origin.
      * @param lightRay The LightRay we are checking for intersections.
      */
-    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const;
+    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                   shared_ptr<Shape> thisShape) const;
 
     /**
      * Special intersect function for searching the Mesh 'tree'.
@@ -114,13 +119,13 @@ private:
     /** True if this Mesh has no children Meshes. */
     bool mIsLeaf = false;
 
-    /** Left child Mesh.*/
+    /** Left child Mesh. */
     shared_ptr<Mesh> mLeft;
-    /** Right child Mesh.*/
+    /** Right child Mesh. */
     shared_ptr<Mesh> mRight;
     /** Shape enclosing all the triangles in this mesh. */
     shared_ptr<Shape> mBoundingShape;
-    /** All the triangles in this Mesh IF it's a leaf. If it's not a leaf it just remains empty.*/
+    /** All the triangles in this Mesh IF it's a leaf. If it's not a leaf it just remains empty. */
     vector<shared_ptr<Triangle>> mTriangles;
 };
 

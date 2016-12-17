@@ -14,10 +14,10 @@
 #include <cmath>
 #include <lightRay.hpp>
 #include <materials/material.hpp>
-#include <memory>
-#include <mathConstants.hpp>
-#include <visibleNormal.hpp>
 #include <materials/vectorModifier.hpp>
+#include <mathConstants.hpp>
+#include <memory>
+#include <visibleNormal.hpp>
 
 using namespace std;
 
@@ -42,13 +42,13 @@ public:
      *  sub-shapes.
      * @param thisShape shared_ptr to this shape.
      */
-    virtual void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const = 0;
+    virtual void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                           shared_ptr<Shape> thisShape) const = 0;
 
-    // TODO: Doc.
     /**
-     * .
-     *
-     * @return
+     * @param in Vector whose reflection is returned.
+     * @param normal Vector used as the symmetric axis from which the reflection is calculated.
+     * @return New vector reflected.
      */
     static Vect Reflect(const Vect &in, const Vect &normal)
     {
@@ -69,14 +69,10 @@ public:
         float n;
         // The ray of light is arriving the shape medium.
         if (visibleNormal == GetNormal(point))
-        {
             n = mN;
-        }
         // The ray of light is exiting the shape medium.
         else
-        {
             n = 1 / mN;
-        }
         // Calculate the refracted ray of light.
         float cosI = -visibleNormal.DotProduct(in.GetDirection());
         float sinT2 = n * n * (1 - cosI * cosI);
