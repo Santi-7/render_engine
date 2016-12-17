@@ -10,30 +10,30 @@
 #include <mathConstants.hpp>
 
 Camera::Camera()
-: mUp(0,1,0),
-  mRight(1,0,0),
-  mTowards(0,0,1),
-  mFocalPoint(0,0,0),
-  mFoV(PI / 3),
-  mViewPlaneDistance(1.0),
-  mWidth(256),
-  mHeight(256)
+        : mUp(0,1,0),
+          mRight(1,0,0),
+          mTowards(0,0,1),
+          mFocalPoint(0,0,0),
+          mFoV(PI / 3),
+          mViewPlaneDistance(1.0),
+          mWidth(256),
+          mHeight(256)
 {
     CalculatePixelSize();
 }
 
 Camera::Camera(const Vect &up, const Vect &right,
-               const Vect &towards, const Point &focalPoint,
-               const float fieldOfVision, const float viewPlaneDistance,
-               const unsigned int width, const unsigned int height)
-: mUp(up),
-  mRight(right),
-  mTowards(towards),
-  mFocalPoint(focalPoint),
-  mFoV(fieldOfVision),
-  mViewPlaneDistance(viewPlaneDistance),
-  mWidth(width),
-  mHeight(height)
+        const Vect &towards, const Point &focalPoint,
+        const float fieldOfVision, const float viewPlaneDistance,
+        const unsigned int width, const unsigned int height)
+        : mUp(up),
+          mRight(right),
+          mTowards(towards),
+          mFocalPoint(focalPoint),
+          mFoV(fieldOfVision),
+          mViewPlaneDistance(viewPlaneDistance),
+          mWidth(width),
+          mHeight(height)
 {
     CalculatePixelSize();
 }
@@ -76,4 +76,11 @@ unsigned int Camera::GetHeight() const
 float Camera::GetPixelSize() const
 {
     return mPixelSize;
+}
+
+void Camera::SetImageDimensions(unsigned int width, unsigned int height)
+{
+    mWidth = width;
+    mHeight = height;
+    CalculatePixelSize();
 }

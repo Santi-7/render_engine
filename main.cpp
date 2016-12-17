@@ -23,54 +23,140 @@
 #include <thread>
 #include <materials/crossHatchModifier.hpp>
 #include <geometry/compositeShape.hpp>
+#include <sstream>
 
 using namespace std;
 
-int main()
+/**
+ * Splits a string by the delimiter returning a vector of strings.
+ * @param input input string to split by delim.
+ * @param delim char by which s will be split.
+ * @return vector of all the split strings in s.
+ */
+vector<string> split(const string &input, char delim) {
+    vector<string> retVal;
+    stringstream ss;
+    ss.str(input);
+    string item;
+    while (getline(ss, item, delim)) {
+        retVal.push_back(item);
+    }
+    return retVal;
+}
+
+const vector<string> SCENE_NAMES
+        {
+            "cornell",
+            "room",
+            "teapot",
+            "dragon",
+            "spheres",
+            "infinite_mirror",
+            "glass_sphere",
+            "menger_1",
+            "menger_3"
+        };
+
+Scene GetSceneWithName(const string &name)
 {
-    // Render the dragon scene (placeholder)
-    Scene scene;
-    TransformationMatrix camTM;
-    camTM.SetXRotation(PI/10);
-    // Real View
-    scene.SetCamera(
-            Pinhole(camTM*Vect(0, 1, 0), camTM*Vect(1, 0, 0), camTM*Vect(0, 0, 1), Point(0, 0.5f, -0.6f),
-                    PI/3, 1.0, 1280, 720));
+    // Get the scene from sceneSamples
+    return CornellBox();
+}
 
-    scene.AddLightSource(PointLight(Point(0,0.2f, -0.2f), 4, WHITE));
-    scene.AddLightSource(PointLight(Point(0,0.8f, 0.65f), 2, (RED + WHITE) / 2));
+void PrintHelp()
+{
+    // TODO: Check what the default indirect ray count will be.
+    cout << "Usage: [OPTION]*\n"
+            "If no options are specified, a default Cornell box with 256 indirect rays will be rendered and saved as cornell.ppm.\n"
+            "Available options:\n"
+            "\t-h : Print this helpful text.\n"
+            "\t-res <WIDTHxHEIGHT> : Select a different resolution for the result image.\n"
+            "\t--indirect_steps <NUMBER>: Choose the number of indirect lighting steps to render images faster. 0 to disable indirect lighting.\n"
+            "\t--indirect_rays <NUMBER> : Sets the number of indirect rays that will be used to render the image.\n"
+            "\t-s [SCENE_NAME] : Selects the scene to render.\n"
+            "\n"
+            "Available scenes:\n";
+    for (const string &sceneName : SCENE_NAMES)
+        cout << '\t' << sceneName << '\n';
+}
 
-    TransformationMatrix dragonTM;
-    dragonTM.SetYRotation(PI/2.0f);
+int main(int argc, char * argv[])
+{
 
-    Mesh dragon = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/dragonFlat.obj", 0.35f, Vect(0,0.4f, 0.3f), dragonTM);
-    dragon.SetMaterial(make_shared<Material>(Material(GREEN/2.0f, BLACK, 0.0f, GRAY, BLACK)));
-    scene.AddShape(dragon);
+    int width = -1, height = -1;
+    unsigned int indirectSteps = 1, indirectRays = 256;
+    unsigned int threadCount = thread::hardware_concurrency(); // Use all available threads by default.
+    string sceneName = "cornell";
 
-    auto appleWhite(make_shared<Material>(Material(WHITE, BLACK, 0.0f, WHITE, BLACK)));
+    // Put the arguments in a string vector to make more accessible.
+    vector<string> arguments(argv + 1, argv + argc);
+    unsigned long argnum = arguments.size();
+    for (unsigned int i = 0; i < arguments.size(); ++i)
+    {
+        if (arguments[i] == "-h")
+        {
+            PrintHelp();
+            return 0;
+        }
 
-    Plane floor(Point(0,-0.2f,0), Vect(0,1,0));
-    floor.SetMaterial(appleWhite);
-    scene.AddShape(floor);
-    Plane ceiling(Point(0,1,0), Vect(0,1,0));
-    ceiling.SetMaterial(appleWhite);
+        if (arguments[i] == "-res")
+        {
+            if (i + 1 >= argnum)
+            {
+                cerr << "You need to specify resolution as WIDTHxHEIGHT\n"; return 1;
+            }
+            auto widthHeight = split(arguments[i+1], 'x');
+            // Knowingly not bothering to check if the arguments are ints.
+            width = stoi(widthHeight[0]);
+            height = stoi(widthHeight[1]);
+            ++i;
+            continue;
+        }
 
-    Plane rightWall(Point(1,0,0), Vect(-1,0,0));
-    rightWall.SetMaterial(appleWhite);
-    scene.AddShape(rightWall);
+        if (arguments[i] == "--indirect_steps")
+        {
+            indirectSteps = (unsigned int) stoi(arguments[i+1]);
+            continue;
+        }
 
-    Plane leftWall(Point(-1,0,0), Vect(1,0,0));
-    leftWall.SetMaterial(appleWhite);
-    scene.AddShape(leftWall);
+        if (arguments[i] == "--indirect_rays")
+        {
+            indirectRays = (unsigned int) stoi(arguments[i+1]);
+            i++;
+            continue;
+        }
 
-    Plane backWall(Point(0,0,1), Vect(0,0,-1));
-    backWall.SetMaterial(appleWhite);
-    scene.AddShape(backWall);
+        if (arguments[i] == "-j")
+        {
+            try
+            {
+                int tmp = stoi(arguments[i+1]);
+                threadCount = (unsigned int) tmp;
+                i++;
+                continue;
+            }catch(invalid_argument){/*Do nothing*/}
+        }
 
-    Plane frontWall(Point(0,0,-1), Vect(0,0,1));
-    frontWall.SetMaterial(appleWhite);
-    scene.AddShape(frontWall);
+        if (arguments[i] == "-s")
+        {
+            string scene = arguments[i+1];
+            i++;
+            continue;
+        }
+    }
 
-    auto image = scene.RenderMultiThread(4);
-    image->Save("dragon.ppm");
+    Scene chosenScene = GetSceneWithName(sceneName);
+
+    if (width != -1 and height != -1)
+    {
+        chosenScene.SetImageDimensions((unsigned int)width, (unsigned int)height);
+    }
+
+    chosenScene.SetIndirectSteps(indirectSteps);
+    chosenScene.SetIndirectRays(indirectRays);
+
+    auto image = chosenScene.RenderMultiThread(threadCount);
+    image->Save(sceneName + ".ppm");
+
+    cout << "\nSaved image " << sceneName << ".ppm\n";
 }

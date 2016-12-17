@@ -52,7 +52,7 @@ unique_ptr<Image> Scene::Render() const
             // Get the color for the current pixel.
             (*rendered)[i][j] = GetLightRayColor(
                     LightRay(mCamera->GetFocalPoint(), currentPixel),
-                    SPECULAR_STEPS, DIFFUSE_STEPS);
+                    mSpecularSteps, mIndirectSteps);
         }
         // Next row.
         currentRow -= advanceY;
@@ -122,7 +122,7 @@ void Scene::RenderPixelRange(const shared_ptr<vector<unsigned int>> horizontalLi
             // Get the color for the current pixel.
             (*image)[(*horizontalLines)[i]][j] = GetLightRayColor(
                     LightRay(mCamera->GetFocalPoint(), currentPixel),
-                    SPECULAR_STEPS, DIFFUSE_STEPS);
+                    mSpecularSteps, mIndirectSteps);
         }
         if (printProgress) printProgressBar(i, static_cast<unsigned int>(horizontalLines->size()));
     }
@@ -260,9 +260,9 @@ Color Scene::DiffuseLight(const Point &point, const Vect &normal,
      * reference point, and [normal] as the z axis, to global coordinates. */
     PoseTransformationMatrix fromLocalToGlobal =
             PoseTransformationMatrix::GetPoseTransformation(point, normal);
-    // [DIFFUSE_RAYS] indirect rays of light using Monte Carlo sampling.
+    // [mIndirectRays] indirect rays of light using Monte Carlo sampling.
     Color retVal = BLACK;
-    for (unsigned int i = 0; i < DIFFUSE_RAYS; i++)
+    for (unsigned int i = 0; i < mIndirectRays; i++)
     {
         // Generate random angles.
         float inclination, azimuth;
@@ -284,7 +284,7 @@ Color Scene::DiffuseLight(const Point &point, const Vect &normal,
                   // 1 / PDF.
                   (PI /* / (sin(inclination) * cos(inclination)) */ );
     }
-    return retVal / DIFFUSE_RAYS;
+    return retVal / mIndirectRays;
 }
 
 bool Scene::InShadow(const LightRay &lightRay, const Point &light) const
