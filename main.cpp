@@ -24,8 +24,15 @@
 #include <materials/crossHatchModifier.hpp>
 #include <geometry/compositeShape.hpp>
 #include <sstream>
+#include <map>
 
 using namespace std;
+
+/**
+ * Filled in runtime. Contains all available scene names and pointers to the functions
+ * that return their corresponding scenes
+ */
+map<string, function<Scene(void)>> SCENE_NAMES;
 
 /**
  * Splits a string by the delimiter returning a vector of strings.
@@ -44,30 +51,11 @@ vector<string> split(const string &input, char delim) {
     return retVal;
 }
 
-const vector<string> SCENE_NAMES
-        {
-            "cornell",
-            "room",
-            "teapot",
-            "dragon",
-            "spheres",
-            "infinite_mirror",
-            "glass_sphere",
-            "menger_1",
-            "menger_3"
-        };
-
-Scene GetSceneWithName(const string &name)
-{
-    // Get the scene from sceneSamples
-    return CornellBox();
-}
-
 void PrintHelp()
 {
     // TODO: Check what the default indirect ray count will be.
     cout << "Usage: [OPTION]*\n"
-            "If no options are specified, a default Cornell box with 256 indirect rays will be rendered and saved as cornell.ppm.\n"
+            "If no options are specified, a default Cornell box with 64 indirect rays will be rendered and saved as cornell.ppm.\n"
             "Available options:\n"
             "\t-h : Print this helpful text.\n"
             "\t-res <WIDTHxHEIGHT> : Select a different resolution for the result image.\n"
@@ -76,15 +64,33 @@ void PrintHelp()
             "\t-s [SCENE_NAME] : Selects the scene to render.\n"
             "\n"
             "Available scenes:\n";
-    for (const string &sceneName : SCENE_NAMES)
-        cout << '\t' << sceneName << '\n';
+    for (const auto &scenePair: SCENE_NAMES)
+        cout << '\t' << scenePair.first << '\n';
+}
+
+void InitializeSceneNames()
+{
+    SCENE_NAMES["cornell"] = &CornellBox;
+    SCENE_NAMES["room"] = &Room;
+    SCENE_NAMES["teapot"] = &Teapot;
+    SCENE_NAMES["dragon"] = &Dragon;
+    SCENE_NAMES["spheres"] = &ManySpheres;
+    SCENE_NAMES["infinite_mirror"] = &FacingMirrors;
+    SCENE_NAMES["glass_sphere"] = &RefractionPlaneSphere;
+    SCENE_NAMES["water_sphere"] = &Chess;
+    SCENE_NAMES["experimental"] = &Experimental;
+    SCENE_NAMES["menger_1"] = &Menger<1>;
+    SCENE_NAMES["menger_2"] = &Menger<2>;
+    SCENE_NAMES["menger_3"] = &Menger<3>;
+    SCENE_NAMES["menger_4"] = &Menger<4>;
+    SCENE_NAMES["menger_5"] = &Menger<5>;
 }
 
 int main(int argc, char * argv[])
 {
-
+    InitializeSceneNames();
     int width = -1, height = -1;
-    unsigned int indirectSteps = 1, indirectRays = 256;
+    unsigned int indirectSteps = 1, indirectRays = 64;
     unsigned int threadCount = thread::hardware_concurrency(); // Use all available threads by default.
     string sceneName = "cornell";
 
@@ -130,22 +136,43 @@ int main(int argc, char * argv[])
         {
             try
             {
-                int tmp = stoi(arguments[i+1]);
-                threadCount = (unsigned int) tmp;
-                i++;
-                continue;
+                if (i + 1 < argnum)
+                {
+                    int tmp = stoi(arguments[i+1]);
+                    threadCount = (unsigned int) tmp;
+                    i++;
+                }
             }catch(invalid_argument){/*Do nothing*/}
+            continue;
         }
 
         if (arguments[i] == "-s")
         {
-            string scene = arguments[i+1];
+            if (i + 1 < argnum)
+            {
+                sceneName = arguments[i+1];
+            }
+            else
+            {
+                cerr << "You need to specify a scene. Use help to see all available scenes.\n";
+                return 1;
+            }
             i++;
             continue;
         }
     }
 
-    Scene chosenScene = GetSceneWithName(sceneName);
+    Scene chosenScene;
+
+    if (SCENE_NAMES.find(sceneName) != SCENE_NAMES.end())
+    {
+        chosenScene = SCENE_NAMES[sceneName]();
+    }
+    else
+    {
+        cerr << "The scene " << sceneName << " is invalid.\n";
+        return 1;
+    }
 
     if (width != -1 and height != -1)
     {

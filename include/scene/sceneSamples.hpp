@@ -60,10 +60,10 @@ Scene RefractionPlaneSphere()
     Scene scene;
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,-0.5f,-1), PI/3, 1.0, 500, 500));
 
-    scene.AddLightSource(PointLight(Point(0.2f, 0.5f, -1), 2, WHITE));
+    scene.AddLightSource(PointLight(Point(0.2f, 0.5f, -1), 5, WHITE));
 
     Sphere sphere(Point(0, -0.75f, 0), 0.25f);
-    sphere.SetMaterial(Material(BLACK, BLACK, 0.0f, GRAY, GRAY));
+    sphere.SetMaterial(Material(BLACK, BLACK, 0.0f, GRAY/10, WHITE));
     sphere.SetRefractiveIndex(GLASS_RI);
     scene.AddShape(sphere);
 
@@ -76,31 +76,51 @@ Scene RefractionPlaneSphere()
     scene.AddShape(rightWall);
 
     Plane leftWall(Point(-1, 0, 0), Vect(1, 0, 0));
-    leftWall.SetMaterial(CheckerBoard(0.149f, GREEN, RED));
+    leftWall.SetMaterial(CheckerBoard(0.149f, RED, GREEN));
     scene.AddShape(leftWall);
 
     Plane backWall(Point(0, 0, 1), Vect(0, 0, -1));
-    backWall.SetMaterial(CheckerBoard(0.149f, BLACK, Color(1.0f, 1.0f, 0.0f)));
+    backWall.SetMaterial(CheckerBoard(0.149f, PURPLE, YELLOW));
     scene.AddShape(backWall);
 
     return scene;
 }
 
 Scene Teapot()
-{
+    {
     Scene scene;
-    TransformationMatrix tm;
-    tm.SetYRotation((float)3.141592/2);
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0.2,-0.55f), (float)3.14159/2, 1.0, 600, 600));
-    Mesh teapot(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.35f, Vect(0,0,0));
+    TransformationMatrix camTM;
+    camTM.SetXRotation(PI/10);
+
+    scene.SetCamera(
+            Pinhole(camTM*Vect(0, 1, 0), camTM*Vect(1, 0, 0), camTM*Vect(0, 0, 1), Point(0, 0.5f, -0.4f),
+            PI/3, 1.0, 1280, 720));
+
+    scene.AddLightSource(PointLight(Point(0,0.8f, -0.2f), 4, WHITE));
+    //scene.AddLightSource(PointLight(Point(0,0.8f, 0.65f), 2, (RED + WHITE) / 2));
+
+    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.35f, Vect(0,0.2f, 0.3f));
+    teapot.SetMaterial(make_shared<Material>(Material(WHITE, BLACK, 0.0f, GRAY, BLACK)));
     scene.AddShape(teapot);
 
-    scene.AddShape(Plane(Point(-1.5f, 0, 0), Vect(1,0,0))); // Left wall.
-    scene.AddShape(Plane(Point(1.5f, 0, 0), Vect(-1,0,0))); // Right wall.
-    scene.AddShape(Plane(Point(0, 0, 3), Vect(0,0,-1))); // Back wall
+    Plane floor(Point(0,-0.2f,0), Vect(0,1,0));
+    scene.AddShape(floor);
 
-    scene.AddLightSource(PointLight(Point(0,2.5f, 0), 15, WHITE));
-    scene.AddShape(Plane(Point(0,-1.5f, 0), Vect(0,1,0)));
+    Plane ceiling(Point(0,1,0), Vect(0,1,0));
+    scene.AddShape(ceiling);
+
+    Plane rightWall(Point(1,0,0), Vect(-1,0,0));
+    scene.AddShape(rightWall);
+
+    Plane leftWall(Point(-1,0,0), Vect(1,0,0));
+    scene.AddShape(leftWall);
+
+    Plane backWall(Point(0,0,1), Vect(0,0,-1));
+    scene.AddShape(backWall);
+
+    Plane frontWall(Point(0,0,-1), Vect(0,0,1));
+    scene.AddShape(frontWall);
+
     return scene;
 }
 
@@ -212,7 +232,7 @@ Scene Chess()
     TransformationMatrix tm;
     tm.SetXRotation(PI/6);
     scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,-0.3f,-1), PI/3, 1.0, 250, 250));
-    scene.AddLightSource(PointLight(Point(0,1,-0.4f), 3, WHITE));
+    scene.AddLightSource(PointLight(Point(0,1,-0.4f), 10, WHITE));
 
     Plane board(Plane(Point(0,-1,0), Vect(0,1,0)));
     auto chessMat = CheckerBoard(0.49f, WHITE, BLACK);
@@ -220,7 +240,8 @@ Scene Chess()
     scene.AddShape(board);
 
     Sphere oSphere(Point(0,-0.75f,0), 0.25f);
-    oSphere.SetMaterial(MIRROR);
+    oSphere.SetMaterial(GLASS);
+    oSphere.SetRefractiveIndex(WATER_RI);
     scene.AddShape(oSphere);
 
     
@@ -231,25 +252,31 @@ Scene Chess()
 Scene Experimental()
 {
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,-0.5f,-6.3f), PI/3, 1.0, 250, 250));
-    scene.AddLightSource(PointLight(Point(-1, 3, 0), 3, WHITE));
-    scene.AddLightSource(PointLight(Point(1, 3, 0), 3, WHITE));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,-0.5f,-0.73f), PI/3, 1.0, 250, 250));
+    scene.AddLightSource(PointLight(Point(-1, 1, 0), 3, WHITE));
+    scene.AddLightSource(PointLight(Point(1, 1, 0), 3, WHITE));
 
     Plane board(Plane(Point(0,-1.5f,0), Vect(0,1,0)));
-    //auto chessMat = CheckerBoard(0.49f, WHITE, BLACK);
-    //board.SetMaterial(chessMat);
     scene.AddShape(board);
 
     Plane wall(Point(0,0,1.5f), Vect(0,0,-1));
-    wall.SetNormalModifier(make_shared<CrossHatchModifier>(CrossHatchModifier(100,100,100)));
+    //wall.SetNormalModifier(make_shared<CrossHatchModifier>(CrossHatchModifier(100,100,100)));
     scene.AddShape(wall);
 
-    //CrossHatch oSphere(make_shared<Sphere>(Sphere(Point(0,-0.75f,0.2f), 0.55f)), 1.0f, 0.0f, 0.0f);
-    Sphere oSphere(Point(0,-0.75f,0.2f), 0.55f);
+    Sphere reflectiveModified(Point(0.3,-0.75f,0.3f), 0.25f);
+    reflectiveModified.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, WHITE)));
+    reflectiveModified.SetNormalModifier(make_shared<CrossHatchModifier>(CrossHatchModifier(100,100,100)));
+    scene.AddShape(reflectiveModified);
 
-    scene.AddShape(oSphere);
+    Sphere redModified(Point(-0.3f,-0.75f,0.3f), 0.25f);
+    redModified.SetMaterial(make_shared<Material>(Material(RED, BLACK, 0.0f, BLACK, BLACK)));
+    redModified.SetNormalModifier(make_shared<CrossHatchModifier>(CrossHatchModifier(100,100,100)));
+    scene.AddShape(redModified);
 
-    
+    Sphere greenStandard(Point(0.3f,-0.75f,0.9f), 0.25f);
+    greenStandard.SetMaterial(make_shared<Material>(Material(GREEN, BLACK, 0.0f, BLACK, BLACK)));
+    scene.AddShape(greenStandard);
+
     return scene;
 }
 
@@ -470,35 +497,30 @@ Scene Dragon()
     dragon.SetMaterial(make_shared<Material>(Material(GREEN/2.0f, BLACK, 0.0f, GRAY, BLACK)));
     scene.AddShape(dragon);
 
-    auto appleWhite(make_shared<Material>(Material(WHITE, BLACK, 0.0f, WHITE, BLACK)));
 
     Plane floor(Point(0,-0.2f,0), Vect(0,1,0));
-    floor.SetMaterial(appleWhite);
     scene.AddShape(floor);
+
     Plane ceiling(Point(0,1,0), Vect(0,1,0));
-    ceiling.SetMaterial(appleWhite);
+    scene.AddShape(ceiling);
 
     Plane rightWall(Point(1,0,0), Vect(-1,0,0));
-    rightWall.SetMaterial(appleWhite);
     scene.AddShape(rightWall);
 
     Plane leftWall(Point(-1,0,0), Vect(1,0,0));
-    leftWall.SetMaterial(appleWhite);
     scene.AddShape(leftWall);
 
     Plane backWall(Point(0,0,1), Vect(0,0,-1));
-    backWall.SetMaterial(appleWhite);
     scene.AddShape(backWall);
 
     Plane frontWall(Point(0,0,-1), Vect(0,0,1));
-    frontWall.SetMaterial(appleWhite);
     scene.AddShape(frontWall);
 
-    auto image = scene.RenderMultiThread(4);
     return scene;
 }
 
-Scene Menger(int recursion)
+template <int recursion>
+Scene Menger()
 {
     Scene scene;
     TransformationMatrix camTM;

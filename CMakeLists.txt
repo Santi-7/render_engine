@@ -8,7 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -O3 -Wall")
 set(SOURCE_FILES
         main.cpp)
 
-add_executable(Ray_Tracer_run
+add_executable(ray_trace
         main.cpp)
 
 include_directories(
@@ -23,7 +23,7 @@ add_subdirectory(lib)
 add_subdirectory(rayTracerTests)
 add_subdirectory(src)
 
-target_link_libraries(Ray_Tracer_run
+target_link_libraries(ray_trace
                       container
                       geometry
                       gtest

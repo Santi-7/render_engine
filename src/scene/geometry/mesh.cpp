@@ -159,8 +159,6 @@ Mesh Mesh::LoadObjFile(const string& filename, float maxDistFromOrigin, const Ve
         }
     }
 
-    cout << maxValues << '\n';
-    cout << minValues << '\n';
     return Mesh(triangles);
 }
 
@@ -328,8 +326,6 @@ Mesh::Mesh(const string &filename, float maxDistFromOrigin, const Vect &shift)
         }
     }
     mBoundingShape = shared_ptr<Shape>(new Box(Rectangle(Vect(0,1,0), minValues, Point(maxValues.GetX(), minValues.GetY(), maxValues.GetZ())), maxValues.GetY() - minValues.GetY()));
-    cout << maxValues << '\n';
-    cout << minValues << '\n';
 }
 
 void Mesh::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape, shared_ptr<Shape> thisShape) const
