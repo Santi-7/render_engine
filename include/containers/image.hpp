@@ -44,7 +44,7 @@ public:
      * since this won't check for the file's existance and will destroy it without
      * consideration.
      */
-    void Save(const string filename) const;
+    void Save(const string filename, bool gammaCorrect = false) const;
 
     /**
      * @return This image's width.

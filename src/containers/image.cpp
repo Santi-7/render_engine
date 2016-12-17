@@ -118,7 +118,8 @@ Image::Image(const string &filename) {
 
 }
 
-void Image::Save(const string filename) const
+
+void Image::Save(const string filename, bool gammaCorrect) const
 {
     ofstream outputFile(filename);
 
@@ -141,15 +142,24 @@ void Image::Save(const string filename) const
 
     largest = largest < 1.0f ? 1.0f : largest;
 
-
     // Write the image's 2-dimensional array.
     for (unsigned int i = 0; i < mImage.size(); ++i)
     {
         for (unsigned int j = 0; j < mImage[0].size(); ++j)
         {
-            outputFile << static_cast<unsigned int>(static_cast<unsigned char>(255 * mImage[i][j].GetR() / largest)) << ' ' <<
-                          static_cast<unsigned int>(static_cast<unsigned char>(255 * mImage[i][j].GetG() / largest)) << ' ' <<
-                          static_cast<unsigned int>(static_cast<unsigned char>(255 * mImage[i][j].GetB() / largest)) << '\t';
+            Color tmp = mImage[i][j];
+
+            if(gammaCorrect)
+            {
+                tmp = tmp.GammaCorrect().Clamp();
+            }
+            else
+            {
+                tmp = tmp / largest;
+            }
+            outputFile << static_cast<unsigned int>(static_cast<unsigned char>(255 * tmp.GetR())) << ' ' <<
+                          static_cast<unsigned int>(static_cast<unsigned char>(255 * tmp.GetG())) << ' ' <<
+                          static_cast<unsigned int>(static_cast<unsigned char>(255 * tmp.GetB())) << '\t';
         }
         outputFile << '\n';
     }

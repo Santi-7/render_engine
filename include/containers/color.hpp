@@ -12,6 +12,7 @@
 
 #include <algorithm>
 #include <climits>
+#include <cmath>
 
 using namespace std;
 
@@ -145,6 +146,20 @@ public:
     bool operator!=(const Color &color) const
     {
         return ! (*this == color);
+    }
+
+    Color Clamp() const
+    {
+        return Color(
+                std::max(0.0f, std::min(mR, 1.0f)),
+                std::max(0.0f, std::min(mG, 1.0f)),
+                std::max(0.0f, std::min(mB, 1.0f)));
+    }
+
+    Color GammaCorrect() const
+    {
+        static const float gamma = 2.2f;
+        return Color(pow(mR, gamma), pow(mG, gamma), pow(mB, gamma));
     }
 
 private:

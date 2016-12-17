@@ -52,6 +52,7 @@ void PrintHelp()
             "\t-res <WIDTHxHEIGHT> : Select a different resolution for the result image.\n"
             "\t--indirect_steps <NUMBER>: Choose the number of indirect lighting steps to render images faster. 0 to disable indirect lighting.\n"
             "\t--indirect_rays <NUMBER> : Sets the number of indirect rays that will be used to render the image.\n"
+            "\t--gamma : Instead of dividing by the greatest color value in the image, all colors will be gamma corrected and then clamped.\n"
             "\t-s [SCENE_NAME] : Selects the scene to render.\n"
             "\n"
             "Available scenes:\n";
@@ -65,6 +66,7 @@ void PrintHelp()
 void InitializeSceneNames()
 {
     SCENE_NAMES["cornell"] = &CornellBox;
+    SCENE_NAMES["phong_spheres"] = &PhongSphereSamples;
     SCENE_NAMES["room"] = &Room;
     SCENE_NAMES["teapot"] = &Teapot;
     SCENE_NAMES["dragon"] = &Dragon;
@@ -90,6 +92,7 @@ int main(int argc, char * argv[])
     int width = -1, height = -1;
     unsigned int indirectSteps = 1, indirectRays = 64;
     unsigned int threadCount = thread::hardware_concurrency(); // Use all available threads by default.
+    bool gammaCorrect = false;
     string sceneName = "cornell";
 
     // Put the arguments in a string vector to make them more accessible.
@@ -145,6 +148,11 @@ int main(int argc, char * argv[])
             continue;
         }
 
+        if (arguments[i] == "--gamma")
+        {
+            gammaCorrect = true;
+        }
+
         if (arguments[i] == "-s")
         {
             if (i + 1 < argnum)
@@ -182,7 +190,7 @@ int main(int argc, char * argv[])
     chosenScene.SetIndirectRays(indirectRays);
 
     auto image = chosenScene.RenderMultiThread(threadCount);
-    image->Save(sceneName + ".ppm");
+    image->Save(sceneName + ".ppm", gammaCorrect);
 
     cout << "\nSaved image " << sceneName << ".ppm\n";
     return 0;

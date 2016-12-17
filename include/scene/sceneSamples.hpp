@@ -55,6 +55,51 @@ Scene CornellBox()
     return cornellBox;
 }
 
+Scene PhongSphereSamples()
+{
+    Scene scene;
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,-0.9f,-0.7f), PI/3, 1.0, 700, 500));
+
+    scene.AddLightSource(PointLight(Point(-0.6f, -0.5f, -0.2f), 1.5, WHITE));
+    scene.AddLightSource(PointLight(Point(0.6f, -0.5f, -0.2f), 1.5, WHITE));
+
+    Sphere lambertian(Point(-0.35f, -0.85f, 0), 0.075f);
+    lambertian.SetMaterial(LAMBERTIAN);
+    scene.AddShape(lambertian);
+
+    Sphere lobe(Point(-0.10f, -0.85f, 0), 0.075f);
+    lobe.SetMaterial(SPECKLED_LAMBERTIAN);
+    scene.AddShape(lobe);
+
+    Sphere mirror(Point(0.10, -0.85f, 0), 0.075f);
+    mirror.SetMaterial(MIRROR);
+    scene.AddShape(mirror);
+
+    Sphere glass(Point(0.35, -0.85f, 0), 0.075f);
+    glass.SetMaterial(GLASS);
+    glass.SetRefractiveIndex(GLASS_RI);
+    scene.AddShape(glass);
+
+    CheckerBoard wallPattern(0.149f, BLACK, WHITE);
+    Plane floor(Point(0, -1.0f, 0), Vect(0, 1, 0));
+    floor.SetMaterial(wallPattern);
+    scene.AddShape(floor);
+
+    Plane rightWall(Point(1, 0, 0), Vect(-1, 0, 0));
+    rightWall.SetMaterial(wallPattern);
+    scene.AddShape(rightWall);
+
+    Plane leftWall(Point(-1, 0, 0), Vect(1, 0, 0));
+    leftWall.SetMaterial(wallPattern);
+    scene.AddShape(leftWall);
+
+    Plane backWall(Point(0, 0, 0.5), Vect(0, 0, -1));
+    backWall.SetMaterial(wallPattern);
+    scene.AddShape(backWall);
+
+    return scene;
+}
+
 Scene RefractionPlaneSphere()
 {
     Scene scene;
