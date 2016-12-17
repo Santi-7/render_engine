@@ -9,20 +9,8 @@
 #include <iostream>
 #include <pinhole.hpp>
 #include <scene.hpp>
-#include <sphere.hpp>
-#include <pointLight.hpp>
-#include <plane.hpp>
-#include <triangle.hpp>
 #include <sceneSamples.hpp>
-#include <transformationMatrix.hpp>
-#include <mesh.hpp>
-#include <fstream>
-#include <geometry/rectangle.hpp>
-#include <geometry/box.hpp>
-#include <materials/checkerBoard.hpp>
 #include <thread>
-#include <materials/crossHatchModifier.hpp>
-#include <geometry/compositeShape.hpp>
 #include <sstream>
 #include <map>
 
