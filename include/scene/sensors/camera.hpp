@@ -58,6 +58,13 @@ public:
     Point GetFocalPoint() const;
 
     /**
+     * Sets this Camera's image width and height.
+     * @param width -
+     * @param height -
+     */
+    void SetImageDimensions(unsigned int width, unsigned int height);
+
+    /**
      * @return This Camera's image plane width in pixels.
      */
     unsigned int GetWidth() const;

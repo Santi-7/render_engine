@@ -60,6 +60,43 @@ public:
     }
 
     /**
+     * Sets this Scene's image width and height.
+     * @param width -
+     * @param height -
+     */
+    void SetImageDimensions(unsigned int width, unsigned int height)
+    {
+        mCamera->SetImageDimensions(width, height);
+    }
+
+    /**
+     * Sets the number of specular steps to take when rendering the image.
+     * @param steps
+     */
+    void SetSpecularSteps(unsigned int steps)
+    {
+        mSpecularSteps = steps;
+    }
+
+    /**
+     * Sets the number of indirect steps to take when rendering the image.
+     * @param steps
+     */
+    void SetIndirectSteps(unsigned int steps)
+    {
+        mIndirectSteps = steps;
+    }
+
+    /**
+     * Sets the number of indirect rays to trace when rendering the image.
+     * @param steps
+     */
+    void SetIndirectRays(unsigned int rays)
+    {
+        mIndirectRays = rays;
+    }
+
+    /**
      * The main ray tracing algorithm. Traces lightRays from the camera to all the pixels in the image plane, calculates
      * intersections (and all their complicated interactions), and saves the color of each pixel in an image object.
      * Since this takes a while, it prints a beautiful progress bar indicating the percent of lines completed.
@@ -78,13 +115,13 @@ public:
 private:
 
     /** Limit to the specular interactions allowed. */
-    static constexpr unsigned int SPECULAR_STEPS = 4;
+    unsigned int mSpecularSteps = 4;
 
     /** Limit to the diffuse interactions allowed. */
-    static constexpr unsigned int DIFFUSE_STEPS = 0;
+    unsigned int mIndirectSteps = 0;
 
     /** Diffuse rays to throw in every diffuse interaction. */
-    static constexpr unsigned int DIFFUSE_RAYS = 8;
+    unsigned int mIndirectRays = 8;
 
     /** The scene's camera. */
     unique_ptr<Camera> mCamera;
