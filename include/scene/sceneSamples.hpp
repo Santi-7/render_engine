@@ -23,6 +23,7 @@
 #include <materials/crossHatchModifier.hpp>
 #include <geometry/compositeShape.hpp>
 #include <geometry/mengerSponge.hpp>
+#include <ratio>
 
 Scene CornellBox()
 {
@@ -132,7 +133,7 @@ Scene RefractionPlaneSphere()
 }
 
 Scene Teapot()
-    {
+{
     Scene scene;
     TransformationMatrix camTM;
     camTM.SetXRotation(PI/10);
@@ -271,25 +272,59 @@ Scene SphereCeption()
     return scene;
 }
 
+template <int refractiveType>
 Scene Chess()
 {
+    float refractiveIndex;
+
+    switch(refractiveType)
+    {
+    case 1:
+        refractiveIndex = GLASS_RI;
+        break;
+    case 2:
+        refractiveIndex = WATER_RI;
+        break;
+    case 3:
+        refractiveIndex = DIAMOND_RI;
+        break;
+    case 4:
+        refractiveIndex = QUARTZ_RI;
+        break;
+    default:
+        refractiveIndex = GLASS_RI;
+    }
+
     Scene scene;
-    TransformationMatrix tm;
-    tm.SetXRotation(PI/6);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,-0.3f,-1), PI/3, 1.0, 250, 250));
-    scene.AddLightSource(PointLight(Point(0,1,-0.4f), 10, WHITE));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,-0.5f,-0.625f), PI/3, 1.0, 500, 500));
+    scene.AddLightSource(PointLight(Point(0,-0.1f,0.0f), 5, WHITE));
 
-    Plane board(Plane(Point(0,-1,0), Vect(0,1,0)));
-    auto chessMat = CheckerBoard(0.49f, WHITE, BLACK);
-    board.SetMaterial(chessMat);
-    scene.AddShape(board);
+    auto redMat = make_shared<Material>(Material(RED, BLACK, 0.0f, BLACK, BLACK));
+    auto greenMat = make_shared<Material>(Material(GREEN, BLACK, 0.0f, BLACK, BLACK));
+    auto blueMat = make_shared<Material>(Material(BLUE, BLACK, 0.0f, BLACK, BLACK));
 
-    Sphere oSphere(Point(0,-0.75f,0), 0.25f);
-    oSphere.SetMaterial(GLASS);
-    oSphere.SetRefractiveIndex(WATER_RI);
-    scene.AddShape(oSphere);
+    Plane ground(Plane(Point(0,-1,0), Vect(0,1,0)));
+    ground.SetMaterial(redMat);
+    scene.AddShape(ground);
 
-    
+    Plane ceiling(Plane(Point(0,0.2f,0), Vect(0,-1,0)));
+    ceiling.SetMaterial(redMat);
+    scene.AddShape(ceiling);
+
+    Plane backWall(Plane(Point(0,0,1), Vect(0,0,-1)));
+    backWall.SetMaterial(greenMat);
+    scene.AddShape(backWall);
+
+
+    Sphere transparentSphere(Point(0,-0.5f,0), 0.1f);
+    transparentSphere.SetMaterial(Material(GRAY/10, BLACK, 0.0f, BLACK, WHITE));
+    transparentSphere.SetRefractiveIndex(refractiveIndex);
+    scene.AddShape(transparentSphere);
+
+    Sphere blueBall(Point(0,-0.5f,0.4), 0.05f);
+    blueBall.SetMaterial(blueMat);
+    scene.AddShape(blueBall);
+
     return scene;
 }
 
