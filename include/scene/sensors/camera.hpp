@@ -28,6 +28,7 @@ public:
 
     /**
      * Creates a new camera with the given parameters.
+     *
      * @param up Vector that looks upwards of the camera focalPoint.
      * @param right Vector that looks to the right of the camera focalPoint.
      * @param towards Vector that looks to the front of the camera focalPoint.
