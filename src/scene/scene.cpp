@@ -166,7 +166,7 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
            emittedLight;
 }
 
-Color Scene::DirectLight(const Point &point, Vect &normal,
+Color Scene::DirectLight(const Point &point, const Vect &normal,
                          const LightRay &seenFrom, const Shape &shape) const
 {
     // Assume the path to light is blocked.

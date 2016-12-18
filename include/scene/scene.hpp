@@ -174,7 +174,7 @@ private:
      * @param shape .
      * @return .
      */
-    Color DirectLight(const Point &point, Vect &normal,
+    Color DirectLight(const Point &point, const Vect &normal,
                       const LightRay &seenFrom, const Shape &shape) const;
 
     // TODO: Add doc.
