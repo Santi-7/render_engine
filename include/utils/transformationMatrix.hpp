@@ -1,6 +1,7 @@
-/* ---------------------------------------------------------------------------
+/** ---------------------------------------------------------------------------
  ** transformationMatrix.hpp
- ** TODO: Add doc.
+ ** Extends Matrix to define methods to apply any combination of movement, rotation,
+ ** scale and axis, plane and origin symmetry to Points and Vects.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482
@@ -16,125 +17,103 @@ class TransformationMatrix : public Matrix
 
 public:
 
-    // TODO: Add doc.
     /**
-     * Constructs a TransformationMatrix.
-     *
-     * @return .
+     * Constructs a new identity TransformationMatrix.
      */
     TransformationMatrix();
 
-    // TODO: Add doc.
     /**
-     * .
+     * Sets the translation in the X axis to units.
      *
-     * @param units .
+     * @param units How much this TransformationMatrix will translate an object in the X axis.
      */
     void SetXTranslation(float units);
 
-    // TODO: Add doc.
     /**
-     * .
+     * Sets the translation in the Y axis to units
      *
-     * @param units .
+     * @param units How much this TransformationMatrix will translate an object in the Y axis.
      */
     void SetYTranslation(float units);
 
-    // TODO: Add doc.
     /**
-     * .
+     * Sets the translation in the Z axis to units.
      *
-     * @param units .
+     * @param units How much this TransformationMatrix will translate an object in the Z axis.
      */
     void SetZTranslation(float units);
 
-    // TODO: Add doc.
     /**
-     * .
+     * Sets the scale in the X axis to factor.
      *
-     * @param factor .
+     * @param factor How much this TransformationMatrix will scale an object in the X axis.
      */
     void SetXScale(float factor);
 
-    // TODO: Add doc.
     /**
-     * .
+     * Sets the scale in the Y axis to factor.
      *
-     * @param factor .
+     * @param factor How much this TransformationMatrix will scale an object in the Y axis.
      */
     void SetYScale(float factor);
 
-    // TODO: Add doc.
     /**
-     * .
+     * Sets the scale in the Z axis to factor.
      *
-     * @param factor .
+     * @param factor How much this TransformationMatrix will scale an object in the Z axis.
      */
     void SetZScale(float factor);
 
-    // TODO: Add doc.
     /**
-     * .
+     * Sets XY plane symmetry to this TransformationMatrix.
      */
     void SetXYPlaneSymmetry();
 
-    // TODO: Add doc.
     /**
-     * .
+     * Sets XZ plane symmetry to this TransformationMatrix.
      */
     void SetXZPlaneSymmetry();
 
-    // TODO: Add doc.
     /**
-     * .
+     * Sets YZ plane symmetry to this TransformationMatrix.
      */
     void SetYZPlaneSymmetry();
 
-    // TODO: Add doc.
     /**
-     * .
+     * Sets X axis symmetry to this TransformationMatrix.
      */
     void SetXAxisSymmetry();
 
-    // TODO: Add doc.
     /**
-     * .
+     * Sets Y axis symmetry to this TransformationMatrix.
      */
     void SetYAxisSymmetry();
 
-    // TODO: Add doc.
     /**
-     * .
+     * Sets Z axis symmetry to this TransformationMatrix.
      */
     void SetZAxisSymmetry();
 
-    // TODO: Add doc.
     /**
-     * .
+     * Sets origin symmetry to this TransformationMatrix.
      */
     void SetOriginSymmetry();
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param angle .
+     * Sets X axis rotation to this TransformationMatrix.
+     * @param angle Angle in radians by which an object will be rotated around the X axis.
      */
     void SetXRotation(float angle);
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param angle .
+     * Sets Y axis rotation to this TransformationMatrix.
+     * @param angle Angle in radians by which an object will be rotated around the Y axis.
      */
     void SetYRotation(float angle);
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param angle .
+     * Sets Y axis rotation to this TransformationMatrix.
+     * @param angle Angle in radians by which an object will be rotated around the Y axis.
      */
     void SetZRotation(float angle);
 };
