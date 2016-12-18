@@ -73,10 +73,10 @@ void InitializeSceneNames()
     SCENE_NAMES["spheres"] = &ManySpheres;
     SCENE_NAMES["infinite_mirror"] = &FacingMirrors;
     SCENE_NAMES["glass_sphere"] = &RefractionPlaneSphere;
-    SCENE_NAMES["glass_sphere_2"] = &Chess<1>;
-    SCENE_NAMES["water_sphere"] = &Chess<2>;
-    SCENE_NAMES["diamond_sphere"] = &Chess<3>;
-    SCENE_NAMES["quartz_sphere"] = &Chess<4>;
+    SCENE_NAMES["glass_sphere_2"] = &RefractiveSphereTest<1>;
+    SCENE_NAMES["water_sphere"] = &RefractiveSphereTest<2>;
+    SCENE_NAMES["diamond_sphere"] = &RefractiveSphereTest<3>;
+    SCENE_NAMES["quartz_sphere"] = &RefractiveSphereTest<4>;
     SCENE_NAMES["experimental"] = &Experimental;
     SCENE_NAMES["menger_1"] = &Menger<1>;
     SCENE_NAMES["menger_2"] = &Menger<2>;

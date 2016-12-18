@@ -273,7 +273,7 @@ Scene SphereCeption()
 }
 
 template <int refractiveType>
-Scene Chess()
+Scene RefractiveSphereTest()
 {
     float refractiveIndex;
 

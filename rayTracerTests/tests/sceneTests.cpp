@@ -546,7 +546,7 @@ TEST(Materials, SphereInSphere)
     image->Save("sphereception.ppm");
 }
 
-TEST(Materials, Chess)
+TEST(Materials, RefractiveSphereTest)
 {
     Scene scene;
     TransformationMatrix tm;
