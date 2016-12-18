@@ -26,7 +26,17 @@ public:
      */
     Camera();
 
-    // TODO: Doc.
+    /**
+     * Creates a new camera with the given parameters.
+     * @param up Vector that looks upwards of the camera focalPoint.
+     * @param right Vector that looks to the right of the camera focalPoint.
+     * @param towards Vector that looks to the front of the camera focalPoint.
+     * @param focalPoint Center of the camera. Origin of all rays when tracing.
+     * @param fieldOfVision Angle in radians the camera can see.
+     * @param viewPlaneDistance Distance from the focalPoint to the image view plane,
+     * @param width Width in pixels of the image view plane.
+     * @param height Width in pixels of the image view plane.
+     */
     Camera(const Vect &up, const Vect &right,
            const Vect &towards, const Point &focalPoint,
            const float fieldOfVision, const float viewPlaneDistance,
@@ -57,12 +67,11 @@ public:
      */
     Point GetFocalPoint() const;
 
-    // TODO: Doc.
     /**
      * Sets this Camera's image width and height.
      *
-     * @param width -
-     * @param height -
+     * @param width New width in pixels for the image plane in this camera.
+     * @param height New height in pixels for the image plane in this camera.
      */
     void SetImageDimensions(unsigned int width, unsigned int height);
 
