@@ -47,6 +47,8 @@ void PrintHelp()
 {
     cout << "Usage: [OPTION]*\n"
             "If no options are specified, a default Cornell box with 64 indirect rays will be rendered and saved as cornell.ppm.\n"
+            "\n"
+            "Some images will not look good by default, in such cases use --gamma to use a gamma correction of 2.2 instead of dividing by the maximum color value.\n\n"
             "Available options:\n"
             "\t-h : Print this helpful text.\n"
             "\t-res <WIDTHxHEIGHT> : Select a different resolution for the result image.\n"
@@ -164,16 +166,26 @@ int main(int argc, char * argv[])
             }
             else
             {
-                cerr << "You need to specify a scene. Use the option \'-h\' to see all available scenes.\n";
+                cerr << "You need to specify a scene. Use the option '-h' to see all available scenes.\n";
                 return 1;
             }
             i++;
             continue;
         }
+        else
+        {
+            cerr << "Unrecognized argument '" << arguments[i] << "' use '-h' to see all available arguments\n";
+            return 1;
+        }
+    }
+
+    if (argnum == 0)
+    {
+        cout << "Rendering the default Cornell Box. Use the option '-h' f you want to see all available scenes.\n";
     }
 
     Scene chosenScene;
-
+    // Calls the chosen scene function from the scene name map.
     if (SCENE_NAMES.find(sceneName) != SCENE_NAMES.end())
     {
         chosenScene = SCENE_NAMES[sceneName]();
@@ -189,9 +201,11 @@ int main(int argc, char * argv[])
         chosenScene.SetImageDimensions((unsigned int)width, (unsigned int)height);
     }
 
+    // Set indirect values for rendering the scene
     chosenScene.SetIndirectSteps(indirectSteps);
     chosenScene.SetIndirectRays(indirectRays);
 
+    // Render the scene and save the resulting image
     auto image = chosenScene.RenderMultiThread(threadCount);
     image->Save(sceneName + ".ppm", gammaCorrect);
 
