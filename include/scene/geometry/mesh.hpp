@@ -92,7 +92,8 @@ public:
      * @param maxT Maximum distance to consider checking a bounding volume (allows us to stop checking branches).
      * @param nearestShape Nearest shape intersected by the lightray so far. Updated together with minT.
      */
-    void MeshIntersect(const LightRay &lightRay, float &minT, float maxT, shared_ptr<Shape> &nearestShape) const;
+    void MeshIntersect(const LightRay &lightRay, float &minT, const float maxT,
+                       shared_ptr<Shape> &nearestShape) const;
 
     /**
      * Returns the distance from the lightray's origin to the this mesh's bounding shape.
