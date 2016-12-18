@@ -42,18 +42,33 @@ public:
                    shared_ptr<Shape> thisShape) const;
 
     /**
-     * @return This triangles barycenter.
+     * @return This triangle's barycenter.
      */
     Point GetCenter() const;
 
-//protected: // TODO: Why commented?
+    /**
+     * @return The triangle's Point A.
+     */
+    Point GetA() const;
+
+    /**
+     * @return The triangle's Point B.
+     */
+    Point GetB() const;
+
+    /**
+     * @return The triangle's Point C.
+     */
+    Point GetC() const;
+
+protected:
 
     /** The three points that define this triangle. */
     Point mA, mB, mC;
 
     /* Cached values. */
 
-    /** Barycentric usefulous values. */ // TODO: Explain this better :P
+    /** Cached values to make a triangle intersection faster. */
     Vect v0, v1;
     float d00, d01, d11, denominator;
 };

@@ -92,14 +92,14 @@ void Point::operator-=(const Vect& v)
 
 bool Point::operator==(const Point& p) const
 {
-    return (std::abs(mX - p.GetX()) <= TH )&
-           (std::abs(mY - p.GetY()) <= TH )&
+    return (std::abs(mX - p.GetX()) <= TH) &
+           (std::abs(mY - p.GetY()) <= TH) &
            (std::abs(mZ - p.GetZ()) <= TH);
 }
 
 bool Point::operator!=(const Point& p) const
 {
-    return !(*this == p);
+    return ! (*this == p);
 }
 
 bool Point::operator<=(const Point &p) const

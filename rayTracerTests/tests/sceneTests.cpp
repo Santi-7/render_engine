@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** sceneTests.hpp
-** TODO: Add doc.
+** Some tests to verify that the ray tracer renders our scenes correctly.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
@@ -655,7 +655,6 @@ TEST(Complex, TeaTime)
 
     Box table(Rectangle(Vect(0,1,0), Point(-0.25f, -0.8f, -0.2f), Point(0.25f, -0.8f, 0.4f)), 0.35f);
     //table.SetMaterial(CheckerBoard(0.0499f, RED / 2 , BLUE / 2));
-    // TODO: Find out if this can be used at all...
     table.SetNormalModifier(make_shared<CrossHatchModifier>(CrossHatchModifier(4000,4000,4000)));
     scene.AddShape(table);
 
@@ -673,7 +672,6 @@ TEST(Complex, TeaTime)
     auto image = scene.RenderMultiThread(THREADS);
     image->Save("teaTime.ppm");
 }
-
 
 TEST(Award, Exposition)
 {

@@ -59,3 +59,18 @@ Point Triangle::GetCenter() const
                  (mA.GetY() + mB.GetY() + mC.GetY()) / 3,
                  (mA.GetZ() + mB.GetZ() + mC.GetZ()) / 3);
 }
+
+Point Triangle::GetA() const
+{
+    return mA;
+}
+
+Point Triangle::GetB() const
+{
+    return mB;
+}
+
+Point Triangle::GetC() const
+{
+    return mC;
+}

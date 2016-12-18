@@ -1,14 +1,14 @@
 /* ---------------------------------------------------------------------------
  ** containerTests.cpp
- ** TODO: Add doc.
+ ** Some tests to verify the containers package.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482
  ** -------------------------------------------------------------------------*/
 
 #include <gtest/gtest.h>
-#include <point.hpp>
 #include <matrix.hpp>
+#include <point.hpp>
 
 //////////////////
 /// Point Tests///

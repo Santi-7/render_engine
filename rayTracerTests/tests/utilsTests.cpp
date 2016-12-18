@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
  ** utilTests.cpp
- ** TODO: Add doc.
+ ** Some tests to verify the utils package.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482
@@ -9,12 +9,9 @@
 #include <color.hpp>
 #include <gtest/gtest.h>
 #include <image.hpp>
-#include <mathConstants.hpp>
 #include <matrix.hpp>
 #include <poseTransformationMatrix.hpp>
-#include <random>
 #include <transformationMatrix.hpp>
-
 
 using namespace std;
 

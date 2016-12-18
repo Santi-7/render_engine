@@ -116,6 +116,7 @@ public:
     /**
      * Sets the material in this shape. If this shape contains any sub-shapes they should also have their materials set
      * to material by overriding this method.
+     *
      * @param material Material for this shape.
      */
     virtual void SetMaterial(const shared_ptr<Material> material)
@@ -125,6 +126,7 @@ public:
 
     /**
      * Creates a new shared_ptr to the material of class M and sets it to this class.
+     *
      * @tparam M Class of the material.
      * @param material Material for this shape.
      */
@@ -136,8 +138,8 @@ public:
 
     /**
      * Sets the refractive index of this shape. If this shape contains any sub-shapes they should also have their
-     * materials set to material by overriding this method (Since refraction doesn't take into account materials other
-     * than spheres this won't happen). // TODO: Check that later fact when finishing up.
+     * materials set to material by overriding this method.
+     *
      * @param refractiveIndex Value to set the refractive index of this shape.
      */
     void SetRefractiveIndex(const float refractiveIndex)
@@ -154,7 +156,8 @@ public:
     }
 
     /**
-     * Sets the emitted color value and marks this shape as a light source
+     * Sets the emitted color value and marks this shape as a light source.
+     *
      * @param emitted .
      * @param power .
      */
@@ -167,6 +170,7 @@ public:
 
     /**
      * Sets the normal modifier for this shape. This is an experimental feature...
+     *
      * @param vmod Normal modifier for this shape.
      */
     virtual void SetNormalModifier(shared_ptr<VectorModifier> vmod)

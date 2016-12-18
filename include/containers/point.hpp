@@ -23,8 +23,7 @@ public:
 
     /** When comparing float values we want to consider that
      * two values that differ by this threshold are equal. */
-    // TODO: Check what this value is for. We might have solved whatever problem this used to solve in some other way.
-    static constexpr float TH = 0.00025;
+    static constexpr float TH = 0.000005;
 
     /**
      * @return New point at [0, 0, 0].

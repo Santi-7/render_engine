@@ -170,28 +170,28 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
     for (const shared_ptr<Triangle> &t : triangles)
     {
         // Check Point A
-        if (t->mA.GetX() < minX) minX = t->mA.GetX();
-        if (t->mA.GetX() > maxX) maxX = t->mA.GetX();
-        if (t->mA.GetY() < minY) minY = t->mA.GetY();
-        if (t->mA.GetY() > maxY) maxY = t->mA.GetY();
-        if (t->mA.GetZ() < minZ) minZ = t->mA.GetZ();
-        if (t->mA.GetZ() > maxZ) maxZ = t->mA.GetZ();
+        if (t->GetA().GetX() < minX) minX = t->GetA().GetX();
+        if (t->GetA().GetX() > maxX) maxX = t->GetA().GetX();
+        if (t->GetA().GetY() < minY) minY = t->GetA().GetY();
+        if (t->GetA().GetY() > maxY) maxY = t->GetA().GetY();
+        if (t->GetA().GetZ() < minZ) minZ = t->GetA().GetZ();
+        if (t->GetA().GetZ() > maxZ) maxZ = t->GetA().GetZ();
 
         // Check Point B
-        if (t->mB.GetX() < minX) minX = t->mB.GetX();
-        if (t->mB.GetX() > maxX) maxX = t->mB.GetX();
-        if (t->mB.GetY() < minY) minY = t->mB.GetY();
-        if (t->mB.GetY() > maxY) maxY = t->mB.GetY();
-        if (t->mB.GetZ() < minZ) minZ = t->mB.GetZ();
-        if (t->mB.GetZ() > maxZ) maxZ = t->mB.GetZ();
+        if (t->GetB().GetX() < minX) minX = t->GetB().GetX();
+        if (t->GetB().GetX() > maxX) maxX = t->GetB().GetX();
+        if (t->GetB().GetY() < minY) minY = t->GetB().GetY();
+        if (t->GetB().GetY() > maxY) maxY = t->GetB().GetY();
+        if (t->GetB().GetZ() < minZ) minZ = t->GetB().GetZ();
+        if (t->GetB().GetZ() > maxZ) maxZ = t->GetB().GetZ();
 
         // Check Point C
-        if (t->mC.GetX() < minX) minX = t->mC.GetX();
-        if (t->mC.GetX() > maxX) maxX = t->mC.GetX();
-        if (t->mC.GetY() < minY) minY = t->mC.GetY();
-        if (t->mC.GetY() > maxY) maxY = t->mC.GetY();
-        if (t->mC.GetZ() < minZ) minZ = t->mC.GetZ();
-        if (t->mC.GetZ() > maxZ) maxZ = t->mC.GetZ();
+        if (t->GetC().GetX() < minX) minX = t->GetC().GetX();
+        if (t->GetC().GetX() > maxX) maxX = t->GetC().GetX();
+        if (t->GetC().GetY() < minY) minY = t->GetC().GetY();
+        if (t->GetC().GetY() > maxY) maxY = t->GetC().GetY();
+        if (t->GetC().GetZ() < minZ) minZ = t->GetC().GetZ();
+        if (t->GetC().GetZ() > maxZ) maxZ = t->GetC().GetZ();
     }
 
     // Get the bounding shape

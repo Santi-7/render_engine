@@ -16,8 +16,8 @@ CrossHatchModifier::CrossHatchModifier(float xDist, float yDist, float zDist)
         :mXDist(xDist), mYDist(yDist), mZDist(zDist)
 {}
 
-// TODO: We can get more interesting patterns using tan... equally useless though
-Vect CrossHatchModifier::Modify(const Vect &vect, const Point &point) const{
+Vect CrossHatchModifier::Modify(const Vect &vect, const Point &point) const
+{
     TransformationMatrix tm;
     tm.SetXRotation(abs(sin(point.GetX()) * mXDist));
     tm.SetYRotation(abs(sin(point.GetY()) * mYDist));

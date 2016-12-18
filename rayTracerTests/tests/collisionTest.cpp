@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** collisionTest.cpp
-** TODO: Add doc.
+** Some tests to verify the intersections between rays of light and shapes.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482

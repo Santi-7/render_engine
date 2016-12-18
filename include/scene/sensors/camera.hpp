@@ -5,7 +5,7 @@
  ** all the pixels that need tracing.
  ** From this camera we create a pinhole camera but we could extend it to be a
  ** fish eye camera or something else.
- ** //TODO: NOT REALLY! What we can change is not enough to make a fish eye (the image is traversed in scene!!!), this should just be a pinhole camera.
+ **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482
  ** -------------------------------------------------------------------------*/
@@ -26,7 +26,7 @@ public:
      */
     Camera();
 
-
+    // TODO: Doc.
     Camera(const Vect &up, const Vect &right,
            const Vect &towards, const Point &focalPoint,
            const float fieldOfVision, const float viewPlaneDistance,
@@ -57,8 +57,10 @@ public:
      */
     Point GetFocalPoint() const;
 
+    // TODO: Doc.
     /**
      * Sets this Camera's image width and height.
+     *
      * @param width -
      * @param height -
      */
