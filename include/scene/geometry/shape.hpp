@@ -78,8 +78,8 @@ public:
         float sinT2 = n * n * (1 - cosI * cosI);
         // Critic angle: this is the angle at which the refracted lightRay goes back inside the shape.
         if (sinT2 > 1)
-            // TODO: Reflect the ray.
-            ;
+            return LightRay(point, Reflect(in.GetDirection(), visibleNormal));
+
         float cosT = sqrt(1 - sinT2);
         Vect reflected = in.GetDirection() * n + visibleNormal * (n * cosI - cosT);
         return LightRay(point, reflected);
