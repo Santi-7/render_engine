@@ -166,56 +166,48 @@ private:
                            const int diffuseSteps) const;
 
     /**
-     * .
-     *
-     * @param point .
-     * @param normal .
-     * @param seenFrom .
-     * @param shape .
-     * @return .
+     * @param point that belongs to the shape [shape] and where the direct light is calculated.
+     * @param normal of the [shape]'s surface in the point [point] and seen from [seenFrom].
+     * @param seenFrom Direction from which the point [point] is seen.
+     * @param shape that defines the light distribution with its BRDF.
+     * @return a color in relation to the direct light reached in the point [point] of the shape [shape] from
+     *  all the light sources in the scene, and is distributed in the [seenFrom] * -1 direction.
      */
     Color DirectLight(const Point &point, const Vect &normal,
                       const LightRay &seenFrom, const Shape &shape) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param point .
-     * @param normal .
-     * @param in .
-     * @param shape .
-     * @param specularSteps .
-     * @param diffuseSteps .
-     * @return .
+     * @param point that belongs to the shape [shape] and where the specular light is calculated.
+     * @param normal of the [shape]'s surface in the point [point].
+     * @param in Incoming ray of light that intersects the shape [shape] in the point [point].
+     * @param shape that defines the light distribution with its BRDF.
+     * @param specularSteps Number of steps remaining to stop the specular bounces.
+     * @param diffuseSteps Number of steps remaining to stop the diffuse bounces.
+     * @return a color in relation to the specular light (reflection and refraction) reached in the point [point]
+     *  of the shape [shape], performing [specularSteps] bounces of specular light.
      */
     Color SpecularLight(const Point &point, const Vect &normal,
                         const LightRay &in, const Shape &shape,
                         const int specularSteps, const int diffuseSteps) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param point .
-     * @param normal .
-     * @param in.
-     * @param shape .
-     * @param specularSteps .
-     * @param diffuseSteps .
-     * @return .
+     * @param point that belongs to the shape [shape] and where the diffuse light is calculated.
+     * @param normal of the [shape]'s surface in the point [point].
+     * @param in Incoming ray of light that intersects the shape [shape] in the point [point].
+     * @param shape that defines the light distribution with its BRDF.
+     * @param specularSteps Number of steps remaining to stop the specular bounces.
+     * @param diffuseSteps Number of steps remaining to stop the diffuse bounces.
+     * @return a color in relation to the diffuse light reached in the point [point]
+     *  of the shape [shape], performing [diffuseSteps] bounces of diffuse light.
      */
     Color DiffuseLight(const Point &point, const Vect &normal,
                        const LightRay &in, const Shape &shape,
                        const int specularSteps, const int diffuseSteps) const;
 
-    // TODO: Add doc.
     /**
-     * .
-     *
-     * @param lightRay .
-     * @param light .
-     * @return .
+     * @param lightRay to the light source [light] which is checked if any shape in the scene blocks the way to the light.
+     * @param light source which is checked whether it's hidden or not from the ray of light [lightRay].
+     * @return true if the light source [light] is hidden (in shadow) from the ray of light [lightRay], false otherwise.
      */
     bool InShadow(const LightRay &lightRay, const Point &light) const;
 };
