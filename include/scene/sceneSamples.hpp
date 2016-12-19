@@ -622,6 +622,9 @@ Scene Menger()
     return scene;
 }
 
+/**
+ * Returns a CompositeShape made of 5 boxes forming an open cabinet with the given positions, size and material.
+ */
 CompositeShape Cabinet(const float cornerDistFromCenter, const float panelWidth,
         const Vect &position, const shared_ptr<Material> material)
 {
