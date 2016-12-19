@@ -394,11 +394,6 @@ Scene Room()
             Pinhole(Vect(0, 1, 0), Vect(1, 0, 0), Vect(0, 0, 1), Point(0, 0.1f, -1.2f),
                     PI/3, 1.0, 1500, 1000));
 
-    // Top View (To adjust stuff)
-    /*scene.SetCamera(
-            Pinhole(Vect(0, 0, 1), Vect(1, 0, 0), Vect(0, -1, 0), Point(0.1f, 3.9f, -0.1f),
-                    PI/4, 1.0, 500, 500));*/
-
     //////////////////////////////
     //// Making the room /////////
     //////////////////////////////
@@ -474,8 +469,8 @@ Scene Room()
     Vect tableShift(-0.5f, 0, 0.5f);
     float pos = 0.2f;
     float legDim = 0.025f;
-    float legDepth = 0.3f;
-    float legBaseY = -0.5f;
+    float legDepth = 0.35f;
+    float legBaseY = -0.55f;
 
     shared_ptr<Material> woodOrSomething = make_shared<Material>(Material(Color(0.6f, 0.3f, 0.0f), BLACK, 0.0f, BLACK, BLACK));
 
@@ -484,12 +479,12 @@ Scene Room()
 
     float zShift = 0.5f;
 
-    Box leg3(Rectangle(Vect(0,1,0), Point(-pos, legBaseY, pos - zShift) + tableShift, Point(-pos+legDim, legBaseY, pos - zShift + legDim) + tableShift), legDepth);
-    Box leg4(Rectangle(Vect(0,1,0), Point( pos, legBaseY, pos - zShift) + tableShift, Point( pos+legDim, legBaseY, pos - zShift + legDim) + tableShift), legDepth);
+    Box leg3(Rectangle(Vect(0,1,0), Point(-pos, legBaseY, pos - 0.75f) + tableShift, Point(-pos+legDim, legBaseY, pos - 0.75f + legDim) + tableShift), legDepth);
+    Box leg4(Rectangle(Vect(0,1,0), Point( pos, legBaseY, pos - 0.75f) + tableShift, Point( pos+legDim, legBaseY, pos - 0.75f + legDim) + tableShift), legDepth);
 
     float extraTopLength = 0.05f;
     float tableTopDepth = 0.04f;
-    float offsetWithLegs = 0.005f;
+    float offsetWithLegs = 0.03f;
 
     Box tableTop(
             Rectangle(
@@ -519,8 +514,8 @@ Scene Room()
     CheckerBoard pattern(squareSize, BLACK, WHITE, GRAY/2);
 
     Rectangle board(Vect(0,1,0),
-            Point(-squareSize * 4, legBaseY + legDepth + tableTopDepth, -squareSize * 4 - boardZOffset) + tableShift,
-            Point( squareSize * 4, legBaseY + legDepth + tableTopDepth,  squareSize * 4 - boardZOffset) + tableShift);
+            Point(-squareSize * 4, legBaseY + legDepth + tableTopDepth - 0.02f, -squareSize * 4 - boardZOffset) + tableShift,
+            Point( squareSize * 4, legBaseY + legDepth + tableTopDepth - 0.02f,  squareSize * 4 - boardZOffset) + tableShift);
     board.SetMaterial(pattern);
     wholeTable.AddShape(board);
 
@@ -532,7 +527,7 @@ Scene Room()
         TransformationMatrix vaderTM;
         vaderTM.SetYRotation(PI);
         Mesh vader = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/darth_head.obj", 0.1f,
-                Vect(-0.45f, legDepth+tableTopDepth+0.1f-0.48f, 0.35f), vaderTM);
+                Vect(-0.45f, legDepth+tableTopDepth-0.45f, 0.35f), vaderTM);
         vader.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, GRAY/2, BLACK)));
         wholeTable.AddShape(vader);
 
@@ -543,7 +538,7 @@ Scene Room()
         //////////////////////////////
 
         Mesh buddha = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/buddha.obj", 0.1f,
-                Vect(-0.45f, legDepth+tableTopDepth+0.1f-0.48f, -0.1f));
+                Vect(-0.45f, legDepth+tableTopDepth-0.45f, -0.1f));
         buddha.SetMaterial(make_shared<Material>(Material(GREEN, BLACK, 0.0f, GRAY/3.5f, BLACK)));
         wholeTable.AddShape(buddha);
     }
