@@ -112,7 +112,7 @@ int main(int argc, char * argv[])
             return 0;
         }
 
-        if (arguments[i] == "-res")
+        else if (arguments[i] == "-res")
         {
             if (i + 1 >= argnum)
             {
@@ -123,23 +123,21 @@ int main(int argc, char * argv[])
             width = stoi(widthHeight[0]);
             height = stoi(widthHeight[1]);
             ++i;
-            continue;
         }
 
-        if (arguments[i] == "--indirect_steps")
+        else if (arguments[i] == "--indirect_steps")
         {
             indirectSteps = (unsigned int) stoi(arguments[i+1]);
-            continue;
+            i++;
         }
 
-        if (arguments[i] == "--indirect_rays")
+        else if (arguments[i] == "--indirect_rays")
         {
             indirectRays = (unsigned int) stoi(arguments[i+1]);
             i++;
-            continue;
         }
 
-        if (arguments[i] == "-j")
+        else if (arguments[i] == "-j")
         {
             try
             {
@@ -150,15 +148,14 @@ int main(int argc, char * argv[])
                     i++;
                 }
             }catch(invalid_argument){/*Do nothing*/}
-            continue;
         }
 
-        if (arguments[i] == "--gamma")
+        else if (arguments[i] == "--gamma")
         {
             gammaCorrect = true;
         }
 
-        if (arguments[i] == "-s")
+        else if (arguments[i] == "-s")
         {
             if (i + 1 < argnum)
             {
@@ -170,7 +167,6 @@ int main(int argc, char * argv[])
                 return 1;
             }
             i++;
-            continue;
         }
         else
         {
