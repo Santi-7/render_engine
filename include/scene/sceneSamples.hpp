@@ -339,20 +339,18 @@ Scene Experimental()
     scene.AddShape(board);
 
     Plane wall(Point(0,0,1.5f), Vect(0,0,-1));
-    //wall.SetNormalModifier(make_shared<CrossHatchModifier>(CrossHatchModifier(100,100,100)));
     scene.AddShape(wall);
 
-    Sphere reflectiveModified(Point(0.3,-0.75f,0.3f), 0.25f);
+    Sphere reflectiveModified(Point(0.0,-0.5f,0.3f), 0.25f);
     reflectiveModified.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, WHITE)));
     reflectiveModified.SetNormalModifier(make_shared<CrossHatchModifier>(CrossHatchModifier(100,100,100)));
     scene.AddShape(reflectiveModified);
 
-    Sphere redModified(Point(-0.3f,-0.75f,0.3f), 0.25f);
-    redModified.SetMaterial(make_shared<Material>(Material(RED, BLACK, 0.0f, BLACK, BLACK)));
-    redModified.SetNormalModifier(make_shared<CrossHatchModifier>(CrossHatchModifier(100,100,100)));
-    scene.AddShape(redModified);
+    Sphere redStandard(Point(-0.3f,-0.5f,0.9f), 0.25f);
+    redStandard.SetMaterial(make_shared<Material>(Material(RED, BLACK, 0.0f, BLACK, BLACK)));
+    scene.AddShape(redStandard);
 
-    Sphere greenStandard(Point(0.3f,-0.75f,0.9f), 0.25f);
+    Sphere greenStandard(Point(0.3f,-0.5f,0.9f), 0.25f);
     greenStandard.SetMaterial(make_shared<Material>(Material(GREEN, BLACK, 0.0f, BLACK, BLACK)));
     scene.AddShape(greenStandard);
 
