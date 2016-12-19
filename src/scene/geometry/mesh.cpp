@@ -197,8 +197,8 @@ Mesh::Mesh(vector<shared_ptr<Triangle>> triangles)
     // Get the bounding shape
     mBoundingShape = shared_ptr<Shape>(
             new Box(Rectangle(Vect(0, 1, 0), Point(minX, minY, minZ), Point(maxX, minY, maxZ)), maxY - minY));
-    // If there are less than 32 triangles make this Mesh a leaf
-    if (triangles.size() <= 32)
+    // If there are less than 16 triangles make this Mesh a leaf
+    if (triangles.size() <= 16)
     {
         mIsLeaf = true;
         mTriangles = triangles;
