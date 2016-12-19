@@ -155,6 +155,44 @@ Scene RefractionPlaneSphere()
     return scene;
 }
 
+Scene IndirectLighting()
+{
+    Scene scene;
+    TransformationMatrix camTm;
+    camTm.SetXRotation(PI/12);
+
+    scene.SetCamera(Pinhole(camTm*Vect(0,1,0), camTm*Vect(1,0,0), camTm*Vect(0,0,1), Point(0, 0.05f, -0.6f), PI/4, 1.0f, 1280, 720));
+
+    scene.AddLightSource(PointLight(Point(0,0.75,0.1f), 1.5, WHITE));
+    scene.AddLightSource(PointLight(Point(0,0.4,-0.4f), 1.5, WHITE));
+
+    Plane floor(Point(0,-0.5f, 0), Vect(0,1,0));
+    scene.AddShape(floor);
+
+    Plane backWall(Point(0,0,1), Vect(0,0,-1));
+    scene.AddShape(backWall);
+
+    Plane leftWall(Point(-0.5f,0, 0), Vect(1,0,0));
+    scene.AddShape(leftWall);
+
+    Plane rightWall(Point(0.5f,0, 0), Vect(-1,0,0));
+    scene.AddShape(rightWall);
+
+    Box blueBox(Rectangle(Vect(0,1,0), Point(-0.4f, -0.5f, 0.4), Point(-0.2f, -0.5f, 0.6f)), 0.5f);
+    blueBox.SetMaterial(Material(BLUE, BLACK, 0.0f, BLACK, BLACK));
+    scene.AddShape(blueBox);
+
+    Box redBox(Rectangle(Vect(0,1,0), Point(0.2f, -0.5f, 0.4), Point(0.4f, -0.5f, 0.6f)), 0.5f);
+    redBox.SetMaterial(Material(RED, BLACK, 0.0f, BLACK, BLACK));
+    scene.AddShape(redBox);
+
+    Box greenBox(Rectangle(Vect(0,1,0), Point(-0.1f, -0.5f, 0.8), Point(0.1f, -0.5f, 1.0f)), 0.5f);
+    greenBox.SetMaterial(Material(GREEN, BLACK, 0.0f, BLACK, BLACK));
+    scene.AddShape(greenBox);
+
+    return scene;
+}
+
 Scene Teapot()
 {
     Scene scene;

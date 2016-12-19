@@ -75,6 +75,7 @@ void InitializeSceneNames()
     SCENE_NAMES["experimental"] = &Experimental;
     SCENE_NAMES["glass_sphere"] = &RefractiveSphereTest<1>;
     SCENE_NAMES["glass_sphere_2"] = &RefractionPlaneSphere;
+    SCENE_NAMES["indirect"] = &IndirectLighting;
     SCENE_NAMES["infinite_mirror"] = &FacingMirrors;
     SCENE_NAMES["menger_1"] = &Menger<1>;
     SCENE_NAMES["menger_2"] = &Menger<2>;
@@ -187,7 +188,7 @@ int main(int argc, char * argv[])
 
     if (argnum == 0)
     {
-        cout << "Rendering the default Cornell Box. Use the option '-h' f you want to see all available scenes.\n";
+        cout << "Rendering the default Cornell Box. Use the option '-h' if you want to see all available scenes.\n";
     }
 
     Scene chosenScene;
