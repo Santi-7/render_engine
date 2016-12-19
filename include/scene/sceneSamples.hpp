@@ -100,6 +100,29 @@ Scene PhongSphereSamples()
 
     return scene;
 }
+template <int lobeSize>
+Scene SpecularLobes()
+{
+    Scene scene;
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,-0.85f,-0.2f), PI/3, 1.0, 700, 500));
+
+    scene.AddLightSource(PointLight(Point(0.3f, -0.3f, -0.2f), 1, WHITE));
+
+    Sphere lobe(Point(0.0f, -0.85f, 0), 0.075f);
+    lobe.SetMaterial(Material(WHITE, GRAY/2, lobeSize, BLACK, BLACK));
+    scene.AddShape(lobe);
+
+    CheckerBoard wallPattern(0.149f, BLACK, WHITE);
+    Plane backWall(Point(0, 0, 0.5), Vect(0, 0, -1));
+    backWall.SetEmittedLight(WHITE, 0.2f);
+    scene.AddShape(backWall);
+
+    Plane frontWall(Point(0, 0, -0.5f), Vect(0, 0, -1));
+    frontWall.SetEmittedLight(WHITE, 0.2f);
+    scene.AddShape(frontWall);
+
+    return scene;
+}
 
 Scene RefractionPlaneSphere()
 {
@@ -142,7 +165,7 @@ Scene Teapot()
             Pinhole(camTM*Vect(0, 1, 0), camTM*Vect(1, 0, 0), camTM*Vect(0, 0, 1), Point(0, 0.5f, -0.4f),
             PI/3, 1.0, 1280, 720));
 
-    scene.AddLightSource(PointLight(Point(0,0.65f, -0.45f), 5, WHITE));
+    scene.AddLightSource(PointLight(Point(0,0.65f, -0.45f), 1, WHITE));
 
     Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.35f, Vect(0,0.2f, 0.3f));
     teapot.SetMaterial(make_shared<Material>(Material(WHITE, BLACK, 0.0f, GRAY/2, BLACK)));
@@ -173,17 +196,22 @@ Scene FacingMirrors()
 {
     Scene scene;
     TransformationMatrix tm;
-    tm.SetXRotation(PI/10);
-    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (0,4,-5), PI/3, 1.0, 50, 50));
-    scene.AddLightSource(PointLight(Point(0,5,6), 150, WHITE));
+    tm.SetYRotation(PI/8);
+    scene.SetCamera(Pinhole(tm*Vect(0,1,0), tm*Vect(1,0,0), tm*Vect(0,0,1), Point (-0.3f,0.2,-0.5f), PI/3, 1.0, 1000, 1000));
+    scene.AddLightSource(PointLight(Point(0,0.9,0), 1.0f, WHITE));
 
-    Plane visibleMirror(Point(0,0,7), Vect(-0.4f, 0, 1));
-    visibleMirror.SetMaterial(MIRROR);
-    Plane hiddenMirror(Point(0,0,-7), Vect(-0.4f,0,1));
+    Plane wall(Point(0,0,1.001), Vect(0, 0, 1));
+    wall.SetMaterial(Material(Color(0.8, 0.7, 0.45), BLACK, 0.0f, BLACK, BLACK));
+    Rectangle mirror(Vect(0, 0, 1), Point(-0.5f, 0.0f, 1), Point(0.5f, 0.5f, 1));
+    mirror.SetMaterial(MIRROR);
+
+    Plane hiddenMirror(Point(0,0,-0.7f), Vect(0,0,1));
     hiddenMirror.SetMaterial(MIRROR);
     Plane floor(Point(0,-5,0), Vect(0,1,0));
-    Sphere floatingSphere(Point(0,0,3), 1);
-    scene.AddShape(visibleMirror);
+    Sphere floatingSphere(Point(0,0,0.3), 0.15);
+    floatingSphere.SetMaterial(Material(RED, BLACK, 0.0f, BLACK, BLACK));
+    scene.AddShape(wall);
+    scene.AddShape(mirror);
     scene.AddShape(hiddenMirror);
     scene.AddShape(floatingSphere);
     scene.AddShape(floor);
