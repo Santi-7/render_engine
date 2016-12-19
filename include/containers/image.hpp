@@ -17,6 +17,8 @@
 
 using namespace std;
 
+enum SaveMode {DIM_TO_WHITE, GAMMA, CLAMP};
+
 class Image
 {
 
@@ -44,7 +46,7 @@ public:
      * since this won't check for the file's existance and will destroy it without
      * consideration.
      */
-    void Save(const string filename, bool gammaCorrect = false) const;
+    void Save(const string filename, SaveMode mode = DIM_TO_WHITE) const;
 
     /**
      * @return This image's width.

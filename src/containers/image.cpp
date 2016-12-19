@@ -117,7 +117,7 @@ Image::Image(const string &filename) {
     }
 }
 
-void Image::Save(const string filename, bool gammaCorrect) const
+void Image::Save(const string filename, SaveMode mode) const
 {
     ofstream outputFile(filename);
 
@@ -147,13 +147,17 @@ void Image::Save(const string filename, bool gammaCorrect) const
         {
             Color tmp = mImage[i][j];
 
-            if(gammaCorrect)
+            switch(mode)
             {
-                tmp = tmp.GammaCorrect().Clamp();
-            }
-            else
-            {
+            case DIM_TO_WHITE:
                 tmp = tmp / largest;
+                break;
+            case GAMMA:
+                tmp = tmp.GammaCorrect().Clamp();
+                break;
+            case CLAMP:
+                tmp = tmp.Clamp();
+                break;
             }
             outputFile << static_cast<unsigned int>(static_cast<unsigned char>(255 * tmp.GetR())) << ' ' <<
                           static_cast<unsigned int>(static_cast<unsigned char>(255 * tmp.GetG())) << ' ' <<

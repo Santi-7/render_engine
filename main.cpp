@@ -48,12 +48,13 @@ void PrintHelp()
     cout << "Usage: [OPTION]*\n"
             "If no options are specified, a default Cornell box with 64 indirect rays will be rendered and saved as cornell.ppm.\n"
             "\n"
-            "Some images will not look good by default, in such cases use --gamma to use a gamma correction of 2.2 instead of dividing by the maximum color value.\n\n"
+            "Some images will not look good by default, in such cases use --gamma, to use a gamma correction of 2.2, or --clamp to limit color values to the maximum.\n\n"
             "Available options:\n"
             "\t-h : Print this helpful text.\n"
             "\t-res <WIDTHxHEIGHT> : Select a different resolution for the result image.\n"
             "\t--indirect_steps <NUMBER>: Choose the number of indirect lighting steps to render images faster. 0 to disable indirect lighting.\n"
             "\t--indirect_rays <NUMBER> : Sets the number of indirect rays that will be used to render the image.\n"
+            "\t--clamp : Instead of dividing by the greatest color value in the image, all colors will be clamped.\n"
             "\t--gamma : Instead of dividing by the greatest color value in the image, all colors will be gamma corrected and then clamped.\n"
             "\t-s [SCENE_NAME] : Selects the scene to render.\n"
             "\n"
@@ -67,25 +68,28 @@ void PrintHelp()
  */
 void InitializeSceneNames()
 {
-    SCENE_NAMES["cornell"] = &CornellBox;
-    SCENE_NAMES["phong_spheres"] = &PhongSphereSamples;
-    SCENE_NAMES["room"] = &Room;
-    SCENE_NAMES["teapot"] = &Teapot;
-    SCENE_NAMES["dragon"] = &Dragon;
-    SCENE_NAMES["spheres"] = &ManySpheres;
-    SCENE_NAMES["infinite_mirror"] = &FacingMirrors;
     SCENE_NAMES["chess_texture"] = &ChessTexture;
-    SCENE_NAMES["glass_sphere"] = &RefractionPlaneSphere;
-    SCENE_NAMES["glass_sphere_2"] = &RefractiveSphereTest<1>;
-    SCENE_NAMES["water_sphere"] = &RefractiveSphereTest<2>;
+    SCENE_NAMES["cornell"] = &CornellBox;
     SCENE_NAMES["diamond_sphere"] = &RefractiveSphereTest<3>;
-    SCENE_NAMES["quartz_sphere"] = &RefractiveSphereTest<4>;
+    SCENE_NAMES["dragon"] = &Dragon;
     SCENE_NAMES["experimental"] = &Experimental;
+    SCENE_NAMES["glass_sphere"] = &RefractiveSphereTest<1>;
+    SCENE_NAMES["glass_sphere_2"] = &RefractionPlaneSphere;
+    SCENE_NAMES["infinite_mirror"] = &FacingMirrors;
     SCENE_NAMES["menger_1"] = &Menger<1>;
     SCENE_NAMES["menger_2"] = &Menger<2>;
     SCENE_NAMES["menger_3"] = &Menger<3>;
     SCENE_NAMES["menger_4"] = &Menger<4>;
     SCENE_NAMES["menger_5"] = &Menger<5>;
+    SCENE_NAMES["phong_spheres"] = &PhongSphereSamples;
+    SCENE_NAMES["quartz_sphere"] = &RefractiveSphereTest<4>;
+    SCENE_NAMES["room"] = &Room;
+    SCENE_NAMES["specular_lobe_1"] = &SpecularLobes<3>;
+    SCENE_NAMES["specular_lobe_2"] = &SpecularLobes<10>;
+    SCENE_NAMES["specular_lobe_3"] = &SpecularLobes<100>;
+    SCENE_NAMES["spheres"] = &ManySpheres;
+    SCENE_NAMES["teapot"] = &Teapot;
+    SCENE_NAMES["water_sphere"] = &RefractiveSphereTest<2>;
 }
 
 /**
@@ -98,7 +102,7 @@ int main(int argc, char * argv[])
     int width = -1, height = -1;
     unsigned int indirectSteps = 1, indirectRays = 64;
     unsigned int threadCount = thread::hardware_concurrency(); // Use all available threads by default.
-    bool gammaCorrect = false;
+    SaveMode saveMode = DIM_TO_WHITE;
     string sceneName = "cornell";
 
     // Put the arguments in a string vector to make them more accessible.
@@ -153,7 +157,12 @@ int main(int argc, char * argv[])
 
         else if (arguments[i] == "--gamma")
         {
-            gammaCorrect = true;
+            saveMode = GAMMA;
+        }
+
+        else if (arguments[i] == "--clamp")
+        {
+            saveMode = CLAMP;
         }
 
         else if (arguments[i] == "-s")
@@ -204,7 +213,7 @@ int main(int argc, char * argv[])
 
     // Render the scene and save the resulting image
     auto image = chosenScene.RenderMultiThread(threadCount);
-    image->Save(sceneName + ".ppm", gammaCorrect);
+    image->Save(sceneName + ".ppm", saveMode);
 
     cout << "\nSaved image " << sceneName << ".ppm\n";
     return 0;
