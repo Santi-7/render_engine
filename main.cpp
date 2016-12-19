@@ -74,6 +74,7 @@ void InitializeSceneNames()
     SCENE_NAMES["dragon"] = &Dragon;
     SCENE_NAMES["spheres"] = &ManySpheres;
     SCENE_NAMES["infinite_mirror"] = &FacingMirrors;
+    SCENE_NAMES["chess_texture"] = &ChessTexture;
     SCENE_NAMES["glass_sphere"] = &RefractionPlaneSphere;
     SCENE_NAMES["glass_sphere_2"] = &RefractiveSphereTest<1>;
     SCENE_NAMES["water_sphere"] = &RefractiveSphereTest<2>;

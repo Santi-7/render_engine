@@ -622,6 +622,23 @@ Scene Menger()
     return scene;
 }
 
+Scene ChessTexture()
+{
+    Scene scene;
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,0.3,-0.65f), PI/3, 1.0, 2000, 2000));
+
+    scene.AddLightSource(PointLight(Point(0,0.55f,0), 1, WHITE));
+
+    Box container(Rectangle(Vect(0,1,0), Point(0.5f, 0.001f, -0.75f), Point(-0.5f, 0.001f, 0.75f)), 1);
+    container.SetMaterial(CheckerBoard(0.13, WHITE, BLACK));
+    scene.AddShape(container);
+
+    Sphere sphere(Point(0.0f, 0.2f, 0.2f), 0.1f);
+    sphere.SetMaterial(CheckerBoard(0.04999, BLUE, YELLOW));
+    scene.AddShape(sphere);
+    return scene;
+}
+
 /**
  * Returns a CompositeShape made of 5 boxes forming an open cabinet with the given positions, size and material.
  */
