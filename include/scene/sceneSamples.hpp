@@ -142,11 +142,10 @@ Scene Teapot()
             Pinhole(camTM*Vect(0, 1, 0), camTM*Vect(1, 0, 0), camTM*Vect(0, 0, 1), Point(0, 0.5f, -0.4f),
             PI/3, 1.0, 1280, 720));
 
-    scene.AddLightSource(PointLight(Point(0,0.8f, -0.2f), 4, WHITE));
-    //scene.AddLightSource(PointLight(Point(0,0.8f, 0.65f), 2, (RED + WHITE) / 2));
+    scene.AddLightSource(PointLight(Point(0,0.65f, -0.45f), 5, WHITE));
 
     Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.35f, Vect(0,0.2f, 0.3f));
-    teapot.SetMaterial(make_shared<Material>(Material(WHITE, BLACK, 0.0f, GRAY, BLACK)));
+    teapot.SetMaterial(make_shared<Material>(Material(WHITE, BLACK, 0.0f, GRAY/2, BLACK)));
     scene.AddShape(teapot);
 
     Plane floor(Point(0,-0.2f,0), Vect(0,1,0));
