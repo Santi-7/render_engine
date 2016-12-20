@@ -46,14 +46,14 @@ vector<string> split(const string &input, char delim) {
  */
 void PrintHelp()
 {
-    cout << "Usage: [OPTION]*\n"
+    cout << "Usage: ray_trace [OPTION]...\n"
             "If no options are specified, a default Cornell box with 64 indirect rays will be rendered and saved as cornell.ppm.\n"
             "\n"
             "Some images will not look good by default, in such cases use --gamma, to use a gamma correction of 2.2, or --clamp to limit color values to the maximum.\n\n"
             "Available options:\n"
             "\t-h : Print this helpful text.\n"
-            "\t-res <WIDTHxHEIGHT> : Select a different resolution for the result image.\n"
-            "\t--indirect_steps <NUMBER>: Choose the number of indirect lighting steps to render images faster. 0 to disable indirect lighting.\n"
+            "\t--res <WIDTHxHEIGHT> : Select a different resolution for the result image.\n"
+            "\t--indirect_steps <NUMBER> : Choose the number of indirect lighting steps to render images faster. 0 to disable indirect lighting.\n"
             "\t--indirect_rays <NUMBER> : Sets the number of indirect rays that will be used to render the image.\n"
             "\t--clamp : Instead of dividing by the greatest color value in the image, all colors will be clamped.\n"
             "\t--gamma : Instead of dividing by the greatest color value in the image, all colors will be gamma corrected and then clamped.\n"
@@ -119,7 +119,7 @@ int main(int argc, char * argv[])
             return 0;
         }
 
-        else if (arguments[i] == "-res")
+        else if (arguments[i] == "--res")
         {
             if (i + 1 >= argnum)
             {
