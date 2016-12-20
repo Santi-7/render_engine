@@ -393,7 +393,6 @@ Scene RefractiveSphereTest()
     return scene;
 }
 
-
 Scene Experimental()
 {
     Scene scene;
@@ -765,6 +764,41 @@ CompositeShape Cabinet(const float cornerDistFromCenter, const float panelWidth,
                     (cornerDistFromCenter+panelWidth)*2));
 
     return wholeCabinet;
+}
+
+Scene DirectVsIndirect()
+{
+    Scene scene;
+    TransformationMatrix camTm;
+    camTm.SetXRotation(PI/12);
+
+    scene.SetCamera(Pinhole(camTm*Vect(0,1,0), camTm*Vect(1,0,0), camTm*Vect(0,0,1), Point(0, 0.05f, -0.6f), PI/4, 1.0f, 1280, 720));
+
+    scene.AddLightSource(PointLight(Point(100.0f,100.0f,0.6f), 40000, WHITE));
+
+    Plane floor(Point(0,-0.5f, 0), Vect(0,1,0));
+    scene.AddShape(floor);
+
+    Rectangle leftWall(Rectangle(Vect(1,0,0), Point(-0.6f, -0.5f, 0.1f), Point(-0.6f, 0.01f, 1.1f)));
+    scene.AddShape(leftWall);
+
+    Box midWall(Rectangle(Vect(1,0,0), Point(-0.0125f, -0.5f, 0.2), Point(-0.0125f, 0.0f, 1.0f)), 0.025f);
+    midWall.SetMaterial(Material((YELLOW+RED)/2, GRAY, 10.0f, BLACK, BLACK));
+    scene.AddShape(midWall);
+
+    TransformationMatrix dragonTM;
+    dragonTM.SetYRotation(PI/2.0f);
+
+    Mesh dragonLeft = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/dragonFlat.obj", 0.1f, Vect(-0.15f,-0.4f, 0.35f), dragonTM);
+    dragonLeft.SetMaterial(make_shared<Material>(Material(GREEN, BLACK, 0.0f, BLACK, BLACK)));
+
+    dragonTM.SetYRotation(-PI/2.0f);
+    Mesh dragonRight = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/dragonFlat.obj", 0.1f, Vect(0.15,-0.4f, 0.35f), dragonTM);
+    dragonRight.SetMaterial(make_shared<Material>(Material(BLUE, BLACK, 0.0f, BLACK, BLACK)));
+
+    scene.AddShape(dragonLeft);
+    scene.AddShape(dragonRight);
+    return scene;
 }
 
 #endif // SCENE_SAMPLES
