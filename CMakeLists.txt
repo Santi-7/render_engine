@@ -25,10 +25,9 @@ add_subdirectory(src)
 
 target_link_libraries(ray_trace
                       container
-                      geometry
-                      gtest
-                      gtest_main
-                      lighting
-                      scene
-                      sensors
-                      utils)
+					  geometry
+					  lighting
+					  scene
+					  sensors
+					  utils
+					  pthread)
