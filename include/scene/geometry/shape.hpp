@@ -65,7 +65,7 @@ public:
      */
     LightRay Refract(const LightRay &in, const Point &point, const Vect &visibleNormal) const
     {
-        // TODO: Temporal implementation. A lightray should contain a stack of the passing mediums.
+        // Temporal implementation. A ray of light should contain a stack of the passing mediums.
         float n;
         // The ray of light is arriving the shape medium.
         if (visibleNormal == GetNormal(point))

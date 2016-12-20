@@ -378,7 +378,6 @@ float Mesh::Intersect(const LightRay &lightRay) const
     }
 }
 
-// TODO: See why maxT is not used.
 void Mesh::MeshIntersect(const LightRay &lightRay, float &minT, const float maxT,
                          shared_ptr<Shape> &nearestShape) const
 {

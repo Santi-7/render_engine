@@ -4,7 +4,8 @@ set(SOURCE_FILES
 set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/materials/material.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/materials/checkerBoard.hpp
-        ${PROJECT_SOURCE_DIR}/include/scene/materials/crossHatchModifier.hpp)
+        ${PROJECT_SOURCE_DIR}/include/scene/materials/crossHatchModifier.hpp
+        ${PROJECT_SOURCE_DIR}/include/scene/materials/vectorModifier.hpp)
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/utils

@@ -1,6 +1,7 @@
 /* ---------------------------------------------------------------------------
 ** main.cpp
-** TODO: Add doc.
+** Main file that runs the ray tracer. The defined scenes in the displayed menu can
+** be rendered, and configured with various parameters in relation to the algorithm.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482
