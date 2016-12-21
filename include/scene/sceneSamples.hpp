@@ -496,7 +496,7 @@ Scene Room()
     //////////////////////////////
 
     // Sun.
-    scene.AddLightSource(PointLight(Point(-1.5f, 0.9f, 0.45f), 100, (RED + RED + YELLOW) / 3));
+    scene.AddLightSource(PointLight(Point(-1.5f, 0.9f, 0.45f), 5, (RED + RED + YELLOW) / 3));
 
     //////////////////////////////
     //// Making a table //////////
@@ -608,7 +608,7 @@ Scene Room()
     //////////////////////////////
 
     Sphere environment(Point(0, 0, 0), 20);
-    environment.SetEmittedLight(SKY_BLUE, 40);
+    environment.SetEmittedLight(SKY_BLUE, 1);
     scene.AddShape(environment);
 
     return scene;
