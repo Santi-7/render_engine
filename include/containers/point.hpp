@@ -25,6 +25,9 @@ public:
      * two values that differ by this threshold are equal. */
     static constexpr float TH = 0.000005;
 
+    /** 3D spatial dimensions. */
+    enum Dimension {X, Y, Z};
+
     /**
      * @return New point at [0, 0, 0].
      */
@@ -43,6 +46,12 @@ public:
      * @return Absolute distance from this point to the point to.
      */
     float Distance(const Point &to) const;
+
+    /**
+     * @param to Point to compare in wich dimension this point is further.
+     * @return the dimension in which this point and [to] are furthest.
+     */
+    Dimension LongestDimension(const Point &to) const;
 
     /**
      * @return Value for x.
@@ -122,8 +131,6 @@ public:
      * @return True if all the values in p are smaller or equal to the values in this Point.
      */
     bool operator>=(const Point& p) const;
-
-    float operator[](const unsigned int i) const;
 
     /**
      * Pretty print.
