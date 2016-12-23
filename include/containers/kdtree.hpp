@@ -15,13 +15,12 @@ whis is also adapted from Adolfo Munoz's Mjolnir-RT, developed at Universidad
 de Zaragoza (Spain).
 **********************************************************************************/
 
-#include <vector>
-#include <list>
-#include <iostream>
-#include <math.h>
 #include <algorithm>
-#include <point.hpp>
 #include <dimensions.hpp>
+#include <list>
+#include <math.h>
+#include <point.hpp>
+#include <vector>
 
 using namespace std;
 
@@ -60,7 +59,7 @@ public:
     int Find(const Point &p, float radius, list<const Node<T> *> *nodes) const;
 
     // Nearest Neighbor search
-    void Find(const Point &p, int nb_elements, std::vector<const Node<T> *> &nodes, float &max_distance) const;
+    void Find(const Point &p, int nb_elements, vector<const Node<T> *> &nodes, float &max_distance) const;
 
     Node<T> &Find(const Point &p) const;
 
@@ -77,17 +76,17 @@ private:
     list<Node<T>> mNodes;
     vector<Node<T>> mBalanced;
 
-    static void MedianSplit(std::vector<Node<T>> &p, int start, int end, int median, int axis);
+    static void MedianSplit(vector<Node<T>> &p, int start, int end, int median, int axis);
 
-    static void BalanceSegment(std::vector<Node<T>> &pbal, std::vector<Node<T>> &porg, int index,
+    static void BalanceSegment(vector<Node<T>> &pbal, vector<Node<T>> &porg, int index,
                                int start, int end, const Point &bbmin, const Point &bbmax);
 
     int Closest(const Point &p, int index, int best) const;
 
     void Find(const Point &p, int index, float radius, list<const Node<T> *> &nodes) const;
 
-    void Find(const Point &p, int index, int nb_elements, float &dist_worst, std::vector<const Node<T> *> &nodes,
-              std::vector<pair<int, float> > &dist) const;
+    void Find(const Point &p, int index, int nb_elements, float &dist_worst, vector<const Node<T> *> &nodes,
+              vector<pair<int, float>> &dist) const;
 
     //I've removed static for compiling problems
     //static class HeapComparison
@@ -99,7 +98,7 @@ private:
     };
 
     void UpdateHeapNodes(const Node<T> &node, const float distance, int nb_elements,
-                         std::vector<const Node<T> *> &nodes, std::vector<pair<int, float> > &dist) const;
+                         vector<const Node<T> *> &nodes, vector<pair<int, float>> &dist) const;
 };
 
 #endif // RAY_TRACER_KDTREE_HPP
