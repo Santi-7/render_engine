@@ -11,7 +11,7 @@
 
 /*********************************************************************************
 This code has been adapted from Adrian Jarabo's & Diego Gutierrez's implementation,
-whis is also adapted from Adolfo Munoz's Mjolnir-RT, developed at Universidad
+which is also adapted from Adolfo Munoz's Mjolnir-RT, developed at Universidad
 de Zaragoza (Spain).
 **********************************************************************************/
 
@@ -88,7 +88,7 @@ private:
     void Find(const Point &p, int index, int nb_elements, float &dist_worst, vector<const Node<T> *> &nodes,
               vector<pair<int, float>> &dist) const;
 
-    //I've removed static for compiling problems
+    // Removed static for compiling problems
     //static class HeapComparison
     class HeapComparison {
     public:
