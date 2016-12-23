@@ -13,6 +13,7 @@
 
 #include <dimensions.hpp>
 #include <vect.hpp>
+#include <array>
 
 class Point
 {
@@ -131,6 +132,12 @@ public:
     bool operator>=(const Point& p) const;
 
     /**
+    * @param p Point to compare with this one.
+    * @return True if all the values in p are smaller or equal to the values in this Point.
+    */
+    float operator[](const Dimension d) const;
+
+    /**
      * Pretty print.
      *
      * @param out Stream that will receive the point p as a string.
@@ -141,8 +148,12 @@ public:
 
 protected:
 
+    /** This array is the actual container for the floats in a Point. */
+    std::array<float, 3> mContainer;
     /** Values in this Point . */
-    float mX, mY, mZ;
+    #define mX mContainer[X]
+    #define mY mContainer[Y]
+    #define mZ mContainer[Z]
 };
 
 #endif // RAY_TRACER_POINT_H

@@ -139,3 +139,8 @@ std::ostream& operator<<(std::ostream &out, const Point &p)
     out << "Point(" << p.mX << ", " << p.mY << ", " << p.mZ << ")";
     return out;
 }
+
+float Point::operator[](const Dimension d) const
+{
+    return mContainer[d];
+}
