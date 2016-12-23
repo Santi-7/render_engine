@@ -32,3 +32,9 @@
 
 # CMake build
 build/
+
+# Clion build
+cmake-build-debug/
+
+# GoogleTest lib
+lib/googletest/
