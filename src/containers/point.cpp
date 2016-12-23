@@ -24,7 +24,7 @@ float Point::Distance(const Point &to) const
     return (*this - to).Abs();
 }
 
-Point::Dimension Point::LongestDimension(const Point &to) const
+Dimension Point::LongestDimension(const Point &to) const
 {
     Dimension longestDimension = X;
     float maxDistance = std::abs(mX - to.mX);

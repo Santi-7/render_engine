@@ -11,6 +11,7 @@
 #ifndef RAY_TRACER_POINT_H
 #define RAY_TRACER_POINT_H
 
+#include <dimensions.hpp>
 #include <vect.hpp>
 
 class Point
@@ -24,9 +25,6 @@ public:
     /** When comparing float values we want to consider that
      * two values that differ by this threshold are equal. */
     static constexpr float TH = 0.000005;
-
-    /** 3D spatial dimensions. */
-    enum Dimension {X, Y, Z};
 
     /**
      * @return New point at [0, 0, 0].
