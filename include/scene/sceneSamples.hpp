@@ -50,7 +50,7 @@ Scene CornellBox()
     purpleSphere.SetMaterial(make_shared<Material>(Material(PURPLE, BLACK, 0.0f, WHITE, BLACK)));
     cornellBox.AddShape(yellowSphere);
     cornellBox.AddShape(purpleSphere);
-    // A GetPoint light illuminates the scene.
+    // A point light illuminates the scene.
     cornellBox.AddLightSource(PointLight(Point(0, 0.6f, -0.1f), 2.0f, WHITE));
 
     return cornellBox;
