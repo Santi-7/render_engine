@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
 ** pointLight.hpp
-** Single point lightSource.
+** Single GetPoint lightSource.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482

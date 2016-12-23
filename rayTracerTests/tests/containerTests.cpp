@@ -8,14 +8,13 @@
 
 #include <gtest/gtest.h>
 #include <matrix.hpp>
-#include <point.hpp>
 #include <kdtree.hpp>
 
 //////////////////
 /// Point Tests///
 //////////////////
 /**
- * Test simple addition rules
+ * Test simple addition rules.
  */
 TEST(PointAddition, General)
 {
@@ -65,7 +64,7 @@ Matrix expected(90, 100, 110, 120,
 
 /**
  * Multiplying a matrix by the identity results in the same matrix
- * no matter on which side the multiplication occurs
+ * no matter on which side the multiplication occurs.
  */
 TEST(MatrixMultiplication, Identity) {
 
@@ -79,7 +78,7 @@ TEST(MatrixMultiplication, Identity) {
 }
 
 /**
- * Test the multiplication result is correct and that matrix products are not commutative
+ * Test the multiplication result is correct and that matrix products are not commutative.
  */
 TEST(MatrixMultiplication, ExpectedResult)
 {
@@ -87,8 +86,11 @@ TEST(MatrixMultiplication, ExpectedResult)
     EXPECT_NE(aMatrix * anotherMatrix, anotherMatrix * aMatrix);
 }
 
+///////////////////
+/// KDTree Tests///
+///////////////////
 TEST(KDTree, Usage)
 {
     KDTree<Point> tree;
-    tree.store(Point(0,0,0), Point(0,2,3));
+    tree.Store(Point(0, 0, 0), Point(0, 2, 3));
 }

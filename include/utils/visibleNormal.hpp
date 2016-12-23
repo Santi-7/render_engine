@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------------------
 ** visibleNormal.hpp
 ** This class manages which is the normal vector of a shape at a point
- * that is seen (visible) from certain direction.
+** that is seen (visible) from certain direction.
 **
 ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
 **         Santiago Gil Begué, NIA: 683482

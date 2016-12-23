@@ -35,7 +35,7 @@ Image::Image(const string &filename) {
     {
         if (inputFile.peek() == '#')
         {
-            // Ignore the line as a comment
+            // Ignore the line as a comment.
             getline(inputFile, buffer);
             continue;
         }
@@ -43,7 +43,7 @@ Image::Image(const string &filename) {
         if (buffer == "P3") break;
         else
         {
-            cout << "Can't find the ppm header for the file " << filename << '\n';
+            cout << "Can't Find the ppm header for the file " << filename << '\n';
             throw 1;
         }
     }
@@ -53,7 +53,7 @@ Image::Image(const string &filename) {
     {
         if (inputFile.peek() == '#' || inputFile.peek() == '\n')
         {
-            // Ignore the line as a comment
+            // Ignore the line as a comment.
             getline(inputFile, buffer);
             continue;
         }
@@ -66,7 +66,7 @@ Image::Image(const string &filename) {
 
     if ((width == 0) | (height == 0))
     {
-        cout << "Didn't find correct width and height in the input file " << filename << '\n';
+        cout << "Didn't Find correct width and height in the input file " << filename << '\n';
         throw 1;
     }
 
@@ -75,7 +75,7 @@ Image::Image(const string &filename) {
     {
         if ((inputFile.peek() == '#') | (inputFile.peek() == '\n'))
         {
-            // Ignore the line as a comment
+            // Ignore the line as a comment.
             getline(inputFile, buffer);
             continue;
         }
@@ -88,13 +88,13 @@ Image::Image(const string &filename) {
 
     if (maxColorValue == 0)
     {
-        cout << "Couldn't find maximum color value in " << filename << '\n';
+        cout << "Couldn't Find maximum color value in " << filename << '\n';
         throw 1;
     }
 
     float r, g, b;
 
-    // Resize mImage to account for all the values it'll hold
+    // Resize mImage to account for all the values it'll hold.
     mImage.resize(height);
 
     for ( unsigned int i = 0; i < height; ++i)
@@ -102,7 +102,7 @@ Image::Image(const string &filename) {
         mImage[i].resize(width);
     }
 
-    // Read all rgb values into the image vector. If this goes wrong use a correct image and it won't.
+    // Read all rgb values into the image vector. If this goes wrong use a correct image and it won't..
     for ( unsigned int i = 0; i < height; ++i)
     {
         for (unsigned int j = 0; j < width; ++j)

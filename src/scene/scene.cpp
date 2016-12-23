@@ -71,7 +71,7 @@ unique_ptr<Image> Scene::RenderMultiThread(const unsigned int threadCount) const
 
     // Initialize all line vectors.
     for (unsigned int i = 0; i < threadCount; ++i){
-       linesPerThread[i] = make_shared<vector<unsigned int>>(0);
+        linesPerThread[i] = make_shared<vector<unsigned int>>(0);
     }
 
     // Fill all line vectors.
@@ -192,13 +192,13 @@ Color Scene::DirectLight(const Point &point, const Vect &normal,
                 if (multiplier > 0.0f)
                 {
                     retVal += // Li.
-                              mLightSources[i]->GetColor(point) *
-                              // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
-                              shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
-                                                             lightRay.GetDirection(),
-                                                             normal, point) *
-                              // Cosine.
-                              multiplier;
+                            mLightSources[i]->GetColor(point) *
+                            // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
+                            shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
+                                                           lightRay.GetDirection(),
+                                                           normal, point) *
+                            // Cosine.
+                            multiplier;
                 }
             }
         }
@@ -274,15 +274,15 @@ Color Scene::DiffuseLight(const Point &point, const Vect &normal,
         // Transform the ray of light to global coordinates.
         LightRay lightRay(point, fromLocalToGlobal * localRay);
         retVal += // Li.
-                  GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1) *
-                  // Phong BRDF. Wo = in * -1, Wi = lightRay.
-                  shape.GetMaterial()->PhongBRDF(in.GetDirection() * -1,
-                                                 lightRay.GetDirection(),
-                                                 normal, point) *
-                  // Cosine and sine. We can avoid it and not divide again later.
-                  /* cos(inclination) * sin(inclination) */
-                  // 1 / PDF.
-                  (PI /* / (sin(inclination) * cos(inclination)) */ );
+                GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1) *
+                // Phong BRDF. Wo = in * -1, Wi = lightRay.
+                shape.GetMaterial()->PhongBRDF(in.GetDirection() * -1,
+                                               lightRay.GetDirection(),
+                                               normal, point) *
+                // Cosine and sine. We can avoid it and not divide again later.
+                /* cos(inclination) * sin(inclination) */
+                // 1 / PDF.
+                (PI /* / (sin(inclination) * cos(inclination)) */ );
     }
     return retVal / mIndirectRays;
 }

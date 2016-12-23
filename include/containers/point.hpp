@@ -11,16 +11,16 @@
 #ifndef RAY_TRACER_POINT_H
 #define RAY_TRACER_POINT_H
 
+#include <array>
 #include <dimensions.hpp>
 #include <vect.hpp>
-#include <array>
 
 class Point
 {
 
 public:
 
-    /** Value that defines a container of three floats as a point.*/
+    /** Value that defines a container of three floats as a point. */
     static constexpr float H = 1;
 
     /** When comparing float values we want to consider that
@@ -150,7 +150,8 @@ protected:
 
     /** This array is the actual container for the floats in a Point. */
     std::array<float, 3> mContainer;
-    /** Values in this Point . */
+
+    /** Values in this Point. */
     #define mX mContainer[X]
     #define mY mContainer[Y]
     #define mZ mContainer[Z]

@@ -1,5 +1,6 @@
 set(SOURCE_FILES
         image.cpp
+        kdtree.cpp
         lightRay.cpp
         matrix.cpp
         point.cpp
@@ -9,6 +10,7 @@ set(SOURCE_FILES
 set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/containers/color.hpp
         ${PROJECT_SOURCE_DIR}/include/containers/image.hpp
+        ${PROJECT_SOURCE_DIR}/include/containers/kdtree.hpp
         ${PROJECT_SOURCE_DIR}/include/containers/lightRay.hpp
         ${PROJECT_SOURCE_DIR}/include/containers/matrix.hpp
         ${PROJECT_SOURCE_DIR}/include/containers/point.hpp
