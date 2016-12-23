@@ -91,6 +91,6 @@ TEST(MatrixMultiplication, ExpectedResult)
 ///////////////////
 TEST(KDTree, Usage)
 {
-    KDTree<Point> tree;
-    tree.Store(Point(0, 0, 0), Point(0, 2, 3));
+    KDTree tree;
+    tree.Store(Point(0, 0, 0), Photon());
 }

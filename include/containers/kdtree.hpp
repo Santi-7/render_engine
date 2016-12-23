@@ -19,32 +19,33 @@ de Zaragoza (Spain).
 #include <dimensions.hpp>
 #include <list>
 #include <math.h>
+#include <photon.hpp>
 #include <point.hpp>
 #include <vector>
 
 using namespace std;
 
-template<class T>
 class Node {
-    
+
+friend class KDTree;
+
 public:
 
     Node() : mAxis(NO_DIM) {}
 
-    Node(const Point &point, const T &data) : mAxis(NO_DIM), mPoint(point), mData(data) {}
+    Node(const Point &point, const Photon &photon) : mAxis(NO_DIM), mPoint(point), mPhoton(photon) {}
 
-    Point &GetPoint() const { return mPoint; }
+    Point GetPoint() const { return mPoint; }
 
-    T &GetData() const { return mData; }
+    Photon GetData() const { return mPhoton; }
 
 private:
 
     Dimension mAxis;
     Point mPoint;
-    T mData;
+    Photon mPhoton;
 };
 
-template<class T>
 class KDTree {
 
 public:
@@ -53,15 +54,15 @@ public:
 
     void Clear();
 
-    void Store(const Point &point, const T &data);
+    void Store(const Point &point, const Photon &photon);
 
     // Fixed Radius
-    int Find(const Point &p, float radius, list<const Node<T> *> *nodes) const;
+    int Find(const Point &p, const float radius, list<const Node *> *nodes) const;
 
     // Nearest Neighbor search
-    void Find(const Point &p, int nb_elements, vector<const Node<T> *> &nodes, float &max_distance) const;
+    void Find(const Point &p, const int nb_elements, vector<const Node *> &nodes, float &max_distance) const;
 
-    Node<T> &Find(const Point &p) const;
+    const Node &Find(const Point &p) const;
 
     void Balance();
 
@@ -69,23 +70,23 @@ public:
 
     inline bool IsEmpty() const;
 
-    inline Node<T> &operator[](const unsigned int idx) const;
+    inline const Node &operator[](const unsigned int idx) const;
 
 private:
 
-    list<Node<T>> mNodes;
-    vector<Node<T>> mBalanced;
+    list<Node> mNodes;
+    vector<Node> mBalanced;
 
-    static void MedianSplit(vector<Node<T>> &p, int start, int end, int median, int axis);
+    static void MedianSplit(vector<Node> &p, const int start, const int end, const int median, const Dimension &axis);
 
-    static void BalanceSegment(vector<Node<T>> &pbal, vector<Node<T>> &porg, int index,
-                               int start, int end, const Point &bbmin, const Point &bbmax);
+    static void BalanceSegment(vector<Node> &pbal, vector<Node> &porg, const int index,
+                               const int start, const int end, const Point &bbmin, const Point &bbmax);
 
-    int Closest(const Point &p, int index, int best) const;
+    int Closest(const Point &p, const int index, const int best) const;
 
-    void Find(const Point &p, int index, float radius, list<const Node<T> *> &nodes) const;
+    void Find(const Point &p, const int index, const float radius, list<const Node *> &nodes) const;
 
-    void Find(const Point &p, int index, int nb_elements, float &dist_worst, vector<const Node<T> *> &nodes,
+    void Find(const Point &p, const int index, const int nb_elements, float &dist_worst, vector<const Node *> &nodes,
               vector<pair<int, float>> &dist) const;
 
     // Removed static for compiling problems
@@ -97,8 +98,8 @@ private:
         }
     };
 
-    void UpdateHeapNodes(const Node<T> &node, const float distance, int nb_elements,
-                         vector<const Node<T> *> &nodes, vector<pair<int, float>> &dist) const;
+    void UpdateHeapNodes(const Node &node, const float distance, const int nb_elements,
+                         vector<const Node *> &nodes, vector<pair<int, float>> &dist) const;
 };
 
 #endif // RAY_TRACER_KDTREE_HPP

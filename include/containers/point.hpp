@@ -68,6 +68,35 @@ public:
     float GetZ() const;
 
     /**
+     * Sets [x] as the new point's X.
+     *
+     * @param x Value of the new point's X.
+     */
+    void SetX(const float x);
+
+    /**
+     * Sets [y] as the new point's Y.
+     *
+     * @param y Value of the new point's Y.
+     */
+    void SetY(const float y);
+
+    /**
+     * Sets [z] as the new point's Z.
+     *
+     * @param z Value of the new point's Z.
+     */
+    void SetZ(const float z);
+
+    /**
+     * Sets [value] as the new point's dimension [dimension].
+     *
+     * @param dimension Dimension to be set.
+     * @param value New value for the dimension [dimension].
+     */
+    void SetDimension(const Dimension &dimension, const float value);
+
+    /**
      * @param p Point which values will be added to this one's.
      * @return New point sum of this and p.
      */

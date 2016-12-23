@@ -3,6 +3,7 @@ set(SOURCE_FILES
         kdtree.cpp
         lightRay.cpp
         matrix.cpp
+        photon.cpp
         point.cpp
         vect.cpp
         )
@@ -13,6 +14,7 @@ set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/containers/kdtree.hpp
         ${PROJECT_SOURCE_DIR}/include/containers/lightRay.hpp
         ${PROJECT_SOURCE_DIR}/include/containers/matrix.hpp
+        ${PROJECT_SOURCE_DIR}/include/containers/photon.hpp
         ${PROJECT_SOURCE_DIR}/include/containers/point.hpp
         ${PROJECT_SOURCE_DIR}/include/containers/vect.hpp
         )

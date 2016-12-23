@@ -57,6 +57,26 @@ float Point::GetZ() const
     return mZ;
 }
 
+void Point::SetX(const float x)
+{
+    mX = x;
+}
+
+void Point::SetY(const float y)
+{
+    mY = y;
+}
+
+void Point::SetZ(const float z)
+{
+    mZ = z;
+}
+
+void Point::SetDimension(const Dimension &dimension, const float value)
+{
+    mContainer[dimension] = value;
+}
+
 Point Point::operator+(const Point& p) const
 {
     float x = mX + p.mX;
