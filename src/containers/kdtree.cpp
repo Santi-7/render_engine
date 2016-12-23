@@ -305,5 +305,5 @@ void KDTree::Balance() {
     }
     mNodes.clear();
 
-    KDTree::BalanceSegment(mBalanced, aux, 1, 1, mBalanced.size() - 1, bbmin, bbmax);
+    BalanceSegment(mBalanced, aux, 1, 1, mBalanced.size() - 1, bbmin, bbmax);
 }
