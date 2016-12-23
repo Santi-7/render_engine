@@ -123,6 +123,8 @@ public:
      */
     bool operator>=(const Point& p) const;
 
+    float operator[](const unsigned int i) const;
+
     /**
      * Pretty print.
      *

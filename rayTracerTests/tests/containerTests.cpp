@@ -9,6 +9,7 @@
 #include <gtest/gtest.h>
 #include <matrix.hpp>
 #include <point.hpp>
+#include <kdtree.hpp>
 
 //////////////////
 /// Point Tests///
@@ -84,4 +85,10 @@ TEST(MatrixMultiplication, ExpectedResult)
 {
     EXPECT_EQ(aMatrix * aMatrix, expected);
     EXPECT_NE(aMatrix * anotherMatrix, anotherMatrix * aMatrix);
+}
+
+TEST(KDTree, Usage)
+{
+    KDTree<Point> tree;
+    tree.store(Point(0,0,0), Point(0,2,3));
 }
