@@ -164,6 +164,14 @@ private:
     void EmitPhotons();
 
     /**
+     * TODO: Add doc.
+     *
+     * @param lightRay .
+     * #param save .
+     */
+    void PhotonInteraction(const LightRay &lightRay, const bool save);
+
+    /**
      * Calculates the color of the first point that intersects the lightRay. If specularSteps is greater than 0 reflected
      * and refracted paths will be followed. If diffuseSteps is greater than 0 a diffuse sampling will be taken into account
      * for the final color returned.

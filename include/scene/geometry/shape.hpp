@@ -86,6 +86,19 @@ public:
     }
 
     /**
+     * TODO: Doc.
+     *
+     * @param in .
+     * @param point .
+     * @return .
+     */
+    LightRay RussianRoulette(const LightRay &in, const Point &point) const
+    {
+        // TODO: Temp implementation.
+        return LightRay(point, in.GetDirection());
+    }
+
+    /**
      * @param point Point of this shape which normal vector will be returned.
      * @return Vector normal to this shape at point.
      */

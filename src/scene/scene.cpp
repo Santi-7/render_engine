@@ -175,10 +175,39 @@ void Scene::EmitPhotons()
                               cos(inclination));
                 // Transform the ray of light to global coordinates.
                 LightRay lightRay(pointLight, fromLocalToGlobal * localRay);
-                // TODO: Emit the photon recursively and save them in the photon map.
+                /* The photons directly emitted from the light sources (direct light)
+                 * are not saved in the photon map. */
+                PhotonInteraction(lightRay, false);
             }
         }
     }
+}
+
+void Scene::PhotonInteraction(const LightRay &lightRay, const bool save)
+{
+    // Distance to the nearest shape.
+    float minT = FLT_MAX;
+    // Nearest shape intersected with the ray of light.
+    shared_ptr<Shape> nearestShape;
+
+    /* Intersect with all the shapes in the
+     * scene to know which one is the nearest. */
+    for (unsigned int i = 0; i < mShapes.size(); ++i)
+        mShapes.at(i)->Intersect(lightRay, minT, nearestShape, mShapes.at(i));
+
+    // No shape has been found.
+    if (minT == FLT_MAX) return;
+
+    // Intersection point with the nearest shape found.
+    Point intersection(lightRay.GetPoint(minT));
+
+    // TODO: Save if not specular.
+    if (save) mPhotonMap.Store(intersection, Photon());
+    // TODO: Caustics photon map.
+
+    // Russian Roulette: follow the photon trajectory if it's still living.
+    LightRay bouncedRay = nearestShape->RussianRoulette(lightRay, intersection);
+    if (bouncedRay != nullptr) PhotonInteraction(bouncedRay, true);
 }
 
 Color Scene::GetLightRayColor(const LightRay &lightRay,
