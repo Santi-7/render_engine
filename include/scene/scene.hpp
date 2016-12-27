@@ -14,6 +14,7 @@
 #define RAY_TRACER_SCENE_HPP
 
 #include <camera.hpp>
+#include <kdtree.hpp>
 #include <lightSource.hpp>
 #include <memory>
 #include <shape.hpp>
@@ -131,6 +132,9 @@ private:
     /** Diffuse rays to throw in every diffuse interaction. */
     unsigned int mIndirectRays = 8;
 
+    /** TODO: Add doc. */
+    unsigned int mPhotonsEmitted = 500;
+
     /** The scene's camera. */
     unique_ptr<Camera> mCamera;
 
@@ -139,6 +143,9 @@ private:
 
     /** List of shapes in the scene. */
     vector<shared_ptr<Shape>> mShapes;
+
+    /** TODO: Doc. */
+    KDTree mPhotonMap;
 
     /**
      * @param horizontalLines Lines which pixels will be trace and saved to the image.
@@ -150,6 +157,11 @@ private:
      */
     void RenderPixelRange(const shared_ptr<vector<unsigned int>> horizontalLines,
                           const shared_ptr<Image> image, const bool printProgress) const;
+
+    /**
+     * TODO: Add doc.
+     */
+    void EmitPhotons();
 
     /**
      * Calculates the color of the first point that intersects the lightRay. If specularSteps is greater than 0 reflected

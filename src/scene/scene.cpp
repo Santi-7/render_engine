@@ -128,6 +128,59 @@ void Scene::RenderPixelRange(const shared_ptr<vector<unsigned int>> horizontalLi
     }
 }
 
+inline static tuple<float, float> UniformCosineSampling()
+{
+    // Random generator.
+    static random_device randDev;
+    static mt19937 mt(randDev());
+    static uniform_real_distribution<float> distribution(0, 1);
+    // Inclination and azimuth angles.
+    float inclination = acos(sqrt(1 - distribution(mt)));
+    float azimuth = 2 * PI * distribution(mt);
+    return make_tuple(inclination, azimuth);
+}
+
+inline static tuple<float, float> UniformSphereSampling()
+{
+    // Random generator.
+    static random_device randDev;
+    static mt19937 mt(randDev());
+    static uniform_real_distribution<float> distribution(0, 1);
+    // Inclination and azimuth angles.
+    float inclination = acos(2 * distribution(mt) - 1);
+    float azimuth = 2 * PI * distribution(mt);
+    return make_tuple(inclination, azimuth);
+}
+
+void Scene::EmitPhotons()
+{
+    // Emit photons for each light source.
+    for (shared_ptr<LightSource> light : mLightSources)
+    {
+        for (Point pointLight : light->GetLights())
+        {
+            /* Transformation matrix from the local coordinates with [point] as the
+             * reference point, and [0,0,1] as the z axis, to global coordinates. */
+            PoseTransformationMatrix fromLocalToGlobal =
+                    PoseTransformationMatrix::GetPoseTransformation(pointLight, Vect(0,0,1));
+            // [mPhotonsEmitted] photons uniformly emitted.
+            for (unsigned int i = 0; i < mPhotonsEmitted; i++)
+            {
+                // Generate random angles.
+                float inclination, azimuth;
+                tie(inclination, azimuth) = UniformSphereSampling();
+                // Direction of the ray of light expressed in local coordinates.
+                Vect localRay(sin(inclination) * cos(azimuth),
+                              sin(inclination) * sin(azimuth),
+                              cos(inclination));
+                // Transform the ray of light to global coordinates.
+                LightRay lightRay(pointLight, fromLocalToGlobal * localRay);
+                // TODO: Emit the photon recursively and save them in the photon map.
+            }
+        }
+    }
+}
+
 Color Scene::GetLightRayColor(const LightRay &lightRay,
                               const int specularSteps,
                               const int diffuseSteps) const
@@ -234,30 +287,6 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
     }
 
     return retVal;
-}
-
-inline static tuple<float, float> UniformCosineSampling()
-{
-    // Random generator.
-    static random_device randDev;
-    static mt19937 mt(randDev());
-    static uniform_real_distribution<float> distribution(0, 1);
-    // Inclination and azimuth angles.
-    float inclination = acos(sqrt(1 - distribution(mt)));
-    float azimuth = 2 * PI * distribution(mt);
-    return make_tuple(inclination, azimuth);
-}
-
-inline static tuple<float, float> UniformSphereSampling()
-{
-    // Random generator.
-    static random_device randDev;
-    static mt19937 mt(randDev());
-    static uniform_real_distribution<float> distribution(0, 1);
-    // Inclination and azimuth angles.
-    float inclination = acos(2 * distribution(mt) - 1);
-    float azimuth = 2 * PI * distribution(mt);
-    return make_tuple(inclination, azimuth);
 }
 
 Color Scene::DiffuseLight(const Point &point, const Vect &normal,
