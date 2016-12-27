@@ -1,6 +1,7 @@
-/* ---------------------------------------------------------------------------
+/** ---------------------------------------------------------------------------
  ** kdtree.hpp
- ** TODO: Add doc.
+ ** 3-dimensional tree structure that stores nodes that consist of a point and
+ ** a photon.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482
@@ -66,11 +67,11 @@ public:
 
     void Balance();
 
-    inline int Size() const;
+    int Size() const;
 
-    inline bool IsEmpty() const;
+    bool IsEmpty() const;
 
-    inline const Node &operator[](const unsigned int idx) const;
+    const Node &operator[](const unsigned int idx) const;
 
 private:
 
