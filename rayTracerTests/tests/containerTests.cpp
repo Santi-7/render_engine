@@ -93,4 +93,6 @@ TEST(KDTree, Usage)
 {
     KDTree tree;
     tree.Store(Point(0, 0, 0), Photon());
+    tree.Balance();
+    EXPECT_TRUE(!tree.IsEmpty());
 }

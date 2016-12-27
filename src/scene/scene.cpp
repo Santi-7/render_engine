@@ -248,6 +248,18 @@ inline static tuple<float, float> UniformCosineSampling()
     return make_tuple(inclination, azimuth);
 }
 
+inline static tuple<float, float> UniformSphereSampling()
+{
+    // Random generator.
+    static random_device randDev;
+    static mt19937 mt(randDev());
+    static uniform_real_distribution<float> distribution(0, 1);
+    // Inclination and azimuth angles.
+    float inclination = acos(2 * distribution(mt) - 1);
+    float azimuth = 2 * PI * distribution(mt);
+    return make_tuple(inclination, azimuth);
+}
+
 Color Scene::DiffuseLight(const Point &point, const Vect &normal,
                           const LightRay &in, const Shape &shape,
                           const int specularSteps, const int diffuseSteps) const
