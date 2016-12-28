@@ -1136,3 +1136,14 @@ TEST(Weird, Menger)
     auto image = scene.RenderMultiThread(THREADS);
     image->Save("menger.ppm");
 }
+
+// Test that a sphere is uniformly sampled.
+TEST(Random, SphereSampling)
+{
+    Scene scene;
+    scene.SetCamera(Camera());
+
+    scene.AddLightSource(PointLight(Point(0,0,0)));
+
+    scene.EmitPhotons();
+}
