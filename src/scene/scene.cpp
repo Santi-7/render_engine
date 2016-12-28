@@ -128,18 +128,8 @@ void Scene::RenderPixelRange(const shared_ptr<vector<unsigned int>> horizontalLi
     }
 }
 
-inline static float GetRandomValue()
-{
-    // Random generator.
-    static random_device randDev;
-    static mt19937 mt(randDev());
-    static uniform_real_distribution<float> distribution(0, 1);
-    return distribution(mt);
-}
-
 inline static tuple<float, float> UniformCosineSampling()
 {
-
     // Inclination and azimuth angles.
     float inclination = acos(sqrt(1 - GetRandomValue()));
     float azimuth = 2 * PI * GetRandomValue();
@@ -208,8 +198,9 @@ void Scene::PhotonInteraction(const LightRay &lightRay, const bool save)
     // TODO: Caustics photon map.
 
     // Russian Roulette: follow the photon trajectory if it's still living.
-    LightRay bouncedRay = nearestShape->RussianRoulette(lightRay, intersection);
-    if (bouncedRay != nullptr) PhotonInteraction(bouncedRay, true);
+    LightRay bouncedRay(Point(0,0,0), Point(0,0,0));
+    bool didBounce = nearestShape->RussianRoulette(lightRay, intersection, bouncedRay);
+    if (didBounce) PhotonInteraction(bouncedRay, true);
 }
 
 Color Scene::GetLightRayColor(const LightRay &lightRay,

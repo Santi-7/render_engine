@@ -7,7 +7,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <camera.hpp>
-#include <mathConstants.hpp>
+#include <mathUtils.hpp>
 
 Camera::Camera()
         : mUp(0,1,0),

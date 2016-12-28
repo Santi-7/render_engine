@@ -15,7 +15,7 @@
 #include <lightRay.hpp>
 #include <materials/material.hpp>
 #include <materials/vectorModifier.hpp>
-#include <mathConstants.hpp>
+#include <mathUtils.hpp>
 #include <memory>
 #include <visibleNormal.hpp>
 
@@ -92,10 +92,11 @@ public:
      * @param point .
      * @return .
      */
-    LightRay RussianRoulette(const LightRay &in, const Point &point) const
+    bool RussianRoulette(const LightRay &in, const Point &point, LightRay &out) const
     {
         // TODO: Temp implementation.
-        return LightRay(point, in.GetDirection());
+        out = LightRay(point, in.GetDirection());
+        return true;
     }
 
     /**

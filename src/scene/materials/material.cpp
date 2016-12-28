@@ -8,7 +8,7 @@
 
 #include <material.hpp>
 #include <math.h>
-#include <mathConstants.hpp>
+#include <mathUtils.hpp>
 #include <shape.hpp>
 
 Material::Material(const Color diffuse, const Color specular,
