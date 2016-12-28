@@ -11,6 +11,8 @@
 
 #include <random>
 
+using namespace std;
+
 typedef float refractiveIndex;
 
 /** PI const value. */
@@ -30,10 +32,32 @@ static constexpr refractiveIndex DIAMOND_RI = 2.42f;
 inline static float GetRandomValue()
 {
     // Random generator.
-    static std::random_device randDev;
-    static std::mt19937 mt(randDev());
-    static std::uniform_real_distribution<float> distribution(0, 1);
+    static random_device randDev;
+    static mt19937 mt(randDev());
+    static uniform_real_distribution<float> distribution(0, 1);
     return distribution(mt);
+}
+
+/**
+ * @return TODO: Doc.
+ */
+static tuple<float, float> UniformCosineSampling()
+{
+    // Inclination and azimuth angles.
+    float inclination = acos(sqrt(1 - GetRandomValue()));
+    float azimuth = 2 * PI * GetRandomValue();
+    return make_tuple(inclination, azimuth);
+}
+
+/**
+ * @return TODO: Doc.
+ */
+static tuple<float, float> UniformSphereSampling()
+{
+    // Inclination and azimuth angles.
+    float inclination = acos(2 * GetRandomValue() - 1);
+    float azimuth = 2 * PI * GetRandomValue();
+    return make_tuple(inclination, azimuth);
 }
 
 #endif // RAY_TRACER_MATH_CONSTANTS_H

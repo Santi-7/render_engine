@@ -17,6 +17,7 @@
 #include <materials/vectorModifier.hpp>
 #include <mathUtils.hpp>
 #include <memory>
+#include <poseTransformationMatrix.hpp>
 #include <visibleNormal.hpp>
 
 using namespace std;
@@ -90,13 +91,40 @@ public:
      *
      * @param in .
      * @param point .
+     * @param out .
      * @return .
      */
     bool RussianRoulette(const LightRay &in, const Point &point, LightRay &out) const
     {
-        // TODO: Temp implementation.
-        out = LightRay(point, in.GetDirection());
-        return true;
+        float random = GetRandomValue();
+        // Diffuse.
+        if (random < mMaterial->GetDiffuse(point).MeanRGB())
+        {
+            /* Transformation matrix from the local coordinates with [point] as the
+             * reference point, and the normal of this shape as the z axis, to global coordinates. */
+            PoseTransformationMatrix fromLocalToGlobal =
+                    PoseTransformationMatrix::GetPoseTransformation(point, GetVisibleNormal(point, in));
+            // Generate random angles.
+            float inclination, azimuth;
+            tie(inclination, azimuth) = UniformCosineSampling();
+            // Direction of the ray of light expressed in local coordinates.
+            Vect localRay(sin(inclination) * cos(azimuth),
+                          sin(inclination) * sin(azimuth),
+                          cos(inclination));
+            // Transform the ray of light to global coordinates.
+            out = LightRay(point, fromLocalToGlobal * localRay);
+            return true;
+        }
+        // Specular.
+        else if (random < (mMaterial->GetDiffuse(point).MeanRGB() +
+                           mMaterial->GetSpecular().MeanRGB()))
+        {
+            Vect reflectedRay = Reflect(in.GetDirection(), GetVisibleNormal(point, in));
+            out = LightRay(point, reflectedRay);
+            return true;
+        }
+        // Absorb.
+        else return false;
     }
 
     /**
@@ -111,7 +139,7 @@ public:
      * @return Vector normal to this shape at point in a direction opposite from seenFrom. For instance, if this shape
      *  is a rectangle we could be seeing it from the two sides of it and their normals are opposite.
      */
-    Vect GetVisibleNormal(const Point &point, const LightRay &seenFrom)
+    Vect GetVisibleNormal(const Point &point, const LightRay &seenFrom) const
     {
         if (mNormalModifier != nullptr)
             return mNormalModifier->Modify(VisibleNormal(GetNormal(point), seenFrom.GetDirection()), point);

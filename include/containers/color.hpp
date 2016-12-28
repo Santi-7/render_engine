@@ -165,6 +165,14 @@ public:
         return Color(pow(mR, GAMMA), pow(mG, GAMMA), pow(mB, GAMMA));
     }
 
+    /**
+     * @return The mean of the three channels RGB.
+     */
+    float MeanRGB() const
+    {
+        return (mR + mG + mB) / 3;
+    }
+
 private:
 
     /** Gamma const value corrector. */

@@ -127,22 +127,6 @@ void Scene::RenderPixelRange(const shared_ptr<vector<unsigned int>> horizontalLi
     }
 }
 
-inline static tuple<float, float> UniformCosineSampling()
-{
-    // Inclination and azimuth angles.
-    float inclination = acos(sqrt(1 - GetRandomValue()));
-    float azimuth = 2 * PI * GetRandomValue();
-    return make_tuple(inclination, azimuth);
-}
-
-inline static tuple<float, float> UniformSphereSampling()
-{
-    // Inclination and azimuth angles.
-    float inclination = acos(2 * GetRandomValue() - 1);
-    float azimuth = 2 * PI * GetRandomValue();
-    return make_tuple(inclination, azimuth);
-}
-
 void Scene::EmitPhotons()
 {
     // Emit photons for each light source.
