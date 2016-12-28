@@ -18,6 +18,11 @@ class LightRay
 public:
 
     /**
+     * Default constructor.
+     */
+    LightRay();
+
+    /**
      * @param source The new light ray's origin.
      * @param destination Point towards which the new light ray will travel.
      * @return New LightRay.

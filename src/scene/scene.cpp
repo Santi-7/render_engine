@@ -198,9 +198,9 @@ void Scene::PhotonInteraction(const LightRay &lightRay, const bool save)
     // TODO: Caustics photon map.
 
     // Russian Roulette: follow the photon trajectory if it's still living.
-    LightRay bouncedRay(Point(0,0,0), Point(0,0,0));
-    bool didBounce = nearestShape->RussianRoulette(lightRay, intersection, bouncedRay);
-    if (didBounce) PhotonInteraction(bouncedRay, true);
+    LightRay bouncedRay;
+    bool isAlive = nearestShape->RussianRoulette(lightRay, intersection, bouncedRay);
+    if (isAlive) PhotonInteraction(bouncedRay, true);
 }
 
 Color Scene::GetLightRayColor(const LightRay &lightRay,
