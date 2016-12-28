@@ -10,6 +10,7 @@
 #define RAY_TRACER_MATH_CONSTANTS_H
 
 #include <random>
+#include <tuple>
 
 using namespace std;
 
@@ -41,7 +42,7 @@ inline static float GetRandomValue()
 /**
  * @return TODO: Doc.
  */
-static tuple<float, float> UniformCosineSampling()
+inline static tuple<float, float> UniformCosineSampling()
 {
     // Inclination and azimuth angles.
     float inclination = acos(sqrt(1 - GetRandomValue()));
@@ -52,7 +53,7 @@ static tuple<float, float> UniformCosineSampling()
 /**
  * @return TODO: Doc.
  */
-static tuple<float, float> UniformSphereSampling()
+inline static tuple<float, float> UniformSphereSampling()
 {
     // Inclination and azimuth angles.
     float inclination = acos(2 * GetRandomValue() - 1);
