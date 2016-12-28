@@ -121,6 +121,11 @@ public:
      */
     unique_ptr<Image> RenderMultiThread(const unsigned int threads) const;
 
+    /**
+     * TODO: Add doc.
+     */
+    void EmitPhotons();
+
 private:
 
     /** Limit to the specular interactions allowed. */
@@ -157,11 +162,6 @@ private:
      */
     void RenderPixelRange(const shared_ptr<vector<unsigned int>> horizontalLines,
                           const shared_ptr<Image> image, const bool printProgress) const;
-
-    /**
-     * TODO: Add doc.
-     */
-    void EmitPhotons();
 
     /**
      * TODO: Add doc.
