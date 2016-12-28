@@ -9,6 +9,8 @@
 #ifndef RAY_TRACER_MATH_CONSTANTS_H
 #define RAY_TRACER_MATH_CONSTANTS_H
 
+#include <random>
+
 typedef float refractiveIndex;
 
 /** PI const value. */
@@ -28,9 +30,9 @@ static constexpr refractiveIndex DIAMOND_RI = 2.42f;
 inline static float GetRandomValue()
 {
     // Random generator.
-    static random_device randDev;
-    static mt19937 mt(randDev());
-    static uniform_real_distribution<float> distribution(0, 1);
+    static std::random_device randDev;
+    static std::mt19937 mt(randDev());
+    static std::uniform_real_distribution<float> distribution(0, 1);
     return distribution(mt);
 }
 

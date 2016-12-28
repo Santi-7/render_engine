@@ -10,7 +10,6 @@
 #include <image.hpp>
 #include <iostream>
 #include <poseTransformationMatrix.hpp>
-#include <random>
 #include <scene.hpp>
 #include <thread>
 
