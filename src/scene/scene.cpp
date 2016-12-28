@@ -128,27 +128,29 @@ void Scene::RenderPixelRange(const shared_ptr<vector<unsigned int>> horizontalLi
     }
 }
 
-inline static tuple<float, float> UniformCosineSampling()
+inline static float GetRandomValue()
 {
     // Random generator.
     static random_device randDev;
     static mt19937 mt(randDev());
     static uniform_real_distribution<float> distribution(0, 1);
+    return distribution(mt);
+}
+
+inline static tuple<float, float> UniformCosineSampling()
+{
+
     // Inclination and azimuth angles.
-    float inclination = acos(sqrt(1 - distribution(mt)));
-    float azimuth = 2 * PI * distribution(mt);
+    float inclination = acos(sqrt(1 - GetRandomValue()));
+    float azimuth = 2 * PI * GetRandomValue();
     return make_tuple(inclination, azimuth);
 }
 
 inline static tuple<float, float> UniformSphereSampling()
 {
-    // Random generator.
-    static random_device randDev;
-    static mt19937 mt(randDev());
-    static uniform_real_distribution<float> distribution(0, 1);
     // Inclination and azimuth angles.
-    float inclination = acos(2 * distribution(mt) - 1);
-    float azimuth = 2 * PI * distribution(mt);
+    float inclination = acos(2 * GetRandomValue() - 1);
+    float azimuth = 2 * PI * GetRandomValue();
     return make_tuple(inclination, azimuth);
 }
 
