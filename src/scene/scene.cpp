@@ -218,24 +218,23 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
 
     Color emittedLight = nearestShape->GetEmittedLight();
 
-    list<const Node *> *nodeList = new list<const Node*>();
+    vector<const Node *> nodeList;
     Color retVal = BLACK;
-    float radius = 0.02f;
-    mPhotonMap.Find(intersection, radius, nodeList);
-    for (auto node = nodeList->begin(); node != nodeList->end(); ++node)
+    float radius;
+    mPhotonMap.Find(intersection, 100, nodeList, radius);
+
+    for (auto nodeIt = nodeList.begin(); nodeIt < nodeList.end(); ++nodeIt)
     {
-        Photon tmpPhoton = (*node)->GetData();
+        Photon tmpPhoton = (*nodeIt)->GetData();
         retVal += tmpPhoton.GetFlux() * nearestShape->GetMaterial()->
                   PhongBRDF(lightRay.GetDirection(), tmpPhoton.GetVect(), normal, intersection);
     }
-    return retVal / (PI * radius * radius);
 
-    /*return DirectLight(intersection, normal, lightRay, *nearestShape) +
+    return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay,
                          *nearestShape, specularSteps, diffuseSteps) +
-           DiffuseLight(intersection, normal, lightRay,
-                        *nearestShape, specularSteps, diffuseSteps) +
-           emittedLight;*/
+            retVal / ((4.0f/3.0f) * PI * radius * radius * radius) +
+            emittedLight;
 }
 
 Color Scene::DirectLight(const Point &point, const Vect &normal,

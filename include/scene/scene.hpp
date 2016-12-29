@@ -140,7 +140,7 @@ private:
     unsigned int mIndirectRays = 8;
 
     /** Number of individual photons that will be emitted from each of the lightSources in the scene. */
-    unsigned int mPhotonsEmitted = 500;
+    unsigned int mPhotonsEmitted = 50000;
 
     /** The scene's camera. */
     unique_ptr<Camera> mCamera;
