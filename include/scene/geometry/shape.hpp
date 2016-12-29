@@ -94,7 +94,7 @@ public:
      *      of the shape at the given point.
      * @return True if a new LightRay comes out of the intersection with this shape.
      */
-    bool RussianRoulette(const ColoredLightRay &in, const Point &point, LightRay &out) const
+    bool RussianRoulette(const ColoredLightRay &in, const Point &point, ColoredLightRay &out) const
     {
         float random = GetRandomValue();
         // Diffuse.
