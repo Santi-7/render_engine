@@ -7,10 +7,14 @@
  ** -------------------------------------------------------------------------*/
 
 #include <photon.hpp>
-#include <color.hpp>
-#include <vect.hpp>
 
-Photon::Photon(const Color& flux, Vect incidence) : mFlux(flux), mIncidence(incidence){}
+Photon::Photon(const Color& flux, Vect incidence)
+: mFlux(flux), mIncidence(incidence)
+{}
+
+Photon::Photon(const ColoredLightRay &lightRay)
+: Photon(lightRay.GetColor(), lightRay.GetDirection())
+{}
 
 Vect Photon::GetVect()
 {

@@ -14,6 +14,7 @@
 #define RAY_TRACER_SCENE_HPP
 
 #include <camera.hpp>
+#include <coloredLightRay.hpp>
 #include <kdtree.hpp>
 #include <lightSource.hpp>
 #include <memory>
@@ -167,11 +168,11 @@ private:
     /**
      * Basic path tracing interaction between photons and the scene.
      *
-     * @param lightRay Direction and position from which the photon is thrown.
+     * @param lightRay Direction and position from which the photon is thrown, and color of this photon.
      * @param save true if the next intersection between the lightRay and a shape in the scene will be stored in a
      *      KDTree.
      */
-    void PhotonInteraction(const LightRay &lightRay, const bool save);
+    void PhotonInteraction(const ColoredLightRay &lightRay, const bool save);
 
     /**
      * Calculates the color of the first point that intersects the lightRay. If specularSteps is greater than 0 reflected

@@ -11,6 +11,7 @@
 #define RAY_TRACER_PHOTON_HPP
 
 #include <color.hpp>
+#include <coloredLightRay.hpp>
 #include <vect.hpp>
 
 class Photon
@@ -21,6 +22,13 @@ public:
      * Construct a new WHITE Photon with incidence Vect(0,0,0)
      */
     Photon(const Color &flux = WHITE, Vect incidence = Vect(0,0,0));
+
+    /**
+     * TODO: Add doc.
+     * @param lightRay
+     * @return
+     */
+    Photon(const ColoredLightRay &lightRay);
 
     /**
      * @return Direction in which this photon was last stored.
@@ -39,7 +47,6 @@ private:
 
     /** Direction from which a Photon strikes the surface in the instant its stored. */
     Vect mIncidence;
-
 };
 
-#endif //RAY_TRACER_PHOTON_HPP
+#endif // RAY_TRACER_PHOTON_HPP

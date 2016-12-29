@@ -12,6 +12,7 @@
 #define RAY_TRACER_SHAPE_HPP
 
 #include <cmath>
+#include <coloredLightRay.hpp>
 #include <lightRay.hpp>
 #include <materials/material.hpp>
 #include <materials/vectorModifier.hpp>
@@ -93,7 +94,7 @@ public:
      *      of the shape at the given point.
      * @return True if a new LightRay comes out of the intersection with this shape.
      */
-    bool RussianRoulette(const LightRay &in, const Point &point, LightRay &out) const
+    bool RussianRoulette(const ColoredLightRay &in, const Point &point, LightRay &out) const
     {
         float random = GetRandomValue();
         // Diffuse.
@@ -111,7 +112,8 @@ public:
                           sin(inclination) * sin(azimuth),
                           cos(inclination));
             // Transform the ray of light to global coordinates.
-            out = LightRay(point, fromLocalToGlobal * localRay);
+            out = ColoredLightRay(point, fromLocalToGlobal * localRay,
+                                  in.GetColor() * mMaterial->GetDiffuse(point) / mMaterial->GetDiffuse(point).MeanRGB());
             return true;
         }
         // Specular.
@@ -119,7 +121,8 @@ public:
                            mMaterial->GetSpecular().MeanRGB()))
         {
             Vect reflectedRay = Reflect(in.GetDirection(), GetVisibleNormal(point, in));
-            out = LightRay(point, reflectedRay);
+            out = ColoredLightRay(point, reflectedRay,
+                                  in.GetColor() * mMaterial->GetSpecular() / mMaterial->GetSpecular().MeanRGB());
             return true;
         }
         // Absorb.
