@@ -8,7 +8,9 @@
 
 #include <photon.hpp>
 
-Photon::Photon(const Color& flux, Vect incidence)
+Photon::Photon() {}
+
+Photon::Photon(const Color& flux, const Vect &incidence)
 : mFlux(flux), mIncidence(incidence)
 {}
 

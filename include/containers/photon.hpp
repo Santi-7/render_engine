@@ -10,7 +10,6 @@
 #ifndef RAY_TRACER_PHOTON_HPP
 #define RAY_TRACER_PHOTON_HPP
 
-#include <color.hpp>
 #include <coloredLightRay.hpp>
 #include <vect.hpp>
 
@@ -19,9 +18,17 @@ class Photon
 public:
 
     /**
-     * Construct a new WHITE Photon with incidence Vect(0,0,0)
+     * Default constructor.
      */
-    Photon(const Color &flux = WHITE, Vect incidence = Vect(0,0,0));
+    Photon();
+
+    /**
+     * Constructor of a photon for the given flux and incidence vector values.
+     *
+     * @param flux Flux of this photon, defined as its RGB value.
+     * @param incidence Vector that marks the direction from which this photon has come.
+     */
+    Photon(const Color &flux, const Vect &incidence);
 
     /**
      * TODO: Add doc.
