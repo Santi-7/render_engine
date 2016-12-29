@@ -10,8 +10,35 @@
 #ifndef RAY_TRACER_PHOTON_HPP
 #define RAY_TRACER_PHOTON_HPP
 
+#include <color.hpp>
+#include <vect.hpp>
+
 class Photon
 {
+public:
+
+    /**
+     * Construct a new WHITE Photon with incidence Vect(0,0,0)
+     */
+    Photon(const Color &flux = WHITE, Vect incidence = Vect(0,0,0));
+
+    /**
+     * @return Direction in which this photon was last stored.
+     */
+    Vect GetVect();
+
+    /**
+     * @return This Photon's flux.
+     */
+    Color GetFlux();
+    
+private:
+
+    /** Color representing the energy left in a Photon. */
+    Color mFlux;
+
+    /** Direction from which a Photon strikes the surface in the instant its stored. */
+    Vect mIncidence;
 
 };
 
