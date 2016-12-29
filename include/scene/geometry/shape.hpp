@@ -87,12 +87,11 @@ public:
     }
 
     /**
-     * TODO: Doc.
-     *
-     * @param in .
-     * @param point .
-     * @param out .
-     * @return .
+     * @param in LightRay that is directed at the shape.
+     * @param point Point in which the LightRay intersects the shape.
+     * @param out When the return value of this method is true this value is updated to the LightRay coming out
+     *      of the shape at the given point.
+     * @return True if a new LightRay comes out of the intersection with this shape.
      */
     bool RussianRoulette(const LightRay &in, const Point &point, LightRay &out) const
     {

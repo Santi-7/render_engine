@@ -122,7 +122,8 @@ public:
     unique_ptr<Image> RenderMultiThread(const unsigned int threads) const;
 
     /**
-     * TODO: Add doc.
+     * Emits all the photons defined for all LightSources in this scene. After their first bounce, all photons will be
+     * stored in the internal KDTrees to later be accessed by the render method.
      */
     void EmitPhotons();
 
@@ -137,7 +138,7 @@ private:
     /** Diffuse rays to throw in every diffuse interaction. */
     unsigned int mIndirectRays = 8;
 
-    /** TODO: Add doc. */
+    /** Number of individual photons that will be emitted from each of the lightSources in the scene. */
     unsigned int mPhotonsEmitted = 500;
 
     /** The scene's camera. */
@@ -149,7 +150,7 @@ private:
     /** List of shapes in the scene. */
     vector<shared_ptr<Shape>> mShapes;
 
-    /** TODO: Doc. */
+    /** Main indirect light photon map. */
     KDTree mPhotonMap;
 
     /**
@@ -164,10 +165,11 @@ private:
                           const shared_ptr<Image> image, const bool printProgress) const;
 
     /**
-     * TODO: Add doc.
+     * Basic path tracing interaction between photons and the scene.
      *
-     * @param lightRay .
-     * #param save .
+     * @param lightRay Direction and position from which the photon is thrown.
+     * @param save true if the next intersection between the lightRay and a shape in the scene will be stored in a
+     *      KDTree.
      */
     void PhotonInteraction(const LightRay &lightRay, const bool save);
 

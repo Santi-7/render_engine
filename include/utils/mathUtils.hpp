@@ -40,7 +40,8 @@ inline static float GetRandomValue()
 }
 
 /**
- * @return TODO: Doc.
+ * @return Tuple with a randomly selected inclination and azimuth the inclination being biased towards higher angles.
+ * Meant to sample a semi-sphere with higher chances of getting a sample that goes straight up from its base.
  */
 inline static tuple<float, float> UniformCosineSampling()
 {
@@ -51,7 +52,7 @@ inline static tuple<float, float> UniformCosineSampling()
 }
 
 /**
- * @return TODO: Doc.
+ * @return Tuple with a randomly selected inclination and azimuth. Meant to sample a sphere uniformly.
  */
 inline static tuple<float, float> UniformSphereSampling()
 {
