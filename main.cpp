@@ -214,8 +214,10 @@ int main(int argc, char * argv[])
     chosenScene.SetIndirectSteps(indirectSteps);
     chosenScene.SetIndirectRays(indirectRays);
 
+    chosenScene.EmitPhotons();
+
     // Render the scene and save the resulting image
-    auto image = chosenScene.RenderMultiThread(threadCount);
+    auto image = chosenScene.RenderMultiThread(1);
     image->Save(sceneName + ".ppm", saveMode);
 
     cout << "\nSaved image " << sceneName << ".ppm\n";
