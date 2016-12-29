@@ -58,16 +58,16 @@ public:
     void Store(const Point &point, const Photon &photon);
 
     // Fixed Radius
-    int Find(const Point &p, const float radius, list<const Node *> *nodes) const;
+    unsigned int Find(const Point &p, const float radius, list<const Node *> *nodes) const;
 
     // Nearest Neighbor search
-    void Find(const Point &p, const int nb_elements, vector<const Node *> &nodes, float &max_distance) const;
+    void Find(const Point &p, const unsigned int nb_elements, vector<const Node *> &nodes, float &max_distance) const;
 
     const Node &Find(const Point &p) const;
 
     void Balance();
 
-    int Size() const;
+    unsigned int Size() const;
 
     bool IsEmpty() const;
 
@@ -83,12 +83,12 @@ private:
     static void BalanceSegment(vector<Node> &pbal, vector<Node> &porg, const int index,
                                const int start, const int end, const Point &bbmin, const Point &bbmax);
 
-    int Closest(const Point &p, const int index, const int best) const;
+    unsigned int Closest(const Point &p, const unsigned int index, const unsigned int best) const;
 
-    void Find(const Point &p, const int index, const float radius, list<const Node *> &nodes) const;
+    void Find(const Point &p, const unsigned int index, const float radius, list<const Node *> &nodes) const;
 
-    void Find(const Point &p, const int index, const int nb_elements, float &dist_worst, vector<const Node *> &nodes,
-              vector<pair<int, float>> &dist) const;
+    void Find(const Point &p, const unsigned int index, const unsigned int nb_elements, float &dist_worst, vector<const Node *> &nodes,
+              vector<pair<unsigned int, float>> &dist) const;
 
     // Removed static for compiling problems
     //static class HeapComparison
@@ -99,8 +99,8 @@ private:
         }
     };
 
-    void UpdateHeapNodes(const Node &node, const float distance, const int nb_elements,
-                         vector<const Node *> &nodes, vector<pair<int, float>> &dist) const;
+    void UpdateHeapNodes(const Node &node, const float distance, const unsigned int nb_elements,
+                         vector<const Node *> &nodes, vector<pair<unsigned int, float>> &dist) const;
 };
 
 #endif // RAY_TRACER_KDTREE_HPP

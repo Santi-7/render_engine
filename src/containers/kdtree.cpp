@@ -19,21 +19,21 @@ void KDTree::Store(const Point &point, const Photon &photon) {
 
 //========================================================================================================
 // Fixed Radius
-int KDTree::Find(const Point &p, const float radius, list<const Node *> *nodes) const {
+unsigned int KDTree::Find(const Point &p, const float radius, list<const Node *> *nodes) const {
     if (nodes) {
         Find(p, 1, radius, *nodes);
-        return nodes->size();
+        return static_cast<unsigned int>(nodes->size());
     }
     else {
         list<const Node *> local_nodes;
         Find(p, 1, radius, local_nodes);
-        return local_nodes.size();
+        return static_cast<unsigned int>(local_nodes.size());
     }
 }
 
 //========================================================================================================
 // Nearest Neighbor search
-void KDTree::Find(const Point &p, const int nb_elements, vector<const Node *> &nodes, float &max_distance) const {
+void KDTree::Find(const Point &p, const unsigned int nb_elements, vector<const Node *> &nodes, float &max_distance) const {
     nodes.clear();
     max_distance = numeric_limits<float>::infinity();
 
@@ -41,7 +41,7 @@ void KDTree::Find(const Point &p, const int nb_elements, vector<const Node *> &n
         return;
 
     nodes.reserve(nb_elements);
-    vector<pair<int, float> > dist;
+    vector<pair<unsigned int, float> > dist;
     dist.reserve(nb_elements);
 
     Find(p, 1, nb_elements, max_distance, nodes, dist);
@@ -51,8 +51,8 @@ const Node &KDTree::Find(const Point &p) const {
     return mBalanced[Closest(p, 1, 1)];
 }
 
-int KDTree::Size() const {
-    return mBalanced.size();
+unsigned int KDTree::Size() const {
+    return static_cast<unsigned int>(mBalanced.size());
 }
 
 bool KDTree::IsEmpty() const {
@@ -68,7 +68,7 @@ const Node &KDTree::operator[](const unsigned int idx) const {
 
 //--------------------------------------------------------------------------------------------------
 //Private Find(radius)
-void KDTree::Find(const Point &p, const int index, const float radius, list<const Node *> &nodes) const {
+void KDTree::Find(const Point &p, const unsigned int index, const float radius, list<const Node *> &nodes) const {
     //We check if our node enters
     if (mBalanced[index].mPoint.Distance(p) < radius) { nodes.push_back(&mBalanced[index]); }
     //Now we check that this is not a leaf node
@@ -91,11 +91,11 @@ void KDTree::Find(const Point &p, const int index, const float radius, list<cons
 
 //--------------------------------------------------------------------------------------------------
 //Private Find(N-Nearest Neighbors)
-void KDTree::UpdateHeapNodes(const Node &node, const float distance, const int nb_elements,
-                             vector<const Node *> &nodes, vector<pair<int, float>> &dist) const {
+void KDTree::UpdateHeapNodes(const Node &node, const float distance, const unsigned int nb_elements,
+                             vector<const Node *> &nodes, vector<pair<unsigned int, float>> &dist) const {
     // If there's still buffer for  more, don't bother with heaps...
     if (nodes.size() < nb_elements) {
-        dist.push_back(pair<int, float>(nodes.size(), distance));
+        dist.push_back(pair<unsigned int, float>(nodes.size(), distance));
         nodes.push_back(&node);
 
         //...unless you've reach max size, then prepare the heap...
@@ -109,7 +109,7 @@ void KDTree::UpdateHeapNodes(const Node &node, const float distance, const int n
         pop_heap(dist.begin(), dist.end(), HeapComparison());
         dist.pop_back();
         // Push new one
-        dist.push_back(pair<int, float>(idx, distance));
+        dist.push_back(pair<unsigned int, float>(idx, distance));
         push_heap(dist.begin(), dist.end(), HeapComparison());
     }
     //if( !(mNodes.size() < nb_elements) )
@@ -133,8 +133,8 @@ void KDTree::UpdateHeapNodes(const Node &node, const float distance, const int n
     //}
 }
 
-void KDTree::Find(const Point &p, int index, const int nb_elements, float &dist_worst,
-                  vector<const Node *> &nodes, vector<pair<int, float>> &dist) const {
+void KDTree::Find(const Point &p, unsigned int index, const unsigned int nb_elements, float &dist_worst,
+                  vector<const Node *> &nodes, vector<pair<unsigned int, float>> &dist) const {
     float aux;
     //We check if our node is better
     if ((aux = mBalanced[index].mPoint.Distance(p)) < dist_worst) {
@@ -165,8 +165,8 @@ void KDTree::Find(const Point &p, int index, const int nb_elements, float &dist_
 
 //--------------------------------------------------------------------------------------------------
 // Closest
-int KDTree::Closest(const Point &p, const int index, const int best) const {
-    int sol = best;
+unsigned int KDTree::Closest(const Point &p, const unsigned int index, const unsigned int best) const {
+    unsigned int sol = best;
     float distbest = p.Distance(mBalanced[best].mPoint);
     float aux;
     //We check if our node is better
@@ -179,7 +179,7 @@ int KDTree::Closest(const Point &p, const int index, const int best) const {
         float distaxis = p[mBalanced[index].mAxis] - mBalanced[index].mPoint[mBalanced[index].mAxis];
         if (distaxis < 0.0) // left node first
         {
-            int candidate = Closest(p, 2 * index, sol);
+            unsigned int candidate = Closest(p, 2 * index, sol);
             if ((aux = mBalanced[candidate].mPoint.Distance(p)) < distbest) {
                 sol = candidate;
                 distbest = aux;
@@ -194,7 +194,7 @@ int KDTree::Closest(const Point &p, const int index, const int best) const {
         }
         else //right node first
         {
-            int candidate = Closest(p, 2 * index + 1, sol);
+            unsigned int candidate = Closest(p, 2 * index + 1, sol);
             if ((aux = mBalanced[candidate].mPoint.Distance(p)) < distbest) {
                 sol = candidate;
                 distbest = aux;
@@ -305,5 +305,5 @@ void KDTree::Balance() {
     }
     mNodes.clear();
 
-    BalanceSegment(mBalanced, aux, 1, 1, mBalanced.size() - 1, bbmin, bbmax);
+    BalanceSegment(mBalanced, aux, 1, 1, static_cast<unsigned int>(mBalanced.size()) - 1, bbmin, bbmax);
 }
