@@ -149,7 +149,8 @@ void Scene::EmitPhotons()
                               sin(inclination) * sin(azimuth),
                               cos(inclination));
                 // Transform the ray of light to global coordinates.
-                ColoredLightRay lightRay(pointLight, fromLocalToGlobal * localRay, light->GetBaseColor());
+                ColoredLightRay lightRay(pointLight, fromLocalToGlobal * localRay,
+                                         light->GetBaseColor() / mPhotonsEmitted);
                 /* The photons directly emitted from the light sources (direct light)
                  * are not saved in the photon map. */
                 PhotonInteraction(lightRay, false);
@@ -220,14 +221,14 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     list<const Node *> *nodeList = new list<const Node*>();
     Color retVal = BLACK;
     float radius = 0.02f;
-    unsigned int photonsFound = mPhotonMap.Find(intersection, radius, nodeList);
+    mPhotonMap.Find(intersection, radius, nodeList);
     for (auto node = nodeList->begin(); node != nodeList->end(); ++node)
     {
         Photon tmpPhoton = (*node)->GetData();
         retVal += tmpPhoton.GetFlux() * nearestShape->GetMaterial()->
                   PhongBRDF(lightRay.GetDirection(), tmpPhoton.GetVect(), normal, intersection);
     }
-    return retVal / photonsFound / (PI * radius * radius);
+    return retVal / (PI * radius * radius);
 
     /*return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay,
