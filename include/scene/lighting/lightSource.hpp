@@ -31,6 +31,15 @@ public:
      */
     virtual vector<Point> GetLights() const = 0;
 
+    /**
+     * @return Base color of this LightSource
+     */
+    Color GetBaseColor()
+    {
+        // TODO: Check whether this is correct or not.
+        return mBaseColor * mPower;
+    }
+
 protected:
 
     /** This lightSource's power. */

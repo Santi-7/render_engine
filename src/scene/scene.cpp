@@ -149,7 +149,7 @@ void Scene::EmitPhotons()
                               sin(inclination) * sin(azimuth),
                               cos(inclination));
                 // Transform the ray of light to global coordinates.
-                ColoredLightRay lightRay(pointLight, fromLocalToGlobal * localRay, WHITE);
+                ColoredLightRay lightRay(pointLight, fromLocalToGlobal * localRay, light->GetBaseColor());
                 /* The photons directly emitted from the light sources (direct light)
                  * are not saved in the photon map. */
                 PhotonInteraction(lightRay, false);
