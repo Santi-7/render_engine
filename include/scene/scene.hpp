@@ -140,7 +140,7 @@ private:
     unsigned int mIndirectRays = 8;
 
     /** Number of individual photons that will be emitted from each of the lightSources in the scene. */
-    unsigned int mPhotonsEmitted = 50000;
+    unsigned int mPhotonsEmitted = 500000;
 
     /** The scene's camera. */
     unique_ptr<Camera> mCamera;
@@ -172,7 +172,7 @@ private:
      * @param save true if the next intersection between the lightRay and a shape in the scene will be stored in a
      *      KDTree.
      */
-    void PhotonInteraction(const ColoredLightRay &lightRay, const bool save);
+    void PhotonInteraction(const ColoredLightRay &lightRay, bool save);
 
     /**
      * Calculates the color of the first point that intersects the lightRay. If specularSteps is greater than 0 reflected

@@ -160,7 +160,7 @@ void Scene::EmitPhotons()
     mPhotonMap.Balance();
 }
 
-void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
+void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
 {
     // Distance to the nearest shape.
     float minT = FLT_MAX;
@@ -178,7 +178,8 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
     // Intersection point with the nearest shape found.
     Point intersection(lightRay.GetPoint(minT));
 
-    // TODO: Save if not specular.
+    auto material = nearestShape->GetMaterial();
+    save = save & !((material->GetDiffuse(intersection) == BLACK) & ((material->GetSpecular() != BLACK) | (material->GetTransmittance() != BLACK)));
     if (save) mPhotonMap.Store(intersection, Photon(lightRay));
     // TODO: Caustics photon map.
 
@@ -233,8 +234,8 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
     return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay,
                          *nearestShape, specularSteps, diffuseSteps) +
-            retVal / ((4.0f/3.0f) * PI * radius * radius * radius) +
-            emittedLight;
+           retVal / ((4.0f/3.0f) * PI * radius * radius * radius) +
+           emittedLight;
 }
 
 Color Scene::DirectLight(const Point &point, const Vect &normal,
