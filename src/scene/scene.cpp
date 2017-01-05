@@ -11,6 +11,7 @@
 #include <iostream>
 #include <poseTransformationMatrix.hpp>
 #include <scene.hpp>
+#include <sphere.hpp>
 #include <thread>
 
 void printProgressBar(unsigned int pixel, unsigned int total)
@@ -219,22 +220,12 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
 
     Color emittedLight = nearestShape->GetEmittedLight();
 
-    vector<const Node *> nodeList;
-    Color retVal = BLACK;
-    float radius;
-    mPhotonMap.Find(intersection, 100, nodeList, radius);
-
-    for (auto nodeIt = nodeList.begin(); nodeIt < nodeList.end(); ++nodeIt)
-    {
-        Photon tmpPhoton = (*nodeIt)->GetData();
-        retVal += tmpPhoton.GetFlux() * nearestShape->GetMaterial()->
-                  PhongBRDF(lightRay.GetDirection(), tmpPhoton.GetVect(), normal, intersection);
-    }
-
+    // Light is additive.
     return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay,
                          *nearestShape, specularSteps, diffuseSteps) +
-           retVal / ((4.0f/3.0f) * PI * radius * radius * radius) +
+           EstimateRadiance(intersection, normal, lightRay,
+                            *nearestShape, diffuseSteps) +
            emittedLight;
 }
 
@@ -308,43 +299,32 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
     return retVal;
 }
 
-Color Scene::DiffuseLight(const Point &point, const Vect &normal,
-                          const LightRay &in, const Shape &shape,
-                          const int specularSteps, const int diffuseSteps) const
+Color Scene::EstimateRadiance(const Point &point, const Vect &normal,
+                              const LightRay &in, const Shape &shape,
+                              const int diffuseSteps) const
 {
+    // TODO: Cut the estimate radiance as happens in raytracing, or not because we don't have recursivity now?
     if ((diffuseSteps <= 0) | ((shape.GetMaterial()->GetDiffuse(point) == BLACK) &
                                (shape.GetMaterial()->GetSpecular() == BLACK)))
         return BLACK;
 
-    /* Transformation matrix from the local coordinates with [point] as the
-     * reference point, and [normal] as the z axis, to global coordinates. */
-    PoseTransformationMatrix fromLocalToGlobal =
-            PoseTransformationMatrix::GetPoseTransformation(point, normal);
-    // [mIndirectRays] indirect rays of light using Monte Carlo sampling.
     Color retVal = BLACK;
-    for (unsigned int i = 0; i < mIndirectRays; i++)
+
+    // Find the 100 nearest photons. TODO: Change 100 to global variable.
+    vector<const Node *> nodeList;
+    float radius;
+    mPhotonMap.Find(point, 100, nodeList, radius);
+
+    // Add the radiance of all the nearest photons calculated.
+    for (auto nodeIt = nodeList.begin(); nodeIt < nodeList.end(); ++nodeIt)
     {
-        // Generate random angles.
-        float inclination, azimuth;
-        tie(inclination, azimuth) = UniformCosineSampling();
-        // Direction of the ray of light expressed in local coordinates.
-        Vect localRay(sin(inclination) * cos(azimuth),
-                      sin(inclination) * sin(azimuth),
-                      cos(inclination));
-        // Transform the ray of light to global coordinates.
-        LightRay lightRay(point, fromLocalToGlobal * localRay);
-        retVal += // Li.
-                GetLightRayColor(lightRay, specularSteps-1, diffuseSteps-1) *
-                // Phong BRDF. Wo = in * -1, Wi = lightRay.
-                shape.GetMaterial()->PhongBRDF(in.GetDirection() * -1,
-                                               lightRay.GetDirection(),
-                                               normal, point) *
-                // Cosine and sine. We can avoid it and not divide again later.
-                /* cos(inclination) * sin(inclination) */
-                // 1 / PDF.
-                (PI /* / (sin(inclination) * cos(inclination)) */ );
+        Photon tmpPhoton = (*nodeIt)->GetData();
+        retVal += tmpPhoton.GetFlux() * shape.GetMaterial()->
+                  PhongBRDF(in.GetDirection(), tmpPhoton.GetVect(), normal, point);
     }
-    return retVal / mIndirectRays;
+
+    // Divide the radiance between the sphere volume that wraps the nearest photons.
+    return retVal / Sphere::Volume(radius);
 }
 
 bool Scene::InShadow(const LightRay &lightRay, const Point &light) const

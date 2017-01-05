@@ -133,14 +133,14 @@ private:
     /** Limit to the specular interactions allowed. */
     unsigned int mSpecularSteps = 4;
 
+    // TODO: Check if this variable disappears.
     /** Limit to the diffuse interactions allowed. */
     unsigned int mIndirectSteps = 0;
 
-    /** Diffuse rays to throw in every diffuse interaction. */
-    unsigned int mIndirectRays = 8;
-
     /** Number of individual photons that will be emitted from each of the lightSources in the scene. */
     unsigned int mPhotonsEmitted = 500000;
+
+    // TODO: Check if a variable mNeighbourPhotons is smarter.
 
     /** The scene's camera. */
     unique_ptr<Camera> mCamera;
@@ -214,18 +214,18 @@ private:
                         const int specularSteps, const int diffuseSteps) const;
 
     /**
+     * TODO: Add doc if necessary: the meaning has been change from diffuse light to estimated radiance.
      * @param point that belongs to the shape [shape] and where the diffuse light is calculated.
      * @param normal of the [shape]'s surface in the point [point].
      * @param in Incoming ray of light that intersects the shape [shape] in the point [point].
      * @param shape that defines the light distribution with its BRDF.
-     * @param specularSteps Number of steps remaining to stop the specular bounces.
      * @param diffuseSteps Number of steps remaining to stop the diffuse bounces.
      * @return a color in relation to the diffuse light reached in the point [point]
      *  of the shape [shape], performing [diffuseSteps] bounces of diffuse light.
      */
-    Color DiffuseLight(const Point &point, const Vect &normal,
-                       const LightRay &in, const Shape &shape,
-                       const int specularSteps, const int diffuseSteps) const;
+    Color EstimateRadiance(const Point &point, const Vect &normal,
+                           const LightRay &in, const Shape &shape,
+                           const int diffuseSteps) const;
 
     /**
      * @param lightRay to the light source [light] which is checked if any shape in the scene blocks the way to the light.

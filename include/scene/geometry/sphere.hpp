@@ -46,6 +46,12 @@ public:
      */
     virtual Vect GetNormal(const Point &point) const;
 
+    /**
+     * @param radius Radius of the sphere.
+     * @return The volume of a sphere with radius [radius].
+     */
+    static float Volume(const float radius);
+
 private:
 
     /** Center point of this Sphere. */
