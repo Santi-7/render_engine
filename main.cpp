@@ -103,7 +103,7 @@ int main(int argc, char * argv[])
 {
     InitializeSceneNames();
     int width = -1, height = -1;
-    unsigned int indirectSteps = 1, indirectRays = 64;
+    unsigned int indirectSteps = 1;
     unsigned int threadCount = thread::hardware_concurrency(); // Use all available threads by default.
     SaveMode saveMode = DIM_TO_WHITE;
     string sceneName = "cornell";
@@ -139,9 +139,10 @@ int main(int argc, char * argv[])
             i++;
         }
 
+        // TODO: Delete this option. From -h also.
         else if (arguments[i] == "--indirect_rays")
         {
-            indirectRays = (unsigned int) stoi(arguments[i+1]);
+            //indirectRays = (unsigned int) stoi(arguments[i+1]);
             i++;
         }
 
@@ -212,7 +213,6 @@ int main(int argc, char * argv[])
 
     // Set indirect values for rendering the scene
     chosenScene.SetIndirectSteps(indirectSteps);
-    chosenScene.SetIndirectRays(indirectRays);
 
     chosenScene.EmitPhotons();
 

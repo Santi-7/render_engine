@@ -255,13 +255,13 @@ Color Scene::DirectLight(const Point &point, const Vect &normal,
                 if (multiplier > 0.0f)
                 {
                     retVal += // Li.
-                            mLightSources[i]->GetColor(point) *
-                            // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
-                            shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
-                                                           lightRay.GetDirection(),
-                                                           normal, point) *
-                            // Cosine.
-                            multiplier;
+                              mLightSources[i]->GetColor(point) *
+                              // Phong BRDF. Wo = seenFrom * -1, Wi = lightRay.
+                              shape.GetMaterial()->PhongBRDF(seenFrom.GetDirection() * -1,
+                                                             lightRay.GetDirection(),
+                                                             normal, point) *
+                              // Cosine.
+                              multiplier;
                 }
             }
         }
@@ -319,8 +319,13 @@ Color Scene::EstimateRadiance(const Point &point, const Vect &normal,
     for (auto nodeIt = nodeList.begin(); nodeIt < nodeList.end(); ++nodeIt)
     {
         Photon tmpPhoton = (*nodeIt)->GetData();
-        retVal += tmpPhoton.GetFlux() * shape.GetMaterial()->
-                  PhongBRDF(in.GetDirection(), tmpPhoton.GetVect(), normal, point);
+        retVal += // Li.
+                  tmpPhoton.GetFlux() *
+                  // Phong BRDF. Wo = in * -1, Wi = tmpPhoton.
+                  shape.GetMaterial()->PhongBRDF(in.GetDirection() * -1,
+                                                 tmpPhoton.GetVect(),
+                                                 normal, point);
+                  // TODO: Issue, no cosine multiplier.
     }
 
     // Divide the radiance between the sphere volume that wraps the nearest photons.

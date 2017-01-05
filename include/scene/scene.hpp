@@ -96,16 +96,6 @@ public:
     }
 
     /**
-     * Sets the number of indirect rays to trace when rendering the image.
-     *
-     * @param steps
-     */
-    void SetIndirectRays(unsigned int rays)
-    {
-        mIndirectRays = rays;
-    }
-
-    /**
      * The main ray tracing algorithm. Traces lightRays from the camera to all the pixels in the image plane, calculates
      * intersections (and all their complicated interactions), and saves the color of each pixel in an image object.
      * Since this takes a while, it prints a beautiful progress bar indicating the percent of lines completed.
