@@ -53,8 +53,6 @@ void PrintHelp()
             "Available options:\n"
             "\t-h : Print this helpful text.\n"
             "\t--res <WIDTHxHEIGHT> : Select a different resolution for the result image.\n"
-            "\t--indirect_steps <NUMBER> : Choose the number of indirect lighting steps to render images faster. 0 to disable indirect lighting.\n"
-            "\t--indirect_rays <NUMBER> : Sets the number of indirect rays that will be used to render the image.\n"
             "\t--clamp : Instead of dividing by the greatest color value in the image, all colors will be clamped.\n"
             "\t--gamma : Instead of dividing by the greatest color value in the image, all colors will be gamma corrected and then clamped.\n"
             "\t-s [SCENE_NAME] : Selects the scene to render.\n"
@@ -103,7 +101,6 @@ int main(int argc, char * argv[])
 {
     InitializeSceneNames();
     int width = -1, height = -1;
-    unsigned int indirectSteps = 1;
     unsigned int threadCount = thread::hardware_concurrency(); // Use all available threads by default.
     SaveMode saveMode = DIM_TO_WHITE;
     string sceneName = "cornell";
@@ -131,19 +128,6 @@ int main(int argc, char * argv[])
             width = stoi(widthHeight[0]);
             height = stoi(widthHeight[1]);
             ++i;
-        }
-
-        else if (arguments[i] == "--indirect_steps")
-        {
-            indirectSteps = (unsigned int) stoi(arguments[i+1]);
-            i++;
-        }
-
-        // TODO: Delete this option. From -h also.
-        else if (arguments[i] == "--indirect_rays")
-        {
-            //indirectRays = (unsigned int) stoi(arguments[i+1]);
-            i++;
         }
 
         else if (arguments[i] == "-j")
@@ -210,9 +194,6 @@ int main(int argc, char * argv[])
     {
         chosenScene.SetImageDimensions((unsigned int)width, (unsigned int)height);
     }
-
-    // Set indirect values for rendering the scene
-    chosenScene.SetIndirectSteps(indirectSteps);
 
     chosenScene.EmitPhotons();
 

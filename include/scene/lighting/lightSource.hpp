@@ -36,7 +36,6 @@ public:
      */
     Color GetBaseColor()
     {
-        // TODO: Check whether this is correct or not.
         return mBaseColor * mPower;
     }
 

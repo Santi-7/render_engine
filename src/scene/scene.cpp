@@ -51,8 +51,7 @@ unique_ptr<Image> Scene::Render() const
             currentPixel += advanceX;
             // Get the color for the current pixel.
             (*rendered)[i][j] = GetLightRayColor(
-                    LightRay(mCamera->GetFocalPoint(), currentPixel),
-                    mSpecularSteps, mIndirectSteps);
+                    LightRay(mCamera->GetFocalPoint(), currentPixel), mSpecularSteps);
         }
         // Next row.
         currentRow -= advanceY;
@@ -121,8 +120,7 @@ void Scene::RenderPixelRange(const shared_ptr<vector<unsigned int>> horizontalLi
             currentPixel += advanceX;
             // Get the color for the current pixel.
             (*image)[(*horizontalLines)[i]][j] = GetLightRayColor(
-                    LightRay(mCamera->GetFocalPoint(), currentPixel),
-                    mSpecularSteps, mIndirectSteps);
+                    LightRay(mCamera->GetFocalPoint(), currentPixel), mSpecularSteps);
         }
         if (printProgress) printProgressBar(i, static_cast<unsigned int>(horizontalLines->size()));
     }
@@ -191,13 +189,12 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
 }
 
 Color Scene::GetLightRayColor(const LightRay &lightRay,
-                              const int specularSteps,
-                              const int diffuseSteps) const
+                              const int specularSteps) const
 {
     /* The number of specular and indirect steps has been reached.
      * Following the light will get more accurate rendered
      * images, but with much more computing cost. */
-    if ((specularSteps == 0) & (diffuseSteps == 0)) return BLACK;
+    if (specularSteps == 0) return BLACK;
 
     // Distance to the nearest shape.
     float minT = FLT_MAX;
@@ -222,10 +219,8 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
 
     // Light is additive.
     return DirectLight(intersection, normal, lightRay, *nearestShape) +
-           SpecularLight(intersection, normal, lightRay,
-                         *nearestShape, specularSteps, diffuseSteps) +
-           EstimateRadiance(intersection, normal, lightRay,
-                            *nearestShape, diffuseSteps) +
+           SpecularLight(intersection, normal, lightRay, *nearestShape, specularSteps) +
+           EstimateRadiance(intersection, normal, lightRay, *nearestShape) +
            emittedLight;
 }
 
@@ -271,7 +266,7 @@ Color Scene::DirectLight(const Point &point, const Vect &normal,
 
 Color Scene::SpecularLight(const Point &point, const Vect &normal,
                            const LightRay &in, const Shape &shape,
-                           const int specularSteps, const int diffuseSteps) const
+                           const int specularSteps) const
 {
     Color retVal = BLACK;
 
@@ -283,7 +278,7 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
         Vect reflectedDir = Shape::Reflect(in.GetDirection(), normal);
         LightRay reflectedRay = LightRay(point, reflectedDir);
 
-        retVal += GetLightRayColor(reflectedRay, specularSteps-1, diffuseSteps-1) *
+        retVal += GetLightRayColor(reflectedRay, specularSteps-1) *
                   shape.GetMaterial()->GetReflectance();
     }
 
@@ -292,7 +287,7 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
         // Ray of light refracted in the intersection point.
         LightRay refractedRay = shape.Refract(in, point, normal);
 
-        retVal += GetLightRayColor(refractedRay, specularSteps-1, diffuseSteps-1) *
+        retVal += GetLightRayColor(refractedRay, specularSteps-1) *
                   shape.GetMaterial()->GetTransmittance();
     }
 
@@ -300,32 +295,35 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
 }
 
 Color Scene::EstimateRadiance(const Point &point, const Vect &normal,
-                              const LightRay &in, const Shape &shape,
-                              const int diffuseSteps) const
+                              const LightRay &in, const Shape &shape) const
 {
-    // TODO: Cut the estimate radiance as happens in raytracing, or not because we don't have recursivity now?
-    if ((diffuseSteps <= 0) | ((shape.GetMaterial()->GetDiffuse(point) == BLACK) &
-                               (shape.GetMaterial()->GetSpecular() == BLACK)))
+    if ((shape.GetMaterial()->GetDiffuse(point) == BLACK) &
+        (shape.GetMaterial()->GetSpecular() == BLACK))
         return BLACK;
 
     Color retVal = BLACK;
 
-    // Find the 100 nearest photons. TODO: Change 100 to global variable.
     vector<const Node *> nodeList;
     float radius;
-    mPhotonMap.Find(point, 100, nodeList, radius);
+    mPhotonMap.Find(point, mPhotonsNeighbours, nodeList, radius);
 
     // Add the radiance of all the nearest photons calculated.
     for (auto nodeIt = nodeList.begin(); nodeIt < nodeList.end(); ++nodeIt)
     {
         Photon tmpPhoton = (*nodeIt)->GetData();
-        retVal += // Li.
-                  tmpPhoton.GetFlux() *
-                  // Phong BRDF. Wo = in * -1, Wi = tmpPhoton.
-                  shape.GetMaterial()->PhongBRDF(in.GetDirection() * -1,
-                                                 tmpPhoton.GetVect(),
-                                                 normal, point);
-                  // TODO: Issue, no cosine multiplier.
+        // Cosine of the ray of light with the visible normal.
+        float multiplier = tmpPhoton.GetVect().DotProduct(normal);
+        /* Add the radiance of the current photon if it
+           illuminates the [point] from the visible semi-sphere. */
+        if (multiplier < 0.0f)
+        {
+            retVal += // Li.
+                    tmpPhoton.GetFlux() *
+                    // Phong BRDF. Wo = in * -1, Wi = tmpPhoton.
+                    shape.GetMaterial()->PhongBRDF(in.GetDirection() * -1,
+                                                   tmpPhoton.GetVect(),
+                                                   normal, point);
+        }
     }
 
     // Divide the radiance between the sphere volume that wraps the nearest photons.

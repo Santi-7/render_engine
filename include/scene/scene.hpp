@@ -86,16 +86,6 @@ public:
     }
 
     /**
-     * Sets the number of indirect steps to take when rendering the image.
-     *
-     * @param steps
-     */
-    void SetIndirectSteps(unsigned int steps)
-    {
-        mIndirectSteps = steps;
-    }
-
-    /**
      * The main ray tracing algorithm. Traces lightRays from the camera to all the pixels in the image plane, calculates
      * intersections (and all their complicated interactions), and saves the color of each pixel in an image object.
      * Since this takes a while, it prints a beautiful progress bar indicating the percent of lines completed.
@@ -123,14 +113,11 @@ private:
     /** Limit to the specular interactions allowed. */
     unsigned int mSpecularSteps = 4;
 
-    // TODO: Check if this variable disappears.
-    /** Limit to the diffuse interactions allowed. */
-    unsigned int mIndirectSteps = 0;
-
     /** Number of individual photons that will be emitted from each of the lightSources in the scene. */
-    unsigned int mPhotonsEmitted = 500000;
+    unsigned int mPhotonsEmitted = 100000;
 
-    // TODO: Check if a variable mNeighbourPhotons is smarter.
+    /** Number of individual photons that will be searched as the nearest neighbours. */
+    unsigned int mPhotonsNeighbours = 10;
 
     /** The scene's camera. */
     unique_ptr<Camera> mCamera;
@@ -166,17 +153,14 @@ private:
 
     /**
      * Calculates the color of the first point that intersects the lightRay. If specularSteps is greater than 0 reflected
-     * and refracted paths will be followed. If diffuseSteps is greater than 0 a diffuse sampling will be taken into account
-     * for the final color returned.
+     * and refracted paths will be followed.
      *
      * @param lightRay LightRay to indicate where to look for intersections.
      * @param specularSteps Specular steps to take.
-     * @param diffuseSteps Diffuse steps to take.
      * @return Color of the first intersection with the lightRay.
      */
     Color GetLightRayColor(const LightRay &lightRay,
-                           const int specularSteps,
-                           const int diffuseSteps) const;
+                           const int specularSteps) const;
 
     /**
      * @param point that belongs to the shape [shape] and where the direct light is calculated.
@@ -195,13 +179,12 @@ private:
      * @param in Incoming ray of light that intersects the shape [shape] in the point [point].
      * @param shape that defines the light distribution with its BRDF.
      * @param specularSteps Number of steps remaining to stop the specular bounces.
-     * @param diffuseSteps Number of steps remaining to stop the diffuse bounces.
      * @return a color in relation to the specular light (reflection and refraction) reached in the point [point]
      *  of the shape [shape], performing [specularSteps] bounces of specular light.
      */
     Color SpecularLight(const Point &point, const Vect &normal,
                         const LightRay &in, const Shape &shape,
-                        const int specularSteps, const int diffuseSteps) const;
+                        const int specularSteps) const;
 
     /**
      * TODO: Add doc if necessary: the meaning has been change from diffuse light to estimated radiance.
@@ -210,12 +193,10 @@ private:
      * @param in Incoming ray of light that intersects the shape [shape] in the point [point].
      * @param shape that defines the light distribution with its BRDF.
      * @param diffuseSteps Number of steps remaining to stop the diffuse bounces.
-     * @return a color in relation to the diffuse light reached in the point [point]
-     *  of the shape [shape], performing [diffuseSteps] bounces of diffuse light.
+     * @return a color in relation to the diffuse light reached in the point [point] of the shape [shape].
      */
     Color EstimateRadiance(const Point &point, const Vect &normal,
-                           const LightRay &in, const Shape &shape,
-                           const int diffuseSteps) const;
+                           const LightRay &in, const Shape &shape) const;
 
     /**
      * @param lightRay to the light source [light] which is checked if any shape in the scene blocks the way to the light.
