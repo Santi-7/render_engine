@@ -13,7 +13,7 @@
 #include <lightRay.hpp>
 
 /* In order that a shape doesn't intersect with itself, this threshold is required. */
-static constexpr float threshold = 0.001;
+static constexpr float threshold = 0.0001;
 
 /**
  * Returns [t] if it's positive (in front) and greather than threshold. This means
