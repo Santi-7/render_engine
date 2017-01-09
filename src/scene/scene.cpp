@@ -128,7 +128,7 @@ void Scene::RenderPixelRange(const shared_ptr<vector<unsigned int>> horizontalLi
 
 void Scene::EmitPhotons()
 {
-    // Emit photons for each light source.
+    // Emit photons from each light source.
     for (shared_ptr<LightSource> light : mLightSources)
     {
         for (Point pointLight : light->GetLights())
