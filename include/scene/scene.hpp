@@ -187,13 +187,11 @@ private:
                         const int specularSteps) const;
 
     /**
-     * TODO: Add doc if necessary: the meaning has been change from diffuse light to estimated radiance.
-     * @param point that belongs to the shape [shape] and where the diffuse light is calculated.
+     * @param point that belongs to the shape [shape] and where the diffuse light is estimated.
      * @param normal of the [shape]'s surface in the point [point].
      * @param in Incoming ray of light that intersects the shape [shape] in the point [point].
      * @param shape that defines the light distribution with its BRDF.
-     * @param diffuseSteps Number of steps remaining to stop the diffuse bounces.
-     * @return a color in relation to the diffuse light reached in the point [point] of the shape [shape].
+     * @return a color in relation to the estimated diffuse light reached in the point [point] of the shape [shape].
      */
     Color EstimateRadiance(const Point &point, const Vect &normal,
                            const LightRay &in, const Shape &shape) const;
