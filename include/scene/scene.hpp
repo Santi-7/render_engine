@@ -159,8 +159,7 @@ private:
      * @param specularSteps Specular steps to take.
      * @return Color of the first intersection with the lightRay.
      */
-    Color GetLightRayColor(const LightRay &lightRay,
-                           const int specularSteps) const;
+    Color GetLightRayColor(const LightRay &lightRay, const int specularSteps) const;
 
     /**
      * @param point that belongs to the shape [shape] and where the direct light is calculated.

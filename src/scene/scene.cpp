@@ -188,8 +188,7 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
     if (isAlive) PhotonInteraction(bouncedRay, true);
 }
 
-Color Scene::GetLightRayColor(const LightRay &lightRay,
-                              const int specularSteps) const
+Color Scene::GetLightRayColor(const LightRay &lightRay, const int specularSteps) const
 {
     /* The number of specular and indirect steps has been reached.
      * Following the light will get more accurate rendered
@@ -203,9 +202,8 @@ Color Scene::GetLightRayColor(const LightRay &lightRay,
 
     /* Intersect with all the shapes in the
      * scene to know which one is the nearest. */
-    for (unsigned int i = 0; i < mShapes.size(); ++i) {
+    for (unsigned int i = 0; i < mShapes.size(); ++i)
         mShapes.at(i)->Intersect(lightRay, minT, nearestShape, mShapes.at(i));
-    }
 
     // No shape has been found.
     if (minT == FLT_MAX) return BLACK;
