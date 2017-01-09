@@ -316,11 +316,11 @@ Color Scene::EstimateRadiance(const Point &point, const Vect &normal,
         if (multiplier < 0.0f)
         {
             retVal += // Li.
-                    tmpPhoton.GetFlux() *
-                    // Phong BRDF. Wo = in * -1, Wi = tmpPhoton.
-                    shape.GetMaterial()->PhongBRDF(in.GetDirection() * -1,
-                                                   tmpPhoton.GetVect(),
-                                                   normal, point);
+                      tmpPhoton.GetFlux() *
+                      // Phong BRDF. Wo = in * -1, Wi = tmpPhoton.
+                      shape.GetMaterial()->PhongBRDF(in.GetDirection() * -1,
+                                                     tmpPhoton.GetVect(),
+                                                     normal, point);
         }
     }
 

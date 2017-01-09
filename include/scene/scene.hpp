@@ -117,7 +117,7 @@ private:
     unsigned int mPhotonsEmitted = 100000;
 
     /** Number of individual photons that will be searched as the nearest neighbours. */
-    unsigned int mPhotonsNeighbours = 10;
+    unsigned int mPhotonsNeighbours = 500;
 
     /** The scene's camera. */
     unique_ptr<Camera> mCamera;
