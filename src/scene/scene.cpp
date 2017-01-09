@@ -320,12 +320,22 @@ Color Scene::EstimateRadiance(const Point &point, const Vect &normal,
                       // Phong BRDF. Wo = in * -1, Wi = tmpPhoton.
                       shape.GetMaterial()->PhongBRDF(in.GetDirection() * -1,
                                                      tmpPhoton.GetVect(),
-                                                     normal, point);
+                                                     normal, point) *
+                      // Gaussian kernel.
+                      GaussianKernel(point, (*nodeIt)->GetPoint(), radius);
         }
     }
 
     // Divide the radiance between the sphere volume that wraps the nearest photons.
     return retVal / Sphere::Volume(radius);
+}
+
+// Alpha and beta values taken from https://graphics.stanford.edu/courses/cs348b-00/course8.pdf
+float Scene::GaussianKernel(const Point &point, const Point &photon, const float radius) const
+{
+    constexpr static float ALPHA = 0.918f, BETA = 1.953f;
+    float distance = point.Distance(photon);
+    return ALPHA * (1 - ((1 - exp(-BETA * (distance*distance / 2*radius*radius))) / (1 - exp(-BETA))));
 }
 
 bool Scene::InShadow(const LightRay &lightRay, const Point &light) const

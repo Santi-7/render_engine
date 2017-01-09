@@ -117,7 +117,7 @@ private:
     unsigned int mPhotonsEmitted = 100000;
 
     /** Number of individual photons that will be searched as the nearest neighbours. */
-    unsigned int mPhotonsNeighbours = 500;
+    unsigned int mPhotonsNeighbours = 5000;
 
     /** The scene's camera. */
     unique_ptr<Camera> mCamera;
@@ -194,6 +194,14 @@ private:
      */
     Color EstimateRadiance(const Point &point, const Vect &normal,
                            const LightRay &in, const Shape &shape) const;
+
+    /**
+     * @param point where the gaussian filter is applied.
+     * @param photon Point of the photon.
+     * @param radius Maximum radius, distance from point to the k nearest photon (radius of the gaussian).
+     * @return a gaussian filter applied in the point [point] to the photon [photon].
+     */
+    float GaussianKernel(const Point &point, const Point &photon, const float radius) const;
 
     /**
      * @param lightRay to the light source [light] which is checked if any shape in the scene blocks the way to the light.
