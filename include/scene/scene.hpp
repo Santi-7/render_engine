@@ -86,6 +86,26 @@ public:
     }
 
     /**
+     * Sets the number of photons to emit from every light source.
+     *
+     * @param photonCount
+     */
+    void SetEmitedPhotons(unsigned int photonCount)
+    {
+        mPhotonsEmitted = photonCount;
+    }
+
+    /**
+     * Sets the number of photons to search in each intersection in the final ray tracing step.
+     *
+     * @param kNeighbours
+     */
+    void SetKNearestNeighbours(unsigned int kNeighbours)
+    {
+        mPhotonsNeighbours = kNeighbours;
+    }
+
+    /**
      * The main ray tracing algorithm. Traces lightRays from the camera to all the pixels in the image plane, calculates
      * intersections (and all their complicated interactions), and saves the color of each pixel in an image object.
      * Since this takes a while, it prints a beautiful progress bar indicating the percent of lines completed.

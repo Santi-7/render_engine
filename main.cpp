@@ -55,6 +55,8 @@ void PrintHelp()
             "\t--res <WIDTHxHEIGHT> : Select a different resolution for the result image.\n"
             "\t--clamp : Instead of dividing by the greatest color value in the image, all colors will be clamped.\n"
             "\t--gamma : Instead of dividing by the greatest color value in the image, all colors will be gamma corrected and then clamped.\n"
+            "\t-e <INTEGER> : Emits INTEGER photons. The default value is 100,000.\n" // TODO: Adjust final default value
+            "\t-k <INTEGER> : When tracing rays search for the INTEGER nearest photons. The default value is 5000.\n" // TODO: Adjust final default value
             "\t-s [SCENE_NAME] : Selects the scene to render.\n"
             "\n"
             "Available scenes:\n";
@@ -102,6 +104,8 @@ int main(int argc, char * argv[])
     InitializeSceneNames();
     int width = -1, height = -1;
     unsigned int threadCount = thread::hardware_concurrency(); // Use all available threads by default.
+    unsigned int photonCount = 100000;
+    unsigned int k_nearest = 5000;
     SaveMode saveMode = DIM_TO_WHITE;
     string sceneName = "cornell";
 
@@ -152,7 +156,30 @@ int main(int argc, char * argv[])
         {
             saveMode = CLAMP;
         }
-
+        else if (arguments[i] == "-p")
+        {
+            try
+            {
+                if (i + 1 < argnum)
+                {
+                    int tmp = stoi(arguments[i+1]);
+                    photonCount = (unsigned int) tmp;
+                    i++;
+                }
+            }catch(invalid_argument){cerr << "Not a valid integer: " << arguments[i+1] << '\n'; return 1;}
+        }
+        else if (arguments[i] == "-k")
+        {
+            try
+            {
+                if (i + 1 < argnum)
+                {
+                    int tmp = stoi(arguments[i+1]);
+                    k_nearest = (unsigned int) tmp;
+                    i++;
+                }
+            }catch(invalid_argument){cerr << "Not a valid integer: " << arguments[i+1] << '\n'; return 1;}
+        }
         else if (arguments[i] == "-s")
         {
             if (i + 1 < argnum)
@@ -194,6 +221,9 @@ int main(int argc, char * argv[])
     {
         chosenScene.SetImageDimensions((unsigned int)width, (unsigned int)height);
     }
+
+    chosenScene.SetEmitedPhotons(photonCount);
+    chosenScene.SetKNearestNeighbours(k_nearest);
 
     chosenScene.EmitPhotons();
 
