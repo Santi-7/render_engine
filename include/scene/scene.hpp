@@ -149,7 +149,10 @@ private:
     vector<shared_ptr<Shape>> mShapes;
 
     /** Main indirect light photon map. */
-    KDTree mPhotonMap;
+    KDTree mDiffusePhotonMap;
+
+    /** Caustics exclusive photon map. */
+    KDTree mCausticsPhotonMap;
 
     /**
      * @param horizontalLines Lines which pixels will be trace and saved to the image.
@@ -170,6 +173,17 @@ private:
      *      KDTree.
      */
     void PhotonInteraction(const ColoredLightRay &lightRay, bool save);
+
+    /**
+     * Path tracing for photons to store in the caustic map. If save is false and the first intersection has a non-refractive
+     * or mirror surface the photon is dropped and the recursion ends.
+     *
+     *
+     * @param lightRay Direction and position from which the photon is thrown, and color of this photon.
+     * @param save true if the next intersection between the lightRay and a shape in the scene should interact with non-refractive
+     *  surfaces.
+     */
+    void CausticInteraction(const ColoredLightRay &lightRay, bool save);
 
     /**
      * Calculates the color of the first point that intersects the lightRay. If specularSteps is greater than 0 reflected

@@ -154,9 +154,29 @@ void Scene::EmitPhotons()
                  * are not saved in the photon map. */
                 PhotonInteraction(lightRay, false);
             }
+
+            // [mPhotonsEmitted] photons uniformly emitted.
+            for (unsigned int i = 0; i < mPhotonsEmitted * 2; i++)
+            {
+                // Generate random angles.
+                float inclination, azimuth;
+                tie(inclination, azimuth) = UniformSphereSampling();
+                // Direction of the ray of light expressed in local coordinates.
+                Vect localRay(sin(inclination) * cos(azimuth),
+                        sin(inclination) * sin(azimuth),
+                        cos(inclination));
+                // Transform the ray of light to global coordinates.
+                ColoredLightRay lightRay(pointLight, fromLocalToGlobal * localRay,
+                        light->GetBaseColor() / mPhotonsEmitted);
+                /* The photons directly emitted from the light sources (direct light)
+                 * are not saved in the photon map. */
+                CausticInteraction(lightRay, false);
+            }
         }
     }
-    mPhotonMap.Balance();
+    mDiffusePhotonMap.Balance();
+    mCausticsPhotonMap.Balance();
+    mCausticsPhotonMap.DumpToFile("first_caustics.txt");
 }
 
 void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
@@ -179,14 +199,49 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
 
     auto material = nearestShape->GetMaterial();
     save = save & !((material->GetDiffuse(intersection) == BLACK) & ((material->GetSpecular() != BLACK) | (material->GetTransmittance() != BLACK)));
-    if (save) mPhotonMap.Store(intersection, Photon(lightRay));
-    // TODO: Caustics photon map.
+    if (save) mDiffusePhotonMap.Store(intersection, Photon(lightRay));
 
     // Russian Roulette: follow the photon trajectory if it's still living.
     ColoredLightRay bouncedRay;
     bool isAlive = nearestShape->RussianRoulette(lightRay, intersection, bouncedRay);
     if (isAlive) PhotonInteraction(bouncedRay, true);
 }
+
+void Scene::CausticInteraction(const ColoredLightRay& lightRay, bool save)
+{
+    // Distance to the nearest shape.
+    float minT = FLT_MAX;
+    // Nearest shape intersected with the ray of light.
+    shared_ptr<Shape> nearestShape;
+
+    /* Intersect with all the shapes in the
+     * scene to know which one is the nearest. */
+    for (unsigned int i = 0; i < mShapes.size(); ++i)
+        mShapes.at(i)->Intersect(lightRay, minT, nearestShape, mShapes.at(i));
+
+    // No shape has been found.
+    if (minT == FLT_MAX) return;
+
+    // Intersection point with the nearest shape found.
+    Point intersection(lightRay.GetPoint(minT));
+
+    auto material = nearestShape->GetMaterial();
+    bool causticSurface = ((material->GetSpecular() != BLACK) | (material->GetTransmittance() != BLACK));
+    save = save & !((material->GetDiffuse(intersection) == BLACK) & ((material->GetSpecular() != BLACK) | (material->GetTransmittance() != BLACK)));
+    if (save)
+    {
+        mCausticsPhotonMap.Store(intersection, Photon(lightRay));
+    }
+    else if (causticSurface)
+    {
+        // TODO: Right now it considers only transparent surfaces
+        LightRay refracted = nearestShape->Refract(lightRay, intersection, nearestShape->GetVisibleNormal(intersection, lightRay));
+        ColoredLightRay refractedRay(intersection, refracted.GetDirection(),
+                lightRay.GetColor() * material->GetTransmittance() / material->GetTransmittance().MeanRGB());
+        CausticInteraction(refractedRay, true);
+    }
+}
+
 
 Color Scene::GetLightRayColor(const LightRay &lightRay, const int specularSteps) const
 {
@@ -303,7 +358,7 @@ Color Scene::EstimateRadiance(const Point &point, const Vect &normal,
 
     vector<const Node *> nodeList;
     float radius;
-    mPhotonMap.Find(point, mPhotonsNeighbours, nodeList, radius);
+    mDiffusePhotonMap.Find(point, mPhotonsNeighbours, nodeList, radius);
 
     // Add the radiance of all the nearest photons calculated.
     for (auto nodeIt = nodeList.begin(); nodeIt < nodeList.end(); ++nodeIt)
@@ -326,8 +381,34 @@ Color Scene::EstimateRadiance(const Point &point, const Vect &normal,
         }
     }
 
+    // Estimate radiance for caustics
+    float causticRadius;
+    mCausticsPhotonMap.Find(point, mPhotonsNeighbours, nodeList, causticRadius);
+
+    Color causticRetVal = BLACK;
+    // Add the radiance of all the nearest photons calculated.
+    for (auto nodeIt = nodeList.begin(); nodeIt < nodeList.end(); ++nodeIt)
+    {
+        Photon tmpPhoton = (*nodeIt)->GetData();
+        // Cosine of the ray of light with the visible normal.
+        float multiplier = tmpPhoton.GetVect().DotProduct(normal);
+        /* Add the radiance of the current photon if it
+           illuminates the [point] from the visible semi-sphere. */
+        if (multiplier < 0.0f)
+        {
+            causticRetVal += // Li.
+                    tmpPhoton.GetFlux() *
+                            // Phong BRDF. Wo = in * -1, Wi = tmpPhoton.
+                            shape.GetMaterial()->PhongBRDF(in.GetDirection() * -1,
+                                    tmpPhoton.GetVect(),
+                                    normal, point) *
+                            // Gaussian kernel.
+                            GaussianKernel(point, (*nodeIt)->GetPoint(), causticRadius);
+        }
+    }
+
     // Divide the radiance between the sphere volume that wraps the nearest photons.
-    return retVal / Sphere::Volume(radius);
+    return retVal / Sphere::Volume(radius) + causticRetVal / Sphere::Volume(causticRadius);
 }
 
 // Alpha and beta values taken from https://graphics.stanford.edu/courses/cs348b-00/course8.pdf
