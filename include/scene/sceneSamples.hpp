@@ -801,4 +801,37 @@ Scene DirectVsIndirect()
     return scene;
 }
 
+Scene Caustic()
+{
+    Scene causticBox;
+    // A pinhole camera with default configuration.
+    causticBox.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1),
+            Point (0,0.25f,-1.7f), PI/4, 1.0, 1920, 1080));
+
+    Plane leftWall(Plane(Point(-1, 0, 0), Vect(1, 0, 0)));
+    leftWall.SetMaterial(make_shared<Material>(RED, BLACK, 0.0f, BLACK, BLACK));
+    causticBox.AddShape(leftWall);
+    Plane rightWall(Plane(Point(1, 0, 0), Vect(-1, 0, 0)));
+    rightWall.SetMaterial(make_shared<Material>(GREEN, BLACK, 0.0f, BLACK, BLACK));
+    causticBox.AddShape(rightWall);
+
+    causticBox.AddShape(Plane(Point(0, 1, 0), Vect(0, -1, 0))); // Roof.
+    causticBox.AddShape(Plane(Point(0, -0.25f, 0), Vect(0, 1, 0))); // Floor.
+    causticBox.AddShape(Plane(Point(0, 0, 1), Vect(0, 0, -1))); // Back wall
+
+    // Two spheres inside the box.
+    Sphere transparent(Sphere(Point(-0.45f, 0.1, 0.4f), 0.25f));
+    Sphere purpleSphere(Sphere(Point(0.45f, 0.1, 0.4f), 0.25f));
+    transparent.SetRefractiveIndex(GLASS_RI);
+    purpleSphere.SetRefractiveIndex(GLASS_RI);
+    transparent.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, WHITE)));
+    purpleSphere.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, PURPLE)));
+    causticBox.AddShape(transparent);
+    causticBox.AddShape(purpleSphere);
+    // A point light illuminates the scene.
+    causticBox.AddLightSource(PointLight(Point(0, 0.6f, -0.1f), 2.0f, WHITE));
+
+    return causticBox;
+}
+
 #endif // SCENE_SAMPLES
