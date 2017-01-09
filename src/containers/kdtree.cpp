@@ -7,6 +7,7 @@
  ** -------------------------------------------------------------------------*/
 
 #include <kdtree.hpp>
+#include <fstream>
 
 void KDTree::Clear() {
     mNodes.clear();
@@ -306,4 +307,16 @@ void KDTree::Balance() {
     mNodes.clear();
 
     BalanceSegment(mBalanced, aux, 1, 1, static_cast<unsigned int>(mBalanced.size()) - 1, bbmin, bbmax);
+}
+
+void KDTree::DumpToFile(const string& filename)
+{
+    ofstream out(filename);
+    for (const Node &p : mBalanced)
+    {
+        float x = p.GetPoint().GetX();
+        float y = p.GetPoint().GetY();
+        float z = p.GetPoint().GetZ();
+        out << x << ' ' << y << ' ' << z << '\n';
+    }
 }

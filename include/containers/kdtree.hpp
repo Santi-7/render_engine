@@ -73,6 +73,12 @@ public:
 
     const Node &operator[](const unsigned int idx) const;
 
+    /**
+     * Print the photon map to a file as plaintext.
+     * @param filename Name of the file to write to (will be destroyed if exists).
+     */
+    void DumpToFile(const string& filename);
+
 private:
 
     list<Node> mNodes;
