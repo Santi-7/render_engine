@@ -55,7 +55,7 @@ void PrintHelp()
             "\t--res <WIDTHxHEIGHT> : Select a different resolution for the result image.\n"
             "\t--clamp : Instead of dividing by the greatest color value in the image, all colors will be clamped.\n"
             "\t--gamma : Instead of dividing by the greatest color value in the image, all colors will be gamma corrected and then clamped.\n"
-            "\t-e <INTEGER> : Emits INTEGER photons. The default value is 100,000.\n" // TODO: Adjust final default value
+            "\t-p <INTEGER> : Emits INTEGER photons. The default value is 100,000.\n" // TODO: Adjust final default value
             "\t-k <INTEGER> : When tracing rays search for the INTEGER nearest photons. The default value is 5000.\n" // TODO: Adjust final default value
             "\t-s [SCENE_NAME] : Selects the scene to render.\n"
             "\n"
