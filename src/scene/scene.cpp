@@ -226,19 +226,37 @@ void Scene::CausticInteraction(const ColoredLightRay& lightRay, bool save)
     Point intersection(lightRay.GetPoint(minT));
 
     auto material = nearestShape->GetMaterial();
-    bool causticSurface = ((material->GetSpecular() != BLACK) | (material->GetTransmittance() != BLACK));
+    bool specular = material->GetSpecular() != BLACK;
+    bool transmissive = material->GetTransmittance() != BLACK;
     save = save & !((material->GetDiffuse(intersection) == BLACK) & ((material->GetSpecular() != BLACK) | (material->GetTransmittance() != BLACK)));
     if (save)
     {
         mCausticsPhotonMap.Store(intersection, Photon(lightRay));
     }
-    else if (causticSurface)
+    else if (transmissive | specular)
     {
-        // TODO: Right now it considers only transparent surfaces
-        LightRay refracted = nearestShape->Refract(lightRay, intersection, nearestShape->GetVisibleNormal(intersection, lightRay));
-        ColoredLightRay refractedRay(intersection, refracted.GetDirection(),
-                lightRay.GetColor() * material->GetTransmittance() / material->GetTransmittance().MeanRGB());
-        CausticInteraction(refractedRay, true);
+        bool refract = transmissive;
+        if (specular & transmissive)
+        {
+            float roulette = GetRandomValue();
+            float specularComponent = material->GetSpecular().MeanRGB();
+            float transmissiveComponent = material->GetTransmittance().MeanRGB();
+            if (roulette < specularComponent / (specularComponent + transmissiveComponent)) refract = false;
+        }
+        ColoredLightRay nextRay;
+        if (refract)
+        {
+            LightRay refracted = nearestShape->Refract(lightRay, intersection, nearestShape->GetVisibleNormal(intersection, lightRay));
+            nextRay = ColoredLightRay(intersection, refracted.GetDirection(),
+                    lightRay.GetColor() * material->GetTransmittance() / material->GetTransmittance().MeanRGB());
+        }
+        else
+        {
+            Vect reflected = nearestShape->Reflect(lightRay.GetDirection(), nearestShape->GetVisibleNormal(intersection, lightRay));
+            nextRay = ColoredLightRay(intersection, reflected,
+                    lightRay.GetColor() * material->GetTransmittance() / material->GetTransmittance().MeanRGB());
+        }
+        CausticInteraction(nextRay, true);
     }
 }
 
