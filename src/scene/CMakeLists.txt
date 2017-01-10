@@ -1,8 +1,10 @@
 set(SOURCE_FILES
+        participativeMedia.cpp
         scene.cpp
         )
 
 set(HEADER_FILES
+        ${PROJECT_SOURCE_DIR}/include/scene/participativeMedia.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/scene.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/sceneSamples.hpp)
 
