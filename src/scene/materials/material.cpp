@@ -1,10 +1,10 @@
-/* ---------------------------------------------------------------------------
-** material.cpp
-** Implementation for Material class.
-**
-** Author: Miguel Jorge Galindo Ramos, NIA: 679954
-**         Santiago Gil Begué, NIA: 683482
-** -------------------------------------------------------------------------*/
+/** ---------------------------------------------------------------------------
+ ** material.cpp
+ ** Implementation for Material class.
+ **
+ ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
+ **         Santiago Gil Begué, NIA: 683482
+ ** -------------------------------------------------------------------------*/
 
 #include <material.hpp>
 #include <math.h>
@@ -16,7 +16,12 @@ Material::Material(const Color diffuse, const Color specular,
                    const Color transmittance)
 : mKd(diffuse), mKs(specular), mKr(reflectance),
   mKt(transmittance), mShininess(shininess)
-{}
+{
+    if (diffuse.GetR() + specular.GetR() > 0.95f or
+        diffuse.GetG() + specular.GetG() > 0.95f or
+        diffuse.GetB() + specular.GetB() > 0.95f)
+        throw std::invalid_argument("Material values exceed the conservative maximum of 0.95 for Kd and Ks.");
+}
 
 Color Material::PhongBRDF(const Vect &seenFrom, const Vect &light,
                           const Vect &normal, const Point &point) const

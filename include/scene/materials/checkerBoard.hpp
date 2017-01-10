@@ -41,10 +41,10 @@ public:
      * @param squareSize Size of the squares of the pattern.
      * @param color1 One of the Colors in the pattern.
      * @param color2 The other color in the pattern.
-     * @param specular Specular value for this material.
+     * @param reflective Specular value for this material.
      * @return New CheckerBoard material.
      */
-    CheckerBoard(const float squareSize, Color color1, Color color2, Color specular);
+    CheckerBoard(const float squareSize, Color color1, Color color2, Color reflective);
 
     /**
      * @return This material's color at the given point. Depends on the point's values relative to the world's axis

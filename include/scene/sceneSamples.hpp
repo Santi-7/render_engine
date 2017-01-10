@@ -1,10 +1,10 @@
-/* ---------------------------------------------------------------------------
-** sceneSamples.hpp
-** Contains functions that return hardcoded scenes.
-**
-** Author: Miguel Jorge Galindo Ramos, NIA: 679954
-**         Santiago Gil Begué, NIA: 683482
-** -------------------------------------------------------------------------*/
+/** ---------------------------------------------------------------------------
+ ** sceneSamples.hpp
+ ** Contains functions that return hardcoded scenes.
+ **
+ ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
+ **         Santiago Gil Begué, NIA: 683482
+ ** -------------------------------------------------------------------------*/
 #ifndef SCENE_SAMPLES
 #define SCENE_SAMPLES
 
@@ -46,7 +46,7 @@ Scene CornellBox()
     // Two spheres inside the box.
     Sphere yellowSphere(Sphere(Point(-0.45f, 0.1, 0.4f), 0.25f));
     Sphere purpleSphere(Sphere(Point(0.45f, 0.1, 0.4f), 0.25f));
-    yellowSphere.SetMaterial(make_shared<Material>(Material(YELLOW, GRAY, 1.5f, BLACK, BLACK)));
+    yellowSphere.SetMaterial(make_shared<Material>(Material(YELLOW, GRAY/4, 1.5f, BLACK, BLACK)));
     purpleSphere.SetMaterial(make_shared<Material>(Material(PURPLE, BLACK, 0.0f, WHITE, BLACK)));
     cornellBox.AddShape(yellowSphere);
     cornellBox.AddShape(purpleSphere);
@@ -109,7 +109,7 @@ Scene SpecularLobes()
     scene.AddLightSource(PointLight(Point(0.3f, -0.3f, -0.2f), 1, WHITE));
 
     Sphere lobe(Point(0.0f, -0.85f, 0), 0.075f);
-    lobe.SetMaterial(Material(WHITE, GRAY/2, lobeSize, BLACK, BLACK));
+    lobe.SetMaterial(Material(WHITE, GRAY/4, lobeSize, BLACK, BLACK));
     scene.AddShape(lobe);
 
     CheckerBoard wallPattern(0.149f, BLACK, WHITE);
@@ -382,7 +382,7 @@ Scene RefractiveSphereTest()
 
 
     Sphere transparentSphere(Point(0,-0.5f,0), 0.1f);
-    transparentSphere.SetMaterial(Material(GRAY/10, BLACK, 0.0f, BLACK, WHITE));
+    transparentSphere.SetMaterial(Material(BLACK, BLACK, 0.0f, BLACK, WHITE));
     transparentSphere.SetRefractiveIndex(refractiveIndex);
     scene.AddShape(transparentSphere);
 
@@ -590,13 +590,13 @@ Scene Room()
     //////////////////////////////
 
     Box windowFrameTop(Rectangle(Vect(1,0,0), Point(-1, 0.7f, 0.85f), Point(-1, 0.75f, 0.05f)), 0.01f);
-    windowFrameTop.SetMaterial(make_shared<Material>(Material(GRAY, WHITE, 10.0f, GRAY/4, BLACK)));
+    windowFrameTop.SetMaterial(make_shared<Material>(Material(GRAY/4, WHITE, 10.0f, GRAY/4, BLACK)));
     Box windowFrameBottom(Rectangle(Vect(1,0,0), Point(-1, 0, 0.85f), Point(-1, 0.05f, 0.05f)), 0.01f);
-    windowFrameBottom.SetMaterial(make_shared<Material>(Material(GRAY, WHITE, 10.0f, GRAY/4, BLACK)));
+    windowFrameBottom.SetMaterial(make_shared<Material>(Material(GRAY/4, WHITE, 10.0f, GRAY/4, BLACK)));
     Box windowFrameLeft(Rectangle(Vect(1,0,0), Point(-1, 0, 0.85f), Point(-1, 0.75f, 0.8f)), 0.01f);
-    windowFrameLeft.SetMaterial(make_shared<Material>(Material(GRAY, WHITE, 10.0f, GRAY/4, BLACK)));
+    windowFrameLeft.SetMaterial(make_shared<Material>(Material(GRAY/4, WHITE, 10.0f, GRAY/4, BLACK)));
     Box windowFrameRight(Rectangle(Vect(1,0,0), Point(-1, 0, 0.1f), Point(-1, 0.75f, 0.05f)), 0.01f);
-    windowFrameRight.SetMaterial(make_shared<Material>(Material(GRAY, WHITE, 10.0f, GRAY/4, BLACK)));
+    windowFrameRight.SetMaterial(make_shared<Material>(Material(GRAY/4, WHITE, 10.0f, GRAY/4, BLACK)));
 
     scene.AddShape(windowFrameTop);
     scene.AddShape(windowFrameBottom);
@@ -783,7 +783,7 @@ Scene DirectVsIndirect()
     scene.AddShape(leftWall);
 
     Box midWall(Rectangle(Vect(1,0,0), Point(-0.0125f, -0.5f, 0.2), Point(-0.0125f, 0.0f, 1.0f)), 0.025f);
-    midWall.SetMaterial(Material((YELLOW+RED)/2, GRAY, 10.0f, BLACK, BLACK));
+    midWall.SetMaterial(Material((YELLOW+RED)/2, GRAY/4, 10.0f, BLACK, BLACK));
     scene.AddShape(midWall);
 
     TransformationMatrix dragonTM;

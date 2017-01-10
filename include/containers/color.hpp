@@ -186,7 +186,7 @@ private:
 
 /** Some color definitions to make life easier when making simple scenes. */
 static constexpr Color WHITE    (0.85f, 0.85f, 0.85f);
-static constexpr Color GRAY     (0.5f, 0.5f, 0.5f);
+static constexpr Color GRAY     (0.35f, 0.35f, 0.35f);
 static constexpr Color BLACK    (0.0f, 0.0f, 0.0f);
 static constexpr Color RED      (0.85f, 0.0f, 0.0f);
 static constexpr Color GREEN    (0.0f, 0.85f, 0.0f);

@@ -13,8 +13,8 @@ CheckerBoard::CheckerBoard(const float squareSize, Color color1, Color color2)
   mColor1(color1), mColor2(color2), mSquareSize(squareSize)
 {}
 
-CheckerBoard::CheckerBoard(const float squareSize, Color color1, Color color2, Color specular)
-: Material(color1, specular, 0.0f, BLACK, BLACK),
+CheckerBoard::CheckerBoard(const float squareSize, Color color1, Color color2, Color reflective)
+: Material(color1, BLACK, 0.0f, reflective, BLACK),
   mColor1(color1), mColor2(color2), mSquareSize(squareSize)
 {}
 
