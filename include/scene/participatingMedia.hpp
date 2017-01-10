@@ -1,30 +1,30 @@
 /** ---------------------------------------------------------------------------
- ** participativeMedia.hpp
- ** Represents a participative media (fog, smoke...) Only homogeneus and
- ** isotropic participative media are supported.
+ ** participatingMedia.hpp
+ ** Represents a participating media (fog, smoke...) Only homogeneus and
+ ** isotropic participating media are supported.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
  **         Santiago Gil Begué, NIA: 683482
  ** -------------------------------------------------------------------------*/
 
-#ifndef RAY_TRACER_PARTICIPATIVEMEDIA_HPP
-#define RAY_TRACER_PARTICIPATIVEMEDIA_HPP
+#ifndef RAY_TRACER_PARTICIPATINGMEDIA_HPP
+#define RAY_TRACER_PARTICIPATINGMEDIA_HPP
 
 #include <shape.hpp>
 
-class ParticipativeMedia
+class ParticipatingMedia
 {
 
 public:
 
     /**
-     * @param shape Shape that wraps the participative media. Note: It should be a shape
+     * @param shape Shape that wraps the participating media. Note: It should be a shape
      *  with volume, i.e. boxes and spheres.
      * @param scattering Scattering coefficient.
      * @param absorption Absorption coefficient.
-     * @return New ParticipativeMedia with given scattering and absorption coefficients.
+     * @return New ParticipatingMedia with given scattering and absorption coefficients.
      */
-    ParticipativeMedia(const Shape &shape, const float scattering, const float absorption);
+    ParticipatingMedia(const shared_ptr<Shape> &shape, const float scattering, const float absorption);
 
     /**
      * @param from Source point of the segment where transmittance is calculated..
@@ -35,7 +35,7 @@ public:
 
 private:
 
-    /** Shape that wraps the participate media.
+    /** Shape that wraps the participang media.
      * Note: It should be a shape with volume, i.e. boxes, spheres. */
     shared_ptr<Shape> mShape;
 
@@ -54,4 +54,4 @@ private:
     float mMeanFreePath;
 };
 
-#endif // RAY_TRACER_PARTICIPATIVEMEDIA_HPP
+#endif // RAY_TRACER_PARTICIPATINGMEDIA_HPP

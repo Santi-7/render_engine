@@ -18,6 +18,7 @@
 #include <kdtree.hpp>
 #include <lightSource.hpp>
 #include <memory>
+#include <participatingMedia.hpp>
 #include <shape.hpp>
 #include <vector>
 
@@ -65,10 +66,22 @@ public:
     }
 
     /**
+     * Adds a participating media to this scene.
+     *
+     * @tparam PM Class of the Participating Media.
+     * @param participatingMedia Participating media to add to the scene.
+     */
+    template <class PM>
+    void AddParticipatingMedia(const PM &participatingMedia)
+    {
+        mMedias.push_back(make_shared<PM>(participatingMedia));
+    }
+
+    /**
      * Sets this Scene's image width and height.
      *
-     * @param width -
-     * @param height -
+     * @param width Width pixels dimension of the virtual image.
+     * @param height Height pixels dimension of the virtual image.
      */
     void SetImageDimensions(unsigned int width, unsigned int height)
     {
@@ -78,7 +91,7 @@ public:
     /**
      * Sets the number of specular steps to take when rendering the image.
      *
-     * @param steps
+     * @param steps Number of specular steps.
      */
     void SetSpecularSteps(unsigned int steps)
     {
@@ -88,7 +101,7 @@ public:
     /**
      * Sets the number of photons to emit from every light source.
      *
-     * @param photonCount
+     * @param photonCount Number of emitted photons.
      */
     void SetEmitedPhotons(unsigned int photonCount)
     {
@@ -98,7 +111,7 @@ public:
     /**
      * Sets the number of photons to search in each intersection in the final ray tracing step.
      *
-     * @param kNeighbours
+     * @param kNeighbours Number of searched photons in the estimation phase.
      */
     void SetKNearestNeighbours(unsigned int kNeighbours)
     {
@@ -147,6 +160,9 @@ private:
 
     /** List of shapes in the scene. */
     vector<shared_ptr<Shape>> mShapes;
+
+    /** List of participating medias in the scene. */
+    vector<shared_ptr<ParticipatingMedia>> mMedias;
 
     /** Main indirect light photon map. */
     KDTree mDiffusePhotonMap;
