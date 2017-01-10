@@ -24,3 +24,8 @@ float ParticipatingMedia::GetTransmittance(const Point &from, const Point &to) c
 {
     return exp(-mKt * from.Distance(to));
 }
+
+bool ParticipatingMedia::IsInside(const Point &point) const
+{
+    return mShape->IsInside(point);
+}

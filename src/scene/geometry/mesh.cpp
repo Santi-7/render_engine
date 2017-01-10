@@ -420,6 +420,11 @@ float Mesh::IntersectBound(const LightRay &lightRay) const
     return mBoundingShape->Intersect(lightRay);
 }
 
+bool Mesh::IsInside(const Point &point) const
+{
+    throw 1;
+}
+
 Vect Mesh::GetNormal(const Point &point) const
 {
     throw 1;

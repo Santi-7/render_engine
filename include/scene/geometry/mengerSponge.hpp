@@ -45,9 +45,15 @@ public:
                    shared_ptr<Shape> thisShape) const;
 
     /**
+     * This method is not usable for this shape. Calling it will result in an exception. This is because a MengerSponge
+     * does not have volume, and no point can be inside it.
+     */
+    bool IsInside(const Point &point) const { throw 1; }
+
+    /**
      * This method is not usable for this shape since it makes no sense for it to have a normal.
      */
-    Vect GetNormal(const Point &point) const {throw 1;}
+    Vect GetNormal(const Point &point) const { throw 1; }
 
 private:
 

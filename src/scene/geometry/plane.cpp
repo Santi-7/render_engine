@@ -53,6 +53,11 @@ void Plane::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &
     }
 }
 
+bool Plane::IsInside(const Point &point) const
+{
+    throw 1;
+}
+
 Vect Plane::GetNormal() const
 {
     return mNormal;

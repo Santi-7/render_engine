@@ -130,6 +130,12 @@ public:
     }
 
     /**
+     * @param point Point to determine if it's inside this shape.
+     * @return true if the point is inside this shape, false otherwise.
+     */
+    virtual bool IsInside(const Point &point) const = 0;
+
+    /**
      * @param point Point of this shape which normal vector will be returned.
      * @return Vector normal to this shape at point.
      */

@@ -42,6 +42,12 @@ public:
                    shared_ptr<Shape> thisShape) const;
 
     /**
+     * @param point Point to determine if it's inside this Box.
+     * @return true if the point is inside this Box, false otherwise.
+     */
+    bool IsInside(const Point &point) const;
+
+    /**
      * This method is not usable for this shape since it makes no sense for it to have a normal.
      */
     Vect GetNormal(const Point &point) const;
@@ -70,7 +76,7 @@ public:
      * Sets the normal modifier of all the faces in this box to vmod.
      * @param vmod Normal modifier for all the faces in this box.
      */
-    void SetNormalModifier(shared_ptr<VectorModifier> vmod );
+    void SetNormalModifier(shared_ptr<VectorModifier> vmod);
 
 protected:
 
