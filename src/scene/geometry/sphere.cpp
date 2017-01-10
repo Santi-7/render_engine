@@ -58,6 +58,11 @@ void Sphere::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> 
     }
 }
 
+bool Sphere::IsInside(const Point &point) const
+{
+    return point.Distance(mCenter) <= mRadius;
+}
+
 Vect Sphere::GetNormal(const Point &point) const
 {
     return (mCenter - point) / mRadius;

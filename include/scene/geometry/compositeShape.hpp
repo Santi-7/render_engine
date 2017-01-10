@@ -49,7 +49,7 @@ public:
      * @return The distance closest from the lightRay's origin to any of this shape points. If the direction in the
      * lightRay is such that no intersection happens then returns FLT_MAX.
      */
-    virtual float Intersect(const LightRay &lightRay) const;
+    float Intersect(const LightRay &lightRay) const;
 
     /**
      * @param lightRay Contains the point from which an intersection with this shape will measured.
@@ -60,32 +60,29 @@ public:
      *  sub-shapes.
      * @param thisShape shared_ptr to this shape.
      */
-    virtual void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
-                           shared_ptr<Shape> thisShape) const;
+    void Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &nearestShape,
+                   shared_ptr<Shape> thisShape) const;
+
+    /**
+     * This method is not usable for this shape. Calling it will result in an exception. This is because a CompositeShape
+     * may not have volume, and no point can be inside it.
+     */
+    bool IsInside(const Point &point) const { throw 1; }
 
     /**
      * Don't use this, call it for each individual shape in this container
      */
-    Vect GetNormal(const Point &point) const
-    {
-        throw 1;
-    }
+    Vect GetNormal(const Point &point) const { throw 1; }
 
     /**
      * Don't use this, call it for each individual shape in this container
      */
-    void SetMaterial(const shared_ptr<Material> material)
-    {
-        throw 1;
-    }
+    void SetMaterial(const shared_ptr<Material> material) { throw 1; }
 
     /**
      * Don't use this, call it for each individual shape in this container
      */
-    void SetNormalModifier(shared_ptr<VectorModifier> vmod)
-    {
-        throw 1;
-    }
+    void SetNormalModifier(shared_ptr<VectorModifier> vmod) { throw 1; }
 
 private:
 

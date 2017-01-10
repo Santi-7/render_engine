@@ -41,10 +41,16 @@ public:
                    shared_ptr<Shape> thisShape) const;
 
     /**
+     * @param point Point to determine if it's inside this Sphere.
+     * @return true if the point is inside this Sphere, false otherwise.
+     */
+    bool IsInside(const Point &point) const;
+
+    /**
      * @param point Point at which the normal will be calculated.
      * @return Vector normal to this Sphere at point.
      */
-    virtual Vect GetNormal(const Point &point) const;
+    Vect GetNormal(const Point &point) const;
 
     /**
      * @param radius Radius of the sphere.

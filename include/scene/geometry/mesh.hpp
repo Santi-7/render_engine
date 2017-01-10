@@ -104,6 +104,12 @@ public:
     float IntersectBound(const LightRay &lightRay) const;
 
     /**
+     * This method is not usable for this shape. Calling it will result in an exception. This is because a Mesh
+     * may not have volume, and no point can be inside it.
+     */
+    bool IsInside(const Point &point) const;
+
+    /**
      * This method is not usable for this shape. Calling it will result in an exception. This is because a Mesh's normal
      * is undefined, all intersections will actually happen with the triangles contained within.
      */

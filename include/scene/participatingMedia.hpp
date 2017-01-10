@@ -40,6 +40,12 @@ public:
      */
     float GetTransmittance(const Point &from, const Point &to) const;
 
+    /**
+     * @param point Point to determine if it's inside this media.
+     * @return true if the point is inside this media, false otherwise.
+     */
+    bool IsInside(const Point &point) const;
+
 private:
 
     /** Shape that wraps the participang media.

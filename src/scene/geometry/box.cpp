@@ -52,6 +52,17 @@ void Box::Intersect(const LightRay &lightRay, float &minT, shared_ptr<Shape> &ne
     }
 }
 
+bool Box::IsInside(const Point &point) const
+{
+    // Faces 0 and 1 are parallel (base and top faces).
+    LightRay ray(point, mFaces[0]->GetNormal());
+    bool t0 = mFaces[0]->Intersect(ray) != FLT_MAX;
+    bool t1 = mFaces[1]->Intersect(ray) != FLT_MAX;
+    // Point is inside the box when a ray from it to both parallel faces intersects
+    // only and at least (exactly) with one of them.
+    return t0 != t1;
+}
+
 Vect Box::GetNormal(const Point &point) const
 {
     throw 1;
@@ -60,15 +71,11 @@ Vect Box::GetNormal(const Point &point) const
 void Box::SetMaterial(shared_ptr<Material> material)
 {
     for (const shared_ptr<Rectangle> &face : mFaces)
-    {
         face->SetMaterial(material);
-    }
 }
 
 void Box::SetNormalModifier(shared_ptr<VectorModifier> vmod)
 {
     for (const shared_ptr<Rectangle> &face : mFaces)
-    {
         face->SetNormalModifier(vmod);
-    }
 }
