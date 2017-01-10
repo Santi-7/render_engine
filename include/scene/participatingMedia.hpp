@@ -27,6 +27,13 @@ public:
     ParticipatingMedia(const shared_ptr<Shape> &shape, const float scattering, const float absorption);
 
     /**
+     * @param lightRay Contains the point from which an intersection with this media will measured.
+     * @param minT Minimum distance from the lightRay's origin to any media so far. If this media is closer to the origin
+     *  than this value then it will be updated to that distance.
+     */
+    void Intersect(const LightRay &lightRay, float &minT) const;
+
+    /**
      * @param from Source point of the segment where transmittance is calculated..
      * @param to Destination point of the segment where transmittance is calculated.
      * @return Transmittance from the point [from] to the point [to] in this media.
