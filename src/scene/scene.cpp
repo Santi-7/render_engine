@@ -176,7 +176,6 @@ void Scene::EmitPhotons()
     }
     mDiffusePhotonMap.Balance();
     mCausticsPhotonMap.Balance();
-    mCausticsPhotonMap.DumpToFile("first_caustics.txt");
 }
 
 void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
