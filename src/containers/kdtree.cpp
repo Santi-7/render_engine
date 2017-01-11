@@ -320,4 +320,5 @@ void KDTree::DumpToFile(const string& filename)
         float z = p.GetPoint().GetZ();
         out << x << ' ' << y << ' ' << z << '\n';
     }
+    out.close();
 }
