@@ -218,7 +218,7 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
         // We are inside the media, and then we are exiting it.
         if (isInside)
         {
-            // TODO: Multiply by transmittance min(nextInteraction, minT_Shape).
+            // TODO: Multiply by transmittance minT_Media - nextInteraction.
             ;
         }
         GeometryInteraction(lightRay, nearestShape, lightRay.GetPoint(minT_Shape), save);
