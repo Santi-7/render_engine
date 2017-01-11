@@ -47,12 +47,6 @@ public:
     float Distance(const Point &to) const;
 
     /**
-     * @param to LightRay which minimum distance (the point's projection) with respect to this point will be returned.
-     * @return Absolute minimum distance from this point to the LightRay [to].
-     */
-    float Distance(const LightRay &to) const;
-
-    /**
      * @param to Point to compare in wich dimension this point is further.
      * @return the dimension in which this point and [to] are furthest.
      */

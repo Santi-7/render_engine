@@ -25,13 +25,6 @@ float Point::Distance(const Point &to) const
     return (*this - to).Abs();
 }
 
-float Point::Distance(const LightRay &to) const
-{
-    Plane plane(*this, to.GetDirection());
-    Point intersection = to.GetPoint(plane.Intersect(to));
-    return intersection.Distance(*this);
-}
-
 Dimension Point::LongestDimension(const Point &to) const
 {
     Dimension longestDimension = X;

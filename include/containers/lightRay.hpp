@@ -37,6 +37,12 @@ public:
     LightRay(const Point &source, const Vect &direction);
 
     /**
+     * @param to Point which minimum distance (the point's projection) with respect to this LightRay will be returned.
+     * @return Absolute minimum distance from the point [to] to this LightRay.
+     */
+    float Distance(const Point &to) const;
+
+    /**
      * @param t Distance from the origin.
      * @return New point at distance t from this lightRay's origin in its direction.
      */
