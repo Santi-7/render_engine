@@ -152,7 +152,7 @@ void Scene::EmitPhotons()
                                          light->GetBaseColor() / mPhotonsEmitted);
                 /* The photons directly emitted from the light sources (direct light)
                  * are not saved in the photon map. */
-                MediaInteraction(lightRay, false);
+                PhotonInteraction(lightRay, false);
             }
 
             // [mPhotonsEmitted] photons uniformly emitted.
@@ -179,7 +179,7 @@ void Scene::EmitPhotons()
     mMediaPhotonMap.Balance();
 }
 
-void Scene::MediaInteraction(const ColoredLightRay &lightRay, bool save)
+void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
 {
     // Distance to the nearest shape and the nearest media.
     float minT_Shape = FLT_MAX, minT_Media = FLT_MAX;
@@ -221,7 +221,7 @@ void Scene::MediaInteraction(const ColoredLightRay &lightRay, bool save)
             // TODO: Multiply by transmittance min(nextInteraction, minT_Shape).
             ;
         }
-        return GeometryInteraction(lightRay, nearestShape, lightRay.GetPoint(minT_Shape), save);
+        GeometryInteraction(lightRay, nearestShape, lightRay.GetPoint(minT_Shape), save);
     }
     // The media is closer than the shape.
     else  // minT_Shape > minT_Media
@@ -230,14 +230,10 @@ void Scene::MediaInteraction(const ColoredLightRay &lightRay, bool save)
         Point interaction;
         if (isInside) interaction = lightRay.GetPoint(nextInteraction);
         else interaction = lightRay.GetPoint(minT_Media);
-        // TODO: Multiply by transmittance nextInteraction.
-        // Save the photon in the media photon map.
-        if (save) mMediaPhotonMap.Store(interaction, Photon(lightRay));
 
-        // Russian Roulette: follow the photon trajectory if it's still living.
-        ColoredLightRay bouncedRay;
-        bool isAlive = nearestMedia->RussianRoulette(lightRay, interaction, bouncedRay);
-        if (isAlive) MediaInteraction(bouncedRay, true);
+        // TODO: Multiply by transmittance nextInteraction.
+
+        MediaInteraction(lightRay, nearestMedia, interaction, save);
     }
 }
 
@@ -253,7 +249,19 @@ void Scene::GeometryInteraction(const ColoredLightRay &lightRay, const shared_pt
     // Russian Roulette: follow the photon trajectory if it's still living.
     ColoredLightRay bouncedRay;
     bool isAlive = shape->RussianRoulette(lightRay, intersection, bouncedRay);
-    if (isAlive) MediaInteraction(bouncedRay, true);
+    if (isAlive) PhotonInteraction(bouncedRay, true);
+}
+
+void Scene::MediaInteraction(const ColoredLightRay &lightRay, const shared_ptr<ParticipatingMedia> &media,
+                             const Point &interaction, bool save)
+{
+    // Save the photon in the media photon map.
+    if (save) mMediaPhotonMap.Store(interaction, Photon(lightRay));
+
+    // Russian Roulette: follow the photon trajectory if it's still living.
+    ColoredLightRay bouncedRay;
+    bool isAlive = media->RussianRoulette(lightRay, interaction, bouncedRay);
+    if (isAlive) PhotonInteraction(bouncedRay, true);
 }
 
 // TODO: CausictInteraction should interact before with the media.

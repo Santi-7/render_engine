@@ -185,13 +185,13 @@ private:
                           const shared_ptr<Image> image, const bool printProgress) const;
 
     /**
-     * Basic path tracing interaction between photons and the scene media.
+     * Basic path tracing interaction between photons and the scene.
      *
      * @param lightRay Direction and position from which the photon is thrown, and color of this photon.
      * @param save true if the next intersection between the lightRay and a shape in the scene will be stored in a
      *      KDTree.
      */
-    void MediaInteraction(const ColoredLightRay &lightRay, bool save);
+    void PhotonInteraction(const ColoredLightRay &lightRay, bool save);
 
     /**
      * Basic path tracing interaction between photons and the scene geometry.
@@ -203,6 +203,17 @@ private:
      */
     void GeometryInteraction(const ColoredLightRay &lightRay, const shared_ptr<Shape> &shape,
                              const Point &intersection, bool save);
+
+    /**
+     * Basic path tracing interaction between photons and the scene media.
+     *
+     * @param lightRay Direction and position from which the photon is thrown, and color of this photon.
+     * @param media Media with which the photon is interacting.
+     * @param interaction Point where the lightRay interacts with the media.
+     * @param save true if interaction between the lightRay and the media will be stored in the media KDTree.
+     */
+    void MediaInteraction(const ColoredLightRay &lightRay, const shared_ptr<ParticipatingMedia> &media,
+                          const Point &interaction, bool save);
 
     /**
      * Path tracing for photons to store in the caustic map. If save is false and the first intersection has a non-refractive
