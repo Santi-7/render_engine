@@ -184,8 +184,8 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
     // Distance to the nearest shape and the nearest media.
     float minT_Shape = FLT_MAX, minT_Media = FLT_MAX;
     // Nearest shape and media intersected with the ray of light.
-    shared_ptr<Shape> nearestShape;
-    shared_ptr<ParticipatingMedia> nearestMedia;
+    shared_ptr<Shape> nearestShape = nullptr;
+    shared_ptr<ParticipatingMedia> nearestMedia = nullptr;
 
     /* Intersect with all the shapes in the
      * scene to know which one is the nearest. */
