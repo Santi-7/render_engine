@@ -490,8 +490,8 @@ Color Scene::GeometryEstimateRadiance(const Point &point, const Vect &normal,
 Color Scene::MediaEstimateRadiance(const Point &point, const LightRay &in) const
 {
     Color retVal = BLACK;
-    // Check all photons saved in the media KDTree.
-    for (unsigned int i = 0; i < mMediaPhotonMap.Size(); ++i)
+    // Check all photons saved in the media KDTree. Photon 0 is not useful.
+    for (unsigned int i = 1; i < mMediaPhotonMap.Size(); ++i)
     {
         Node photon = mMediaPhotonMap[i];
         // This photon is outside the beam.
@@ -506,8 +506,8 @@ Color Scene::MediaEstimateRadiance(const Point &point, const LightRay &in) const
 Color Scene::MediaEstimateRadiance(const LightRay &in) const
 {
     Color retVal = BLACK;
-    // Check all photons saved in the media KDTree.
-    for (unsigned int i = 0; i < mMediaPhotonMap.Size(); ++i)
+    // Check all photons saved in the media KDTree. Photon 0 is not useful.
+    for (unsigned int i = 1; i < mMediaPhotonMap.Size(); ++i)
     {
         Node photon = mMediaPhotonMap[i];
         // This photon is outside the beam.
