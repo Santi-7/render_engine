@@ -868,15 +868,15 @@ Scene Caustic()
     return causticBox;
 }
 
-Scene ParticipatingMedia()
+Scene BasicMediaScene()
 {
     Scene scene;
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,-0.9f,-0.7f), PI/3, 1.0, 700, 500));
 
     scene.AddLightSource(PointLight(Point(0.0f, 0.0f, -0.2f), 1.5f, WHITE));
 
-    ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 0.3f)), 10, 10);
-    scene.AddParticipatingMedia(fog);
+    //ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 0.3f)), 10, 10);
+    //scene.AddParticipatingMedia(fog);
 
     CheckerBoard wallPattern(0.149f, BLACK, WHITE);
     Plane backWall(Point(0, 0, 0.5), Vect(0, 0, -1));
