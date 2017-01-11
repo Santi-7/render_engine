@@ -230,12 +230,9 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
     // The media is closer than the shape.
     else  // minT_Shape > minT_Media
     {
-        // Interaction point.
-        Point interaction = lightRay.GetPoint(minT_Media);
-
         // TODO: Multiply by transmittance nearestMedia->GetNextInteraction(). (If we don't randomize it, else save it in a variable)
 
-        MediaInteraction(lightRay, nearestMedia, interaction, save);
+        MediaInteraction(lightRay, nearestMedia, lightRay.GetPoint(minT_Media), save);
     }
 }
 
