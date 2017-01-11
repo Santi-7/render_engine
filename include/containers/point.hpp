@@ -42,9 +42,15 @@ public:
 
     /**
      * @param to Point which distance with respect to this one will be returned.
-     * @return Absolute distance from this point to the point to.
+     * @return Absolute distance from this point to the point [to].
      */
     float Distance(const Point &to) const;
+
+    /**
+     * @param to LightRay which minimum distance (the point's projection) with respect to this point will be returned.
+     * @return Absolute minimum distance from this point to the LightRay [to].
+     */
+    float Distance(const LightRay &to) const;
 
     /**
      * @param to Point to compare in wich dimension this point is further.
