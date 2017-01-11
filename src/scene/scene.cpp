@@ -317,7 +317,6 @@ void Scene::CausticInteraction(const ColoredLightRay& lightRay, bool save)
     }
 }
 
-
 Color Scene::GetLightRayColor(const LightRay &lightRay, const int specularSteps) const
 {
     /* The number of specular and indirect steps has been reached.
