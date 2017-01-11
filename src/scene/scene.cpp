@@ -201,7 +201,7 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
         if (minT_Media < previousMinT) nearestMedia = mMedia.at(i);
     }
 
-    // No shape and no media has been found.
+    // No shape and no media have been found.
     if ((minT_Shape == FLT_MAX) & (minT_Media == FLT_MAX)) return;
 
     // Is the ray of light inside the media?
