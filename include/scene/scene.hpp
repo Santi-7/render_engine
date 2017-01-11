@@ -152,6 +152,9 @@ private:
     /** Number of individual photons that will be searched as the nearest neighbours. */
     unsigned int mPhotonsNeighbours = 5000;
 
+    /** Radius of the beam used in the radiance estimation. */
+    float mBeamRadius = 0.01f;
+
     /** The scene's camera. */
     unique_ptr<Camera> mCamera;
 
@@ -189,7 +192,7 @@ private:
      *
      * @param lightRay Direction and position from which the photon is thrown, and color of this photon.
      * @param save true if the next intersection between the lightRay and a shape in the scene will be stored in a
-     *      KDTree.
+     *  KDTree.
      */
     void PhotonInteraction(const ColoredLightRay &lightRay, const bool save);
 
@@ -266,8 +269,27 @@ private:
      * @param shape that defines the light distribution with its BRDF.
      * @return a color in relation to the estimated diffuse light reached in the point [point] of the shape [shape].
      */
-    Color EstimateRadiance(const Point &point, const Vect &normal,
-                           const LightRay &in, const Shape &shape) const;
+    Color GeometryEstimateRadiance(const Point &point, const Vect &normal,
+                                   const LightRay &in, const Shape &shape) const;
+
+    /**
+     * @param point where the ray of light will intersect the nearest shape of the scene.
+     * @param in Ray of light whose radiance is being estimated in the media.
+     * @return a color in relation to the estimated light of the ray of light [in] that pass through the media
+     *  in the scene before intersecting with a shape in the point [point].
+     */
+    Color MediaEstimateRadiance(const Point &point, const LightRay &in) const;
+
+    /**
+     * It has the same goal than previous method, but avoiding the check of the calculation of the contribution of only
+     * those photons that are closer than the intersection [point]. In this method, there is no intersection, and
+     * all the photons are taking into account. Efficiency!
+     *
+     * @param in Ray of light whose radiance is being estimated in the media.
+     * @return a color in relation to the estimated light of the ray of light [in] that pass through the media
+     *  in the scene.
+     */
+    Color MediaEstimateRadiance(const LightRay &in) const;
 
     /**
      * @param point where the gaussian filter is applied.

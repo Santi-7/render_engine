@@ -335,8 +335,9 @@ Color Scene::GetLightRayColor(const LightRay &lightRay, const int specularSteps)
     for (unsigned int i = 0; i < mShapes.size(); ++i)
         mShapes.at(i)->Intersect(lightRay, minT, nearestShape, mShapes.at(i));
 
+    // TODO: I am taking into account that when no shape is intersected, the media can contribute to the radiance. Ask Adolfo.
     // No shape has been found.
-    if (minT == FLT_MAX) return BLACK;
+    if (minT == FLT_MAX) return MediaEstimateRadiance(lightRay);
 
     // Intersection point with the nearest shape found.
     Point intersection(lightRay.GetPoint(minT));
@@ -348,7 +349,8 @@ Color Scene::GetLightRayColor(const LightRay &lightRay, const int specularSteps)
     // Light is additive.
     return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay, *nearestShape, specularSteps) +
-           EstimateRadiance(intersection, normal, lightRay, *nearestShape) +
+           GeometryEstimateRadiance(intersection, normal, lightRay, *nearestShape) +
+           MediaEstimateRadiance(intersection, lightRay) +
            emittedLight;
 }
 
@@ -422,8 +424,8 @@ Color Scene::SpecularLight(const Point &point, const Vect &normal,
     return retVal;
 }
 
-Color Scene::EstimateRadiance(const Point &point, const Vect &normal,
-                              const LightRay &in, const Shape &shape) const
+Color Scene::GeometryEstimateRadiance(const Point &point, const Vect &normal,
+                                      const LightRay &in, const Shape &shape) const
 {
     if ((shape.GetMaterial()->GetDiffuse(point) == BLACK) &
         (shape.GetMaterial()->GetSpecular() == BLACK))
@@ -484,6 +486,36 @@ Color Scene::EstimateRadiance(const Point &point, const Vect &normal,
 
     // Divide the radiance between the sphere volume that wraps the nearest photons.
     return retVal / Sphere::Volume(radius) + causticRetVal / Sphere::Volume(causticRadius);
+}
+
+Color Scene::MediaEstimateRadiance(const Point &point, const LightRay &in) const
+{
+    Color retVal = BLACK;
+    // Check all photons saved in the media KDTree.
+    for (unsigned int i = 0; i < mMediaPhotonMap.Size(); ++i)
+    {
+        Node photon = mMediaPhotonMap[i];
+        // This photon is outside the beam.
+        if (in.Distance(photon.GetPoint()) > mBeamRadius) continue;
+        // This photon is behind the intersection with the nearest shape at [point].
+        if ((point - photon.GetPoint()).DotProduct(in.GetDirection()) < 0) continue;
+        // TODO: Add this photon contribution.
+    }
+    return retVal;
+}
+
+Color Scene::MediaEstimateRadiance(const LightRay &in) const
+{
+    Color retVal = BLACK;
+    // Check all photons saved in the media KDTree.
+    for (unsigned int i = 0; i < mMediaPhotonMap.Size(); ++i)
+    {
+        Node photon = mMediaPhotonMap[i];
+        // This photon is outside the beam.
+        if (in.Distance(photon.GetPoint()) > mBeamRadius) continue;
+        // TODO: Add this photon contribution.
+    }
+    return retVal;
 }
 
 // Alpha and beta values taken from https://graphics.stanford.edu/courses/cs348b-00/course8.pdf
