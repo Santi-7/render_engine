@@ -46,6 +46,16 @@ public:
      */
     bool IsInside(const Point &point) const;
 
+    /**
+     * @param in LightRay that is directed inside the media.
+     * @param point Point in which the LightRay interacts with the media (mean-free path).
+     * @param out When the return value of this method is true this value is updated to the LightRay result
+     *  of the interaction with the media at the given point.
+     * @return True if a new LightRay comes out of the interaction with this media, false otherwise, when
+     *  the LightRay is absorbed.
+     */
+    bool RussianRoulette(const ColoredLightRay &in, const Point &point, ColoredLightRay &out) const;
+
 private:
 
     /** Shape that wraps the participang media.
@@ -65,6 +75,9 @@ private:
 
     /** Mean free path of the media. */
     float mMeanFreePath;
+
+    /** Albedo of the media. */
+    float mAlbedo;
 };
 
 #endif // RAY_TRACER_PARTICIPATINGMEDIA_HPP

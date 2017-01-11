@@ -91,7 +91,7 @@ public:
      * @param in LightRay that is directed at the shape.
      * @param point Point in which the LightRay intersects the shape.
      * @param out When the return value of this method is true this value is updated to the LightRay coming out
-     *      of the shape at the given point.
+     *  of the shape at the given point.
      * @return True if a new LightRay comes out of the intersection with this shape.
      */
     bool RussianRoulette(const ColoredLightRay &in, const Point &point, ColoredLightRay &out) const

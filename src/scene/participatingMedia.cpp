@@ -11,7 +11,8 @@
 ParticipatingMedia::ParticipatingMedia(const shared_ptr<Shape> &shape,
                                        const float scattering, const float absorption)
 : mShape(shape), mKs(scattering), mKa(absorption),
-  mKt(scattering + absorption), mMeanFreePath(1 / mKt)
+  mKt(scattering + absorption), mMeanFreePath(1 / mKt),
+  mAlbedo(mKs / mKt)
 {}
 
 void ParticipatingMedia::Intersect(const LightRay &lightRay, float &minT) const
@@ -28,4 +29,31 @@ float ParticipatingMedia::GetTransmittance(const Point &from, const Point &to) c
 bool ParticipatingMedia::IsInside(const Point &point) const
 {
     return mShape->IsInside(point);
+}
+
+bool ParticipatingMedia::RussianRoulette(const ColoredLightRay &in,
+                                         const Point &point, ColoredLightRay &out) const
+{
+    float random = GetRandomValue();
+    // The event is scattering;
+    if (random < mAlbedo)
+    {
+        /* Transformation matrix from the local coordinates with [point] as the
+         * reference point, and the incoming lightray as the z axis, to global coordinates. */
+        PoseTransformationMatrix fromLocalToGlobal =
+                PoseTransformationMatrix::GetPoseTransformation(point, in.GetDirection());
+        // Generate random angles in the sphere.
+        float inclination, azimuth;
+        tie(inclination, azimuth) = UniformSphereSampling();
+        // Direction of the ray of light expressed in local coordinates.
+        Vect localRay(sin(inclination) * cos(azimuth),
+                      sin(inclination) * sin(azimuth),
+                      cos(inclination));
+        // Transform the ray of light to global coordinates.
+        // TODO: Check what color to return.
+        out = ColoredLightRay(point, fromLocalToGlobal * localRay, in.GetColor());
+        return true;
+    }
+    // The event is absorption;
+    else return false;
 }
