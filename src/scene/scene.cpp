@@ -179,7 +179,7 @@ void Scene::EmitPhotons()
     mMediaPhotonMap.Balance();
 }
 
-void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
+void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
 {
     // Distance to the nearest shape and the nearest media.
     float minT_Shape = FLT_MAX, minT_Media = FLT_MAX;
@@ -252,7 +252,7 @@ void Scene::GeometryInteraction(const ColoredLightRay &lightRay, const shared_pt
 }
 
 void Scene::MediaInteraction(const ColoredLightRay &lightRay, const shared_ptr<ParticipatingMedia> &media,
-                             const Point &interaction, bool save)
+                             const Point &interaction, const bool save)
 {
     // Save the photon in the media photon map.
     if (save) mMediaPhotonMap.Store(interaction, Photon(lightRay));

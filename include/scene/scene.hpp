@@ -191,7 +191,7 @@ private:
      * @param save true if the next intersection between the lightRay and a shape in the scene will be stored in a
      *      KDTree.
      */
-    void PhotonInteraction(const ColoredLightRay &lightRay, bool save);
+    void PhotonInteraction(const ColoredLightRay &lightRay, const bool save);
 
     /**
      * Basic path tracing interaction between photons and the scene geometry.
@@ -213,7 +213,7 @@ private:
      * @param save true if interaction between the lightRay and the media will be stored in the media KDTree.
      */
     void MediaInteraction(const ColoredLightRay &lightRay, const shared_ptr<ParticipatingMedia> &media,
-                          const Point &interaction, bool save);
+                          const Point &interaction, const bool save);
 
     /**
      * Path tracing for photons to store in the caustic map. If save is false and the first intersection has a non-refractive
