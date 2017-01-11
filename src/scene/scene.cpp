@@ -284,17 +284,17 @@ void Scene::CausticInteraction(const ColoredLightRay& lightRay, bool save)
     Point intersection(lightRay.GetPoint(minT));
 
     auto material = nearestShape->GetMaterial();
-    bool specular = material->GetSpecular() != BLACK;
+    bool reflecting = material->GetReflectance() != BLACK;
     bool transmissive = material->GetTransmittance() != BLACK;
     save = save & !((material->GetDiffuse(intersection) == BLACK) & ((material->GetSpecular() != BLACK) | (material->GetTransmittance() != BLACK)));
     if (save)
     {
         mCausticsPhotonMap.Store(intersection, Photon(lightRay));
     }
-    else if (transmissive | specular)
+    else if (transmissive | reflecting)
     {
         bool refract = transmissive;
-        if (specular & transmissive)
+        if (reflecting & transmissive)
         {
             float roulette = GetRandomValue();
             float specularComponent = material->GetSpecular().MeanRGB();
@@ -312,7 +312,7 @@ void Scene::CausticInteraction(const ColoredLightRay& lightRay, bool save)
         {
             Vect reflected = nearestShape->Reflect(lightRay.GetDirection(), nearestShape->GetVisibleNormal(intersection, lightRay));
             nextRay = ColoredLightRay(intersection, reflected,
-                    lightRay.GetColor() * material->GetTransmittance() / material->GetTransmittance().MeanRGB());
+                    lightRay.GetColor() * material->GetReflectance() / material->GetReflectance().MeanRGB());
         }
         CausticInteraction(nextRay, true);
     }
