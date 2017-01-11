@@ -94,6 +94,7 @@ void InitializeSceneNames()
     SCENE_NAMES["water_sphere"] = &RefractiveSphereTest<2>;
     SCENE_NAMES["direct_vs_indirect"] = &DirectVsIndirect;
     SCENE_NAMES["caustic"] = &Caustic;
+    SCENE_NAMES["cornell_media"] = &CornellBoxWithMedia;
 }
 
 /**
