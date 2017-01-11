@@ -204,13 +204,17 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
     // No shape and no media has been found.
     if ((minT_Shape == FLT_MAX) & (minT_Media == FLT_MAX)) return;
 
-    // Next interaction with the media (mean-free path).
-    float nextInteraction = 0;
-    if (nearestMedia != nullptr) nextInteraction = nearestMedia->GetNextInteraction();
-    minT_Media += nextInteraction;
-
     // Is the ray of light inside the media?
-    bool isInside = (nearestMedia != nullptr) && nearestMedia->IsInside(lightRay.GetSource());
+    bool isInside = false;
+    // There is at least one participating media.
+    if (nearestMedia != nullptr)
+    {
+        isInside = nearestMedia->IsInside(lightRay.GetSource());
+        // Next mean-free path
+        if (isInside) minT_Media = nearestMedia->GetNextInteraction();
+        // Next mean-fre path after going into the media.
+        else minT_Media += nearestMedia->GetNextInteraction();
+    }
 
     // The shape is closer than the media, intersect directly with the shape.
     if (minT_Shape <= minT_Media)
@@ -218,7 +222,7 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
         // We are inside the media, and then we are exiting it.
         if (isInside)
         {
-            // TODO: Multiply by transmittance minT_Media - nextInteraction.
+            // TODO: Multiply by transmittance minT_Shape
             ;
         }
         GeometryInteraction(lightRay, nearestShape, lightRay.GetPoint(minT_Shape), save);
@@ -226,12 +230,10 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
     // The media is closer than the shape.
     else  // minT_Shape > minT_Media
     {
-        // Interaction point (it depends if we are entering the media or we are already inside).
-        Point interaction;
-        if (isInside) interaction = lightRay.GetPoint(nextInteraction);
-        else interaction = lightRay.GetPoint(minT_Media);
+        // Interaction point.
+        Point interaction = lightRay.GetPoint(minT_Media);
 
-        // TODO: Multiply by transmittance nextInteraction.
+        // TODO: Multiply by transmittance nearestMedia->GetNextInteraction(). (If we don't randomize it, else save it in a variable)
 
         MediaInteraction(lightRay, nearestMedia, interaction, save);
     }
