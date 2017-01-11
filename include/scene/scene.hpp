@@ -74,7 +74,7 @@ public:
     template <class PM>
     void AddParticipatingMedia(const PM &participatingMedia)
     {
-        mMedias.push_back(make_shared<PM>(participatingMedia));
+        mMedia.push_back(make_shared<PM>(participatingMedia));
     }
 
     /**
@@ -161,8 +161,8 @@ private:
     /** List of shapes in the scene. */
     vector<shared_ptr<Shape>> mShapes;
 
-    /** List of participating medias in the scene. */
-    vector<shared_ptr<ParticipatingMedia>> mMedias;
+    /** List of participating media in the scene. */
+    vector<shared_ptr<ParticipatingMedia>> mMedia;
 
     /** Main indirect light photon map. */
     KDTree mDiffusePhotonMap;
@@ -170,8 +170,8 @@ private:
     /** Caustics exclusive photon map. */
     KDTree mCausticsPhotonMap;
 
-    /** Participating medias exclusive photon map. */
-    KDTree mMediasPhotonMap;
+    /** Participating media exclusive photon map. */
+    KDTree mMediaPhotonMap;
 
     /**
      * @param horizontalLines Lines which pixels will be trace and saved to the image.
@@ -185,13 +185,24 @@ private:
                           const shared_ptr<Image> image, const bool printProgress) const;
 
     /**
-     * Basic path tracing interaction between photons and the scene.
+     * Basic path tracing interaction between photons and the scene media.
      *
      * @param lightRay Direction and position from which the photon is thrown, and color of this photon.
      * @param save true if the next intersection between the lightRay and a shape in the scene will be stored in a
      *      KDTree.
      */
-    void PhotonInteraction(const ColoredLightRay &lightRay, bool save);
+    void MediaInteraction(const ColoredLightRay &lightRay, bool save);
+
+    /**
+     * Basic path tracing interaction between photons and the scene geometry.
+     *
+     * @param lightRay Direction and position from which the photon is thrown, and color of this photon.
+     * @param shape Shape intersected by the lightRay, and with which the photon is interacting.
+     * @param intersection Point where the lightRay intersects with the shape.
+     * @param save true if intersection between the lightRay and the shape will be stored in a KDTree.
+     */
+    void GeometryInteraction(const ColoredLightRay &lightRay, const shared_ptr<Shape> &shape,
+                             const Point &intersection, bool save);
 
     /**
      * Path tracing for photons to store in the caustic map. If save is false and the first intersection has a non-refractive

@@ -34,11 +34,16 @@ public:
     void Intersect(const LightRay &lightRay, float &minT) const;
 
     /**
-     * @param from Source point of the segment where transmittance is calculated..
-     * @param to Destination point of the segment where transmittance is calculated.
-     * @return Transmittance from the point [from] to the point [to] in this media.
+     * @param distance Distance though transmittance is calculated
+     * @return Transmittance through [distance] in this media.
      */
-    float GetTransmittance(const Point &from, const Point &to) const;
+    float GetTransmittance(const float distance) const;
+
+    /**
+     * TODO: Add doc.
+     * @return .
+     */
+    float GetNextInteraction() const;
 
     /**
      * @param point Point to determine if it's inside this media.

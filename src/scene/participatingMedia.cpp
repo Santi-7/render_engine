@@ -21,9 +21,15 @@ void ParticipatingMedia::Intersect(const LightRay &lightRay, float &minT) const
     return mShape->Intersect(lightRay, minT, patch, nullptr);
 }
 
-float ParticipatingMedia::GetTransmittance(const Point &from, const Point &to) const
+float ParticipatingMedia::GetTransmittance(const float distance) const
 {
-    return exp(-mKt * from.Distance(to));
+    return exp(-mKt * distance);
+}
+
+float ParticipatingMedia::GetNextInteraction() const
+{
+    // TODO: Make it random.
+    return mMeanFreePath;
 }
 
 bool ParticipatingMedia::IsInside(const Point &point) const

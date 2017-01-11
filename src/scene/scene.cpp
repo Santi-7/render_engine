@@ -152,7 +152,7 @@ void Scene::EmitPhotons()
                                          light->GetBaseColor() / mPhotonsEmitted);
                 /* The photons directly emitted from the light sources (direct light)
                  * are not saved in the photon map. */
-                PhotonInteraction(lightRay, false);
+                MediaInteraction(lightRay, false);
             }
 
             // [mPhotonsEmitted] photons uniformly emitted.
@@ -176,36 +176,87 @@ void Scene::EmitPhotons()
     }
     mDiffusePhotonMap.Balance();
     mCausticsPhotonMap.Balance();
+    mMediaPhotonMap.Balance();
 }
 
-void Scene::PhotonInteraction(const ColoredLightRay &lightRay, bool save)
+void Scene::MediaInteraction(const ColoredLightRay &lightRay, bool save)
 {
-    // Distance to the nearest shape.
-    float minT = FLT_MAX;
-    // Nearest shape intersected with the ray of light.
+    // Distance to the nearest shape and the nearest media.
+    float minT_Shape = FLT_MAX, minT_Media = FLT_MAX;
+    // Nearest shape and media intersected with the ray of light.
     shared_ptr<Shape> nearestShape;
+    shared_ptr<ParticipatingMedia> nearestMedia;
 
     /* Intersect with all the shapes in the
      * scene to know which one is the nearest. */
     for (unsigned int i = 0; i < mShapes.size(); ++i)
-        mShapes.at(i)->Intersect(lightRay, minT, nearestShape, mShapes.at(i));
+        mShapes.at(i)->Intersect(lightRay, minT_Shape, nearestShape, mShapes.at(i));
 
-    // No shape has been found.
-    if (minT == FLT_MAX) return;
+    /* Intersect with all the medias in the
+     * scene to know which one is the nearest. */
+    for (unsigned int i = 0; i < mMedia.size(); ++i)
+    {
+        float previousMinT = minT_Media;
+        mMedia.at(i)->Intersect(lightRay, minT_Media);
+        if (minT_Media < previousMinT) nearestMedia = mMedia.at(i);
+    }
 
-    // Intersection point with the nearest shape found.
-    Point intersection(lightRay.GetPoint(minT));
+    // No shape and no media has been found.
+    if ((minT_Shape == FLT_MAX) & (minT_Media == FLT_MAX)) return;
 
-    auto material = nearestShape->GetMaterial();
-    save = save & !((material->GetDiffuse(intersection) == BLACK) & ((material->GetSpecular() != BLACK) | (material->GetTransmittance() != BLACK)));
+    // Next interaction with the media (mean-free path).
+    float nextInteraction = 0;
+    if (nearestMedia != nullptr) nextInteraction = nearestMedia->GetNextInteraction();
+    minT_Media += nextInteraction;
+
+    // Is the ray of light inside the media?
+    bool isInside = (nearestMedia != nullptr) && nearestMedia->IsInside(lightRay.GetSource());
+
+    // The shape is closer than the media, intersect directly with the shape.
+    if (minT_Shape <= minT_Media)
+    {
+        // We are inside the media, and then we are exiting it.
+        if (isInside)
+        {
+            // TODO: Multiply by transmittance min(nextInteraction, minT_Shape).
+            ;
+        }
+        return GeometryInteraction(lightRay, nearestShape, lightRay.GetPoint(minT_Shape), save);
+    }
+    // The media is closer than the shape.
+    else  // minT_Shape > minT_Media
+    {
+        // Interaction point (it depends if we are entering the media or we are already inside).
+        Point interaction;
+        if (isInside) interaction = lightRay.GetPoint(nextInteraction);
+        else interaction = lightRay.GetPoint(minT_Media);
+        // TODO: Multiply by transmittance nextInteraction.
+        // Save the photon in the media photon map.
+        if (save) mMediaPhotonMap.Store(interaction, Photon(lightRay));
+
+        // Russian Roulette: follow the photon trajectory if it's still living.
+        ColoredLightRay bouncedRay;
+        bool isAlive = nearestMedia->RussianRoulette(lightRay, interaction, bouncedRay);
+        if (isAlive) MediaInteraction(bouncedRay, true);
+    }
+}
+
+void Scene::GeometryInteraction(const ColoredLightRay &lightRay, const shared_ptr<Shape> &shape,
+                                const Point &intersection, bool save)
+{
+    // Save if TODO: Doc.
+    auto material = shape->GetMaterial();
+    save &= !((material->GetDiffuse(intersection) == BLACK) & ((material->GetSpecular() != BLACK) |
+                                                               (material->GetTransmittance() != BLACK)));
     if (save) mDiffusePhotonMap.Store(intersection, Photon(lightRay));
 
     // Russian Roulette: follow the photon trajectory if it's still living.
     ColoredLightRay bouncedRay;
-    bool isAlive = nearestShape->RussianRoulette(lightRay, intersection, bouncedRay);
-    if (isAlive) PhotonInteraction(bouncedRay, true);
+    bool isAlive = shape->RussianRoulette(lightRay, intersection, bouncedRay);
+    if (isAlive) MediaInteraction(bouncedRay, true);
 }
 
+// TODO: CausictInteraction should interact before with the media.
 void Scene::CausticInteraction(const ColoredLightRay& lightRay, bool save)
 {
     // Distance to the nearest shape.
