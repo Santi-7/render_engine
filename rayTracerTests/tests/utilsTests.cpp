@@ -6,11 +6,13 @@
  **         Santiago Gil Begué, NIA: 683482
  ** -------------------------------------------------------------------------*/
 
+#include <box.hpp>
 #include <color.hpp>
 #include <gtest/gtest.h>
 #include <image.hpp>
 #include <matrix.hpp>
 #include <poseTransformationMatrix.hpp>
+#include <sphere.hpp>
 #include <transformationMatrix.hpp>
 
 using namespace std;
@@ -100,4 +102,21 @@ TEST(LoadTexture, Image)
 {
     Image texture(string(PROJECT_DIR) + "/build/cacafuti.ppm");
     texture.Save("loadedTeapot.ppm");
+}
+
+////////////////////////////////////////
+///////Points inside volume shapes//////
+////////////////////////////////////////
+TEST(Inside, Sphere)
+{
+    Sphere s1(Point(0,0,0), 3);
+    EXPECT_TRUE(s1.IsInside(Point(0,0,0)));
+    EXPECT_FALSE(s1.IsInside(Point(4,0,0)));
+}
+
+TEST(Inside, Box)
+{
+    Box b1(Rectangle(Vect(0,1,0), Point(0,0,0), Point(4,0,4)), 4);
+    EXPECT_TRUE(b1.IsInside(Point(2,2,2)));
+    EXPECT_FALSE(b1.IsInside(Point(-2,0,0)));
 }
