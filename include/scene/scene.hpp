@@ -170,6 +170,9 @@ private:
     /** Caustics exclusive photon map. */
     KDTree mCausticsPhotonMap;
 
+    /** Participating medias exclusive photon map. */
+    KDTree mMediasPhotonMap;
+
     /**
      * @param horizontalLines Lines which pixels will be trace and saved to the image.
      * @param image Pointer to the image shared by all the threads rendering the scene and saving into it. No concurrency
