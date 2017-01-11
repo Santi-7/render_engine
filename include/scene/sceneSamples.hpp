@@ -133,6 +133,7 @@ Scene PhongSphereSamples()
 
     return scene;
 }
+
 template <int lobeSize>
 Scene SpecularLobes()
 {
@@ -865,6 +866,23 @@ Scene Caustic()
     causticBox.AddLightSource(PointLight(Point(0, 0.6f, -0.1f), 2.0f, WHITE));
 
     return causticBox;
+}
+
+Scene ParticipatingMedia()
+{
+    Scene scene;
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,-0.9f,-0.7f), PI/3, 1.0, 700, 500));
+
+    scene.AddLightSource(PointLight(Point(0.0f, 0.0f, -0.2f), 1.5f, WHITE));
+
+    ParticipatingMedia(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 0.3f)), 5, 5);
+
+    CheckerBoard wallPattern(0.149f, BLACK, WHITE);
+    Plane backWall(Point(0, 0, 0.5), Vect(0, 0, -1));
+    backWall.SetMaterial(wallPattern);
+    scene.AddShape(backWall);
+
+    return scene;
 }
 
 #endif // SCENE_SAMPLES
