@@ -286,6 +286,7 @@ void KDTree::BalanceSegment(vector<Node> &pbal, vector<Node> &porg, const int in
 }
 
 void KDTree::Balance() {
+    if (mNodes.size() == 0) return;
     vector<Node> aux(mNodes.size() + 1);
     mBalanced.resize(mNodes.size() + 1);
     int i;
