@@ -74,7 +74,7 @@ Scene CornellBoxWithMedia()
     cornellBox.AddShape(Plane(Point(0, -0.25f, 0), Vect(0, 1, 0))); // Floor.
     cornellBox.AddShape(Plane(Point(0, 0, 1), Vect(0, 0, -1))); // Back wall
 
-    ParticipatingMedia fogBox(make_shared<Box>(Box(Rectangle(Vect(0,1,0), Point(0.2f,-0.25f, 0.3f), Point(-0.2f,-0.25f, -0.3f)), 0.3f)), 5f, 5f);
+    ParticipatingMedia fogBox(make_shared<Box>(Box(Rectangle(Vect(0,1,0), Point(0.2f,-0.25f, 0.3f), Point(-0.2f,-0.25f, -0.3f)), 0.3f)), 5, 5);
     cornellBox.AddParticipatingMedia(fogBox);
     // Two spheres inside the box.
     Sphere yellowSphere(Sphere(Point(-0.45f, 0.1, 0.4f), 0.25f));
