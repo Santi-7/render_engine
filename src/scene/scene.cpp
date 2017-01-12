@@ -514,8 +514,10 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const LightRay &in
             if (tProjection > tIntersection) continue;
             // TODO: Add this photon contribution.
             insidePhotons++;
-            retVal += photon.GetData().GetFlux() * media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
+            retVal += photon.GetData().GetFlux();
         }
+        // Homogeneous and isotropic media.
+        retVal *= media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
     }
 
     return insidePhotons == 0 ? retVal : (retVal / insidePhotons);
@@ -543,8 +545,10 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
             if (get<0>(in.Distance(photon.GetPoint())) > mBeamRadius) continue;
             // TODO: Add this photon contribution.
             insidePhotons++;
-            retVal += photon.GetData().GetFlux() * media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
+            retVal += photon.GetData().GetFlux();
         }
+        // Homogeneous and isotropic media.
+        retVal *= media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
     }
 
     return insidePhotons == 0 ? retVal : (retVal / insidePhotons);
