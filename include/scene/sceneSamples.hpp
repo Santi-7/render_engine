@@ -847,7 +847,7 @@ Scene BasicMediaScene()
 
     scene.AddLightSource(PointLight(Point(0.0f, 0.0f, -0.2f), 1.5f, WHITE));
 
-    ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 0.3f)), 60, 10);
+    ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 0.3f)), 8, 2);
     scene.AddParticipatingMedia(fog);
 
     CheckerBoard wallPattern(0.149f, BLACK, WHITE);
