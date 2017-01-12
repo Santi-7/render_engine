@@ -445,3 +445,19 @@ void Mesh::SetMaterial(shared_ptr<Material> material)
         mRight->SetMaterial(material);
     }
 }
+
+void Mesh::SetRefractiveIndex(const float refractiveIndex)
+{
+    if (mIsLeaf)
+    {
+        for (unsigned int i = 0; i < mTriangles.size(); ++i)
+        {
+            mTriangles[i]->SetRefractiveIndex(refractiveIndex);
+        }
+    }
+    else
+    {
+        mLeft->SetRefractiveIndex(refractiveIndex);
+        mRight->SetRefractiveIndex(refractiveIndex);
+    }
+}
