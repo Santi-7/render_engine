@@ -28,6 +28,7 @@ float ParticipatingMedia::GetTransmittance(const float distance) const
 
 float ParticipatingMedia::GetNextInteraction() const
 {
+    // Randomize the step, but in mean we get the mean-free path.
     return GetRandomValue() * 2 * mMeanFreePath;
 }
 

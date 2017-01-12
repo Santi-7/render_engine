@@ -207,14 +207,16 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
     // Is the ray of light inside the media?
     bool isInside = false;
     float nextInteraction = minT_Media;
+    float meanFreePath;
     // There is at least one participating media.
     if (nearestMedia != nullptr)
     {
+        meanFreePath = nearestMedia->GetNextInteraction();
         isInside = nearestMedia->IsInside(lightRay.GetSource());
         // Next mean-free path
-        if (isInside) nextInteraction = nearestMedia->GetNextInteraction();
+        if (isInside) nextInteraction = meanFreePath;
         // Next mean-fre path after going into the media.
-        else nextInteraction += nearestMedia->GetNextInteraction();
+        else nextInteraction += meanFreePath;
     }
 
     // The shape is closer than the media, intersect directly with the shape.
@@ -241,7 +243,7 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
         // We remain in the media.
         else
         {
-            // TODO: Multiply by transmittance nearestMedia->GetNextInteraction(). (If we don't randomize it, else save it in a variable)
+            // TODO: Multiply by transmittance meanFreePath.
 
             MediaInteraction(lightRay, nearestMedia, lightRay.GetPoint(nextInteraction), save);
         }
