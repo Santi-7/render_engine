@@ -28,8 +28,7 @@ float ParticipatingMedia::GetTransmittance(const float distance) const
 
 float ParticipatingMedia::GetNextInteraction() const
 {
-    // TODO: Make it random.
-    return mMeanFreePath;
+    return GetRandomValue() * 2 * mMeanFreePath;
 }
 
 bool ParticipatingMedia::IsInside(const Point &point) const
