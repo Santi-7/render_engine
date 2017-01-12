@@ -499,7 +499,7 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const LightRay &in
         tie(distance, tProjection) = in.Distance(photon.GetPoint());
         // This photon is outside the beam.
         if (distance > mBeamRadius) continue;
-        // This photon is behind the intersection with the nearest shape at [point].
+        // This photon is behind the intersection with the nearest shape at [tIntersection].
         if (tProjection > tIntersection) continue;
         // TODO: Add this photon contribution.
     }
