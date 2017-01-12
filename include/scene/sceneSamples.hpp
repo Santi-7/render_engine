@@ -495,37 +495,6 @@ Scene Room()
     Rectangle hiddenWall(Vect(0,0,1), Point(-1, -0.55f, -1.2f), Point(1, 1.05f, -1.2f));
     scene.AddShape(hiddenWall);
 
-    // Cover the room to avoid thresholds on edges.
-
-    Rectangle floorCover(Vect(0,1,0), Point(-1.1f, -0.6f, -1.1f), Point(1.1f, -0.6f, 1.1f));
-    floorCover.SetMaterial(NONE);
-    scene.AddShape(floorCover);
-
-    Rectangle ceilingCover(Vect(0,-1,0), Point(-1.1f, 1.1f, -1.1f), Point(1.1f, 1.1f, 1.1f));
-    ceilingCover.SetMaterial(NONE);
-    scene.AddShape(ceilingCover);
-
-    Rectangle leftCoverBot(Vect(1,0,0), Point(-1.05f, -0.65f, -1.05f), Point(-1.05f, -0.05f, 1.05f));
-    Rectangle leftCoverTop(Vect(1,0,0), Point(-1.05f, 0.8f, -1.05f), Point(-1.05f, 1.15f, 1.05f));
-    Rectangle leftCoverLeft(Vect(1,0,0), Point(-1.05f, -0.05f, -1.05f), Point(-1.05f, 0.8f, 0));
-    Rectangle leftCoverRight(Vect(1,0,0), Point(-1.05f, -0.05f, 0.9f), Point(-1.05f, 0.8f, 1.05f));
-    leftCoverBot.SetMaterial(NONE);
-    leftCoverTop.SetMaterial(NONE);
-    leftCoverLeft.SetMaterial(NONE);
-    leftCoverRight.SetMaterial(NONE);
-    scene.AddShape(leftCoverBot);
-    scene.AddShape(leftCoverTop);
-    scene.AddShape(leftCoverLeft);
-    scene.AddShape(leftCoverRight);
-
-    Rectangle rightCover(Vect(-1,0,0), Point(1.05, -0.65f, -1.05f), Point(1.05, 1.15f, 1.05f));
-    rightCover.SetMaterial(NONE);
-    scene.AddShape(rightCover);
-
-    Rectangle backCover(Vect(0,0,-1), Point(-1.1f, -0.65f, 1.05f), Point(1.1f, 1.15f, 1.05f));
-    backCover.SetMaterial(NONE);
-    scene.AddShape(backCover);
-
     //////////////////////////////
     //// Light           /////////
     //////////////////////////////
