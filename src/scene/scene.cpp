@@ -440,7 +440,7 @@ Color Scene::GeometryEstimateRadiance(const Point &point, const Vect &normal,
     for (auto nodeIt = nodeList.begin(); nodeIt < nodeList.end(); ++nodeIt)
     {
         Photon tmpPhoton = (*nodeIt)->GetData();
-        // Cosine of the ray of light with the visible normal.
+        // Cosine of the photon's direction with the visible normal.
         float multiplier = tmpPhoton.GetVect().DotProduct(normal);
         /* Add the radiance of the current photon if it
            illuminates the [point] from the visible semi-sphere. */
@@ -466,7 +466,7 @@ Color Scene::GeometryEstimateRadiance(const Point &point, const Vect &normal,
     for (auto nodeIt = nodeList.begin(); nodeIt < nodeList.end(); ++nodeIt)
     {
         Photon tmpPhoton = (*nodeIt)->GetData();
-        // Cosine of the ray of light with the visible normal.
+        // Cosine of the photon's direction with the visible normal.
         float multiplier = tmpPhoton.GetVect().DotProduct(normal);
         /* Add the radiance of the current photon if it
            illuminates the [point] from the visible semi-sphere. */
