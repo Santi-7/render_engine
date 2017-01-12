@@ -276,7 +276,7 @@ private:
      * @param point Point distance from LightRay where the ray of light will intersect the nearest shape of the scene.
      * @param in Ray of light whose radiance is being estimated in the media.
      * @return a color in relation to the estimated light of the ray of light [in] that pass through the media
-     *  in the scene before intersecting with a shape in the point [point].
+     *  in the scene before intersecting with a shape in the point [tIntersection] form the ray of light.
      */
     Color MediaEstimateRadiance(const float tIntersection, const LightRay &in) const;
 
