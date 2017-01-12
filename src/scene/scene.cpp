@@ -238,10 +238,13 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
             ColoredLightRay out(lightRay.GetPoint(minT_Media), lightRay.GetDirection(), lightRay.GetColor());
             PhotonInteraction(out, save);
         }
+        // We remain in the media.
+        else
+        {
+            // TODO: Multiply by transmittance nearestMedia->GetNextInteraction(). (If we don't randomize it, else save it in a variable)
 
-        // TODO: Multiply by transmittance nearestMedia->GetNextInteraction(). (If we don't randomize it, else save it in a variable)
-
-        MediaInteraction(lightRay, nearestMedia, lightRay.GetPoint(nextInteraction), save);
+            MediaInteraction(lightRay, nearestMedia, lightRay.GetPoint(nextInteraction), save);
+        }
     }
 }
 
