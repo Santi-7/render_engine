@@ -1,5 +1,5 @@
 set(SOURCE_FILES
-        pointLight.cpp)
+        pointLight.cpp simpleAreaLight.cpp)
 
 set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/lighting/lightSource.hpp

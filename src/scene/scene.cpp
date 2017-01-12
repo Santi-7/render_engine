@@ -138,7 +138,7 @@ void Scene::EmitPhotons()
             PoseTransformationMatrix fromLocalToGlobal =
                     PoseTransformationMatrix::GetPoseTransformation(pointLight, Vect(0,0,1));
             // [mPhotonsEmitted] photons uniformly emitted.
-            for (unsigned int i = 0; i < mPhotonsEmitted; i++)
+            for (unsigned int i = 0; i < mPhotonsEmitted / light->GetLights().size(); i++)
             {
                 // Generate random angles.
                 float inclination, azimuth;
@@ -149,14 +149,14 @@ void Scene::EmitPhotons()
                               cos(inclination));
                 // Transform the ray of light to global coordinates.
                 ColoredLightRay lightRay(pointLight, fromLocalToGlobal * localRay,
-                                         light->GetBaseColor() / mPhotonsEmitted);
+                                         light->GetBaseColor() / mPhotonsEmitted / light->GetLights().size());
                 /* The photons directly emitted from the light sources (direct light)
                  * are not saved in the photon map. */
                 PhotonInteraction(lightRay, false);
             }
 
             // [mPhotonsEmitted] photons uniformly emitted.
-            for (unsigned int i = 0; i < mPhotonsEmitted * 2; i++)
+            for (unsigned int i = 0; i < mPhotonsEmitted / light->GetLights().size(); i++)
             {
                 // Generate random angles.
                 float inclination, azimuth;
@@ -167,7 +167,7 @@ void Scene::EmitPhotons()
                         cos(inclination));
                 // Transform the ray of light to global coordinates.
                 ColoredLightRay lightRay(pointLight, fromLocalToGlobal * localRay,
-                        light->GetBaseColor() / mPhotonsEmitted);
+                        light->GetBaseColor() / mPhotonsEmitted / light->GetLights().size());
                 /* The photons directly emitted from the light sources (direct light)
                  * are not saved in the photon map. */
                 CausticInteraction(lightRay, false);

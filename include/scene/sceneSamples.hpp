@@ -24,6 +24,7 @@
 #include <geometry/compositeShape.hpp>
 #include <geometry/mengerSponge.hpp>
 #include <ratio>
+#include <lighting/simpleAreaLight.hpp>
 
 Scene CornellBox()
 {
@@ -531,6 +532,8 @@ Scene Room()
 
     // Sun.
     scene.AddLightSource(PointLight(Point(-1.5f, 0.9f, 0.45f), 5, (RED + RED + YELLOW) / 3));
+    // Fake sky
+    scene.AddLightSource(SimpleAreaLight(Point(-0.99f, 0.1f, 0.15f), Vect(0.0f, 0.55f, 0.0f), 5, Vect(0.0f, 0.0f, 0.6f), 5, 0.25f, SKY_BLUE));
 
     //////////////////////////////
     //// Making a table //////////
