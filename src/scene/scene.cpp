@@ -491,33 +491,65 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const LightRay &in
 {
     Color retVal = BLACK;
     // Check all photons saved in the media KDTree. Photon 0 is not useful.
-    for (unsigned int i = 1; i < mMediaPhotonMap.Size(); ++i)
+    unsigned int insidePhotons = 0;
+
+    /* Check which media does the LightRay intersect, so that we only estimate
+     * those photons of the intersected media. */
+    for (auto media : mMedia)
     {
-        Node photon = mMediaPhotonMap[i];
-        // Distances from the photon to the ray of light.
-        float distance, tProjection;
-        tie(distance, tProjection) = in.Distance(photon.GetPoint());
-        // This photon is outside the beam.
-        if (distance > mBeamRadius) continue;
-        // This photon is behind the intersection with the nearest shape at [tIntersection].
-        if (tProjection > tIntersection) continue;
-        // TODO: Add this photon contribution.
+        float tMedia;
+        media->Intersect(in, tMedia);
+        // The media es behind the intersection with the nearest shape at [tIntersection].
+        if (tMedia > tIntersection) continue;
+
+        // Get all photons of this media. // TODO: Fix it.
+        for (unsigned int i = 1; i < mMediaPhotonMap.Size(); ++i)
+        {
+            Node photon = mMediaPhotonMap[i];
+            // Distances from the photon to the ray of light.
+            float distance, tProjection;
+            tie(distance, tProjection) = in.Distance(photon.GetPoint());
+            // This photon is outside the beam.
+            if (distance > mBeamRadius) continue;
+            // This photon is behind the intersection with the nearest shape at [tIntersection].
+            if (tProjection > tIntersection) continue;
+            // TODO: Add this photon contribution.
+            insidePhotons++;
+            retVal += photon.GetData().GetFlux() * media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
+        }
     }
-    return retVal;
+
+    return insidePhotons == 0 ? retVal : (retVal / insidePhotons);
 }
 
 Color Scene::MediaEstimateRadiance(const LightRay &in) const
 {
     Color retVal = BLACK;
     // Check all photons saved in the media KDTree. Photon 0 is not useful.
-    for (unsigned int i = 1; i < mMediaPhotonMap.Size(); ++i)
+    unsigned int insidePhotons = 0;
+
+    /* Check which media does the LightRay intersect, so that we only estimate
+     * those photons of the intersected media. */
+    for (auto media : mMedia)
     {
-        Node photon = mMediaPhotonMap[i];
-        // This photon is outside the beam.
-        if (get<0>(in.Distance(photon.GetPoint())) > mBeamRadius) continue;
-        // TODO: Add this photon contribution.
+        float tMedia;
+        media->Intersect(in, tMedia);
+        // The LightRay doesn't intersect the media.
+        if (tMedia == FLT_MAX) continue;
+
+        // Get all photons of this media. // TODO: Fix it.
+        for (unsigned int i = 1; i < mMediaPhotonMap.Size(); ++i)
+        {
+            Node photon = mMediaPhotonMap[i];
+            // This photon is outside the beam.
+            if (get<0>(in.Distance(photon.GetPoint())) > mBeamRadius) continue;
+            // TODO: Add this photon contribution.
+            insidePhotons++;
+            retVal += photon.GetData().GetFlux() * media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
+        }
     }
-    return retVal;
+
+    return insidePhotons == 0 ? retVal : (retVal / insidePhotons);
 }
 
 // Alpha and beta values taken from https://graphics.stanford.edu/courses/cs348b-00/course8.pdf

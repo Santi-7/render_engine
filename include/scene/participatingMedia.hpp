@@ -17,6 +17,10 @@ class ParticipatingMedia
 
 public:
 
+    /** Phase function in any point in any direction of the media. Const value because
+     * only and isotropic media are supported. */
+    constexpr static float PHASE_FUNCTION = 1 / (4 * PI);
+
     /**
      * @param shape Shape that wraps the participating media. Note: It should be a shape
      *  with volume, i.e. boxes and spheres.
@@ -60,6 +64,11 @@ public:
      *  the LightRay is absorbed.
      */
     bool RussianRoulette(const ColoredLightRay &in, const Point &point, ColoredLightRay &out) const;
+
+    /**
+     * @return Scattering coefficient of this media.
+     */
+    float GetScattering() const;
 
 private:
 

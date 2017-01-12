@@ -63,3 +63,8 @@ bool ParticipatingMedia::RussianRoulette(const ColoredLightRay &in,
     // The event is absorption;
     else return false;
 }
+
+float ParticipatingMedia::GetScattering() const
+{
+    return mKs;
+}
