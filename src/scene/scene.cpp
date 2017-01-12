@@ -243,7 +243,7 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
 
         // TODO: Multiply by transmittance nearestMedia->GetNextInteraction(). (If we don't randomize it, else save it in a variable)
 
-        MediaInteraction(lightRay, nearestMedia, lightRay.GetPoint(minT_Media), save);
+        MediaInteraction(lightRay, nearestMedia, lightRay.GetPoint(nextInteraction), save);
     }
 }
 
