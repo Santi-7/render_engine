@@ -177,6 +177,8 @@ void Scene::EmitPhotons()
     mDiffusePhotonMap.Balance();
     mCausticsPhotonMap.Balance();
     mMediaPhotonMap.Balance();
+    mDiffusePhotonMap.DumpToFile("diffuseBasic.txt");
+    mMediaPhotonMap.DumpToFile("mediaBasic.txt");
 }
 
 void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
@@ -235,7 +237,8 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
         if (isInside & (nextInteraction > minT_Media))
         {
             // TODO: Multiply by transmittance minT_Media.
-            PhotonInteraction(lightRay, save);
+            ColoredLightRay out(lightRay.GetPoint(minT_Media), lightRay.GetDirection(), lightRay.GetColor());
+            PhotonInteraction(out, save);
         }
 
         // TODO: Multiply by transmittance nearestMedia->GetNextInteraction(). (If we don't randomize it, else save it in a variable)
