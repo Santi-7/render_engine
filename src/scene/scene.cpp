@@ -490,7 +490,6 @@ Color Scene::GeometryEstimateRadiance(const Point &point, const Vect &normal,
 Color Scene::MediaEstimateRadiance(const float tIntersection, const LightRay &in) const
 {
     Color retVal = BLACK;
-    // Check all photons saved in the media KDTree. Photon 0 is not useful.
     unsigned int insidePhotons = 0;
 
     /* Check which media does the LightRay intersect, so that we only estimate
@@ -502,7 +501,7 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const LightRay &in
         // The media es behind the intersection with the nearest shape at [tIntersection].
         if (tMedia > tIntersection) continue;
 
-        // Get all photons of this media. // TODO: Fix it.
+        // Get all photons of this media.  Photon 0 is not useful. // TODO: Fix it.
         for (unsigned int i = 1; i < mMediaPhotonMap.Size(); ++i)
         {
             Node photon = mMediaPhotonMap[i];
@@ -525,7 +524,6 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const LightRay &in
 Color Scene::MediaEstimateRadiance(const LightRay &in) const
 {
     Color retVal = BLACK;
-    // Check all photons saved in the media KDTree. Photon 0 is not useful.
     unsigned int insidePhotons = 0;
 
     /* Check which media does the LightRay intersect, so that we only estimate
@@ -537,7 +535,7 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
         // The LightRay doesn't intersect the media.
         if (tMedia == FLT_MAX) continue;
 
-        // Get all photons of this media. // TODO: Fix it.
+        // Get all photons of this media.  Photon 0 is not useful. // TODO: Fix it.
         for (unsigned int i = 1; i < mMediaPhotonMap.Size(); ++i)
         {
             Node photon = mMediaPhotonMap[i];
