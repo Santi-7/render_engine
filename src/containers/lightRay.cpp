@@ -19,11 +19,12 @@ LightRay::LightRay(const Point &source, const Vect &direction)
 : mSource(source), mDirection(direction.Normalise())
 {}
 
-float LightRay::Distance(const Point &to) const
+tuple<float, float> LightRay::Distance(const Point &to) const
 {
     Plane plane(to, mDirection);
-    Point intersection = GetPoint(plane.Intersect(*this));
-    return intersection.Distance(to);
+    float tProjection = plane.Intersect(*this);
+    Point intersection = GetPoint(tProjection);
+    return make_tuple(intersection.Distance(to), tProjection);
 }
 
 Point LightRay::GetPoint(const float t) const

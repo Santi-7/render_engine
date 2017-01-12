@@ -349,7 +349,7 @@ Color Scene::GetLightRayColor(const LightRay &lightRay, const int specularSteps)
     return DirectLight(intersection, normal, lightRay, *nearestShape) +
            SpecularLight(intersection, normal, lightRay, *nearestShape, specularSteps) +
            GeometryEstimateRadiance(intersection, normal, lightRay, *nearestShape) +
-           MediaEstimateRadiance(intersection, lightRay) +
+           MediaEstimateRadiance(minT, lightRay) +
            emittedLight;
 }
 
@@ -487,17 +487,20 @@ Color Scene::GeometryEstimateRadiance(const Point &point, const Vect &normal,
     return retVal / Sphere::Volume(radius) + causticRetVal / Sphere::Volume(causticRadius);
 }
 
-Color Scene::MediaEstimateRadiance(const Point &point, const LightRay &in) const
+Color Scene::MediaEstimateRadiance(const float tIntersection, const LightRay &in) const
 {
     Color retVal = BLACK;
     // Check all photons saved in the media KDTree. Photon 0 is not useful.
     for (unsigned int i = 1; i < mMediaPhotonMap.Size(); ++i)
     {
         Node photon = mMediaPhotonMap[i];
+        // Distances from the photon to the ray of light.
+        float distance, tProjection;
+        tie(distance, tProjection) = in.Distance(photon.GetPoint());
         // This photon is outside the beam.
-        if (in.Distance(photon.GetPoint()) > mBeamRadius) continue;
+        if (distance > mBeamRadius) continue;
         // This photon is behind the intersection with the nearest shape at [point].
-        if ((point - photon.GetPoint()).DotProduct(in.GetDirection()) < 0) continue;
+        if (tProjection > tIntersection) continue;
         // TODO: Add this photon contribution.
     }
     return retVal;
@@ -511,7 +514,7 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
     {
         Node photon = mMediaPhotonMap[i];
         // This photon is outside the beam.
-        if (in.Distance(photon.GetPoint()) > mBeamRadius) continue;
+        if (get<0>(in.Distance(photon.GetPoint())) > mBeamRadius) continue;
         // TODO: Add this photon contribution.
     }
     return retVal;

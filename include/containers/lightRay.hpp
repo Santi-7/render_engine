@@ -38,9 +38,11 @@ public:
 
     /**
      * @param to Point which minimum distance (the point's projection) with respect to this LightRay will be returned.
-     * @return Absolute minimum distance from the point [to] to this LightRay.
+     * @return A tuple with its first element the absolute minimum distance from the point [to] to this LightRay,
+     *  and the second element the distance from the source of this LightRay to the projection of the point into
+     *  the LightRay.
      */
-    float Distance(const Point &to) const;
+    std::tuple<float, float> Distance(const Point &to) const;
 
     /**
      * @param t Distance from the origin.
