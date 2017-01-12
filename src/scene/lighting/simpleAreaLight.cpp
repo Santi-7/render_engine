@@ -1,5 +1,5 @@
 /** ---------------------------------------------------------------------------
- ** simpleAreaLight.hpp
+ ** simpleAreaLight.cpp
  ** Implementation for simpleAreaLight class.
  **
  ** Author: Miguel Jorge Galindo Ramos, NIA: 679954
@@ -8,8 +8,10 @@
 
 #include <simpleAreaLight.hpp>
 
-SimpleAreaLight::SimpleAreaLight(const Point corner, Vect dir1, unsigned int dir1Lights, Vect dir2,
-        unsigned int dir2Lights, float power, Color baseColor) : LightSource(power / (dir1Lights * dir2Lights), baseColor)
+SimpleAreaLight::SimpleAreaLight(const Point &corner, const Vect &dir1, const unsigned int dir1Lights,
+                                 const Vect &dir2, const unsigned int dir2Lights, const float power,
+                                 const Color &baseColor)
+: LightSource(power / (dir1Lights * dir2Lights), baseColor)
 {
     Vect increment1 = dir1 / (dir1Lights - 1);
     Vect increment2 = dir2 / (dir2Lights - 1);
@@ -29,7 +31,7 @@ SimpleAreaLight::SimpleAreaLight(const Point corner, Vect dir1, unsigned int dir
 Color SimpleAreaLight::GetColor(const Point &point) const
 {
     Color retVal = BLACK;
-    for (const Point& p : mPoints)
+    for (const Point &p : mPoints)
     {
         retVal += PointLight(p, mPower, mBaseColor).GetColor(point);
     }
@@ -40,4 +42,3 @@ vector<Point> SimpleAreaLight::GetLights() const
 {
     return mPoints;
 }
-

@@ -12,10 +12,13 @@
 #include <lightSource.hpp>
 #include <pointLight.hpp>
 
-class SimpleAreaLight : public LightSource{
+class SimpleAreaLight : public LightSource
+{
+
 public:
-    SimpleAreaLight(Point corner, Vect dir1, unsigned int dir1Lights, Vect dir2, unsigned int dir2Lights, float power,
-            Color baseColor);
+
+    SimpleAreaLight(const Point &corner, const Vect &dir1, const unsigned int dir1Lights, const Vect &dir2,
+                    const unsigned int dir2Lights, const float power, const Color &baseColor);
 
     /**
      * @throws Return the average color from all the point lights in this area light.
@@ -28,7 +31,8 @@ public:
     vector<Point> GetLights() const;
 
 private:
+
     vector<Point> mPoints;
 };
 
-#endif //RAY_TRACER_SIMPLEAREALIGHT_HPP
+#endif // RAY_TRACER_SIMPLEAREALIGHT_HPP
