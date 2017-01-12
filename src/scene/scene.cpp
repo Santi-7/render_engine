@@ -177,6 +177,8 @@ void Scene::EmitPhotons()
     mDiffusePhotonMap.Balance();
     mCausticsPhotonMap.Balance();
     mMediaPhotonMap.Balance();
+    mDiffusePhotonMap.DumpToFile("diffuseBasic.txt");
+    mMediaPhotonMap.DumpToFile("mediaBasic.txt");
 }
 
 void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
@@ -206,14 +208,15 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
 
     // Is the ray of light inside the media?
     bool isInside = false;
+    float nextInteraction = minT_Media;
     // There is at least one participating media.
     if (nearestMedia != nullptr)
     {
         isInside = nearestMedia->IsInside(lightRay.GetSource());
         // Next mean-free path
-        if (isInside) minT_Media = nearestMedia->GetNextInteraction();
+        if (isInside) nextInteraction = nearestMedia->GetNextInteraction();
         // Next mean-fre path after going into the media.
-        else minT_Media += nearestMedia->GetNextInteraction();
+        else nextInteraction += nearestMedia->GetNextInteraction();
     }
 
     // The shape is closer than the media, intersect directly with the shape.
@@ -230,6 +233,14 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
     // The media is closer than the shape.
     else  // minT_Shape > minT_Media
     {
+        // We are exiting the media.
+        if (isInside & (nextInteraction > minT_Media))
+        {
+            // TODO: Multiply by transmittance minT_Media.
+            ColoredLightRay out(lightRay.GetPoint(minT_Media), lightRay.GetDirection(), lightRay.GetColor());
+            PhotonInteraction(out, save);
+        }
+
         // TODO: Multiply by transmittance nearestMedia->GetNextInteraction(). (If we don't randomize it, else save it in a variable)
 
         MediaInteraction(lightRay, nearestMedia, lightRay.GetPoint(minT_Media), save);
