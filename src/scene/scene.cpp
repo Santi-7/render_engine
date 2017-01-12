@@ -501,7 +501,7 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const LightRay &in
         // The media es behind the intersection with the nearest shape at [tIntersection].
         if (tMedia > tIntersection) continue;
 
-        // Get all photons of this media.  Photon 0 is not useful. // TODO: Fix it.
+        // Get all photons of this media. Photon 0 is not useful. // TODO: Fix it.
         for (unsigned int i = 1; i < mMediaPhotonMap.Size(); ++i)
         {
             Node photon = mMediaPhotonMap[i];
@@ -514,8 +514,10 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const LightRay &in
             if (tProjection > tIntersection) continue;
             // TODO: Add this photon contribution.
             insidePhotons++;
-            retVal += photon.GetData().GetFlux() * media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
+            retVal += photon.GetData().GetFlux();
         }
+        // Homogeneous and isotropic media.
+        retVal *= media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
     }
 
     return insidePhotons == 0 ? retVal : (retVal / insidePhotons);
@@ -535,7 +537,7 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
         // The LightRay doesn't intersect the media.
         if (tMedia == FLT_MAX) continue;
 
-        // Get all photons of this media.  Photon 0 is not useful. // TODO: Fix it.
+        // Get all photons of this media. Photon 0 is not useful. // TODO: Fix it.
         for (unsigned int i = 1; i < mMediaPhotonMap.Size(); ++i)
         {
             Node photon = mMediaPhotonMap[i];
@@ -543,8 +545,10 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
             if (get<0>(in.Distance(photon.GetPoint())) > mBeamRadius) continue;
             // TODO: Add this photon contribution.
             insidePhotons++;
-            retVal += photon.GetData().GetFlux() * media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
+            retVal += photon.GetData().GetFlux();
         }
+        // Homogeneous and isotropic media.
+        retVal *= media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
     }
 
     return insidePhotons == 0 ? retVal : (retVal / insidePhotons);
