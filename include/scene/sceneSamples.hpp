@@ -843,7 +843,7 @@ Scene Caustic()
 Scene BasicMediaScene()
 {
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0,-0.9f,-0.7f), PI/3, 1.0, 700, 500));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0, 0.0f,-0.7f), PI/3, 1.0, 700, 500));
 
     scene.AddLightSource(PointLight(Point(0.0f, 0.0f, -0.2f), 1.5f, WHITE));
 
