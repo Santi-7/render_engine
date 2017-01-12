@@ -121,6 +121,12 @@ public:
      */
     void SetMaterial(shared_ptr<Material> material);
 
+    /**
+    * Sets the refractive index of this Mesh's triangles.
+    *
+    * @param refractiveIndex Value to set the refractive index of this shape.
+    */
+    void SetRefractiveIndex(const float refractiveIndex);
 private:
 
     /** True if this Mesh has no children Meshes. */
