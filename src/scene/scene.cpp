@@ -177,8 +177,6 @@ void Scene::EmitPhotons()
     mDiffusePhotonMap.Balance();
     mCausticsPhotonMap.Balance();
     mMediaPhotonMap.Balance();
-    mDiffusePhotonMap.DumpToFile("diffuseBasic.txt");
-    mMediaPhotonMap.DumpToFile("mediaBasic.txt");
 }
 
 void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
