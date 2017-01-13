@@ -292,11 +292,11 @@ Color Scene::GetLightRayColor(const LightRay &lightRay, const int specularSteps)
     Color emittedLight = nearestShape->GetEmittedLight();
 
     // Light is additive.
-    return DirectLight(intersection, normal, lightRay, *nearestShape) +
-           SpecularLight(intersection, normal, lightRay, *nearestShape, specularSteps) +
-           GeometryEstimateRadiance(intersection, normal, lightRay, *nearestShape) +
-           MediaEstimateRadiance(minT, lightRay) +
-           emittedLight;
+    return (DirectLight(intersection, normal, lightRay, *nearestShape) +
+            SpecularLight(intersection, normal, lightRay, *nearestShape, specularSteps) +
+            GeometryEstimateRadiance(intersection, normal, lightRay, *nearestShape) +
+            emittedLight) * PathTransmittance(lightRay, minT) +
+           MediaEstimateRadiance(minT, intersection, lightRay) ;
 }
 
 Color Scene::DirectLight(const Point &point, const Vect &normal,
@@ -433,7 +433,7 @@ Color Scene::GeometryEstimateRadiance(const Point &point, const Vect &normal,
     return retVal / Sphere::Volume(radius) + causticRetVal / Sphere::Volume(causticRadius);
 }
 
-Color Scene::MediaEstimateRadiance(const float tIntersection, const LightRay &in) const
+Color Scene::MediaEstimateRadiance(const float tIntersection, const Point &intersection, const LightRay &in) const
 {
     Color retVal = BLACK;
     unsigned int insidePhotons = 0;
@@ -462,9 +462,20 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const LightRay &in
                     if (distance > mBeamRadius) continue;
                     // This photon is behind the intersection with the nearest shape at [tIntersection].
                     if (tProjection > tIntersection) continue;
-                    // TODO: Add this photon contribution.
+                    /* Add this photon contribution. */
                     insidePhotons++;
-                    retVal += photon.GetData().GetFlux();
+                    // Distance from this photon to the end of the media (direction to the intersection).
+                    float distanceTransmittance;
+                    LightRay fromPhoton(photon.GetPoint(), intersection);
+                    media->Intersect(fromPhoton, distanceTransmittance);
+                    // The distance is the intersection if the nearest shape is inside the media.
+                    distanceTransmittance = min(distanceTransmittance, intersection.Distance(photon.GetPoint()));
+                    retVal += // Flux.
+                              photon.GetData().GetFlux() *
+                              // Kernel.
+                              GaussianKernel(in.GetPoint(tProjection), photon.GetPoint(), mBeamRadius) *
+                              // Transmittance.
+                              media->GetTransmittance(distanceTransmittance);
                 }
             }
         }
@@ -497,11 +508,23 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
                 for (unsigned int i = 1; i < get<1>(mediaKDTree).Size(); ++i)
                 {
                     Node photon = get<1>(mediaKDTree)[i];
+                    // Distances from the photon to the ray of light.
+                    float distance, tProjection;
+                    tie(distance, tProjection) = in.Distance(photon.GetPoint());
                     // This photon is outside the beam.
-                    if (get<0>(in.Distance(photon.GetPoint())) > mBeamRadius) continue;
-                    // TODO: Add this photon contribution.
+                    if (distance > mBeamRadius) continue;
+                    /* Add this photon contribution. */
                     insidePhotons++;
-                    retVal += photon.GetData().GetFlux();
+                    // Distance from this photon to the end of the media (direction of the LightRay).
+                    float distanceTransmittance;
+                    LightRay fromPhoton(photon.GetPoint(), in.GetDirection());
+                    media->Intersect(fromPhoton, distanceTransmittance);
+                    retVal += // Flux.
+                              photon.GetData().GetFlux() *
+                              // Kernel.
+                              GaussianKernel(in.GetPoint(tProjection), photon.GetPoint(), mBeamRadius) *
+                              // Transmittance.
+                              media->GetTransmittance(distanceTransmittance);
                 }
             }
         }
@@ -519,6 +542,42 @@ float Scene::GaussianKernel(const Point &point, const Point &photon, const float
     constexpr static float ALPHA = 0.918f, BETA = 1.953f;
     float distance = point.Distance(photon);
     return ALPHA * (1 - ((1 - exp(-BETA * (distance*distance / 2*radius*radius))) / (1 - exp(-BETA))));
+}
+
+float Scene::PathTransmittance(const LightRay &lightRay, const float tIntersection) const
+{
+    float totalTransmittance = 1;
+    float tCurrent = 0;
+
+    // Calculate the transmittance in all the path until tIntersection.
+    while (tCurrent < tIntersection)
+    {
+        // Distance to the nearest media.
+        float minT_Media = FLT_MAX;
+        // Nearest media intersected with the ray of light.
+        shared_ptr<ParticipatingMedia> nearestMedia = nullptr;
+
+        /* Intersect with all the medias in the
+         * scene to know which one is the nearest. */
+        for (unsigned int i = 0; i < mMedia.size(); ++i)
+        {
+            float previousMinT = minT_Media;
+            mMedia.at(i)->Intersect(lightRay, minT_Media);
+            if (minT_Media < previousMinT) nearestMedia = mMedia.at(i);
+        }
+
+        // We are inside the nearest media (if exists).
+        if ((nearestMedia != nullptr) && nearestMedia->IsInside(lightRay.GetPoint(tCurrent)))
+        {
+            float tBefore = tCurrent;
+            tCurrent = min(tIntersection, minT_Media);
+            totalTransmittance *= nearestMedia->GetTransmittance(tCurrent - tBefore);
+        }
+        // We are outside the nearest media, or it doesn't exist.
+        else tCurrent = minT_Media;
+    }
+
+    return totalTransmittance;
 }
 
 bool Scene::InShadow(const LightRay &lightRay, const Point &light) const

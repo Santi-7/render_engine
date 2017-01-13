@@ -263,12 +263,13 @@ private:
                                    const LightRay &in, const Shape &shape) const;
 
     /**
-     * @param point Point distance from LightRay where the ray of light will intersect the nearest shape of the scene.
+     * @param tIntersection Point distance from LightRay where the ray of light will intersect the nearest shape of the scene.
+     * @param intersection Point intersection of [in] with the nearest shape of the scene (at distance tIntersectiom).
      * @param in Ray of light whose radiance is being estimated in the media.
      * @return a color in relation to the estimated light of the ray of light [in] that pass through the media
      *  in the scene before intersecting with a shape in the point [tIntersection] form the ray of light.
      */
-    Color MediaEstimateRadiance(const float tIntersection, const LightRay &in) const;
+    Color MediaEstimateRadiance(const float tIntersection, const Point &intersection, const LightRay &in) const;
 
     /**
      * It has the same goal than previous method, but avoiding the check of the calculation of the contribution of only
@@ -288,6 +289,13 @@ private:
      * @return a gaussian filter applied in the point [point] to the photon [photon].
      */
     float GaussianKernel(const Point &point, const Point &photon, const float radius) const;
+
+    /**
+     * @param lightRay Ray of light which transmittance along all its path before [tIntersection] is calculated.
+     * @param tIntersection Distance to the nearest shape intersected with this ray of light.
+     * @return the transmittance of this ray of light along all its path before intersecting the nearest shape.
+     */
+    float PathTransmittance(const LightRay &lightRay, const float tIntersection) const;
 
     /**
      * @param lightRay to the light source [light] which is checked if any shape in the scene blocks the way to the light.
