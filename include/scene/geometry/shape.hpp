@@ -92,9 +92,11 @@ public:
      * @param point Point in which the LightRay intersects the shape.
      * @param out When the return value of this method is true this value is updated to the LightRay coming out
      *  of the shape at the given point.
+     * @param isCaustic This is an output parameter. It's updated to a true value if the photon is reflected or
+     *  refracted (it may origin a caustic), and false otherwise.
      * @return True if a new LightRay comes out of the intersection with this shape.
      */
-    bool RussianRoulette(const ColoredLightRay &in, const Point &point, ColoredLightRay &out) const
+    bool RussianRoulette(const ColoredLightRay &in, const Point &point, ColoredLightRay &out, bool &isCaustic) const
     {
         float random = GetRandomValue();
         // Diffuse.
@@ -114,6 +116,7 @@ public:
             // Transform the ray of light to global coordinates.
             out = ColoredLightRay(point, fromLocalToGlobal * localRay,
                                   in.GetColor() * mMaterial->GetDiffuse(point) / mMaterial->GetDiffuse(point).MeanRGB());
+            isCaustic = false;
             return true;
         }
         // Specular.
@@ -123,6 +126,30 @@ public:
             Vect reflectedRay = Reflect(in.GetDirection(), GetVisibleNormal(point, in));
             out = ColoredLightRay(point, reflectedRay,
                                   in.GetColor() * mMaterial->GetSpecular() / mMaterial->GetSpecular().MeanRGB());
+            isCaustic = true;
+            return true;
+        }
+        // Reflective.
+        else if (random < (mMaterial->GetDiffuse(point).MeanRGB() +
+                           mMaterial->GetSpecular().MeanRGB() +
+                           mMaterial->GetReflectance().MeanRGB()))
+        {
+            Vect reflectedRay = Reflect(in.GetDirection(), GetVisibleNormal(point, in));
+            out = ColoredLightRay(point, reflectedRay,
+                                  in.GetColor() * mMaterial->GetReflectance() / mMaterial->GetReflectance().MeanRGB());
+            isCaustic = true;
+            return true;
+        }
+        // Refractive.
+        else if (random < (mMaterial->GetDiffuse(point).MeanRGB() +
+                           mMaterial->GetSpecular().MeanRGB() +
+                           mMaterial->GetReflectance().MeanRGB() +
+                           mMaterial->GetTransmittance().MeanRGB()))
+        {
+            LightRay refractedRay = Refract(in, point, GetVisibleNormal(point, in));
+            out = ColoredLightRay(point, refractedRay.GetDirection(),
+                                  in.GetColor() * mMaterial->GetTransmittance() / mMaterial->GetTransmittance().MeanRGB());
+            isCaustic = true;
             return true;
         }
         // Absorb.
