@@ -244,10 +244,10 @@ void Scene::GeometryInteraction(const ColoredLightRay &lightRay, const shared_pt
 }
 
 void Scene::MediaInteraction(const ColoredLightRay &lightRay, const shared_ptr<ParticipatingMedia> &media,
-                             const Point &interaction, const bool save)
+                             const Point &interaction)
 {
     // Save the photon in the media photon map.
-    if (save) mMediaPhotonMap.Store(interaction, Photon(lightRay));
+    mMediaPhotonMap.Store(interaction, Photon(lightRay));
 
     // Russian Roulette: follow the photon trajectory if it's still living.
     ColoredLightRay bouncedRay;

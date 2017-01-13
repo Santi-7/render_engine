@@ -213,10 +213,9 @@ private:
      * @param lightRay Direction and position from which the photon is thrown, and color of this photon.
      * @param media Media with which the photon is interacting.
      * @param interaction Point where the lightRay interacts with the media.
-     * @param save true if interaction between the lightRay and the media will be stored in the media KDTree.
      */
     void MediaInteraction(const ColoredLightRay &lightRay, const shared_ptr<ParticipatingMedia> &media,
-                          const Point &interaction, const bool save);
+                          const Point &interaction);
 
     /**
      * Calculates the color of the first point that intersects the lightRay. If specularSteps is greater than 0 reflected
