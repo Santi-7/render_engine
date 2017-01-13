@@ -74,7 +74,8 @@ public:
     template <class PM>
     void AddParticipatingMedia(const PM &participatingMedia)
     {
-        mMedia.push_back(make_shared<PM>(participatingMedia));
+        mMediaPhotonMaps.push_back(make_tuple<>(make_shared<PM>(participatingMedia), KDTree()));
+        mMedia.push_back(shared_ptr<PM>(get<0>(mMediaPhotonMaps.back())));
     }
 
     /**
@@ -173,8 +174,8 @@ private:
     /** Caustics exclusive photon map. */
     KDTree mCausticsPhotonMap;
 
-    /** Participating media exclusive photon map. */
-    KDTree mMediaPhotonMap;
+    /** Participating media exclusive photon map. A different KDTree is used for every media in the scene. */
+    vector<tuple<shared_ptr<ParticipatingMedia>, KDTree>> mMediaPhotonMaps;
 
     /**
      * @param horizontalLines Lines which pixels will be trace and saved to the image.

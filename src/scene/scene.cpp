@@ -158,7 +158,10 @@ void Scene::EmitPhotons()
     }
     mDiffusePhotonMap.Balance();
     mCausticsPhotonMap.Balance();
-    mMediaPhotonMap.Balance();
+    for (tuple<shared_ptr<ParticipatingMedia>, KDTree> &mediaKDTree : mMediaPhotonMaps)
+    {
+        get<1>(mediaKDTree).Balance();
+    }
 }
 
 void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save, bool fromCausticShape)
@@ -246,8 +249,14 @@ void Scene::GeometryInteraction(const ColoredLightRay &lightRay, const shared_pt
 void Scene::MediaInteraction(const ColoredLightRay &lightRay, const shared_ptr<ParticipatingMedia> &media,
                              const Point &interaction)
 {
-    // Save the photon in the media photon map.
-    mMediaPhotonMap.Store(interaction, Photon(lightRay));
+    for (tuple<shared_ptr<ParticipatingMedia>, KDTree> &mediaKDTree : mMediaPhotonMaps)
+    {
+        if (get<0>(mediaKDTree) == media)
+        {
+            get<1>(mediaKDTree).Store(interaction, Photon(lightRay));
+            break;
+        }
+    }
 
     // Russian Roulette: follow the photon trajectory if it's still living.
     ColoredLightRay bouncedRay;
@@ -439,20 +448,26 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const LightRay &in
         // The media es behind the intersection with the nearest shape at [tIntersection].
         if (tMedia > tIntersection) continue;
 
-        // Get all photons of this media. Photon 0 is not useful. // TODO: Fix it.
-        for (unsigned int i = 1; i < mMediaPhotonMap.Size(); ++i)
+        for (const tuple<shared_ptr<ParticipatingMedia>, KDTree> &mediaKDTree : mMediaPhotonMaps)
         {
-            Node photon = mMediaPhotonMap[i];
-            // Distances from the photon to the ray of light.
-            float distance, tProjection;
-            tie(distance, tProjection) = in.Distance(photon.GetPoint());
-            // This photon is outside the beam.
-            if (distance > mBeamRadius) continue;
-            // This photon is behind the intersection with the nearest shape at [tIntersection].
-            if (tProjection > tIntersection) continue;
-            // TODO: Add this photon contribution.
-            insidePhotons++;
-            retVal += photon.GetData().GetFlux();
+            if (get<0>(mediaKDTree) == media)
+            {
+                // Get all photons of this media. Photon 0 is not useful.
+                for (unsigned int i = 1; i < get<1>(mediaKDTree).Size(); ++i)
+                {
+                    Node photon = get<1>(mediaKDTree)[i];
+                    // Distances from the photon to the ray of light.
+                    float distance, tProjection;
+                    tie(distance, tProjection) = in.Distance(photon.GetPoint());
+                    // This photon is outside the beam.
+                    if (distance > mBeamRadius) continue;
+                    // This photon is behind the intersection with the nearest shape at [tIntersection].
+                    if (tProjection > tIntersection) continue;
+                    // TODO: Add this photon contribution.
+                    insidePhotons++;
+                    retVal += photon.GetData().GetFlux();
+                }
+            }
         }
         // Homogeneous and isotropic media.
         retVal *= media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
@@ -475,16 +490,23 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
         // The LightRay doesn't intersect the media.
         if (tMedia == FLT_MAX) continue;
 
-        // Get all photons of this media. Photon 0 is not useful. // TODO: Fix it.
-        for (unsigned int i = 1; i < mMediaPhotonMap.Size(); ++i)
+        for (const tuple<shared_ptr<ParticipatingMedia>, KDTree> &mediaKDTree : mMediaPhotonMaps)
         {
-            Node photon = mMediaPhotonMap[i];
-            // This photon is outside the beam.
-            if (get<0>(in.Distance(photon.GetPoint())) > mBeamRadius) continue;
-            // TODO: Add this photon contribution.
-            insidePhotons++;
-            retVal += photon.GetData().GetFlux();
+            if (get<0>(mediaKDTree) == media)
+            {
+                // Get all photons of this media. Photon 0 is not useful.
+                for (unsigned int i = 1; i < get<1>(mediaKDTree).Size(); ++i)
+                {
+                    Node photon = get<1>(mediaKDTree)[i];
+                    // This photon is outside the beam.
+                    if (get<0>(in.Distance(photon.GetPoint())) > mBeamRadius) continue;
+                    // TODO: Add this photon contribution.
+                    insidePhotons++;
+                    retVal += photon.GetData().GetFlux();
+                }
+            }
         }
+
         // Homogeneous and isotropic media.
         retVal *= media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
     }
