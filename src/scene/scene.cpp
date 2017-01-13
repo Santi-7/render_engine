@@ -296,7 +296,7 @@ Color Scene::GetLightRayColor(const LightRay &lightRay, const int specularSteps)
             SpecularLight(intersection, normal, lightRay, *nearestShape, specularSteps) +
             GeometryEstimateRadiance(intersection, normal, lightRay, *nearestShape) +
             emittedLight) * PathTransmittance(lightRay, minT) +
-           MediaEstimateRadiance(minT, intersection, lightRay) ;
+           MediaEstimateRadiance(minT, intersection, lightRay);
 }
 
 Color Scene::DirectLight(const Point &point, const Vect &normal,
