@@ -138,7 +138,7 @@ void Scene::EmitPhotons()
             PoseTransformationMatrix fromLocalToGlobal =
                     PoseTransformationMatrix::GetPoseTransformation(pointLight, Vect(0,0,1));
             // [mPhotonsEmitted] photons uniformly emitted.
-            for (unsigned int i = 0; i < mPhotonsEmitted / light->GetLights().size(); i++)
+            for (unsigned int i = 0; i < mPhotonsEmitted / light->GetLights().size() / mLightSources.size(); i++)
             {
                 // Generate random angles.
                 float inclination, azimuth;
@@ -152,25 +152,7 @@ void Scene::EmitPhotons()
                                          light->GetBaseColor() / mPhotonsEmitted / light->GetLights().size());
                 /* The photons directly emitted from the light sources (direct light)
                  * are not saved in the photon map. */
-                PhotonInteraction(lightRay, false);
-            }
-
-            // [mPhotonsEmitted] photons uniformly emitted.
-            for (unsigned int i = 0; i < mPhotonsEmitted / light->GetLights().size(); i++)
-            {
-                // Generate random angles.
-                float inclination, azimuth;
-                tie(inclination, azimuth) = UniformSphereSampling();
-                // Direction of the ray of light expressed in local coordinates.
-                Vect localRay(sin(inclination) * cos(azimuth),
-                        sin(inclination) * sin(azimuth),
-                        cos(inclination));
-                // Transform the ray of light to global coordinates.
-                ColoredLightRay lightRay(pointLight, fromLocalToGlobal * localRay,
-                        light->GetBaseColor() / mPhotonsEmitted / light->GetLights().size());
-                /* The photons directly emitted from the light sources (direct light)
-                 * are not saved in the photon map. */
-                CausticInteraction(lightRay, false);
+                PhotonInteraction(lightRay, false, false);
             }
         }
     }
@@ -179,7 +161,7 @@ void Scene::EmitPhotons()
     mMediaPhotonMap.Balance();
 }
 
-void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
+void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save, bool fromCausticShape)
 {
     // Distance to the nearest shape and the nearest media.
     float minT_Shape = FLT_MAX, minT_Media = FLT_MAX;
@@ -207,28 +189,20 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
     // Is the ray of light inside the media?
     bool isInside = false;
     float nextInteraction = minT_Media;
-    float meanFreePath;
     // There is at least one participating media.
     if (nearestMedia != nullptr)
     {
-        meanFreePath = nearestMedia->GetNextInteraction();
         isInside = nearestMedia->IsInside(lightRay.GetSource());
         // Next mean-free path
-        if (isInside) nextInteraction = meanFreePath;
+        if (isInside) nextInteraction = nearestMedia->GetNextInteraction();
         // Next mean-fre path after going into the media.
-        else nextInteraction += meanFreePath;
+        else nextInteraction += nearestMedia->GetNextInteraction();
     }
 
     // The shape is closer than the media, intersect directly with the shape.
     if (minT_Shape <= minT_Media)
     {
-        // We are inside the media, and then we are exiting it.
-        if (isInside)
-        {
-            // TODO: Multiply by transmittance minT_Shape
-            ;
-        }
-        GeometryInteraction(lightRay, nearestShape, lightRay.GetPoint(minT_Shape), save);
+        GeometryInteraction(lightRay, nearestShape, lightRay.GetPoint(minT_Shape), save, fromCausticShape);
     }
     // The media is closer than the shape.
     else  // minT_Shape > minT_Media
@@ -236,33 +210,37 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save)
         // We are exiting the media.
         if (isInside & (nextInteraction > minT_Media))
         {
-            // TODO: Multiply by transmittance minT_Media.
             ColoredLightRay out(lightRay.GetPoint(minT_Media), lightRay.GetDirection(), lightRay.GetColor());
-            PhotonInteraction(out, save);
+            PhotonInteraction(out, save, fromCausticShape);
         }
         // We remain in the media.
         else
         {
-            // TODO: Multiply by transmittance meanFreePath.
-
             MediaInteraction(lightRay, nearestMedia, lightRay.GetPoint(nextInteraction), save);
         }
     }
 }
 
 void Scene::GeometryInteraction(const ColoredLightRay &lightRay, const shared_ptr<Shape> &shape,
-                                const Point &intersection, bool save)
+                                const Point &intersection, bool save, bool fromCausticShape)
 {
     // Save if TODO: Doc.
     auto material = shape->GetMaterial();
     save &= !((material->GetDiffuse(intersection) == BLACK) & ((material->GetSpecular() != BLACK) |
                                                                (material->GetTransmittance() != BLACK)));
-    if (save) mDiffusePhotonMap.Store(intersection, Photon(lightRay));
+    if (save)
+    {
+        if (fromCausticShape)
+            mDiffusePhotonMap.Store(intersection, Photon(lightRay));
+        else
+            mCausticsPhotonMap.Store(intersection, Photon(lightRay));
+    }
 
     // Russian Roulette: follow the photon trajectory if it's still living.
+    bool fromCaustic;
     ColoredLightRay bouncedRay;
-    bool isAlive = shape->RussianRoulette(lightRay, intersection, bouncedRay);
-    if (isAlive) PhotonInteraction(bouncedRay, true);
+    bool isAlive = shape->RussianRoulette(lightRay, intersection, bouncedRay, fromCaustic);
+    if (isAlive) PhotonInteraction(bouncedRay, true, fromCaustic);
 }
 
 void Scene::MediaInteraction(const ColoredLightRay &lightRay, const shared_ptr<ParticipatingMedia> &media,
@@ -274,61 +252,7 @@ void Scene::MediaInteraction(const ColoredLightRay &lightRay, const shared_ptr<P
     // Russian Roulette: follow the photon trajectory if it's still living.
     ColoredLightRay bouncedRay;
     bool isAlive = media->RussianRoulette(lightRay, interaction, bouncedRay);
-    if (isAlive) PhotonInteraction(bouncedRay, true);
-}
-
-// TODO: CausictInteraction should interact before with the media.
-void Scene::CausticInteraction(const ColoredLightRay& lightRay, bool save)
-{
-    // Distance to the nearest shape.
-    float minT = FLT_MAX;
-    // Nearest shape intersected with the ray of light.
-    shared_ptr<Shape> nearestShape;
-
-    /* Intersect with all the shapes in the
-     * scene to know which one is the nearest. */
-    for (unsigned int i = 0; i < mShapes.size(); ++i)
-        mShapes.at(i)->Intersect(lightRay, minT, nearestShape, mShapes.at(i));
-
-    // No shape has been found.
-    if (minT == FLT_MAX) return;
-
-    // Intersection point with the nearest shape found.
-    Point intersection(lightRay.GetPoint(minT));
-
-    auto material = nearestShape->GetMaterial();
-    bool reflecting = material->GetReflectance() != BLACK;
-    bool transmissive = material->GetTransmittance() != BLACK;
-    save = save & !((material->GetDiffuse(intersection) == BLACK) & ((material->GetSpecular() != BLACK) | (material->GetTransmittance() != BLACK)));
-    if (save)
-    {
-        mCausticsPhotonMap.Store(intersection, Photon(lightRay));
-    }
-    else if (transmissive | reflecting)
-    {
-        bool refract = transmissive;
-        if (reflecting & transmissive)
-        {
-            float roulette = GetRandomValue();
-            float specularComponent = material->GetSpecular().MeanRGB();
-            float transmissiveComponent = material->GetTransmittance().MeanRGB();
-            if (roulette < specularComponent / (specularComponent + transmissiveComponent)) refract = false;
-        }
-        ColoredLightRay nextRay;
-        if (refract)
-        {
-            LightRay refracted = nearestShape->Refract(lightRay, intersection, nearestShape->GetVisibleNormal(intersection, lightRay));
-            nextRay = ColoredLightRay(intersection, refracted.GetDirection(),
-                    lightRay.GetColor() * material->GetTransmittance() / material->GetTransmittance().MeanRGB());
-        }
-        else
-        {
-            Vect reflected = nearestShape->Reflect(lightRay.GetDirection(), nearestShape->GetVisibleNormal(intersection, lightRay));
-            nextRay = ColoredLightRay(intersection, reflected,
-                    lightRay.GetColor() * material->GetReflectance() / material->GetReflectance().MeanRGB());
-        }
-        CausticInteraction(nextRay, true);
-    }
+    if (isAlive) PhotonInteraction(bouncedRay, true, false);
 }
 
 Color Scene::GetLightRayColor(const LightRay &lightRay, const int specularSteps) const
