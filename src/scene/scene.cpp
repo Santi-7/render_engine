@@ -224,16 +224,16 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save, 
 void Scene::GeometryInteraction(const ColoredLightRay &lightRay, const shared_ptr<Shape> &shape,
                                 const Point &intersection, bool save, bool fromCausticShape)
 {
-    // Save if TODO: Doc.
+    // Save if the shape's material does not lead to caustics and its diffuse component is BLACK
     auto material = shape->GetMaterial();
     save &= !((material->GetDiffuse(intersection) == BLACK) & ((material->GetSpecular() != BLACK) |
                                                                (material->GetTransmittance() != BLACK)));
     if (save)
     {
         if (fromCausticShape)
-            mDiffusePhotonMap.Store(intersection, Photon(lightRay));
-        else
             mCausticsPhotonMap.Store(intersection, Photon(lightRay));
+        else
+            mDiffusePhotonMap.Store(intersection, Photon(lightRay));
     }
 
     // Russian Roulette: follow the photon trajectory if it's still living.
