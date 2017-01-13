@@ -243,7 +243,7 @@ void Scene::GeometryInteraction(const ColoredLightRay &lightRay, const shared_pt
     bool fromCaustic;
     ColoredLightRay bouncedRay;
     bool isAlive = shape->RussianRoulette(lightRay, intersection, bouncedRay, fromCaustic);
-    if (isAlive) PhotonInteraction(bouncedRay, true, fromCaustic);
+    if (isAlive) PhotonInteraction(bouncedRay, true, fromCausticShape | fromCaustic);
 }
 
 void Scene::MediaInteraction(const ColoredLightRay &lightRay, const shared_ptr<ParticipatingMedia> &media,
