@@ -572,9 +572,8 @@ float Scene::PathTransmittance(const LightRay &lightRay, const float tIntersecti
         // We are inside the nearest media (if exists).
         if ((nearestMedia != nullptr) && nearestMedia->IsInside(lightRay.GetPoint(tCurrent)))
         {
-            float tBefore = tCurrent;
             tCurrent = min(tIntersection, minT_Media);
-            totalTransmittance *= nearestMedia->GetTransmittance(tCurrent - tBefore);
+            totalTransmittance *= nearestMedia->GetTransmittance(tCurrent);
         }
         // We are outside the nearest media, or it doesn't exist.
         else tCurrent = minT_Media;
