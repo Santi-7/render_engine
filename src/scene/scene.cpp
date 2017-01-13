@@ -281,7 +281,6 @@ Color Scene::GetLightRayColor(const LightRay &lightRay, const int specularSteps)
     for (unsigned int i = 0; i < mShapes.size(); ++i)
         mShapes.at(i)->Intersect(lightRay, minT, nearestShape, mShapes.at(i));
 
-    // TODO: I am taking into account that when no shape is intersected, the media can contribute to the radiance. Ask Adolfo.
     // No shape has been found.
     if (minT == FLT_MAX) return MediaEstimateRadiance(lightRay);
 
