@@ -49,7 +49,7 @@ void PrintHelp()
     cout << "Usage: ray_trace [OPTION]...\n"
             "If no options are specified, a default Cornell box with 64 indirect rays will be rendered and saved as cornell.ppm.\n"
             "\n"
-            "Some images will not look good by default, in such cases use --gamma, to use a gamma correction of 2.2, or --clamp to limit color values to the maximum.\n\n"
+            "The resulting images are clamped by default. If they don't look quite right try --noclamp to divide all colors by the maximum or --gamma to use a 2.2 gamma correction.\n\n"
             "Available options:\n"
             "\t-h : Print this helpful text.\n"
             "\t--res <WIDTHxHEIGHT> : Select a different resolution for the result image.\n"
@@ -109,7 +109,7 @@ int main(int argc, char * argv[])
     unsigned int threadCount = thread::hardware_concurrency(); // Use all available threads by default.
     unsigned int photonCount = 100000;
     unsigned int k_nearest = 5000;
-    SaveMode saveMode = DIM_TO_WHITE;
+    SaveMode saveMode = CLAMP;
     string sceneName = "cornell";
 
     // Put the arguments in a string vector to make them more accessible.
@@ -159,6 +159,12 @@ int main(int argc, char * argv[])
         {
             saveMode = CLAMP;
         }
+
+        else if (arguments[i] == "--noclamp")
+        {
+            saveMode = CLAMP;
+        }
+
         else if (arguments[i] == "-p")
         {
             try
