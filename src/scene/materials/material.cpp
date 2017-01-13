@@ -43,6 +43,11 @@ Color Material::GetSpecular() const
     return mKs;
 }
 
+float Material::GetShininess() const
+{
+    return mShininess;
+}
+
 Color Material::GetReflectance() const
 {
     return mKr;

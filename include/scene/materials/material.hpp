@@ -61,6 +61,11 @@ public:
     Color GetSpecular() const;
 
     /**
+     * @return shininess value for this material.
+     */
+    float GetShininess() const;
+
+    /**
      * @return kR value for this material.
      */
     Color GetReflectance() const;

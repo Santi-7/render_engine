@@ -62,4 +62,15 @@ inline static tuple<float, float> UniformSphereSampling()
     return make_tuple(inclination, azimuth);
 }
 
+/**
+ * @return Tuple with a randomly selected inclination and azimuth. Meant to sample a Phong specular lobe.
+ */
+inline static tuple<float, float> PhongSpecularLobeSampling(const float alpha)
+{
+    // Inclination and azimuth angles.
+    float inclination = acos(pow(GetRandomValue(), 1 / (alpha + 1)));
+    float azimuth = 2 * PI * GetRandomValue();
+    return make_tuple(inclination, azimuth);
+}
+
 #endif // RAY_TRACER_MATH_CONSTANTS_H

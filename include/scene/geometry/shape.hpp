@@ -123,8 +123,18 @@ public:
         else if (random < (mMaterial->GetDiffuse(point).MeanRGB() +
                            mMaterial->GetSpecular().MeanRGB()))
         {
-            Vect reflectedRay = Reflect(in.GetDirection(), GetVisibleNormal(point, in));
-            out = ColoredLightRay(point, reflectedRay,
+            /* Transformation matrix from the local coordinates with [point] as the
+             * reference point, and the normal of this shape as the z axis, to global coordinates. */
+            PoseTransformationMatrix fromLocalToGlobal =
+                    PoseTransformationMatrix::GetPoseTransformation(point, GetVisibleNormal(point, in));
+            // Generate random angles.
+            float inclination, azimuth;
+            tie(inclination, azimuth) = PhongSpecularLobeSampling(mMaterial->GetShininess());
+            // Direction of the ray of light expressed in local coordinates.
+            Vect localRay(sin(inclination) * cos(azimuth),
+                          sin(inclination) * sin(azimuth),
+                          cos(inclination));
+            out = ColoredLightRay(point, fromLocalToGlobal * localRay,
                                   in.GetColor() * mMaterial->GetSpecular() / mMaterial->GetSpecular().MeanRGB());
             isCaustic = true;
             return true;
