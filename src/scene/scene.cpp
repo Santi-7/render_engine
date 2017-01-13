@@ -216,7 +216,7 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save, 
         // We remain in the media.
         else
         {
-            MediaInteraction(lightRay, nearestMedia, lightRay.GetPoint(nextInteraction), save);
+            MediaInteraction(lightRay, nearestMedia, lightRay.GetPoint(nextInteraction));
         }
     }
 }
