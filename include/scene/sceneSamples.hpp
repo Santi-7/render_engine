@@ -840,17 +840,32 @@ Scene Caustic()
     return causticBox;
 }
 
+template <int camPos>
 Scene BasicMediaScene()
 {
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0, 0.0f,-0.7f), PI/3, 1.0, 700, 500));
+    switch (camPos)
+    {
+    case 0:
+        scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0, 0.0f,-0.7f), PI/3, 1.0, 700, 500));
+        break;
+    case 1:
+    {
+        TransformationMatrix camTM;
+        camTM.SetYRotation(PI/6);
+        scene.SetCamera(Pinhole(camTM * Vect(0,0,-1), camTM * Vect(0,1,0), camTM * Vect(-1,0,0), Point (0.6f, 0.0f,0.0f), PI/3, 1.0, 700, 500));
+        break;
+    }
+    default:
+        throw invalid_argument("Position not supported.\n");
+    }
 
     scene.AddLightSource(PointLight(Point(0.0f, 0.0f, -0.2f), 1.5f, WHITE));
 
     ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 0.3f)), 8, 2);
     scene.AddParticipatingMedia(fog);
 
-    CheckerBoard wallPattern(0.149f, BLACK, WHITE);
+    CheckerBoard wallPattern(0.149f, GREEN, BLUE);
     Plane backWall(Point(0, 0, 0.5), Vect(0, 0, -1));
     backWall.SetMaterial(wallPattern);
     scene.AddShape(backWall);

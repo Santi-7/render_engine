@@ -95,7 +95,8 @@ void InitializeSceneNames()
     SCENE_NAMES["direct_vs_indirect"] = &DirectVsIndirect;
     SCENE_NAMES["caustic"] = &Caustic;
     SCENE_NAMES["cornell_media"] = &CornellBoxWithMedia;
-    SCENE_NAMES["media"] = &BasicMediaScene;
+    SCENE_NAMES["media_0"] = &BasicMediaScene<0>;
+    SCENE_NAMES["media_1"] = &BasicMediaScene<1>;
 }
 
 /**
