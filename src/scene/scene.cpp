@@ -548,11 +548,12 @@ float Scene::PathTransmittance(const LightRay &lightRay, const float tIntersecti
 {
     float totalTransmittance = 1;
     float tCurrent = 0;
+    LightRay in = lightRay;
 
     // Calculate the transmittance in all the path until tIntersection.
     while (tCurrent < tIntersection)
     {
-        LightRay in(lightRay.GetPoint(tCurrent), lightRay.GetDirection());
+        in = LightRay(in.GetPoint(tCurrent), in.GetDirection());
 
         // Distance to the nearest media.
         float minT_Media = FLT_MAX;
