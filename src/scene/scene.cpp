@@ -442,7 +442,7 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const Point &inter
      * those photons of the intersected media. */
     for (auto media : mMedia)
     {
-        float tMedia;
+        float tMedia = FLT_MAX;
         media->Intersect(in, tMedia);
         // The media es behind the intersection with the nearest shape at [tIntersection].
         if (tMedia > tIntersection) continue;
