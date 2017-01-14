@@ -469,14 +469,14 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const Point &inter
                     insidePhotons++;
                     // Transmittance from this photon projection onto the RayLight, to the intersection.
                     LightRay fromPhoton(in.GetPoint(tProjection), in.GetDirection());
-                    float distanceTransmittance = PathTransmittance(fromPhoton, tIntersection);
+                    float transmittance = PathTransmittance(fromPhoton, tIntersection);
                     // Photon contribution.
                     mediaColor += // Flux.
                                   photon.GetData().GetFlux() *
                                   // Kernel.
                                   SilverManKernel(distance / mBeamRadius) / (mBeamRadius*mBeamRadius) *
                                   // Transmittance.
-                                  media->GetTransmittance(distanceTransmittance);
+                                  transmittance;
                 }
             }
         }
@@ -517,16 +517,16 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
                     if (distance > mBeamRadius) continue;
                     /* Add this photon contribution. */
                     insidePhotons++;
-                    // Distance from this photon to the end of the media (direction of the LightRay).
+                    // Transmittance from this photon projection onto the RayLight, to the infinite.
                     LightRay fromPhoton(in.GetPoint(tProjection), in.GetDirection());
-                    float distanceTransmittance = PathTransmittance(fromPhoton, FLT_MAX);
+                    float transmittance = PathTransmittance(fromPhoton, FLT_MAX);
                     // Photon contribution.
                     mediaColor += // Flux.
                                   photon.GetData().GetFlux() *
                                   // Kernel.
                                   SilverManKernel(distance / mBeamRadius) / (mBeamRadius*mBeamRadius) *
                                   // Transmittance.
-                                  media->GetTransmittance(distanceTransmittance);
+                                  transmittance;
                 }
             }
         }
