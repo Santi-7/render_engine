@@ -447,6 +447,7 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const Point &inter
         // The media es behind the intersection with the nearest shape at [tIntersection].
         if (tMedia > tIntersection) continue;
 
+        Color mediaColor = BLACK;
         for (const tuple<shared_ptr<ParticipatingMedia>, KDTree> &mediaKDTree : mMediaPhotonMaps)
         {
             if (get<0>(mediaKDTree) == media)
@@ -465,22 +466,20 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const Point &inter
                     /* Add this photon contribution. */
                     insidePhotons++;
                     // Distance from this photon to the end of the media (direction to the intersection).
-                    float distanceTransmittance;
                     LightRay fromPhoton(photon.GetPoint(), intersection);
-                    media->Intersect(fromPhoton, distanceTransmittance);
-                    // The distance is the intersection if the nearest shape is inside the media.
-                    distanceTransmittance = min(distanceTransmittance, intersection.Distance(photon.GetPoint()));
-                    retVal += // Flux.
-                              photon.GetData().GetFlux() *
-                              // Kernel.
-                              GaussianKernel(in.GetPoint(tProjection), photon.GetPoint(), mBeamRadius) *
-                              // Transmittance.
-                              media->GetTransmittance(distanceTransmittance);
+                    float distanceTransmittance = PathTransmittance(fromPhoton, tIntersection);
+                    // Photon contribution.
+                    mediaColor += // Flux.
+                                  photon.GetData().GetFlux() *
+                                  // Kernel.
+                                  GaussianKernel(in.GetPoint(tProjection), photon.GetPoint(), mBeamRadius) *
+                                  // Transmittance.
+                                  media->GetTransmittance(distanceTransmittance);
                 }
             }
         }
         // Homogeneous and isotropic media.
-        retVal *= media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
+        retVal += mediaColor * media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
     }
 
     return insidePhotons == 0 ? retVal : (retVal / insidePhotons);
