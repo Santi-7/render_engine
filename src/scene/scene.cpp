@@ -331,7 +331,9 @@ Color Scene::DirectLight(const Point &point, const Vect &normal,
                                                              lightRay.GetDirection(),
                                                              normal, point) *
                               // Cosine.
-                              multiplier;
+                              multiplier *
+                              // Transmittance along all the path.
+                              PathTransmittance(LightRay(point, lights[j]), point.Distance(lights[j]));
                 }
             }
         }
