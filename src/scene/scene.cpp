@@ -570,7 +570,8 @@ float Scene::PathTransmittance(const LightRay &lightRay, float tIntersection) co
         }
 
         // We are inside the nearest media (if exists).
-        if ((nearestMedia != nullptr) && nearestMedia->IsInside(lightRay.GetPoint(tCurrent)))
+        // Threshold to get we are inside the media when we are exactly in the media's boundary.
+        if ((nearestMedia != nullptr) && nearestMedia->IsInside(lightRay.GetPoint(tCurrent + Point::TH)))
         {
             tCurrent = min(tIntersection, minT_Media);
             totalTransmittance *= nearestMedia->GetTransmittance(tCurrent);
