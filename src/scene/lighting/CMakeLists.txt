@@ -3,7 +3,9 @@ set(SOURCE_FILES
 
 set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/lighting/lightSource.hpp
-        ${PROJECT_SOURCE_DIR}/include/scene/lighting/pointLight.hpp)
+        ${PROJECT_SOURCE_DIR}/include/scene/lighting/pointLight.hpp
+        ${PROJECT_SOURCE_DIR}/include/scene/lighting/simpleAreaLight.hpp
+        )
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/scene/lighting)
