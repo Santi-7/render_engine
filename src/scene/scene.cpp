@@ -544,14 +544,14 @@ float Scene::GaussianKernel(const Point &point, const Point &photon, const float
     return ALPHA * (1 - ((1 - exp(-BETA * (distance*distance / 2*radius*radius))) / (1 - exp(-BETA))));
 }
 
-float Scene::PathTransmittance(const LightRay &lightRay, const float tIntersection) const
+float Scene::PathTransmittance(const LightRay &lightRay, float tIntersection) const
 {
     float totalTransmittance = 1;
     float tCurrent = 0;
     LightRay in = lightRay;
 
     // Calculate the transmittance in all the path until tIntersection.
-    while (tCurrent < tIntersection)
+    while (tIntersection > 0)
     {
         in = LightRay(in.GetPoint(tCurrent), in.GetDirection());
 
@@ -577,6 +577,8 @@ float Scene::PathTransmittance(const LightRay &lightRay, const float tIntersecti
         }
         // We are outside the nearest media, or it doesn't exist.
         else tCurrent = minT_Media;
+
+        tIntersection -= tCurrent;
     }
 
     return totalTransmittance;

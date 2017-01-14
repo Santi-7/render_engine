@@ -295,7 +295,7 @@ private:
      * @param tIntersection Distance to the nearest shape intersected with this ray of light.
      * @return the transmittance of this ray of light along all its path before intersecting the nearest shape.
      */
-    float PathTransmittance(const LightRay &lightRay, const float tIntersection) const;
+    float PathTransmittance(const LightRay &lightRay, float tIntersection) const;
 
     /**
      * @param lightRay to the light source [light] which is checked if any shape in the scene blocks the way to the light.
