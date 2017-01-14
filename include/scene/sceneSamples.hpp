@@ -873,4 +873,22 @@ Scene BasicMediaScene()
     return scene;
 }
 
+Scene MediaCaustic()
+{
+    Scene scene;
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0.0f, 0.4f,-0.8f), PI/3, 1.0, 700, 500));
+
+    scene.AddLightSource(PointLight(Point(0.25f, 0.6f, 0.2f), 1.5f, WHITE));
+
+    Sphere glassSphere(Point(0.0f, 0.35f, 0.2f), 0.2f);
+    glassSphere.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, WHITE)));
+    glassSphere.SetRefractiveIndex(GLASS_RI);
+    scene.AddShape(glassSphere);
+
+    ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 2.0f)), 3, 0.5);
+    scene.AddParticipatingMedia(fog);
+
+    return scene;
+}
+
 #endif // SCENE_SAMPLES
