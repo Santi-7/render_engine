@@ -97,6 +97,7 @@ void InitializeSceneNames()
     SCENE_NAMES["cornell_media"] = &CornellBoxWithMedia;
     SCENE_NAMES["media_0"] = &BasicMediaScene<0>;
     SCENE_NAMES["media_1"] = &BasicMediaScene<1>;
+    SCENE_NAMES["media_caustic"] = &MediaCaustic;
 }
 
 /**
