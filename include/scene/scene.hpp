@@ -288,7 +288,12 @@ private:
      * @param radius Maximum radius, distance from point to the k nearest photon (radius of the gaussian).
      * @return a gaussian filter applied in the point [point] to the photon [photon].
      */
-    float GaussianKernel(const Point &point, const Point &photon, const float radius) const;
+    static float GaussianKernel(const Point &point, const Point &photon, const float radius);
+
+    /**
+     * @return SilverMan's two-dimensional biweight kernel.
+     */
+    static float SilverManKernel(const float x);
 
     /**
      * @param lightRay Ray of light which transmittance along all its path before [tIntersection] is calculated.

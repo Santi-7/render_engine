@@ -467,14 +467,14 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const Point &inter
                     if (tProjection > tIntersection) continue;
                     /* Add this photon contribution. */
                     insidePhotons++;
-                    // Distance from this photon to the end of the media (direction to the intersection).
-                    LightRay fromPhoton(photon.GetPoint(), intersection);
+                    // Transmittance from this photon projection onto the RayLight, to the intersection.
+                    LightRay fromPhoton(in.GetPoint(tProjection), in.GetDirection());
                     float distanceTransmittance = PathTransmittance(fromPhoton, tIntersection);
                     // Photon contribution.
                     mediaColor += // Flux.
                                   photon.GetData().GetFlux() *
                                   // Kernel.
-                                  GaussianKernel(in.GetPoint(tProjection), photon.GetPoint(), mBeamRadius) *
+                                  SilverManKernel(distance / mBeamRadius) / (mBeamRadius*mBeamRadius) *
                                   // Transmittance.
                                   media->GetTransmittance(distanceTransmittance);
                 }
@@ -501,6 +501,7 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
         // The LightRay doesn't intersect the media.
         if (tMedia == FLT_MAX) continue;
 
+        Color mediaColor = BLACK;
         for (const tuple<shared_ptr<ParticipatingMedia>, KDTree> &mediaKDTree : mMediaPhotonMaps)
         {
             if (get<0>(mediaKDTree) == media)
@@ -517,32 +518,37 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
                     /* Add this photon contribution. */
                     insidePhotons++;
                     // Distance from this photon to the end of the media (direction of the LightRay).
-                    float distanceTransmittance;
-                    LightRay fromPhoton(photon.GetPoint(), in.GetDirection());
-                    media->Intersect(fromPhoton, distanceTransmittance);
-                    retVal += // Flux.
-                              photon.GetData().GetFlux() *
-                              // Kernel.
-                              GaussianKernel(in.GetPoint(tProjection), photon.GetPoint(), mBeamRadius) *
-                              // Transmittance.
-                              media->GetTransmittance(distanceTransmittance);
+                    LightRay fromPhoton(in.GetPoint(tProjection), in.GetDirection());
+                    float distanceTransmittance = PathTransmittance(fromPhoton, FLT_MAX);
+                    // Photon contribution.
+                    mediaColor += // Flux.
+                                  photon.GetData().GetFlux() *
+                                  // Kernel.
+                                  SilverManKernel(distance / mBeamRadius) / (mBeamRadius*mBeamRadius) *
+                                  // Transmittance.
+                                  media->GetTransmittance(distanceTransmittance);
                 }
             }
         }
 
         // Homogeneous and isotropic media.
-        retVal *= media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
+        retVal += mediaColor * media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
     }
 
     return insidePhotons == 0 ? retVal : (retVal / insidePhotons);
 }
 
 // Alpha and beta values taken from https://graphics.stanford.edu/courses/cs348b-00/course8.pdf
-float Scene::GaussianKernel(const Point &point, const Point &photon, const float radius) const
+float Scene::GaussianKernel(const Point &point, const Point &photon, const float radius)
 {
     constexpr static float ALPHA = 0.918f, BETA = 1.953f;
     float distance = point.Distance(photon);
     return ALPHA * (1 - ((1 - exp(-BETA * (distance*distance / 2*radius*radius))) / (1 - exp(-BETA))));
+}
+
+float Scene::SilverManKernel(const float x)
+{
+    return 3 / PI * pow(1 - x*x, 2);
 }
 
 float Scene::PathTransmittance(const LightRay &lightRay, float tIntersection) const
