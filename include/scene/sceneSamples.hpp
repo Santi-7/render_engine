@@ -582,7 +582,7 @@ Scene Room()
 
         Mesh buddha = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/buddha.obj", 0.1f,
                 Vect(-0.45f, legDepth+tableTopDepth-0.45f, -0.1f));
-        buddha.SetMaterial(make_shared<Material>(Material(GREEN, BLACK, 0.0f, GRAY/3.5f, BLACK)));
+        buddha.SetMaterial(make_shared<Material>(Material(GREEN/2, BLACK, 0.0f, GRAY/3.5f, BLACK)));
         wholeTable.AddShape(buddha);
     }
 
@@ -596,13 +596,13 @@ Scene Room()
     //////////////////////////////
 
     Box windowFrameTop(Rectangle(Vect(1,0,0), Point(-1, 0.7f, 0.85f), Point(-1, 0.75f, 0.05f)), 0.01f);
-    windowFrameTop.SetMaterial(make_shared<Material>(Material(GRAY/4, WHITE, 10.0f, GRAY/4, BLACK)));
+    windowFrameTop.SetMaterial(make_shared<Material>(Material(GRAY/4, GRAY/4, 10.0f, GRAY/4, BLACK)));
     Box windowFrameBottom(Rectangle(Vect(1,0,0), Point(-1, 0, 0.85f), Point(-1, 0.05f, 0.05f)), 0.01f);
-    windowFrameBottom.SetMaterial(make_shared<Material>(Material(GRAY/4, WHITE, 10.0f, GRAY/4, BLACK)));
+    windowFrameBottom.SetMaterial(make_shared<Material>(Material(GRAY/4, GRAY/4, 10.0f, GRAY/4, BLACK)));
     Box windowFrameLeft(Rectangle(Vect(1,0,0), Point(-1, 0, 0.85f), Point(-1, 0.75f, 0.8f)), 0.01f);
-    windowFrameLeft.SetMaterial(make_shared<Material>(Material(GRAY/4, WHITE, 10.0f, GRAY/4, BLACK)));
+    windowFrameLeft.SetMaterial(make_shared<Material>(Material(GRAY/4, GRAY/4, 10.0f, GRAY/4, BLACK)));
     Box windowFrameRight(Rectangle(Vect(1,0,0), Point(-1, 0, 0.1f), Point(-1, 0.75f, 0.05f)), 0.01f);
-    windowFrameRight.SetMaterial(make_shared<Material>(Material(GRAY/4, WHITE, 10.0f, GRAY/4, BLACK)));
+    windowFrameRight.SetMaterial(make_shared<Material>(Material(GRAY/4, GRAY/4, 10.0f, GRAY/4, BLACK)));
 
     scene.AddShape(windowFrameTop);
     scene.AddShape(windowFrameBottom);
