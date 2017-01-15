@@ -474,7 +474,7 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const Point &inter
                     mediaColor += // Flux.
                                   photon.GetData().GetFlux() *
                                   // Kernel.
-                                  SilverManKernel(distance / mBeamRadius) / (mBeamRadius*mBeamRadius) *
+                                  SilvermanKernel(distance / mBeamRadius) / (mBeamRadius*mBeamRadius) *
                                   // Transmittance.
                                   transmittance;
                 }
