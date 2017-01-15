@@ -98,6 +98,7 @@ void InitializeSceneNames()
     SCENE_NAMES["media_0"] = &BasicMediaScene<0>;
     SCENE_NAMES["media_1"] = &BasicMediaScene<1>;
     SCENE_NAMES["media_caustic"] = &MediaCaustic;
+    SCENE_NAMES["sphere_in_sphere"] = &BoxInGlass;
 }
 
 /**

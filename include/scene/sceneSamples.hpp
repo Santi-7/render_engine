@@ -891,4 +891,31 @@ Scene MediaCaustic()
     return scene;
 }
 
+Scene BoxInGlass()
+{
+    Scene scene;
+    TransformationMatrix camTM;
+    camTM.SetXRotation(PI/7);
+    camTM.SetYRotation(PI/9);
+    scene.SetCamera(Pinhole(camTM*Vect(0,1,0), camTM*Vect(1,0,0), camTM*Vect(0,0,1), Point (-0.3f, 0.6f,-0.75f), PI/4, 1.0, 1000, 1000));
+
+    scene.AddLightSource(PointLight(Point(0.35f, 0.7f, 0.05f), 1.5f, WHITE));
+
+    Sphere glassSphere(Point(0.0f, 0.2f, 0.2f), 0.28f);
+    glassSphere.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, WHITE)));
+    glassSphere.SetRefractiveIndex(GLASS_RI);
+    scene.AddShape(glassSphere);
+
+    Sphere sphereInSphere(Point(0.0f, 0.2f, 0.2f), 0.1f);
+    sphereInSphere.SetMaterial(make_shared<Material>(Material(YELLOW, BLACK, 0.0f, BLACK, BLACK)));
+    scene.AddShape(sphereInSphere);
+
+    //floor
+    scene.AddShape(Plane(Point(0,-0.2f,0), Vect(0,1,0)));
+    //back wall
+    scene.AddShape(Plane(Point(0,0,0.8f), Vect(0,0,-1)));
+
+    return scene;
+}
+
 #endif // SCENE_SAMPLES
