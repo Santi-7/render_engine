@@ -524,7 +524,7 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
                     mediaColor += // Flux.
                                   photon.GetData().GetFlux() *
                                   // Kernel.
-                                  SilverManKernel(distance / mBeamRadius) / (mBeamRadius*mBeamRadius) *
+                                  SilvermanKernel(distance / mBeamRadius) / (mBeamRadius*mBeamRadius) *
                                   // Transmittance.
                                   transmittance;
                 }
@@ -546,7 +546,7 @@ float Scene::GaussianKernel(const Point &point, const Point &photon, const float
     return ALPHA * (1 - ((1 - exp(-BETA * (distance*distance / 2*radius*radius))) / (1 - exp(-BETA))));
 }
 
-float Scene::SilverManKernel(const float x)
+float Scene::SilvermanKernel(const float x)
 {
     return 3 / PI * pow(1 - x*x, 2);
 }

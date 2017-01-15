@@ -293,7 +293,7 @@ private:
     /**
      * @return SilverMan's two-dimensional biweight kernel.
      */
-    static float SilverManKernel(const float x);
+    static float SilvermanKernel(const float x);
 
     /**
      * @param lightRay Ray of light which transmittance along all its path before [tIntersection] is calculated.
