@@ -83,8 +83,8 @@ public:
             return LightRay(point, Reflect(in.GetDirection(), visibleNormal));
 
         float cosT = sqrt(1 - sinT2);
-        Vect reflected = in.GetDirection() * n + visibleNormal * (n * cosI - cosT);
-        return LightRay(point, reflected);
+        Vect refracted = in.GetDirection() * n + visibleNormal * (n * cosI - cosT);
+        return LightRay(point, refracted);
     }
 
     /**
