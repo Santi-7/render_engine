@@ -241,7 +241,8 @@ Scene Teapot()
     scene.AddLightSource(PointLight(Point(0,0.65f, -0.45f), 0.5f, WHITE));
 
     Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.35f, Vect(0,0.2f, 0.3f));
-    teapot.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, WHITE, BLACK)));
+    teapot.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, WHITE)));
+    teapot.SetRefractiveIndex(GLASS_RI);
     scene.AddShape(teapot);
 
     Plane floor(Point(0,-0.2f,0), Vect(0,1,0));
@@ -878,7 +879,7 @@ Scene MediaCaustic()
     Scene scene;
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0.0f, 0.4f,-0.8f), PI/3, 1.0, 700, 500));
 
-    scene.AddLightSource(PointLight(Point(0.25f, 0.6f, 0.2f), 1.5f, WHITE));
+    scene.AddLightSource(PointLight(Point(0.25f, 0.6f, 0.2f), 1.0f, WHITE));
 
     Sphere glassSphere(Point(0.0f, 0.35f, 0.2f), 0.2f);
     glassSphere.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, WHITE)));
@@ -891,27 +892,29 @@ Scene MediaCaustic()
     return scene;
 }
 
-Scene BoxInGlass()
+Scene RatInGlass()
 {
     Scene scene;
     TransformationMatrix camTM;
-    camTM.SetXRotation(PI/7);
-    camTM.SetYRotation(PI/9);
-    scene.SetCamera(Pinhole(camTM*Vect(0,1,0), camTM*Vect(1,0,0), camTM*Vect(0,0,1), Point (-0.3f, 0.6f,-0.75f), PI/4, 1.0, 1000, 1000));
+    camTM.SetXRotation(PI/4.5f);
+    camTM.SetYRotation(PI/7);
+    scene.SetCamera(Pinhole(camTM*Vect(0,1,0), camTM*Vect(1,0,0), camTM*Vect(0,0,1), Point (-0.7f, 1.2f,-1.45f), PI/6, 1.0, 700, 700));
 
-    scene.AddLightSource(PointLight(Point(0.35f, 0.7f, 0.05f), 1.5f, WHITE));
+    scene.AddLightSource(PointLight(Point(0.25f, 0.7f, -0.3f), 1.0f, WHITE));
 
-    Sphere glassSphere(Point(0.0f, 0.2f, 0.2f), 0.28f);
-    glassSphere.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, WHITE)));
-    glassSphere.SetRefractiveIndex(GLASS_RI);
-    scene.AddShape(glassSphere);
+    Box glassBox(Rectangle(Vect(0,1,0), Point(-0.2f, -0.05f, -0.2f), Point(0.2f, -0.05f, 0.2f)), 0.4f);
+    glassBox.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, WHITE)));
+    glassBox.SetRefractiveIndex(1.1f);
+    scene.AddShape(glassBox);
 
-    Sphere sphereInSphere(Point(0.0f, 0.2f, 0.2f), 0.1f);
-    sphereInSphere.SetMaterial(make_shared<Material>(Material(YELLOW, BLACK, 0.0f, BLACK, BLACK)));
-    scene.AddShape(sphereInSphere);
+    TransformationMatrix ratTM;
+    ratTM.SetYRotation(PI/2);
+    Mesh electricRat = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/electric_rat.obj", 0.15f, Vect(0,0.15f,0),ratTM);
+    electricRat.SetMaterial(make_shared<Material>(Material(YELLOW, BLACK, 0.0f, BLACK, BLACK)));
+    scene.AddShape(electricRat);
 
     //floor
-    scene.AddShape(Plane(Point(0,-0.2f,0), Vect(0,1,0)));
+    scene.AddShape(Plane(Point(0,0.0f,0), Vect(0,1,0)));
     //back wall
     scene.AddShape(Plane(Point(0,0,0.8f), Vect(0,0,-1)));
 
