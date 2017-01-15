@@ -228,7 +228,7 @@ public:
      *
      * @param refractiveIndex Value to set the refractive index of this shape.
      */
-    void SetRefractiveIndex(const float refractiveIndex)
+    virtual void SetRefractiveIndex(const float refractiveIndex)
     {
         mN = refractiveIndex;
     }

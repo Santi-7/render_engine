@@ -79,3 +79,9 @@ void Box::SetNormalModifier(shared_ptr<VectorModifier> vmod)
     for (const shared_ptr<Rectangle> &face : mFaces)
         face->SetNormalModifier(vmod);
 }
+
+void Box::SetRefractiveIndex(const float refractiveIndex)
+{
+    for (const shared_ptr<Rectangle> &face : mFaces)
+        face->SetRefractiveIndex(refractiveIndex);
+}

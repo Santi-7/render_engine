@@ -78,6 +78,13 @@ public:
      */
     void SetNormalModifier(shared_ptr<VectorModifier> vmod);
 
+    /**
+     * Sets the refractive index of this shape.
+     *
+     * @param refractiveIndex Value to set the refractive index of this shape.
+     */
+    void SetRefractiveIndex(const float refractiveIndex);
+
 protected:
 
     /** The six faces of this box. */
