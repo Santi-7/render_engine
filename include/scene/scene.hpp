@@ -214,9 +214,10 @@ private:
      * @param lightRay Direction and position from which the photon is thrown, and color of this photon.
      * @param media Media with which the photon is interacting.
      * @param interaction Point where the lightRay interacts with the media.
+     * @param meanFreePath Distance of the step done by this lightRay before interacting with the media.
      */
     void MediaInteraction(const ColoredLightRay &lightRay, const shared_ptr<ParticipatingMedia> &media,
-                          const Point &interaction);
+                          const Point &interaction, const float meanFreePath);
 
     /**
      * Calculates the color of the first point that intersects the lightRay. If specularSteps is greater than 0 reflected
