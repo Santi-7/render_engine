@@ -466,32 +466,48 @@ Scene Room()
     // Real View
     scene.SetCamera(
             Pinhole(Vect(0, 1, 0), Vect(1, 0, 0), Vect(0, 0, 1), Point(0, 0.1f, -1.2f),
-                    PI/3, 1.0, 1500, 1000));
+                    PI/3, 1.0, 750, 500));
 
     //////////////////////////////
     //// Making the room /////////
     //////////////////////////////
 
     Rectangle floor(Vect(0,1,0), Point(-1, -0.55f, -1), Point(1, -0.55f, 1));
-    floor.SetMaterial(make_shared<Material>(Material(Color(0.1f, 0.1f, 0.1f), GRAY, 10.0f, GRAY/3, BLACK)));
+    SimpleTexture woodText(string(PROJECT_DIR) + "/resources/wood.ppm", Y, 0.001f);
+    //floor.SetMaterial(make_shared<Material>(Material(Color(0.1f, 0.1f, 0.1f), GRAY, 1.5f, GRAY/3, BLACK)));
+    floor.SetMaterial(woodText);
     scene.AddShape(floor);
 
     Rectangle ceiling(Vect(0,-1,0), Point(-1, 1.05f, -1), Point(1, 1.05f, 1));
     scene.AddShape(ceiling);
 
+    SimpleTexture wallTextZ(string(PROJECT_DIR) + "/resources/plaster.ppm", Z, 0.001f);
+    SimpleTexture wallTextX(string(PROJECT_DIR) + "/resources/plaster.ppm", X, 0.001f);
     Rectangle leftWallBot(Vect(1,0,0), Point(-1, -0.55f, -1), Point(-1, 0, 1));
     Rectangle leftWallTop(Vect(1,0,0), Point(-1, 0.75f, -1), Point(-1, 1.05f, 1));
     Rectangle leftWallLeft(Vect(1,0,0), Point(-1, 0, -1), Point(-1, 0.75f, 0.05f));
     Rectangle leftWallRight(Vect(1,0,0), Point(-1, 0, 0.85f), Point(-1, 0.75f, 1));
+    leftWallBot.SetMaterial(wallTextX);
+    leftWallTop.SetMaterial(wallTextX);
+    leftWallLeft.SetMaterial(wallTextX);
+    leftWallRight.SetMaterial(wallTextX);
+
     scene.AddShape(leftWallBot);
     scene.AddShape(leftWallTop);
     scene.AddShape(leftWallLeft);
     scene.AddShape(leftWallRight);
 
     Rectangle rightWall(Vect(-1,0,0), Point(1, -0.55f, -1), Point(1, 1.05f, 1));
+    rightWall.SetMaterial(wallTextX);
     scene.AddShape(rightWall);
 
+    Rectangle picture(Vect(0,0,-1), Point(-0.6f, 0.2f, 0.98f), Point(-0.2f, 0.79603f, 0.98f));
+    SimpleTexture gioconda(string(PROJECT_DIR) + "/resources/gioconda.ppm", Z, 0.00155609756097561f, Vect(0.1f, 0.9f,0.0f));
+    picture.SetMaterial(gioconda);
+    scene.AddShape(picture);
+
     Rectangle backWall(Vect(0,0,-1), Point(-1, -0.55f, 1), Point(1, 1.05f, 1));
+    backWall.SetMaterial(wallTextZ);
     scene.AddShape(backWall);
 
     Rectangle hiddenWall(Vect(0,0,1), Point(-1, -0.55f, -1.2f), Point(1, 1.05f, -1.2f));
@@ -502,9 +518,9 @@ Scene Room()
     //////////////////////////////
 
     // Sun.
-    scene.AddLightSource(PointLight(Point(-1.5f, 0.9f, 0.45f), 5, (RED + RED + YELLOW) / 3));
+    scene.AddLightSource(PointLight(Point(-1.5f, 0.9f, 0.45f), 3.0f, (RED + RED + YELLOW) / 3));
     // Fake sky
-    scene.AddLightSource(SimpleAreaLight(Point(-0.99f, 0.1f, 0.15f), Vect(0.0f, 0.55f, 0.0f), 5, Vect(0.0f, 0.0f, 0.6f), 5, 0.25f, SKY_BLUE));
+    scene.AddLightSource(SimpleAreaLight(Point(-0.99f, 0.1f, 0.15f), Vect(0.0f, 0.55f, 0.0f), 5, Vect(0.0f, 0.0f, 0.6f), 5, 0.2f, SKY_BLUE));
 
     //////////////////////////////
     //// Making a table //////////
@@ -598,13 +614,13 @@ Scene Room()
     //////////////////////////////
 
     Box windowFrameTop(Rectangle(Vect(1,0,0), Point(-1, 0.7f, 0.85f), Point(-1, 0.75f, 0.05f)), 0.01f);
-    windowFrameTop.SetMaterial(make_shared<Material>(Material(GRAY/4, GRAY/4, 10.0f, GRAY/4, BLACK)));
+    windowFrameTop.SetMaterial(make_shared<Material>(Material(GRAY/4, GRAY/4, 1.5f, GRAY/4, BLACK)));
     Box windowFrameBottom(Rectangle(Vect(1,0,0), Point(-1, 0, 0.85f), Point(-1, 0.05f, 0.05f)), 0.01f);
-    windowFrameBottom.SetMaterial(make_shared<Material>(Material(GRAY/4, GRAY/4, 10.0f, GRAY/4, BLACK)));
+    windowFrameBottom.SetMaterial(make_shared<Material>(Material(GRAY/4, GRAY/4, 1.5f, GRAY/4, BLACK)));
     Box windowFrameLeft(Rectangle(Vect(1,0,0), Point(-1, 0, 0.85f), Point(-1, 0.75f, 0.8f)), 0.01f);
-    windowFrameLeft.SetMaterial(make_shared<Material>(Material(GRAY/4, GRAY/4, 10.0f, GRAY/4, BLACK)));
+    windowFrameLeft.SetMaterial(make_shared<Material>(Material(GRAY/4, GRAY/4, 1.5f, GRAY/4, BLACK)));
     Box windowFrameRight(Rectangle(Vect(1,0,0), Point(-1, 0, 0.1f), Point(-1, 0.75f, 0.05f)), 0.01f);
-    windowFrameRight.SetMaterial(make_shared<Material>(Material(GRAY/4, GRAY/4, 10.0f, GRAY/4, BLACK)));
+    windowFrameRight.SetMaterial(make_shared<Material>(Material(GRAY/4, GRAY/4, 1.5f, GRAY/4, BLACK)));
 
     scene.AddShape(windowFrameTop);
     scene.AddShape(windowFrameBottom);
@@ -887,7 +903,7 @@ Scene MediaCaustic()
     glassSphere.SetRefractiveIndex(GLASS_RI);
     scene.AddShape(glassSphere);
 
-    ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 2.0f)), 3, 0.5);
+    ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 2.0f)), 8, 0.5);
     scene.AddParticipatingMedia(fog);
 
     return scene;

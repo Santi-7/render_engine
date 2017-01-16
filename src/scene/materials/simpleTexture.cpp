@@ -8,14 +8,14 @@
 
 #include <materials/simpleTexture.hpp>
 
-SimpleTexture::SimpleTexture(const string& filename, Dimension axis, float pixelSize)
-: Material(BLACK, BLACK, 0.0f, BLACK, BLACK), mImage(filename), mPixelSize(pixelSize), mAxis(axis) {}
+SimpleTexture::SimpleTexture(const string& filename, Dimension axis, float pixelSize, Vect shift)
+: Material(BLACK, BLACK, 0.0f, BLACK, BLACK), mImage(filename), mPixelSize(pixelSize), mShift(shift), mAxis(axis) {}
 
 Color SimpleTexture::GetDiffuse(const Point &point) const
 {
-    int x = static_cast<int>((point.GetX() > 0 ? point.GetX() : -point.GetX() + mPixelSize) / mPixelSize);
-    int y = static_cast<int>((point.GetY() > 0 ? point.GetY() : -point.GetY() + mPixelSize) / mPixelSize);
-    int z = static_cast<int>((point.GetZ() > 0 ? point.GetZ() : -point.GetZ() + mPixelSize) / mPixelSize);
+    int x = static_cast<int>((point.GetX() > 0 ? point.GetX() + mShift.GetX(): -point.GetX() + mPixelSize) / mPixelSize + mShift.GetX());
+    int y = static_cast<int>((point.GetY() > 0 ? point.GetY() + mShift.GetY(): -point.GetY() + mPixelSize) / mPixelSize + mShift.GetY());
+    int z = static_cast<int>((point.GetZ() > 0 ? point.GetZ() + mShift.GetZ(): -point.GetZ() + mPixelSize) / mPixelSize + mShift.GetZ());
     int i, j;
     switch (mAxis)
     {
@@ -28,8 +28,8 @@ Color SimpleTexture::GetDiffuse(const Point &point) const
         j = x % mImage.GetWidth();
         break;
     case Z:
-        i = x % mImage.GetHeight();
-        j = y % mImage.GetWidth();
+        i = y % mImage.GetHeight();
+        j = x % mImage.GetWidth();
         break;
     default:
         throw invalid_argument("Not a valid dimension\n");

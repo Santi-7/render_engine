@@ -24,7 +24,7 @@ public:
      * @param filename Path to the texture image. Must be a .ppm image.
      * @return New Simple Texture material.
      */
-    SimpleTexture(const string &filename, Dimension axis, float pixelSize = 0.0001f);
+    SimpleTexture(const string &filename, Dimension axis, float pixelSize = 0.0001f, Vect shift = Vect(0,0,0));
 
     /**
      * @return This material's color at the given point. Depends on the point's values relative to the world's axis
@@ -40,6 +40,7 @@ private:
     /** Size of a pixel in the texture related to distance in the scene. */
     float mPixelSize;
 
+    Vect mShift;
     /** Axis in which the plane containing this image lies. */
     Dimension mAxis;
 };
