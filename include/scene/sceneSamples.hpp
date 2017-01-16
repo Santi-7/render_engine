@@ -25,6 +25,7 @@
 #include <geometry/mengerSponge.hpp>
 #include <ratio>
 #include <lighting/simpleAreaLight.hpp>
+#include <materials/simpleTexture.hpp>
 
 Scene CornellBox()
 {
@@ -917,6 +918,28 @@ Scene RatInGlass()
     scene.AddShape(Plane(Point(0,0.0f,0), Vect(0,1,0)));
     //back wall
     scene.AddShape(Plane(Point(0,0,0.8f), Vect(0,0,-1)));
+
+    return scene;
+}
+
+Scene DetailLoss()
+{
+    Scene scene;
+    TransformationMatrix camTM;
+    camTM.SetXRotation(PI/3.6f);
+    scene.SetCamera(Pinhole(camTM*Vect(0,1,0), camTM*Vect(1,0,0), camTM*Vect(0,0,1), Point (-0.3f, 0.8f,-0.5f), PI/6, 1.0, 500, 500));
+
+    scene.AddLightSource(PointLight(Point(-0.3f, 0.6f, 0.5f), 1.0f, WHITE));
+
+    Rectangle redGlass(Vect(0,0,-1), Point(-0.5f, 0.0f, 0.3f), Point(-0.1f, 0.2f, 0.3f));
+    redGlass.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, RED)));
+    redGlass.SetRefractiveIndex(GLASS_RI);
+    scene.AddShape(redGlass);
+
+    SimpleTexture text(string(PROJECT_DIR) + "/resources/text.ppm", Y, 0.0005f);
+    Plane floor(Point(0,-0.01f,0), Vect(0,1,0));
+    floor.SetMaterial(text);
+    scene.AddShape(floor);
 
     return scene;
 }

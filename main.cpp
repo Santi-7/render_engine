@@ -99,6 +99,7 @@ void InitializeSceneNames()
     SCENE_NAMES["media_1"] = &BasicMediaScene<1>;
     SCENE_NAMES["media_caustic"] = &MediaCaustic;
     SCENE_NAMES["ran_in_glass"] = &RatInGlass;
+    SCENE_NAMES["bias"] = &DetailLoss;
 }
 
 /**
