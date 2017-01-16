@@ -154,7 +154,7 @@ private:
     unsigned int mPhotonsNeighbours = 5000;
 
     /** Radius of the beam used in the radiance estimation. */
-    float mBeamRadius = 0.01f;
+    float mBeamRadius = 0.05f;
 
     /** The scene's camera. */
     unique_ptr<Camera> mCamera;
