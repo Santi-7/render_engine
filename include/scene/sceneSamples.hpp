@@ -53,7 +53,7 @@ Scene CornellBox()
     cornellBox.AddShape(yellowSphere);
     cornellBox.AddShape(purpleSphere);
     // A point light illuminates the scene.
-    cornellBox.AddLightSource(PointLight(Point(0, 0.6f, -0.1f), 2.0f, WHITE));
+    cornellBox.AddLightSource(PointLight(Point(0, 0.6f, -0.1f), 0.5f, WHITE));
 
     return cornellBox;
 }
@@ -862,9 +862,9 @@ Scene BasicMediaScene()
         throw invalid_argument("Position not supported.\n");
     }
 
-    scene.AddLightSource(PointLight(Point(-0.2f, 0.0f, -0.2f), 1.5f, WHITE));
+    scene.AddLightSource(PointLight(Point(0.0f, 0.0f, -0.4f), 0.5f, WHITE));
 
-    ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 0.3f)), 3, 0.5);
+    ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 0.3f)), 8, 2);
     scene.AddParticipatingMedia(fog);
 
     CheckerBoard wallPattern(0.149f, GREEN, BLUE);

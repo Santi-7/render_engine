@@ -114,7 +114,10 @@ public:
                           cos(inclination));
             // Transform the ray of light to global coordinates.
             out = ColoredLightRay(point, fromLocalToGlobal * localRay,
-                                  in.GetColor() * mMaterial->GetDiffuse(point) / mMaterial->GetDiffuse(point).MeanRGB());
+                                  in.GetColor() * mMaterial->GetDiffuse(point)
+                                                / mMaterial->GetDiffuse(point).MeanRGB()
+                                                // Uniform cosine PDF
+                                                / 2.0f);
             isCaustic = false;
             return true;
         }
@@ -134,7 +137,10 @@ public:
                           sin(inclination) * sin(azimuth),
                           cos(inclination));
             out = ColoredLightRay(point, fromLocalToGlobal * localRay,
-                                  in.GetColor() * mMaterial->GetSpecular() / mMaterial->GetSpecular().MeanRGB());
+                                  in.GetColor() * mMaterial->GetSpecular()
+                                                / mMaterial->GetSpecular().MeanRGB()
+                                                // Phong lobe PDF. Without sin term and a more cos term.
+                                                / ((mMaterial->GetShininess() + 1) * pow(abs(localRay.GetX()), mMaterial->GetShininess()-1)));
             isCaustic = true;
             return true;
         }
@@ -145,7 +151,8 @@ public:
         {
             Vect reflectedRay = Reflect(in.GetDirection(), GetVisibleNormal(point, in));
             out = ColoredLightRay(point, reflectedRay,
-                                  in.GetColor() * mMaterial->GetReflectance() / mMaterial->GetReflectance().MeanRGB());
+                                  in.GetColor() * mMaterial->GetReflectance()
+                                                / mMaterial->GetReflectance().MeanRGB());
             isCaustic = true;
             return true;
         }
@@ -157,7 +164,8 @@ public:
         {
             LightRay refractedRay = Refract(in, point, GetVisibleNormal(point, in));
             out = ColoredLightRay(point, refractedRay.GetDirection(),
-                                  in.GetColor() * mMaterial->GetTransmittance() / mMaterial->GetTransmittance().MeanRGB());
+                                  in.GetColor() * mMaterial->GetTransmittance()
+                                                / mMaterial->GetTransmittance().MeanRGB());
             isCaustic = true;
             return true;
         }

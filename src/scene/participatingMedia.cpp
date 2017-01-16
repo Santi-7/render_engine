@@ -56,7 +56,8 @@ bool ParticipatingMedia::RussianRoulette(const ColoredLightRay &in,
                       sin(inclination) * sin(azimuth),
                       cos(inclination));
         // Transform the ray of light to global coordinates.
-        out = ColoredLightRay(point, fromLocalToGlobal * localRay, in.GetColor() / mAlbedo);
+        out = ColoredLightRay(point, fromLocalToGlobal * localRay,
+                              in.GetColor() / mAlbedo / PHASE_FUNCTION);
         return true;
     }
     // The event is absorption;

@@ -149,7 +149,7 @@ void Scene::EmitPhotons()
                               cos(inclination));
                 // Transform the ray of light to global coordinates.
                 ColoredLightRay lightRay(pointLight, fromLocalToGlobal * localRay,
-                                         light->GetBaseColor() / mPhotonsEmitted / light->GetLights().size());
+                                         light->GetBaseColor() / mPhotonsEmitted / light->GetLights().size() * 4 * PI);
                 /* The photons directly emitted from the light sources (direct light)
                  * are not saved in the photon map. */
                 PhotonInteraction(lightRay, false, false);
@@ -490,7 +490,6 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const Point &inter
 Color Scene::MediaEstimateRadiance(const LightRay &in) const
 {
     Color retVal = BLACK;
-    unsigned int insidePhotons = 0;
 
     /* Check which media does the LightRay intersect, so that we only estimate
      * those photons of the intersected media. */
@@ -516,7 +515,6 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
                     // This photon is outside the beam.
                     if (distance > mBeamRadius) continue;
                     /* Add this photon contribution. */
-                    insidePhotons++;
                     // Transmittance from this photon projection onto the RayLight, to the infinite.
                     LightRay fromPhoton(in.GetPoint(tProjection), in.GetDirection());
                     float transmittance = PathTransmittance(fromPhoton, FLT_MAX);
@@ -535,7 +533,7 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
         retVal += mediaColor * media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
     }
 
-    return insidePhotons == 0 ? retVal : (retVal / insidePhotons);
+    return retVal;
 }
 
 // Alpha and beta values taken from https://graphics.stanford.edu/courses/cs348b-00/course8.pdf
