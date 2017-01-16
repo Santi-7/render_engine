@@ -1,11 +1,13 @@
 set(SOURCE_FILES
-        material.cpp checkerBoard.cpp crossHatchModifier.cpp)
+        material.cpp checkerBoard.cpp crossHatchModifier.cpp simpleTexture.cpp)
 
 set(HEADER_FILES
         ${PROJECT_SOURCE_DIR}/include/scene/materials/material.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/materials/checkerBoard.hpp
         ${PROJECT_SOURCE_DIR}/include/scene/materials/crossHatchModifier.hpp
-        ${PROJECT_SOURCE_DIR}/include/scene/materials/vectorModifier.hpp)
+        ${PROJECT_SOURCE_DIR}/include/scene/materials/vectorModifier.hpp
+        ${PROJECT_SOURCE_DIR}/include/scene/materials/simpleTexture.hpp
+        )
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/utils
