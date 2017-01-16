@@ -149,7 +149,7 @@ void Scene::EmitPhotons()
                               cos(inclination));
                 // Transform the ray of light to global coordinates.
                 ColoredLightRay lightRay(pointLight, fromLocalToGlobal * localRay,
-                                         light->GetBaseColor() / mPhotonsEmitted / light->GetLights().size());
+                                         light->GetBaseColor() / mPhotonsEmitted / light->GetLights().size() * 4 * PI);
                 /* The photons directly emitted from the light sources (direct light)
                  * are not saved in the photon map. */
                 PhotonInteraction(lightRay, false, false);
@@ -159,9 +159,7 @@ void Scene::EmitPhotons()
     mDiffusePhotonMap.Balance();
     mCausticsPhotonMap.Balance();
     for (tuple<shared_ptr<ParticipatingMedia>, KDTree> &mediaKDTree : mMediaPhotonMaps)
-    {
         get<1>(mediaKDTree).Balance();
-    }
 }
 
 void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save, bool fromCausticShape)
@@ -192,14 +190,16 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save, 
     // Is the ray of light inside the media?
     bool isInside = false;
     float nextInteraction = minT_Media;
+    float meanFreePath;
     // There is at least one participating media.
     if (nearestMedia != nullptr)
     {
+        meanFreePath = nearestMedia->GetNextInteraction();
         isInside = nearestMedia->IsInside(lightRay.GetSource());
         // Next mean-free path
-        if (isInside) nextInteraction = nearestMedia->GetNextInteraction();
-        // Next mean-fre path after going into the media.
-        else nextInteraction += nearestMedia->GetNextInteraction();
+        if (isInside) nextInteraction = meanFreePath;
+        // Next mean-free path after going into the media.
+        else nextInteraction += meanFreePath;
     }
 
     // The shape is closer than the media, intersect directly with the shape.
@@ -219,7 +219,7 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save, 
         // We remain in the media.
         else
         {
-            MediaInteraction(lightRay, nearestMedia, lightRay.GetPoint(nextInteraction));
+            MediaInteraction(lightRay, nearestMedia, lightRay.GetPoint(nextInteraction), meanFreePath);
         }
     }
 }
@@ -247,7 +247,7 @@ void Scene::GeometryInteraction(const ColoredLightRay &lightRay, const shared_pt
 }
 
 void Scene::MediaInteraction(const ColoredLightRay &lightRay, const shared_ptr<ParticipatingMedia> &media,
-                             const Point &interaction)
+                             const Point &interaction, const float meanFreePath)
 {
     for (tuple<shared_ptr<ParticipatingMedia>, KDTree> &mediaKDTree : mMediaPhotonMaps)
     {
@@ -261,7 +261,15 @@ void Scene::MediaInteraction(const ColoredLightRay &lightRay, const shared_ptr<P
     // Russian Roulette: follow the photon trajectory if it's still living.
     ColoredLightRay bouncedRay;
     bool isAlive = media->RussianRoulette(lightRay, interaction, bouncedRay);
-    if (isAlive) PhotonInteraction(bouncedRay, true, false);
+    if (isAlive)
+    {
+        /* Take into account the probability of the step made [(2 / extinction) ^ -1] and the
+         * transmittance of this step. It's not divided by extinction because in Russian Roulette
+         * it isn't also divided by the albedo and multiplied by the scattering. */
+        bouncedRay = ColoredLightRay(bouncedRay.GetSource(), bouncedRay.GetDirection(),
+                                     bouncedRay.GetColor() * media->GetTransmittance(meanFreePath) * 2);
+        PhotonInteraction(bouncedRay, true, false);
+    }
 }
 
 Color Scene::GetLightRayColor(const LightRay &lightRay, const int specularSteps) const
@@ -438,7 +446,6 @@ Color Scene::GeometryEstimateRadiance(const Point &point, const Vect &normal,
 Color Scene::MediaEstimateRadiance(const float tIntersection, const Point &intersection, const LightRay &in) const
 {
     Color retVal = BLACK;
-    unsigned int insidePhotons = 0;
 
     /* Check which media does the LightRay intersect, so that we only estimate
      * those photons of the intersected media. */
@@ -466,7 +473,6 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const Point &inter
                     // This photon is behind the intersection with the nearest shape at [tIntersection].
                     if (tProjection > tIntersection) continue;
                     /* Add this photon contribution. */
-                    insidePhotons++;
                     // Transmittance from this photon projection onto the RayLight, to the intersection.
                     LightRay fromPhoton(in.GetPoint(tProjection), in.GetDirection());
                     float transmittance = PathTransmittance(fromPhoton, tIntersection);
@@ -484,13 +490,12 @@ Color Scene::MediaEstimateRadiance(const float tIntersection, const Point &inter
         retVal += mediaColor * media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
     }
 
-    return insidePhotons == 0 ? retVal : (retVal / insidePhotons);
+    return retVal;
 }
 
 Color Scene::MediaEstimateRadiance(const LightRay &in) const
 {
     Color retVal = BLACK;
-    unsigned int insidePhotons = 0;
 
     /* Check which media does the LightRay intersect, so that we only estimate
      * those photons of the intersected media. */
@@ -516,7 +521,6 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
                     // This photon is outside the beam.
                     if (distance > mBeamRadius) continue;
                     /* Add this photon contribution. */
-                    insidePhotons++;
                     // Transmittance from this photon projection onto the RayLight, to the infinite.
                     LightRay fromPhoton(in.GetPoint(tProjection), in.GetDirection());
                     float transmittance = PathTransmittance(fromPhoton, FLT_MAX);
@@ -535,7 +539,7 @@ Color Scene::MediaEstimateRadiance(const LightRay &in) const
         retVal += mediaColor * media->GetScattering() * ParticipatingMedia::PHASE_FUNCTION;
     }
 
-    return insidePhotons == 0 ? retVal : (retVal / insidePhotons);
+    return retVal;
 }
 
 // Alpha and beta values taken from https://graphics.stanford.edu/courses/cs348b-00/course8.pdf
