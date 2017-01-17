@@ -519,9 +519,9 @@ Scene Room()
     //////////////////////////////
 
     // Sun.
-    scene.AddLightSource(PointLight(Point(-1.5f, 0.9f, 0.45f), 4.0f, (RED + RED + YELLOW) / 3));
+    scene.AddLightSource(PointLight(Point(-1.5f, 0.9f, 0.45f), 6.0f, (RED + RED + YELLOW) / 3));
     // Fake sky
-    scene.AddLightSource(SimpleAreaLight(Point(-0.99f, 0.1f, 0.15f), Vect(0.0f, 0.55f, 0.0f), 5, Vect(0.0f, 0.0f, 0.6f), 5, 0.2f, SKY_BLUE));
+    scene.AddLightSource(SimpleAreaLight(Point(-0.99f, 0.1f, 0.15f), Vect(0.0f, 0.55f, 0.0f), 5, Vect(0.0f, 0.0f, 0.6f), 5, 0.3f, SKY_BLUE));
 
     //////////////////////////////
     //// Making a table //////////
@@ -601,7 +601,7 @@ Scene Room()
 
         Mesh buddha = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/buddha.obj", 0.1f,
                 Vect(-0.45f, legDepth+tableTopDepth-0.45f, -0.1f));
-        buddha.SetMaterial(make_shared<Material>(Material(GREEN/2, BLACK, 0.0f, GRAY/3.5f, BLACK)));
+        buddha.SetMaterial(make_shared<Material>(Material(GREEN, BLACK, 0.0f, BLACK, BLACK)));
         wholeTable.AddShape(buddha);
     }
 
@@ -629,6 +629,19 @@ Scene Room()
     scene.AddShape(windowFrameRight);
 
     //////////////////////////////
+    //// RANDOM CLAIRVOYANCE /////
+    //////////////////////////////
+    Point ballCenter(0.1f, 0.05f, 0.3f);
+    Sphere ball(ballCenter, 0.2f);
+    ball.SetMaterial(make_shared<Material>(Material(GRAY/10, BLACK, 0.0f, BLACK, WHITE)));
+    ball.SetRefractiveIndex(GLASS_RI);
+    scene.AddShape(ball);
+
+    ParticipatingMedia fog(make_shared<Sphere>(Sphere(ballCenter, 0.17f)), 3,0.5f);
+    scene.AddParticipatingMedia(fog);
+
+
+    //////////////////////////////
     //// ENVIRONMENT         /////
     //////////////////////////////
 
@@ -638,9 +651,6 @@ Scene Room()
     environment.SetEmittedLight(SKY_BLUE, 1);
     scene.AddShape(environment);
 
-    ParticipatingMedia dustInTheAir(make_shared<Box>(
-            Box(Rectangle(Vect(0,1,0), Point(-1.05f, -0.6f, -1.05f), Point(1, -0.6f, 1.05f)), 1.6f)), 0.05f, 0.1f);
-    scene.AddParticipatingMedia(dustInTheAir);
     return scene;
 }
 
@@ -900,7 +910,7 @@ Scene BasicMediaScene()
 Scene MediaCaustic()
 {
     Scene scene;
-    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0.0f, 0.4f,-0.8f), PI/3, 1.0, 700, 500));
+    scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0.0f, 0.4f,-2.0f), PI/6, 1.0, 700, 500));
 
     scene.AddLightSource(PointLight(Point(0.25f, 0.6f, 0.2f), 1.0f, WHITE));
 
@@ -909,7 +919,7 @@ Scene MediaCaustic()
     glassSphere.SetRefractiveIndex(GLASS_RI);
     scene.AddShape(glassSphere);
 
-    ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 2.0f)), 8, 0.5);
+    ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 2.0f)), 1, 0.5);
     scene.AddParticipatingMedia(fog);
 
     return scene;
