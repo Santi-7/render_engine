@@ -115,9 +115,11 @@ public:
             // Transform the ray of light to global coordinates.
             out = ColoredLightRay(point, fromLocalToGlobal * localRay,
                                   in.GetColor() * mMaterial->GetDiffuse(point)
-                                                / mMaterial->GetDiffuse(point).MeanRGB()
-                                                // Uniform cosine PDF
-                                                / 2.0f);
+                                                / mMaterial->GetDiffuse(point).MeanRGB() / 2);
+                                                // Uniform cosine PDF removed because:
+                                                // (kd * PI) / ((2 * sin * cos) * (1 / 2 * PI)) =
+                                                // kd (already counted) / (sin * cos).
+                                                // and sin * cos are already removed from render equation.
             isCaustic = false;
             return true;
         }
@@ -139,7 +141,7 @@ public:
             out = ColoredLightRay(point, fromLocalToGlobal * localRay,
                                   in.GetColor() * mMaterial->GetSpecular()
                                                 / mMaterial->GetSpecular().MeanRGB()
-                                                // Phong lobe PDF. Without sin term and a more cos term.
+                                                // Phong lobe PDF. Without sin term and one more cos term.
                                                 / ((mMaterial->GetShininess() + 1) * pow(abs(localRay.GetX()), mMaterial->GetShininess()-1)));
             isCaustic = true;
             return true;

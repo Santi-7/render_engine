@@ -190,7 +190,7 @@ void Scene::PhotonInteraction(const ColoredLightRay &lightRay, const bool save, 
     // Is the ray of light inside the media?
     bool isInside = false;
     float nextInteraction = minT_Media;
-    float meanFreePath;
+    float meanFreePath = 0;
     // There is at least one participating media.
     if (nearestMedia != nullptr)
     {
