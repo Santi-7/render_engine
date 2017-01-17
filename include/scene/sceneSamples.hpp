@@ -639,7 +639,7 @@ Scene Room()
     scene.AddShape(environment);
 
     ParticipatingMedia dustInTheAir(make_shared<Box>(
-            Box(Rectangle(Vect(0,1,0), Point(-1, -0.55f, -1), Point(1, -0.55f, 1)), 1.6f)), 0.5f, 0.5f);
+            Box(Rectangle(Vect(0,1,0), Point(-1.05f, -0.6f, -1.05f), Point(1, -0.6f, 1.05f)), 1.6f)), 0.05f, 0.1f);
     scene.AddParticipatingMedia(dustInTheAir);
     return scene;
 }
