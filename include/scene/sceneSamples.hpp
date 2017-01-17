@@ -633,13 +633,12 @@ Scene Room()
     //////////////////////////////
     Point ballCenter(0.1f, 0.05f, 0.3f);
     Sphere ball(ballCenter, 0.2f);
-    ball.SetMaterial(make_shared<Material>(Material(GRAY/10, BLACK, 0.0f, BLACK, WHITE)));
+    ball.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, WHITE)));
     ball.SetRefractiveIndex(GLASS_RI);
     scene.AddShape(ball);
 
     ParticipatingMedia fog(make_shared<Sphere>(Sphere(ballCenter, 0.17f)), 3,0.5f);
     scene.AddParticipatingMedia(fog);
-
 
     //////////////////////////////
     //// ENVIRONMENT         /////
