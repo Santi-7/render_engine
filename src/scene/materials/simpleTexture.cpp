@@ -13,9 +13,9 @@ SimpleTexture::SimpleTexture(const string& filename, Dimension axis, float pixel
 
 Color SimpleTexture::GetDiffuse(const Point &point) const
 {
-    int x = static_cast<int>((point.GetX() > 0 ? point.GetX() + mShift.GetX(): -point.GetX() + mPixelSize) / mPixelSize + mShift.GetX());
-    int y = static_cast<int>((point.GetY() > 0 ? point.GetY() + mShift.GetY(): -point.GetY() + mPixelSize) / mPixelSize + mShift.GetY());
-    int z = static_cast<int>((point.GetZ() > 0 ? point.GetZ() + mShift.GetZ(): -point.GetZ() + mPixelSize) / mPixelSize + mShift.GetZ());
+    int x = static_cast<int>((point.GetX() > 0 ? point.GetX() + mShift.GetX(): -point.GetX() + mPixelSize + mShift.GetX()) / mPixelSize);
+    int y = static_cast<int>((point.GetY() > 0 ? point.GetY() + mShift.GetY(): -point.GetY() + mPixelSize + mShift.GetY()) / mPixelSize);
+    int z = static_cast<int>((point.GetZ() > 0 ? point.GetZ() + mShift.GetZ(): -point.GetZ() + mPixelSize + mShift.GetZ()) / mPixelSize);
     int i, j;
     switch (mAxis)
     {

@@ -474,7 +474,7 @@ Scene Room()
 
     Rectangle floor(Vect(0,1,0), Point(-1, -0.55f, -1), Point(1, -0.55f, 1));
     SimpleTexture woodText(string(PROJECT_DIR) + "/resources/wood.ppm", Y, 0.001f);
-    //floor.SetMaterial(make_shared<Material>(Material(Color(0.1f, 0.1f, 0.1f), GRAY, 1.5f, GRAY/3, BLACK)));
+    floor.SetMaterial(make_shared<Material>(Material(Color(0.1f, 0.1f, 0.1f), GRAY, 1.5f, GRAY/3, BLACK)));
     floor.SetMaterial(woodText);
     scene.AddShape(floor);
 
@@ -502,7 +502,8 @@ Scene Room()
     scene.AddShape(rightWall);
 
     Rectangle picture(Vect(0,0,-1), Point(-0.6f, 0.2f, 0.98f), Point(-0.2f, 0.79603f, 0.98f));
-    SimpleTexture gioconda(string(PROJECT_DIR) + "/resources/gioconda.ppm", Z, 0.00155609756097561f, Vect(0.1f, 0.9f,0.0f));
+    float pixelSize = 0.00145f;
+    SimpleTexture gioconda(string(PROJECT_DIR) + "/resources/gioconda_inv.ppm", Z, pixelSize, Vect(pixelSize * 130,  pixelSize * 271,0.0f));
     picture.SetMaterial(gioconda);
     scene.AddShape(picture);
 
@@ -518,7 +519,7 @@ Scene Room()
     //////////////////////////////
 
     // Sun.
-    scene.AddLightSource(PointLight(Point(-1.5f, 0.9f, 0.45f), 3.0f, (RED + RED + YELLOW) / 3));
+    scene.AddLightSource(PointLight(Point(-1.5f, 0.9f, 0.45f), 4.0f, (RED + RED + YELLOW) / 3));
     // Fake sky
     scene.AddLightSource(SimpleAreaLight(Point(-0.99f, 0.1f, 0.15f), Vect(0.0f, 0.55f, 0.0f), 5, Vect(0.0f, 0.0f, 0.6f), 5, 0.2f, SKY_BLUE));
 
@@ -631,10 +632,15 @@ Scene Room()
     //// ENVIRONMENT         /////
     //////////////////////////////
 
+    // The environment sphere has a transparent material to avoid storing photons in it making the render slower.
     Sphere environment(Point(0, 0, 0), 20);
+    environment.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, Color(0.1f, 0.1f, 0.1f))));
     environment.SetEmittedLight(SKY_BLUE, 1);
     scene.AddShape(environment);
 
+    ParticipatingMedia dustInTheAir(make_shared<Box>(
+            Box(Rectangle(Vect(0,1,0), Point(-1, -0.55f, -1), Point(1, -0.55f, 1)), 1.6f)), 0.5f, 0.5f);
+    scene.AddParticipatingMedia(dustInTheAir);
     return scene;
 }
 
