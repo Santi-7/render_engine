@@ -53,7 +53,7 @@ Scene CornellBox()
     cornellBox.AddShape(yellowSphere);
     cornellBox.AddShape(purpleSphere);
     // A point light illuminates the scene.
-    cornellBox.AddLightSource(PointLight(Point(0, 0.6f, -0.1f), 0.5f, WHITE));
+    cornellBox.AddLightSource(PointLight(Point(0, 0.6f, -0.1f), 1.6f, WHITE));
 
     return cornellBox;
 }
