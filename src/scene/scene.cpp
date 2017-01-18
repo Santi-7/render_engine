@@ -231,18 +231,24 @@ void Scene::GeometryInteraction(const ColoredLightRay &lightRay, const shared_pt
     auto material = shape->GetMaterial();
     save &= !((material->GetDiffuse(intersection) == BLACK) & ((material->GetSpecular() != BLACK) |
                                                                (material->GetTransmittance() != BLACK)));
+
+    // Cosine of the photon direction with the shape normal.
+    float cosine = abs(lightRay.GetDirection().DotProduct(shape->GetNormal(intersection)));
+    ColoredLightRay in(lightRay.GetSource(), lightRay.GetDirection(),
+                       lightRay.GetColor() * cosine);
+
     if (save)
     {
         if (fromCausticShape)
-            mCausticsPhotonMap.Store(intersection, Photon(lightRay));
+            mCausticsPhotonMap.Store(intersection, Photon(in));
         else
-            mDiffusePhotonMap.Store(intersection, Photon(lightRay));
+            mDiffusePhotonMap.Store(intersection, Photon(in));
     }
 
     // Russian Roulette: follow the photon trajectory if it's still living.
     bool fromCaustic;
     ColoredLightRay bouncedRay;
-    bool isAlive = shape->RussianRoulette(lightRay, intersection, bouncedRay, fromCaustic);
+    bool isAlive = shape->RussianRoulette(in, intersection, bouncedRay, fromCaustic);
     if (isAlive) PhotonInteraction(bouncedRay, true, fromCausticShape | fromCaustic);
 }
 
@@ -439,8 +445,8 @@ Color Scene::GeometryEstimateRadiance(const Point &point, const Vect &normal,
         }
     }
 
-    // Divide the radiance between the sphere volume that wraps the nearest photons.
-    return retVal / Sphere::Volume(radius) + causticRetVal / Sphere::Volume(causticRadius);
+    // Divide the radiance between the sphere area that wraps the nearest photons.
+    return retVal / Sphere::Area(radius) + causticRetVal / Sphere::Area(causticRadius);
 }
 
 Color Scene::MediaEstimateRadiance(const float tIntersection, const Point &intersection, const LightRay &in) const

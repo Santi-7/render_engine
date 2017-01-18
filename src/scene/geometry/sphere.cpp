@@ -68,7 +68,7 @@ Vect Sphere::GetNormal(const Point &point) const
     return (mCenter - point) / mRadius;
 }
 
-float Sphere::Volume(const float radius)
+float Sphere::Area(const float radius)
 {
-    return (4.0f / 3.0f) * PI * radius * radius * radius;
+    return 2 * PI * radius * radius;
 }

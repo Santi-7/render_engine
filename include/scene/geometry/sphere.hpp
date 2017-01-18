@@ -54,9 +54,9 @@ public:
 
     /**
      * @param radius Radius of the sphere.
-     * @return The volume of a sphere with radius [radius].
+     * @return The area of a sphere with radius [radius].
      */
-    static float Volume(const float radius);
+    static float Area(const float radius);
 
 private:
 

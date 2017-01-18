@@ -115,7 +115,7 @@ public:
             // Transform the ray of light to global coordinates.
             out = ColoredLightRay(point, fromLocalToGlobal * localRay,
                                   in.GetColor() * mMaterial->GetDiffuse(point)
-                                                / mMaterial->GetDiffuse(point).MeanRGB() / 2);
+                                                / mMaterial->GetDiffuse(point).MeanRGB());
                                                 // Uniform cosine PDF removed because:
                                                 // (kd * PI) / ((2 * sin * cos) * (1 / 2 * PI)) =
                                                 // kd (already counted) / (sin * cos).
