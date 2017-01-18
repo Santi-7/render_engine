@@ -47,7 +47,7 @@ vector<string> split(const string &input, char delim) {
 void PrintHelp()
 {
     cout << "Usage: ray_trace [OPTION]...\n"
-            "If no options are specified, a default Cornell box with 64 indirect rays will be rendered and saved as cornell.ppm.\n"
+            "If no options are specified, a default Cornell box with 100000 emitted photons and 500 nearest neighbours will be rendered and saved as cornell.ppm.\n"
             "\n"
             "The resulting images are clamped by default. If they don't look quite right try --noclamp to divide all colors by the maximum or --gamma to use a 2.2 gamma correction.\n\n"
             "Available options:\n"
@@ -55,8 +55,8 @@ void PrintHelp()
             "\t--res <WIDTHxHEIGHT> : Select a different resolution for the result image.\n"
             "\t--clamp : Instead of dividing by the greatest color value in the image, all colors will be clamped.\n"
             "\t--gamma : Instead of dividing by the greatest color value in the image, all colors will be gamma corrected and then clamped.\n"
-            "\t-p <INTEGER> : Emits INTEGER photons. The default value is 100,000.\n" // TODO: Adjust final default value
-            "\t-k <INTEGER> : When tracing rays search for the INTEGER nearest photons. The default value is 5000.\n" // TODO: Adjust final default value
+            "\t-p <INTEGER> : Emits INTEGER photons. The default value is 100,000.\n"
+            "\t-k <INTEGER> : When tracing rays search for the INTEGER nearest photons. The default value is 300.\n"
             "\t-s [SCENE_NAME] : Selects the scene to render.\n"
             "\n"
             "Available scenes:\n";
@@ -99,7 +99,7 @@ void InitializeSceneNames()
     SCENE_NAMES["media_1"] = &BasicMediaScene<1>;
     SCENE_NAMES["media_caustic"] = &MediaCaustic;
     SCENE_NAMES["rat_in_glass"] = &RatInGlass;
-    SCENE_NAMES["bias"] = &DetailLoss;
+    SCENE_NAMES["mirror_caustic"] = &MirrorCaustic;
 }
 
 /**
@@ -112,7 +112,7 @@ int main(int argc, char * argv[])
     int width = -1, height = -1;
     unsigned int threadCount = thread::hardware_concurrency(); // Use all available threads by default.
     unsigned int photonCount = 100000;
-    unsigned int k_nearest = 5000;
+    unsigned int k_nearest = 300;
     SaveMode saveMode = CLAMP;
     string sceneName = "cornell";
 

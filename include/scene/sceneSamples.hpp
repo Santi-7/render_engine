@@ -969,17 +969,17 @@ Scene RatInGlass()
     return scene;
 }
 
-Scene DetailLoss()
+Scene MirrorCaustic()
 {
     Scene scene;
     TransformationMatrix camTM;
     camTM.SetXRotation(PI/3.6f);
     scene.SetCamera(Pinhole(camTM*Vect(0,1,0), camTM*Vect(1,0,0), camTM*Vect(0,0,1), Point (-0.3f, 0.8f,-0.5f), PI/6, 1.0, 500, 500));
 
-    scene.AddLightSource(PointLight(Point(-0.3f, 0.6f, 0.5f), 1.0f, WHITE));
+    scene.AddLightSource(PointLight(Point(-0.3f, 0.6f, -0.4f), 1.5f, WHITE));
 
     Rectangle redGlass(Vect(0,0,-1), Point(-0.5f, 0.0f, 0.3f), Point(-0.1f, 0.2f, 0.3f));
-    redGlass.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, RED)));
+    redGlass.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, Color(0.95f,0,0), BLACK)));
     redGlass.SetRefractiveIndex(GLASS_RI);
     scene.AddShape(redGlass);
 
