@@ -471,19 +471,19 @@ Scene Room()
     //// Making the room /////////
     //////////////////////////////
 
-    Rectangle floor(Vect(0,1,0), Point(-1, -0.55f, -1), Point(1, -0.55f, 1));
+    Rectangle floor(Vect(0,1,0), Point(-1, -0.55f, -1.2f), Point(1, -0.55f, 1));
     SimpleTexture woodText(string(PROJECT_DIR) + "/resources/wood.ppm", Y, 0.001f);
     floor.SetMaterial(make_shared<Material>(Material(Color(0.1f, 0.1f, 0.1f), GRAY, 1.5f, GRAY/3, BLACK)));
     floor.SetMaterial(woodText);
     scene.AddShape(floor);
 
-    Rectangle ceiling(Vect(0,-1,0), Point(-1, 1.05f, -1), Point(1, 1.05f, 1));
+    Rectangle ceiling(Vect(0,-1,0), Point(-1, 1.05f, -1.2f), Point(1, 1.05f, 1));
     scene.AddShape(ceiling);
 
     SimpleTexture wallTextZ(string(PROJECT_DIR) + "/resources/plaster.ppm", Z, 0.001f);
     SimpleTexture wallTextX(string(PROJECT_DIR) + "/resources/plaster.ppm", X, 0.001f);
-    Rectangle leftWallBot(Vect(1,0,0), Point(-1, -0.55f, -1), Point(-1, 0, 1));
-    Rectangle leftWallTop(Vect(1,0,0), Point(-1, 0.75f, -1), Point(-1, 1.05f, 1));
+    Rectangle leftWallBot(Vect(1,0,0), Point(-1, -0.55f, -1.2f), Point(-1, 0, 1));
+    Rectangle leftWallTop(Vect(1,0,0), Point(-1, 0.75f, -1.2f), Point(-1, 1.05f, 1));
     Rectangle leftWallLeft(Vect(1,0,0), Point(-1, 0, -1), Point(-1, 0.75f, 0.05f));
     Rectangle leftWallRight(Vect(1,0,0), Point(-1, 0, 0.85f), Point(-1, 0.75f, 1));
     leftWallBot.SetMaterial(wallTextX);
@@ -496,7 +496,7 @@ Scene Room()
     scene.AddShape(leftWallLeft);
     scene.AddShape(leftWallRight);
 
-    Rectangle rightWall(Vect(-1,0,0), Point(1, -0.55f, -1), Point(1, 1.05f, 1));
+    Rectangle rightWall(Vect(-1,0,0), Point(1, -0.55f, -1.2f), Point(1, 1.05f, 1));
     rightWall.SetMaterial(wallTextX);
     scene.AddShape(rightWall);
 
@@ -642,9 +642,17 @@ Scene Room()
     //////////////////////////////
     //// MIRROR              /////
     //////////////////////////////
-    Rectangle mirror(Vect(-1,0,0), Point(0.99f, -0.55f, 0.0f), Point(0.99f, 0.3f, 0.5f));
+    Rectangle mirror(Vect(-1,0,0), Point(0.99f, -0.54f, 0.0f), Point(0.99f, 0.3f, 0.5f));
     mirror.SetMaterial(MIRROR);
     scene.AddShape(mirror);
+
+    //////////////////////////////
+    //// WHO KEEPS CUTLERY   /////
+    ///    ON THE FLOOR?!    /////
+    //////////////////////////////
+    Mesh teapot = Mesh::LoadObjFile(string(PROJECT_DIR) + "/resources/utah_teapot.obj", 0.22f, Vect(0.5f,-0.42f, 0.75f));
+    teapot.SetMaterial(MIRROR);
+    scene.AddShape(teapot);
 
     //////////////////////////////
     //// ENVIRONMENT         /////
