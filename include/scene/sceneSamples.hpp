@@ -518,9 +518,9 @@ Scene Room()
     //////////////////////////////
 
     // Sun.
-    scene.AddLightSource(PointLight(Point(-1.5f, 0.9f, 0.45f), 6.0f, (RED + RED + YELLOW) / 3));
+    scene.AddLightSource(PointLight(Point(-1.5f, 0.9f, 0.45f), 7.0f, (RED + RED + YELLOW) / 3));
     // Fake sky
-    scene.AddLightSource(SimpleAreaLight(Point(-0.99f, 0.1f, 0.15f), Vect(0.0f, 0.55f, 0.0f), 5, Vect(0.0f, 0.0f, 0.6f), 5, 0.3f, SKY_BLUE));
+    scene.AddLightSource(SimpleAreaLight(Point(-0.99f, 0.1f, 0.15f), Vect(0.0f, 0.55f, 0.0f), 5, Vect(0.0f, 0.0f, 0.6f), 5, 0.45f, SKY_BLUE));
 
     //////////////////////////////
     //// Making a table //////////
@@ -638,6 +638,13 @@ Scene Room()
 
     ParticipatingMedia fog(make_shared<Sphere>(Sphere(ballCenter, 0.17f)), 3,0.5f);
     scene.AddParticipatingMedia(fog);
+
+    //////////////////////////////
+    //// MIRROR              /////
+    //////////////////////////////
+    Rectangle mirror(Vect(-1,0,0), Point(0.99f, -0.55f, 0.0f), Point(0.99f, 0.3f, 0.5f));
+    mirror.SetMaterial(MIRROR);
+    scene.AddShape(mirror);
 
     //////////////////////////////
     //// ENVIRONMENT         /////
