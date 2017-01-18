@@ -18,8 +18,8 @@ Material::Material(const Color diffuse, const Color specular,
   mKt(transmittance), mShininess(shininess)
 {
     if (diffuse.GetR() + specular.GetR() + reflectance.GetR() + transmittance.GetR() > 0.95f or
-        diffuse.GetG() + specular.GetG() + reflectance.GetR() + transmittance.GetR() > 0.95f or
-        diffuse.GetB() + specular.GetB() + reflectance.GetR() + transmittance.GetR() > 0.95f)
+        diffuse.GetG() + specular.GetG() + reflectance.GetG() + transmittance.GetG() > 0.95f or
+        diffuse.GetB() + specular.GetB() + reflectance.GetB() + transmittance.GetB() > 0.95f)
         throw std::invalid_argument("Material values exceed the conservative maximum of 0.95 for Kd, Ks, Kr and Kt.");
 }
 
