@@ -663,8 +663,8 @@ Scene Dragon()
             Pinhole(camTM*Vect(0, 1, 0), camTM*Vect(1, 0, 0), camTM*Vect(0, 0, 1), Point(0, 0.5f, -0.6f),
                     PI/3, 1.0, 1280, 720));
 
-    scene.AddLightSource(PointLight(Point(0,0.2f, -0.2f), 4, WHITE));
-    scene.AddLightSource(PointLight(Point(0,0.8f, 0.65f), 2, (RED + WHITE) / 2));
+    scene.AddLightSource(PointLight(Point(0,0.2f, -0.2f), 1, WHITE));
+    scene.AddLightSource(PointLight(Point(0,0.8f, 0.65f), 0.5, (RED + WHITE) / 2));
 
     TransformationMatrix dragonTM;
     dragonTM.SetYRotation(PI/2.0f);
@@ -911,14 +911,16 @@ Scene MediaCaustic()
     Scene scene;
     scene.SetCamera(Pinhole(Vect(0,1,0), Vect(1,0,0), Vect(0,0,1), Point (0.0f, 0.4f,-2.0f), PI/6, 1.0, 700, 500));
 
-    scene.AddLightSource(PointLight(Point(0.25f, 0.6f, 0.2f), 1.0f, WHITE));
+    scene.AddLightSource(PointLight(Point(0.25f, 0.6f, 0.2f), 0.5f, WHITE));
 
     Sphere glassSphere(Point(0.0f, 0.35f, 0.2f), 0.2f);
-    glassSphere.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, WHITE)));
+    glassSphere.SetMaterial(make_shared<Material>(Material(BLACK, BLACK, 0.0f, BLACK, Color(0.95f, 0.95f, 0.95f))));
     glassSphere.SetRefractiveIndex(GLASS_RI);
     scene.AddShape(glassSphere);
+    //scene.mBeamRadius = 0.02f;
 
-    ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 2.0f)), 1, 0.5);
+    //ParticipatingMedia fog(make_shared<Sphere>(Sphere(Point(0,0,0.1f), 2.0f)), 0.55f, 0.5f);
+    ParticipatingMedia fog(make_shared<Box>(Box(Rectangle(Vect(0,1,0), Point(-0.4f, -0.4f,0.2f), Point(0.4f, -0.4f, 0.5f)), 1.3f)), 2.55f, 0.5f);
     scene.AddParticipatingMedia(fog);
 
     return scene;
