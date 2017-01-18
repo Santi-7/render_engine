@@ -141,8 +141,8 @@ public:
             out = ColoredLightRay(point, fromLocalToGlobal * localRay,
                                   in.GetColor() * mMaterial->GetSpecular()
                                                 / mMaterial->GetSpecular().MeanRGB()
-                                                // Phong lobe PDF. Without sin term and one more cos term.
-                                                / ((mMaterial->GetShininess() + 1) * pow(abs(localRay.GetX()), mMaterial->GetShininess()-1)));
+                                                // Phong lobe PDF. Cos^alpha is removed!
+                                                * (mMaterial->GetShininess() + 2) / (mMaterial->GetShininess() + 1));
             isCaustic = true;
             return true;
         }
