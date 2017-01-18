@@ -148,7 +148,6 @@ Scene SpecularLobes()
     lobe.SetMaterial(Material(WHITE, GRAY/4, lobeSize, BLACK, BLACK));
     scene.AddShape(lobe);
 
-    CheckerBoard wallPattern(0.149f, BLACK, WHITE);
     Plane backWall(Point(0, 0, 0.5), Vect(0, 0, -1));
     backWall.SetEmittedLight(WHITE, 0.2f);
     scene.AddShape(backWall);
