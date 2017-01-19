@@ -1,6 +1,6 @@
 Ray_Tracer
 =============
-A simple ray tracer using Phong's BRDF and no extra libraries.
+A simple ray tracer and photon mapper that uses Phong's BRDF together with reflectant and refracting materials render 3D scenes using pure C++ with no extra libraries.
 
 Characteristics
 ------------
@@ -18,6 +18,7 @@ It can render Lambertian, mirror and refractive surfaces.
 
 As of `v 1.0` there is no support for bitmap textures but to give scenes some artistic sense you can use checker board patterns of any colors and use some experimental features that mess around with surface normals.
 
+Added in this version, you can use tiled textures in .ppm format for axis aligned planes.
 Compilation
 -------------
 To use the basic binary included to render some samples just run from the project directory:
@@ -35,22 +36,24 @@ Usage for the binary is as follows.
 ```
 $ ray_trace -h
 Usage: ray_trace [OPTION]...
-If no options are specified, a default Cornell box with 64 indirect rays will be rendered and saved as cornell.ppm.
+If no options are specified, a default Cornell box with 100000 emitted photons and 500 nearest neighbours will be rendered and saved as cornell.ppm.
 
-Some images will not look good by default, in such cases use --gamma, to use a gamma correction of 2.2, or --clamp to limit color values to the maximum.
+The resulting images are clamped by default. If they don't look quite right try --noclamp to divide all colors by the maximum or --gamma to use a 2.2 gamma correction.
 
 Available options:
 	-h : Print this helpful text.
 	--res <WIDTHxHEIGHT> : Select a different resolution for the result image.
-	--indirect_steps <NUMBER> : Choose the number of indirect lighting steps to render images faster. 0 to disable indirect lighting.
-	--indirect_rays <NUMBER> : Sets the number of indirect rays that will be used to render the image.
 	--clamp : Instead of dividing by the greatest color value in the image, all colors will be clamped.
 	--gamma : Instead of dividing by the greatest color value in the image, all colors will be gamma corrected and then clamped.
+	-p <INTEGER> : Emits INTEGER photons. The default value is 100,000.
+	-k <INTEGER> : When tracing rays search for the INTEGER nearest photons. The default value is 300.
 	-s [SCENE_NAME] : Selects the scene to render.
 
 Available scenes:
+	caustic
 	chess_texture
 	cornell
+	cornell_media
 	diamond_sphere
 	direct_vs_indirect
 	dragon
@@ -59,13 +62,18 @@ Available scenes:
 	glass_sphere_2
 	indirect
 	infinite_mirror
+	media_0
+	media_1
+	media_caustic
 	menger_1
 	menger_2
 	menger_3
 	menger_4
 	menger_5
+	mirror_caustic
 	phong_spheres
 	quartz_sphere
+	rat_in_glass
 	room
 	specular_lobe_1
 	specular_lobe_2
@@ -73,12 +81,11 @@ Available scenes:
 	spheres
 	teapot
 	water_sphere
-
 ```
 
 About
 -------------
-This is the first project of a computer graphics course. As such, it could be used in similar environments which is why this project will be private until and if permission by the faculty is granted.
+This is the second project of a computer graphics course. As such, it could be used in similar environments which is why this project will be private until and if permission is granted by the faculty.
 
 Authors
 -------------
