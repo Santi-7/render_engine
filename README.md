@@ -84,6 +84,18 @@ Available scenes:
 	water_sphere
 ```
 
+Images!!
+-------------
+These are some of the results achieved using the example code.
+
+![Cornell Box](https://mjgalindo.github.io/caustic.png)
+
+![Rat in Cube](https://mjgalindo.github.io/rat_in_cube.png)
+
+![Weird Room](https://mjgalindo.github.io/scaled_room.png)
+
+![Menger Sponge 5 iterations](https://mjgalindo.github.io/menger_5_ind.png)
+
 About
 -------------
 This is the second project of a computer graphics course. As such, it could be used in similar environments. It's unlikely that this project will be mantained or improved in any way but it should remain as a way to satisfy some curious mind out there.
