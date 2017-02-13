@@ -46,7 +46,7 @@ vector<string> split(const string &input, char delim) {
  */
 void PrintHelp()
 {
-    cout << "Usage: ray_trace [OPTION]...\n"
+    cout << "Usage: render [OPTION]...\n"
             "If no options are specified, a default Cornell box with 100000 emitted photons and 500 nearest neighbours will be rendered and saved as cornell.ppm.\n"
             "\n"
             "The resulting images are clamped by default. If they don't look quite right try --noclamp to divide all colors by the maximum or --gamma to use a 2.2 gamma correction.\n\n"

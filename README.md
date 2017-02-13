@@ -1,10 +1,10 @@
-Ray_Tracer
+render_engine
 =============
-A simple ray tracer and photon mapper that uses Phong's BRDF together with reflectant and refracting materials render 3D scenes using pure C++ with no extra libraries.
+A simple ray tracer and photon mapper that uses Phong's BRDF together with reflectant and refracting materials render 3D scenes using pure C++ without the need for extra libraries.
 
 Characteristics
 ------------
-The binary `ray_trace` is used as a showcase of some hardcoded scenes. It can handle the following 3D shapes:
+The binary `render` is used as a showcase of some hardcoded scenes. It can handle the following 3D shapes:
 
 * Spheres
 * Planes
@@ -19,6 +19,7 @@ It can render Lambertian, mirror and refractive surfaces.
 As of `v 1.0` there is no support for bitmap textures but to give scenes some artistic sense you can use checker board patterns of any colors and use some experimental features that mess around with surface normals.
 
 Added in this version, you can use tiled textures in .ppm format for axis aligned planes.
+
 Compilation
 -------------
 To use the basic binary included to render some samples just run from the project directory:
@@ -32,10 +33,10 @@ make
 
 Usage
 -------------
-Usage for the binary is as follows.
+The example binary works as follows:
 ```
-$ ray_trace -h
-Usage: ray_trace [OPTION]...
+$ render -h
+Usage: render [OPTION]...
 If no options are specified, a default Cornell box with 100000 emitted photons and 500 nearest neighbours will be rendered and saved as cornell.ppm.
 
 The resulting images are clamped by default. If they don't look quite right try --noclamp to divide all colors by the maximum or --gamma to use a 2.2 gamma correction.
@@ -85,8 +86,12 @@ Available scenes:
 
 About
 -------------
-This is the second project of a computer graphics course. As such, it could be used in similar environments which is why this project will be private until and if permission is granted by the faculty.
+This is the second project of a computer graphics course. As such, it could be used in similar environments. It's unlikely that this project will be mantained or improved in any way but it should remain as a way to satisfy some curious mind out there.
+
+If you're using this repository as a reference for a class project keep in mind not to copy anything directly, teachers know about GitHub :wink:.
 
 Authors
 -------------
-This project is made by Santiago Gil Begué and Miguel Jorge Galindo Ramos.
+This project was made by Santiago Gil Begué and Miguel Jorge Galindo Ramos.
+
+###### [Apache 2.0 license](https://github.com/Santi-7/UNIZAR-30226-2016-01/blob/master/LICENSE). If you use this code or parts of it, please name us.

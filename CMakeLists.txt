@@ -8,7 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -O3 -fpermissive -Wall")
 set(SOURCE_FILES
         main.cpp)
 
-add_executable(ray_trace
+add_executable(render
         main.cpp)
 
 include_directories(
@@ -21,7 +21,7 @@ include_directories(
 
 add_subdirectory(src)
 
-target_link_libraries(ray_trace
+target_link_libraries(render
                       container
                       geometry
 		      lighting
