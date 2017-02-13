@@ -19,15 +19,13 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/include/scene/sensors
         ${PROJECT_SOURCE_DIR}/include/utils)
 
-add_subdirectory(lib)
-add_subdirectory(rayTracerTests)
 add_subdirectory(src)
 
 target_link_libraries(ray_trace
                       container
-					  geometry
-					  lighting
-					  scene
-					  sensors
-					  utils
-					  pthread)
+                      geometry
+		      lighting
+		      scene
+		      sensors
+		      utils
+		      pthread)
