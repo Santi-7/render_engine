@@ -2,6 +2,13 @@ render_engine
 =============
 A simple ray tracer and photon mapper that uses Phong's BRDF together with reflectant and refracting materials render 3D scenes using pure C++ without the need for extra libraries.
 
+Branches
+------------
+There are two live branches in this project.
+
+* master -> The current branch, the render engine uses a photon mapping algorithm.
+* ray_tracer -> The render engine uses a ray tracing algorithm.
+
 Characteristics
 ------------
 The binary `render` is used as a showcase of some hardcoded scenes. It can handle the following 3D shapes:
