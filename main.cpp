@@ -7,6 +7,7 @@
 **         Santiago Gil Begué, NIA: 683482
 ** -------------------------------------------------------------------------*/
 
+#include <functional>
 #include <iostream>
 #include <pinhole.hpp>
 #include <scene.hpp>
