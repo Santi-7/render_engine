@@ -35,7 +35,7 @@ public:
 private:
 
     /** Texture. */
-    Image mImage;
+    mutable Image mImage;
 
     /** Size of a pixel in the texture related to distance in the scene. */
     float mPixelSize;
